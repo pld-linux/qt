@@ -11,7 +11,7 @@
 # _without_examples	- don't build and include samples
 
 %define		_kdever		kde-3.1-rc2
-%define		_snapshot	20021104
+%define		_snapshot	rc3
 %define		_state		unstable
 
 Summary:	The Qt3 GUI application framework
@@ -19,12 +19,12 @@ Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
-Version:	3.1
+Version:	3.1.0
 Release:	0.%{_snapshot}.1
 Epoch:		5
 License:	GPL / QPL
 Group:		X11/Libraries
-Source0:	ftp://ftp.kde.org/pub/kde/%{_state}/%{_kdever}/src/%{name}-copy-%{version}_%{_snapshot}.tar.bz2
+Source0:	ftp://ftp.kde.org/pub/kde/%{_state}/%{_kdever}/src/%{name}-x11-free-%{version}-%{_snapshot}.tar.gz
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
@@ -196,7 +196,7 @@ Wtyczka ODBC do Qt.
 Plugin de suporte a ODBC para Qt.
 
 %prep
-%setup -q -n %{name}-copy-%{version}_%{_snapshot}
+%setup -q -n %{name}-x11-free-%{version}
 %patch0 -p1
 #%ifarch %{ix86} ppc
 #%{?_with_prelink:%patch1 -p1}
@@ -236,8 +236,6 @@ DEFAULTOPT="-prefix %{_prefix} -docdir %{_docdir}/%{name}-%{version} \
 	    -system-libpng -system-libjpeg -system-libmng -sm -xinerama \
 	    -xrender -xft -xkb -enable-opengl"
 STYLESLIST="cde compact motif motifplus platinum sgi windows"
-rm -rf $QTDIR/projects.pro
-%{__make} -f Makefile.cvs
 ########################################################################
 # STATIC SINGLE-THREAD
 ########################################################################
