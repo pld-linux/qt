@@ -23,7 +23,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	%{_ver}.%{_snap}
-Release:	1
+Release:	2
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
@@ -49,15 +49,10 @@ BuildRequires:	byacc
 %{?with_cups:BuildRequires:	cups-devel}
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
-BuildRequires:	libICE-devel
-BuildRequires:	libSM-devel
-BuildRequires:	libX11-devel
 BuildRequires:	libXcursor-devel
-BuildRequires:	libXext-devel
+BuildRequires:	libXft-devel
 BuildRequires:	libXmu-devel
 BuildRequires:	libXrandr-devel
-BuildRequires:	libXrender-devel
-BuildRequires:	libXft-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel >= 1.0.0
 BuildRequires:	libpng-devel >= 1.0.8
@@ -72,7 +67,6 @@ BuildRequires:	sed >= 4.0
 %{?with_odbc:BuildRequires:	unixODBC-devel}
 BuildRequires:	zlib-devel
 Requires:	OpenGL
-Requires:	XFree86-libs >= 4.0.2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Conflicts:	kdelibs <= 8:3.2-0.030602.1
 Obsoletes:	qt-extensions
