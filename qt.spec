@@ -291,7 +291,7 @@ DEFAULTOPT="-prefix %{_prefix} \
 	-xinerama \
 	-xkb \
 	-xrender \
-	%{?debug:-release}%{!?debug:-debug}
+	%{!?debug:-release}%{?debug:-debug}
 "
 
 STYLESLIST="cde compact motif motifplus platinum sgi windows"
