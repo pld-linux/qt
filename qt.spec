@@ -42,7 +42,7 @@ Patch9:		%{name}-qmake-opt.patch
 Patch10:	%{name}-xcursor_version.patch
 Patch11:	%{name}-gcc34.patch
 URL:		http://www.trolltech.com/products/qt/
-BuildRequires:	X11-OpenGL-devel
+BuildRequires:	OpenGL-devel
 %{?with_nvidia:BuildRequires:	XFree86-driver-nvidia-devel < 1.0.4620}
 # incompatible with bison
 BuildRequires:	byacc
@@ -62,7 +62,7 @@ BuildRequires:	perl-base
 BuildRequires:	sed >= 4.0
 %{?with_odbc:BuildRequires:	unixODBC-devel}
 BuildRequires:	zlib-devel
-Requires:	X11-OpenGL-libs
+Requires:	OpenGL
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Conflicts:	kdelibs <= 8:3.2-0.030602.1
 Obsoletes:	qt-extensions
@@ -96,7 +96,7 @@ Summary(es):	Archivos de inclusión y documentación necesaria para compilar aplic
 Summary(pl):	Pliki nag³ówkowe, przyk³ady i dokumentacja do biblioteki
 Summary(pt_BR):	Arquivos de inclusão e documentação necessária para compilar aplicações Qt
 Group:		X11/Development/Libraries
-Requires:	X11-OpenGL-devel
+Requires:	OpenGL-devel
 Requires:	freetype-devel
 Requires:	libjpeg-devel
 Requires:	libmng-devel
