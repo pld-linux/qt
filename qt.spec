@@ -1,8 +1,5 @@
 #
 # TODO:
-#   qmake generates Makefile with INCPATH containing -I$(QTDIR)/include/. It
-#   should be -I$(QTDIR)/include/qt
-#
 #   *.png files aren't installed.
 #
 # Conditional build:
@@ -18,7 +15,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.0.4
-Release:	4
+Release:	5
 Epoch:		3
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -229,7 +226,9 @@ if [ -f %{_pkgconfigdir}/libpng12.pc ] ; then
 fi
 
 # change QMAKE_CFLAGS_RELEASE
-perl -pi -e "s|-O2|%{rpmcflags}${PNGCFLAGS}|" mkspecs/linux-g++/qmake.conf
+perl -pi -e "
+	s|-O2|%{rpmcflags}${PNGCFLAGS}|;
+	" mkspecs/linux-g++/qmake.conf
 
 # Fix examples (second part in install section).
 find examples -name '*.pro' -exec \
@@ -429,6 +428,10 @@ find $RPM_BUILD_ROOT%{_examplesdir}/%{name} -regex '.*/\(examples\|tutorial\).*/
 		s|(\$\(QTDIR\))(/mkspecs)|$1/share/qt$2|g;
 		s|'$QTDIR'|%{_prefix}|g;
 	' {} \;
+
+perl -pi -e "
+	s|(QMAKE_INCDIR_QT\\s*=\\s*\\\$\\(QTDIR\\)/include)|\$1/qt|
+	" $RPM_BUILD_ROOT/%{_datadir}/qt/mkspecs/mkspecs/linux-g++/qmake.conf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
