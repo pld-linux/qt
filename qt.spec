@@ -10,27 +10,23 @@
 # _without_static	- don't build static library
 # _without_examples	- don't build and include samples
 
-%define		_kdever		kde-3.1-rc2
-%define		_snapshot	rc3
-%define		_state		unstable
-
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.1.0
-Release:	0.%{_snapshot}.1
+Release:	1
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
-Source0:	ftp://ftp.kde.org/pub/kde/%{_state}/%{_kdever}/src/%{name}-x11-free-%{version}-%{_snapshot}.tar.gz
+Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
 Patch3:		%{name}-FHS.patch
 Patch4:		%{name}-QFont.patch
-Patch5:		%{name}-QClipboard.patch
+
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
 BuildRequires:	freetype-devel >= 2.0.0
@@ -205,7 +201,7 @@ Plugin de suporte a ODBC para Qt.
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
-%patch5 -p1
+
 
 
 # There is no file pointed by this sym-link and there is cp -L in %%install
