@@ -26,7 +26,7 @@ Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
 Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
-# Source0-md5: 156591717687799c69cf3f8b64a898f2
+# Source0-md5:	156591717687799c69cf3f8b64a898f2
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
@@ -41,7 +41,7 @@ BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
 # incompatible with bison
 BuildRequires:	byacc
-%{!?_without_cups:BuildRequires:        cups-devel}
+%{!?_without_cups:BuildRequires:	cups-devel}
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
 BuildRequires:	libjpeg-devel
