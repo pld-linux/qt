@@ -28,7 +28,7 @@ Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 #Version:	%{_ver}.%{_snap}
 Version:	%{_ver}
-Release:	2
+Release:	2.1
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
@@ -51,6 +51,7 @@ Patch8:		%{name}-xcursor_version.patch
 Patch9:		%{name}-gcc34.patch
 # for troll only
 Patch10:	%{name}-autodetect-pch.patch
+Patch11:	%{name}-antialias.patch
 URL:		http://www.trolltech.com/products/qt/
 BuildRequires:	OpenGL-devel
 %{?with_nvidia:BuildRequires:	XFree86-driver-nvidia-devel < 1.0.4620}
@@ -484,6 +485,7 @@ Biblioteki do IDE s³u¿±cego do projektowania GUI za pomoc± biblioteki QT.
 %patch8 -p1
 %patch9 -p1
 %{?with_pch:%patch10 -p1}
+%patch11 -p1
 
 cat >> patches/DISABLED <<EOF
 0005
