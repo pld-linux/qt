@@ -1,16 +1,12 @@
 #
 # Conditional build:
 # _without_mysql	- without mysql support
-# _without_pgsql		- without PostgreSQL support
+# _without_pgsql	- without PostgreSQL support
 # _without_odbc		- without unixODBC support
-#
 # _without_static	- don't build static library
 # _without_examples	- don't build and include samples
-#
 # _with_nas		- enable nas audio support
-#
 # _without_cups		- disable cups support
-#
 
 %define 	_withsql	1
 %{?_without_mysql:%{?_without_pgsql:%{?_without_odbc:%define _withsql 0}}}
