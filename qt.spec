@@ -4,8 +4,8 @@ Name:		qt
 %define		alt_version 2.2.0-beta2
 %define		libqt_version 2.2.0
 %define		libqutil_version 1.0.0
-Version:	2.2.0_beta2
-Release:	1
+Version:	2.2.0
+Release:	0.beta2.1
 License:	QPL
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
@@ -50,23 +50,23 @@ korzystaj±cych z biblioteki Qt, jak pliki nag³ówkowe, meta kompiler
 wiêcej o Qt. Dokumentacjê do biblioteki znajdziesz tak¿e pod:
 /usr/share/doc/%{name}-devel-%{version}/index.html
 
-#%package extensions
-#Summary:	Qt extensions, library
-#Summary(pl):	Qt extensions, rozrze¿enia dla QT biblioteki 
-#Group:		X11/Libraries
-#Group(pl):	X11/Biblioteki
-#Requires:	%{name} = %{version}
-#Obsoletes:	qt-GL
-#Obsoletes:	qt-Xt
+%package extensions
+Summary:	Qt extensions, library
+Summary(pl):	Qt extensions, rozrze¿enia dla QT biblioteki 
+Group:		X11/Libraries
+Group(pl):	X11/Biblioteki
+Requires:	%{name} = %{version}
+Obsoletes:	qt-GL
+Obsoletes:	qt-Xt
 
-#%description extensions
-#Contains the Qt extension files with library. Contains extension for
-#Motif/Lesstif, OpenGL, image manipulation.
+%description extensions
+Contains the Qt extension files with library. Contains extension for
+Motif/Lesstif, OpenGL, image manipulation.
 
-#%description -l pl extensions
-#Pakiet zawiera zestaw rozsze¿eñ dla biblioteki Qt. Biblioteki dla
-#nastêpuj±cych pakietów: Motif/Lestif, OpenGL, Netscape oraz operacji
-#na obrazach.
+%description -l pl extensions
+Pakiet zawiera zestaw rozsze¿eñ dla biblioteki Qt. Biblioteki dla
+nastêpuj±cych pakietów: Motif/Lestif, OpenGL, Netscape oraz operacji
+na obrazach.
 
 %package examples
 Summary:	Qt tutorial/examples
@@ -76,10 +76,10 @@ Group(pl):	X11/Programowanie/Biblioteki
 Requires:	%{name}-devel = %{version}
 
 %description examples
-Qt tutorial/examples
+Qt tutorial/examples.
 
 %description -l pl examples
-Qt przyk³ady
+Qt przyk³ady.
 
 %prep 
 %setup -q -n %{name}-%{alt_version}
@@ -95,17 +95,19 @@ QTDIR=`/bin/pwd`; export QTDIR
 yes
 _EOF_
 
-LD_LIBRARY_PATH=%{_libdir} ;				export LD_LIBRARY_PATH
-SYSCONF_CFLAGS="-pipe -DNO_DEBUG $RPM_OPT_FLAGS" ;	export SYSCONF_CFLAGS
-SYSCONF_CXXFLAGS="-pipe -DNO_DEBUG $RPM_OPT_FLAGS" ;	export SYSCONF_CXXFLAGS
+LD_LIBRARY_PATH=%{_libdir}
+SYSCONF_CFLAGS="-pipe -DNO_DEBUG $RPM_OPT_FLAGS"
+SYSCONF_CXXFLAGS="-pipe -DNO_DEBUG $RPM_OPT_FLAGS"
+export LD_LIBRARY_PATH SYSCONF_CFLAGS SYSCONF_CXXFLAGS
+
 %{__make} SYSCONF_CFLAGS="$RPM_OPT_FLAGS" SYSCONF_CXXFLAGS="$RPM_OPT_FLAGS" \
 	symlinks  moc src-mt src tools
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir},%{_includedir},%{_mandir}/man3}
-install -d $RPM_BUILD_ROOT/usr/src/examples/%{name}
-install -d $RPM_BUILD_ROOT%{_datadir}/tutorial/%{name}
+install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir},%{_includedir},%{_mandir}/man3} \
+	$RPM_BUILD_ROOT/usr/src/examples/%{name} \
+	$RPM_BUILD_ROOT%{_datadir}/tutorial/%{name} \
 
 install bin/* $RPM_BUILD_ROOT%{_bindir}/
 
