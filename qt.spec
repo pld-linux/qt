@@ -14,7 +14,7 @@
 %bcond_with	pch		# enable pch in qmake
 %bcond_with	pch_devel	# enable experimental boost (for developers only!)
 #
-%ifnarch %{ix86} sparc sparcv9 ppc
+%ifnarch %{ix86} amd64 sparc sparcv9 ppc
 %undefine	with_ibase
 %endif
 %define		_withsql	1
