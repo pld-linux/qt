@@ -1,35 +1,31 @@
 #
 # Conditional build:
-%bcond_with	nas	# enable NAS audio support
-%bcond_without	single	# don't build single-threaded libraries
-%bcond_without	static	# don't build static libraries
-%bcond_without	cups	# disable CUPS support
-%bcond_without	mysql	# disable MySQL support
-%bcond_without	odbc	# disable unixODBC support
-%bcond_without	pgsql	# disable PostgreSQL support
-
-#%%define	_snap	030925
+%bcond_with	nas		# enable NAS audio support
+%bcond_without	single		# don't build single-threaded libraries
+%bcond_without	static_libs	# don't build static libraries
+%bcond_without	cups		# disable CUPS support
+%bcond_without	mysql		# disable MySQL support
+%bcond_without	odbc		# disable unixODBC support
+%bcond_without	pgsql		# disable PostgreSQL support
 
 %define		_withsql	1
 %{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}
+
+%define		_snap	031122
+%define		_ver	3.2.3
 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
-Version:	3.2.2
+Version:	%{_ver}.%{_snap}
 Release:	1
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
-Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
-# Source0-md5:	77d6e71e603fa54b9898d3364ef42aef
-#Source0:	http://www.kernel.pl/~adgor/kde/%{name}-copy-%{_snap}.tar.bz2
-#Source1:	ftp://ftp.trolltech.com/qsa/%{name}-designer-changes-qsa-beta3.tar.gz
-Source1:	http://www.kernel.pl/~djurban/snap/%{name}-patches-030925.tar.bz2
-# Source1-md5:	4ecbe9cb29ece77dd8921a9d8723a1a8
-#Source2:	%{name}-malloc.c
+Source0:	http://www.kernel.pl/~adgor/kde/%{name}-copy-%{_snap}.tar.bz2
+# Source0-md5:	d61437cdcc5d33dc7cbd5f4005df36d9
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
@@ -39,10 +35,8 @@ Patch5:		%{name}-disable_tutorials.patch
 Patch6:		%{name}-locale.patch
 Patch7:		%{name}-make_use_of_locale.patch
 Patch8:		%{name}-make_assistant_use_global_docs.patch
-Patch9:		%{name}-qlineedit_khtml_fix.patch
-Patch10:	%{name}-qmake-opt.patch
-Patch11:	%{name}-qmake-la-and-pc-fix.patch
-#Patch12:	%{name}-post321fixes.patch
+Patch9:		%{name}-qmake-opt.patch
+Patch10:	%{name}-qmake-la-and-pc-fix.patch
 URL:		http://www.trolltech.com/products/qt/
 BuildRequires:	OpenGL-devel
 # incompatible with bison
@@ -335,8 +329,7 @@ QT Development Utilities.
 Narzêdzia programistyczne QT.
 
 %prep
-#%%setup -q -n %{name}-copy
-%setup -q -n %{name}-x11-free-%{version} -a1
+%setup -q -n %{name}-copy-%{_snap}
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -348,15 +341,11 @@ Narzêdzia programistyczne QT.
 %patch8 -p1
 %patch9 -p1
 %patch10 -p1
-%patch11 -p1
-#%patch12 -p1
 
-rm -rf `find $RPM_BUILD_ROOT -name CVS`
-rm -rf `find . -name CVS`
-
-mv patches/apply_patches .
-
-#%{__make} -f Makefile.cvs
+# qboosh, which is better?!
+cat >> patches/DISABLED << EOF
+0029
+EOF
 
 ./apply_patches
 
@@ -365,8 +354,6 @@ mv patches/apply_patches .
 perl -pi -e "
 	s|-O2|%{rpmcflags}|;
 	" mkspecs/linux-g++/qmake.conf
-
-##install %{SOURCE2} src/kernel/malloc.c
 
 %build
 export QTDIR=`/bin/pwd`
@@ -377,16 +364,19 @@ export LD_LIBRARY_PATH=$QTDIR/lib:$LD_LIBRARY_PATH
 # pass OPTFLAGS for qmake itself
 export OPTFLAGS="%{rpmcflags}"
 
+%{__make} -f Makefile.cvs
+
 ##################################
 # DEFAULT OPTIONS FOR ALL BUILDS #
 ##################################
 
 DEFAULTOPT=" \
+	-verbose \
 	-prefix %{_prefix} \
 	-headerdir %{_includedir} \
 	-datadir %{_datadir}/qt \
 	-docdir %{_docdir}/%{name}-doc \
-	-sysconfdir %{_sysconfdir} \
+	-sysconfdir %{_sysconfdir}/qt \
 	-translationdir %{_datadir}/locale/ \
 	-fast \
 	-qt-gif \
@@ -399,11 +389,11 @@ DEFAULTOPT=" \
 	%{?with_nas:-system-nas-sound} \
 	%{?debug:-debug}"
 
-##############################
-# OPTIONS FOR STATIC-{ST,MT} #
-##############################
+##################################
+#   OPTIONS FOR STATIC-{ST,MT}   #
+##################################
 
-%if %{with static}
+%if %{with static_libs}
 STATICOPT=" \
 	-qt-imgfmt-jpeg \
 	-qt-imgfmt-mng \
@@ -414,11 +404,11 @@ STATICOPT=" \
 	-static"
 %endif
 
-########################
-# STATIC SINGLE-THREAD #
-########################
+##################################
+#      STATIC SINGLE-THREAD      #
+##################################
 
-%if %{with static} && %{with single}
+%if %{with static_libs} && %{with single}
 ./configure \
 	$DEFAULTOPT \
 	$STATICOPT \
@@ -433,11 +423,11 @@ _EOF_
 %{__make} clean
 %endif
 
-#######################
-# STATIC MULTI-THREAD #
-#######################
+##################################
+#      STATIC MULTI-THREAD       #
+##################################
 
-%if %{with static}
+%if %{with static_libs}
 ./configure \
 	$DEFAULTOPT \
 	$STATICOPT \
@@ -453,9 +443,9 @@ _EOF_
 %{__make} clean
 %endif
 
-##############################
-# OPTIONS FOR SHARED-{ST,MT} #
-##############################
+##################################
+#   OPTIONS FOR SHARED-{ST,MT}   #
+##################################
 
 SHAREDOPT=" \
 	-plugin-imgfmt-jpeg \
@@ -472,9 +462,9 @@ SHAREDOPT=" \
 	-plugin-style-sgi \
 	-plugin-style-windows"
 
-########################
-# SHARED SINGLE-THREAD #
-########################
+##################################
+#      SHARED SINGLE-THREAD      #
+##################################
 
 %if %{with single}
 # workaround for some nasty bug to avoid
@@ -505,9 +495,9 @@ cp -R plugins/{imageformats,styles} plugins-st
 %{__make} clean
 %endif
 
-#######################
-# SHARED MULTI-THREAD #
-#######################
+##################################
+#      SHARED MULTI-THREAD       #
+##################################
 
 ./configure \
 	$DEFAULTOPT \
@@ -536,10 +526,10 @@ LD_PRELOAD=$Z/lib/libqt-mt.so.3 lrelease linguist_de.ts
 LD_PRELOAD=$Z/lib/libqt-mt.so.3 lrelease linguist_fr.ts
 cd $Z
 
+##make -C extensions/nsplugin/src
+
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_mandir}/man{1,3},%{_examplesdir}/%{name}/lib} \
-	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-{m,s}t/network
 
 export QTDIR=`/bin/pwd`
 
@@ -547,6 +537,7 @@ export QTDIR=`/bin/pwd`
 	INSTALL_ROOT=$RPM_BUILD_ROOT
 
 install -d \
+	$RPM_BUILD_ROOT%{_sysconfdir}/qt \
 	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-mt/{network,qsa} \
 	%{?with_single:$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st/network} \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name}/lib \
@@ -556,13 +547,13 @@ install bin/{findtr,qt20fix,qtrename140,qt32castcompat} \
 	tools/{msg2qm/msg2qm,mergetr/mergetr} \
 	$RPM_BUILD_ROOT%{_bindir}
 
-%if %{with static}
+%if %{with static_libs}
 install lib/libqt*.a		$RPM_BUILD_ROOT%{_libdir}
 %endif
 
 %if %{with single}
 install lib/libqt.so.*.*.*	$RPM_BUILD_ROOT%{_libdir}
-ln -sf libqt.so.%{version}	$RPM_BUILD_ROOT%{_libdir}/libqt.so
+ln -sf libqt.so.%{_ver}		$RPM_BUILD_ROOT%{_libdir}/libqt.so
 install lib/qt.pc		$RPM_BUILD_ROOT%{_pkgconfigdir}
 cp -R plugins-st/*		$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st
 %endif
@@ -579,6 +570,7 @@ perl -pi -e "
 	" $RPM_BUILD_ROOT/%{_datadir}/qt/mkspecs/linux-g++/qmake.conf
 
 plik="$RPM_BUILD_ROOT/%{_datadir}/qt/mkspecs/linux-g++/qmake.conf"
+
 cat $plik \
 	|grep -v QMAKE_CFLAGS_RELEASE \
 	|grep -v QMAKE_CXXFLAGS_RELEASE \
@@ -628,36 +620,44 @@ install tools/linguist/linguist/linguist_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale
 
 install tools/linguist/qm2ts/qm2ts.1 $RPM_BUILD_ROOT%{_mandir}/man1
 
-install -d $RPM_BUILD_ROOT%{_sysconfdir}/qt
-echo -e "\n" > $RPM_BUILD_ROOT%{_sysconfdir}/qt/doclist
+rm -rf `find $RPM_BUILD_ROOT -name CVS`
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
 /sbin/ldconfig
-echo "#####################################################"
-echo "# After qt 3.2.0 the single version was separated.  #"
-echo "# Please install qt-st if you really require it.    #"
-echo "# If you do not use qt-st explicitly, please ignore #"
-echo "# this, as you will not notice any changes. In most #"
-echo "# cases do not install qt-st, as it is obsoleted.   #"
-echo "#####################################################"
 
-%postun -p /sbin/ldconfig
-%post st -p /sbin/ldconfig
-%postun	st -p /sbin/ldconfig
+cat << EOF
+
+ *******************************************************
+ *                                                     *
+ *  NOTE:                                              *
+ *  After qt 3.2.0 the single threaded version was     *
+ *  separated. Please install qt-st if You really need *
+ *  it. If You do not use qt-st explicitly, please     *
+ *  ignore this, as You will not notice any changes.   *
+ *  In most cases do not install qt-st, as it is       *
+ *  obsoleted.                                         *
+ *                                                     *
+ *******************************************************
+
+EOF
+
+%postun 	-p /sbin/ldconfig
+
+%post 	st 	-p /sbin/ldconfig
+%postun	st 	-p /sbin/ldconfig
 
 %files
 %defattr(644,root,root,755)
 %doc FAQ LICENSE.* README* changes*
+%dir %{_sysconfdir}/qt
 %attr(755,root,root) %{_libdir}/libqassistantclient.so.*.*.*
 %attr(755,root,root) %{_libdir}/libdesignercore.so.*.*.*
 %attr(755,root,root) %{_libdir}/libeditor.so.*.*.*
 %attr(755,root,root) %{_libdir}/libqui.so.*.*.*
 %attr(755,root,root) %{_libdir}/libqt-mt.so.*.*.*
-%dir %{_sysconfdir}/qt
-%ghost %{_sysconfdir}/qt/doclist
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/plugins-mt
 %dir %{_libdir}/%{name}/plugins-mt/network
@@ -678,17 +678,17 @@ echo "#####################################################"
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/[!adl]*
 %attr(755,root,root) %{_bindir}/l[!i]*
+%{_includedir}
 %{_libdir}/libqassistantclient.so
 %{_libdir}/libdesignercore.so
 %{_libdir}/libeditor.so
 %{_libdir}/libqui.so
 %{_libdir}/libqt-mt.so
-%{_includedir}
 %{_datadir}/qt/[!d]*
 %{_mandir}/man1/*
 %{_pkgconfigdir}/qt-mt.pc
 
-%if %{with static}
+%if %{with static_libs}
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libqt-mt.a
@@ -741,7 +741,7 @@ echo "#####################################################"
 %attr(755,root,root) %{_libdir}/libqt.so
 %{_pkgconfigdir}/qt.pc
 
-%if %{with static}
+%if %{with static_libs}
 %files st-static
 %defattr(644,root,root,755)
 %{_libdir}/libqt.a
@@ -770,7 +770,7 @@ echo "#####################################################"
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/[ad]*
 %attr(755,root,root) %{_bindir}/li*
-%dir %{_libdir}/%{name}/plugins*/designer
+%dir %{_libdir}/%{name}/plugins-?t/designer
 %attr(755,root,root) %{_libdir}/%{name}/plugins-?t/designer/*.so
 %{_datadir}/qt/designer
 %lang(de) %{_datadir}/locale/de/LC_MESSAGES/assistant.qm
