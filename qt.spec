@@ -406,14 +406,15 @@ LD_LIBRARY_PATH="$QTDIR/lib" ; export LD_LIBRARY_PATH
 PATH="$QTDIR/bin:$PATH"
 
 # Trolltech sucks and swallows.
-
 perl -pi -e "s/^	strip/	-strip/;" src/Makefile
 
 %{__make} install INSTALL_ROOT=$RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT%{_mandir}/man{1,3} \
-	$RPM_BUILD_ROOT%{_examplesdir}/%{name} \
-	$RPM_BUILD_ROOT%{_examplesdir}/%{name}/lib \
+rm -rf `find $RPM_BUILD_ROOT -name CVS`
+
+rm -rf `find . -name CVS`
+
+install -d $RPM_BUILD_ROOT{%{_mandir}/man{1,3},%{_examplesdir}/%{name}/lib} \
 	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st
 
 install bin/findtr tools/msg2qm/msg2qm tools/mergetr/mergetr \
@@ -450,8 +451,6 @@ perl -pi -e "
 	s|(QMAKE_INCDIR_QT\\s*=\\s*\\\$\\(QTDIR\\)/include)|\$1/qt|
 	" $RPM_BUILD_ROOT/%{_datadir}/qt/kspecs/linux-g++/qmake.conf
 
-rm -rf `find . -name CVS`
-
 %clean
 %{!?_without_clean:rm -rf $RPM_BUILD_ROOT}
 
@@ -477,7 +476,7 @@ rm -rf `find . -name CVS`
 
 %files devel
 %defattr(644,root,root,755)
-%doc %{_docdir}
+%doc doc/[!Mm]*
 %attr(755,root,root) %{_bindir}/*
 %{_libdir}/libqt.so
 %{_libdir}/libqt-mt.so
