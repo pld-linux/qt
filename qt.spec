@@ -6,24 +6,26 @@
 #   *.png files aren't installed.
 #
 # Conditional build:
-# _without_prelink	- without objprelink (problems with new binutils?)
+# _with_prelink		- witht objprelink (problems with new binutils?)
 # _without_mysql	- without mysql support
 # _without_psql		- without PostgreSQL support
 # _without_odbc		- without unixODBC support
 #
+
+%ifarch saprc sparcv9 sparc64 alpha
+
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.0.4
-Release:	2
+Release:	3
 Epoch:		3
 License:	GPL / QPL
 Group:		X11/Libraries
 Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
 Patch0:		%{name}-tools.patch
-# prelinking
 Patch1:		%{name}-qmake.patch
 Patch2:		%{name}-parse_error.patch
 Patch3:		%{name}-postgresql_7_2.patch
@@ -51,9 +53,7 @@ BuildRequires:	postgresql-devel
 BuildRequires:	unixODBC-devel
 %endif
 BuildRequires:	zlib-devel
-%ifarch %{ix86} ppc
-%{!?_without_prelink:BuildRequires:	objprelink}
-%endif
+%{?_witht_prelink:BuildRequires:	objprelink}
 Requires:	OpenGL
 Requires:	XFree86-libs >= 4.0.2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -212,7 +212,7 @@ Plugin de suporte a ODBC para Qt.
 %setup -q -n %{name}-x11-free-%{version}
 %patch0 -p1
 %ifnarch %{ix86} ppc
-%{!?_without_prelink:%patch1 -p1}
+%{!?_witht_prelink:%patch1 -p1}
 %endif
 %patch2 -p1
 %patch3 -p1
