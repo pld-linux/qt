@@ -48,6 +48,12 @@ BuildRequires:	byacc
 %{?with_cups:BuildRequires:	cups-devel}
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
+BuildRequires:	libX11-devel
+BuildRequires:	libXcursor-devel
+BuildRequires:	libXmu-devel
+BuildRequires:	libXrandr-devel
+BuildRequires:	libXrender-devel
+BuildRequires:	libXft-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel >= 1.0.0
 BuildRequires:	libpng-devel >= 1.0.8
@@ -60,9 +66,6 @@ BuildRequires:	perl-base
 %{?with_pgsql:BuildRequires:	postgresql-devel}
 BuildRequires:	sed >= 4.0
 %{?with_odbc:BuildRequires:	unixODBC-devel}
-BuildRequires:	xcursor-devel
-BuildRequires:	xrender-devel
-BuildRequires:	xft-devel
 BuildRequires:	zlib-devel
 Requires:	OpenGL
 Requires:	XFree86-libs >= 4.0.2
