@@ -1,3 +1,6 @@
+# TODO:
+# - hack assistant, to use some global config file with documentation list
+#
 # Conditional build:
 # _with_nas		- enable nas audio support
 # _with_single		- build also single threaded libraries
@@ -27,6 +30,7 @@ License:	GPL / QPL
 Group:		X11/Libraries
 #Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
 Source0:	%{name}-copy-%{_snap}.tar.bz2
+Source1:	ftp://ftp.trolltech.com/qsa/%{name}-designer-changes-qsa-beta3.tar.gz
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
@@ -185,6 +189,7 @@ Summary(pl):	Wtyczka MySQL do Qt
 Summary(pt_BR):	Plugin de suporte a mysql para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{version}
+Provides:	qt-plugin-sql
 
 %description plugins-mysql
 Database plugin for mysql Qt support.
@@ -201,6 +206,7 @@ Summary(pl):	Wtyczka PostgreSQL do Qt
 Summary(pt_BR):	Plugin de suporte a pgsql para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{version}
+Provides:       qt-plugin-sql
 
 %description plugins-psql
 Database plugin for pgsql Qt support.
@@ -217,6 +223,7 @@ Summary(pl):	Wtyczka ODBC do Qt
 Summary(pt_BR):	Plugin de suporte a ODBC para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{version}
+Provides:       qt-plugin-sql
 
 %description plugins-odbc
 Database plugin for ODBC Qt support.
@@ -240,7 +247,7 @@ QT Development Utilities.
 Narzedzia programistyczne QT.
 
 %prep
-%setup -q -n %{name}-copy
+%setup -q -n %{name}-copy -a1
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -456,6 +463,16 @@ mv $RPM_BUILD_ROOT{%{_libdir}/*.prl,%{_examplesdir}/%{name}/lib}
 perl -pi -e "
 	s|(QMAKE_INCDIR_QT\\s*=\\s*\\\$\\(QTDIR\\)/include)|\$1/qt|
 	" $RPM_BUILD_ROOT/%{_datadir}/qt/mkspecs/linux-g++/qmake.conf
+
+plik="$RPM_BUILD_ROOT/%{_datadir}/qt/mkspecs/linux-g++/qmake.conf"
+cat $plik|grep -v QMAKE_CFLAGS_RELEASE|grep -v QMAKE_CXXFLAGS_RELEASE|grep -v QMAKE_CFLAGS_DEBUG|grep -v QMAKE_CXXFLAGS_DEBUG > $plik.1
+
+echo -e "QMAKE_CFLAGS_RELEASE\t=\t%%{rpmcflags}" > $plik
+echo -e "QMAKE_CXXFLAGS_RELEASE\t=\t%%{rpmcflags}" >> $plik
+echo -e "QMAKE_CFLAGS_DEBUG\t=\t%%{debugcflags}" >> $plik
+echo -e "QMAKE_CXXFLAGS_DEBUG\t=\t%%{debugcflags}" >> $plik
+cat $plik.1 >> $plik
+rm $plik.1
 
 # We provide qt style classes as plugins,
 # so make corresponding changes to the qconfig.h.
