@@ -531,7 +531,6 @@ fi
 
 # pass OPTFLAGS to build qmake itself with optimization
 export OPTFLAGS="%{rpmcflags}"
-#export OPTFLAGS="%{rpmcflags} -DQT_CLEAN_NAMESPACE"
 
 #%{__make} -f Makefile.cvs
 
@@ -847,6 +846,7 @@ cat << EOF
 
 EOF
 
+%post	 	-p /sbin/ldconfig
 %postun 	-p /sbin/ldconfig
 
 %post 	st 	-p /sbin/ldconfig
