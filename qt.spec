@@ -3,7 +3,7 @@ Summary(pl):	Biblioteka Qt2 do tworzenia GUI
 Name:		qt
 %define		libqutil_version 1.0.0
 Version:	2.2.4
-Release:	1
+Release:	2
 Epoch:		1
 License:	GPL
 Group:		X11/Libraries
@@ -18,7 +18,7 @@ BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
 BuildRequires:	libungif-devel
 BuildRequires:	libjpeg-devel
-BuildRequires:	libmng-devel
+BuildRequires:	libmng-devel >= 1.0.0
 BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	libstdc++-devel
 BuildRequires:	zlib-devel
