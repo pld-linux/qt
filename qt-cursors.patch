@@ -9,9 +9,9 @@
  
      ArrowCursor is the default for widgets in a normal state.
  
---- qt-x11-free-3.1.1/src/kernel/qcursor_x11.cpp.orig	Mon Dec  9 10:40:47 2002
-+++ qt-x11-free-3.1.1/src/kernel/qcursor_x11.cpp	Wed Feb 19 15:53:59 2003
-@@ -49,6 +49,8 @@
+--- qt-copy/src/kernel/qcursor_x11.cpp~	2003-05-16 23:14:40.000000000 +0200
++++ qt-copy/src/kernel/qcursor_x11.cpp	2003-05-17 02:27:09.000000000 +0200
+@@ -51,6 +51,8 @@
  // Define QT_USE_APPROXIMATE_CURSORS when compiling if you REALLY want to
  // use the ugly X11 cursors.
  
@@ -29,15 +29,15 @@
  
  QCursor *QCursor::find_cur( int shape )		// find predefined cursor
 @@ -723,6 +726,9 @@
- 	case WaitCursor:
- 	    sh = XC_watch;
- 	    break;
-+	case WorkingCursor:
-+	    sh = XC_clock;
-+	    break;
- 	case IbeamCursor:
- 	    sh = XC_xterm;
- 	    break;
+     case WaitCursor:
+ 	sh = XC_watch;
+ 	break;
++    case WorkingCursor:
++	sh = XC_clock;
++	break;
+     case IbeamCursor:
+ 	sh = XC_xterm;
+ 	break;
 --- qt-x11-free-3.1.1/src/kernel/qnamespace.h.orig	Mon Dec  9 10:40:45 2002
 +++ qt-x11-free-3.1.1/src/kernel/qnamespace.h	Wed Feb 19 15:53:59 2003
 @@ -722,7 +722,8 @@
