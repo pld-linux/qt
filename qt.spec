@@ -17,6 +17,8 @@ BuildPrereq:	Mesa-devel
 BuildPrereq:	libjpeg-devel
 Buildroot:	/tmp/%{name}-%{version}-root
 
+%define _prefix /usr/X11R6
+
 %description
 Contains the shared library needed to run Qt applications, as well as
 the README files for Qt.
@@ -72,47 +74,47 @@ operacji na obrazach.
 QTDIR=`/bin/pwd`; export QTDIR
 make linux-g++-shared
 
-LD_LIBRARY_PATH=/usr/X11R6/lib make
+LD_LIBRARY_PATH=%{_libdir} make
 
-(cd extensions/imageio/src; LD_LIBRARY_PATH=/usr/X11R6/lib make)
-(cd extensions/opengl/src; LD_LIBRARY_PATH=/usr/X11R6/lib make)
-(cd extensions/xt/src; LD_LIBRARY_PATH=/usr/X11R6/lib \
- make INCPATH="-I/usr/X11R6/include -I../../../include")
+(cd extensions/imageio/src; LD_LIBRARY_PATH=%{_libdir} make)
+(cd extensions/opengl/src; LD_LIBRARY_PATH=%{_libdir} make)
+(cd extensions/xt/src; LD_LIBRARY_PATH=%{_libdir} \
+ make INCPATH="-I%{_includedir} -I../../../include")
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/usr/X11R6/{bin,include/X11/qt,lib,man/{man1,man3}} \
+install -d $RPM_BUILD_ROOT{%{_bindir},%{_includedir}/X11/qt,%{_libdir},%{_mandir}/man{1,3}} \
 	$RPM_BUILD_ROOT/usr/src/examples/%{name}
 
-install -s bin/moc $RPM_BUILD_ROOT/usr/X11R6/bin/moc
-install -s lib/libqt.so.*.* $RPM_BUILD_ROOT/usr/X11R6/lib
-ln -sf libqt.so.%{version} $RPM_BUILD_ROOT/usr/X11R6/lib/libqt.so
-install man/man1/* $RPM_BUILD_ROOT/usr/X11R6/man/man1
-install man/man3/* $RPM_BUILD_ROOT/usr/X11R6/man/man3
-install include/* $RPM_BUILD_ROOT/usr/X11R6/include/X11/qt
+install -s bin/moc $RPM_BUILD_ROOT%{_bindir}/moc
+install -s lib/libqt.so.*.* $RPM_BUILD_ROOT%{_libdir}
+ln -sf libqt.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libqt.so
+install man/man1/* $RPM_BUILD_ROOT%{_mandir}/man1
+install man/man3/* $RPM_BUILD_ROOT%{_mandir}/man3
+install include/* $RPM_BUILD_ROOT%{_includedir}/X11/qt
 
-install -s lib/libqimgio.so.*.* $RPM_BUILD_ROOT/usr/X11R6/lib
-ln -sf libqimgio.so.0.1 $RPM_BUILD_ROOT/usr/X11R6/lib/libqimgio.so
-install extensions/imageio/src/*.h $RPM_BUILD_ROOT/usr/X11R6/include/X11/qt
+install -s lib/libqimgio.so.*.* $RPM_BUILD_ROOT%{_libdir}
+ln -sf libqimgio.so.0.1 $RPM_BUILD_ROOT%{_libdir}/libqimgio.so
+install extensions/imageio/src/*.h $RPM_BUILD_ROOT%{_includedir}/X11/qt
 
-install lib/libqgl.a $RPM_BUILD_ROOT/usr/X11R6/lib
-install extensions/opengl/src/*.h $RPM_BUILD_ROOT/usr/X11R6/include/X11/qt
+install lib/libqgl.a $RPM_BUILD_ROOT%{_libdir}
+install extensions/opengl/src/*.h $RPM_BUILD_ROOT%{_includedir}/X11/qt
 
 if [ -f lib/libqxt.a ] ; then
-	install lib/libqxt.a $RPM_BUILD_ROOT/usr/X11R6/lib
+	install lib/libqxt.a $RPM_BUILD_ROOT%{_libdir}
 fi
-install extensions/xt/src/*.h $RPM_BUILD_ROOT/usr/X11R6/include/X11/qt
+install extensions/xt/src/*.h $RPM_BUILD_ROOT%{_includedir}/X11/qt
 
 for a in {tutorial,examples}/{Makefile,*/Makefile}; do
-	cat $a | sed 's-^SYSCONF_MOC.*-SYSCONF_MOC              = /usr/X11R6/bin/moc-' | \
-	sed 's-^SYSCONF_CXXFLAGS_QT     =\$(QTDIR)/include-SYSCONF_CXXFLAGS_QT = /usr/X11R6/include/qt-' | \
-	sed 's-^SYSCONF_LFLAGS_QT       = \$(QTDIR)/lib-SYSCONF_LFLAGS_QT = /usr/X11R6/lib-' > $a.
+	cat $a | sed 's-^SYSCONF_MOC.*-SYSCONF_MOC              = %{_bindir}/moc-' | \
+	sed 's-^SYSCONF_CXXFLAGS_QT     = \$(QTDIR)/include-SYSCONF_CXXFLAGS_QT = %{_includedir}/qt-' | \
+	sed 's-^SYSCONF_LFLAGS_QT       = \$(QTDIR)/lib-SYSCONF_LFLAGS_QT = %{_libdir}-' > $a.
 	mv -vf $a. $a
 done
 
 cp -dpr tutorial examples $RPM_BUILD_ROOT/usr/src/examples/%{name}
 
-gzip -9nf $RPM_BUILD_ROOT/usr/X11R6/man/man[13]/* \
+gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man[13]/* \
 	README* LICENSE FAQ ANNOUNCE changes-* doc/*
 
 %post   -p /sbin/ldconfig
@@ -127,86 +129,26 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc LICENSE.gz README*.gz FAQ.gz
-%attr(755,root,root) /usr/X11R6/lib/libqt.so.*.*
+%attr(755,root,root) %{_libdir}/libqt.so.*.*
 
 %files devel
 %defattr(644,root,root,755)
 %doc html doc changes-*.gz ANNOUNCE.gz
-%attr(755,root,root) /usr/X11R6/bin/*
-%attr(755,root,root) /usr/X11R6/lib/lib*.so
-/usr/X11R6/lib/lib*.a
-/usr/X11R6/man/man[13]/*
-/usr/X11R6/include/X11/qt
+%attr(755,root,root) %{_bindir}/*
+%attr(755,root,root) %{_libdir}/lib*.so
+%{_libdir}/lib*.a
+%{_mandir}/man[13]/*
+%{_includedir}/X11/qt
 /usr/src/examples/%{name}
 
 %files extensions
 %defattr(755,root,root,755)
-/usr/X11R6/lib/libqimgio.so.*.*
+%{_libdir}/libqimgio.so.*.*
 
 %changelog
-* Sat Apr 24 1999 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
+* Mon May 24 1999 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
   [1.44-6]
-- added BuildPrereq rules,
-- tutorial and examples moved to /usr/src/examples/%%{name},
-- new qt-opt.patch (added -fno-rtti -fno-exceptions .. it cuts libqt code
-  size ~ 1/3 !?!),
-- added patch for enabling internal GIF reading,
-- recompiles on new rpm.
-
-* Fri Mar  5 1999 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
-  [1.43-1]
-- removed compressing html doc,
-- fixed passing $RPM_OPT_FLAGS,
-- added "Conflicts: glibc <= 2.0.7" for prevent installing packages
-  in proper enviroment,
-- now devel subpackage is depends on main and extensions,
-- fixed SYSCONF_LFLAGS_QT and SYSCONF_CXXFLAGS_QT in all Makefiles in
-  tutorial and examples sources (not use $QTDIR),
-- removed man group from man pages.
-
-* Wed Feb 17 1999 Micha³ Kuratczyk <kura@wroclaw.art.pl>
-  [1.42-4]
-- added gzipping documentation
-- removed man group from man pages.
-
-* Fri Feb  5 1999 Wojciech "Sas" Ciêciwa <cieciwa@alpha.zarz.agh.edu.pl>
-  [1.42-3]
-- separate extensions.
-
-* Tue Jan  7 1999 Wojciech "Sas" Ciêciwa <cieciwa@alpha.zarz.agh.edu.pl>
-- added extensions.
-
-* Mon Dec  9 1998 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
-  [1.42-2]
-- added gzipping man pages,
-- recompiled against libstdc++.so.2.9.
-
-* Tue Sep 15 1998 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
-  [1.40-3]
-- added pl translation (based on translation maked by Jacek Konieczny
-  <jajcus@zeus.polsl.gliwice.pl>),
-- removed PORTING from %doc,
-- ANNOUNCE and changes-* moved to devel %doc,
-- changed install base directory to /usr/X11R6.
-
-* Mon Aug  3 1998 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
-  [1.40-2]
-- added -q %setup parameter and removed -n parameter,
-- package rewrited for using Buildroot,
-- added using %%{name} and %%{version} macros in Source,
-- "rm -rf $RPM_BUILD_ROOT" moved from %prep to %install,
-- spec file rewritten for using Buildroot,
-- added %clean section,
-- added URL,
-- removed compiling tutorial and examples during building (qt.patch),
-- fixed dependences for devel by adding "Requires: %%{name} = %%{version}",
-- html, tutorial, examples and doc are marked as %doc in devel subpackage,
-- header files moved to %{_includedir}/qt (to be consistent with FSSTND),
-- replaced "mkdir -p" with "install -d" in %install,
-- added striping binaries,
-- %{_libdir}/lib*.so moved to devel,
-- fiew simplification in %files and %install,
-- added using $RPM_OPT_FLAGS during compile,
-- /sbin/ldconfig is now -p parameter in %post[un],
-- added %defattr and %attr macros in %files (allows building package from
-  non-root account).jri.h
+- spec writtren by me, modified by Wojciech "Sas" Ciêciwa
+  <cieciwa@alpha.zarz.agh.edu.pl> and Micha³ Kuratczyk
+  <kura@wroclaw.art.pl>.
+- pl translation by Jacek Konieczny <jajcus@zeus.polsl.gliwice.pl>.
