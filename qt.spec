@@ -12,8 +12,6 @@
 # _without_odbc		- without unixODBC support
 #
 
-%ifarch saprc sparcv9 sparc64 alpha
-
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
