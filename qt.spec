@@ -22,7 +22,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.1.2
-Release:	1
+Release:	4
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -60,7 +60,9 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	qt-extensions
 
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1
+%define		_prefix		/usr/X11R6
 %define		_includedir	%{_prefix}/include/qt
+%define		_mandir		%{_prefix}/man
 %define         _qt_sl		%{version}
 
 %description
@@ -147,17 +149,6 @@ Qt documentation in HTML format.
 
 %description doc-html -l pl
 Dokumentacja qt w formacie HTML.
-
-%package doc-man
-Summary:	QT man pages
-Summary(pl):	QT - strony man
-Group:		X11/Development/Libraries
-
-%description doc-man
-Qt documentation in man pages format.
-
-%description doc-man -l pl
-Dokumentacja qt w formacie stron man.
 
 %package examples
 Summary:	Example programs made with Qt version %{version}
@@ -364,6 +355,9 @@ done
 # This will not remove previously compiled libraries.
 %{!?_without_static:%{__make} clean}
 
+# workaround for some nasty bug to avoid linking plugins statically with -lqt-mt
+rm -f lib/libqt-mt.prl
+
 OPTFLAGS="%{rpmcflags}" \
 ./configure \
 	$DEFAULTOPT \
@@ -441,7 +435,7 @@ rm -rf `find $RPM_BUILD_ROOT -name CVS`
 rm -rf `find . -name CVS`
 
 install -d $RPM_BUILD_ROOT{%{_mandir}/man{1,3},%{_examplesdir}/%{name}/lib} \
-	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st
+	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-{m,s}t/network
 install bin/{findtr,qt20fix,qtrename140} \
 	tools/msg2qm/msg2qm tools/mergetr/mergetr \
 	$RPM_BUILD_ROOT%{_bindir}
@@ -478,6 +472,22 @@ perl -pi -e "
 	s|(QMAKE_INCDIR_QT\\s*=\\s*\\\$\\(QTDIR\\)/include)|\$1/qt|
 	" $RPM_BUILD_ROOT/%{_datadir}/qt/kspecs/linux-g++/qmake.conf
 
+# We provide qt style classes as plugins,
+# so make corresponding changes to the qconfig.h.
+chmod 644 $RPM_BUILD_ROOT%{_includedir}/qconfig.h
+
+cat >> $RPM_BUILD_ROOT%{_includedir}/qconfig.h <<EOF
+
+/* All of these style classes we provide as plugins */
+#define QT_NO_STYLE_CDE
+#define QT_NO_STYLE_COMPACT
+#define QT_NO_STYLE_MOTIF
+#define QT_NO_STYLE_MOTIFPLUS
+#define QT_NO_STYLE_PLATINUM
+#define QT_NO_STYLE_SGI
+#define QT_NO_STYLE_WINDOWS
+EOF
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -496,6 +506,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/plugins*
 %dir %{_libdir}/%{name}/plugins*/imageformats
+%dir %{_libdir}/%{name}/plugins*/network
 %dir %{_libdir}/%{name}/plugins*/styles
 %if %{_withsql}
 %dir %{_libdir}/%{name}/plugins*/sqldrivers
@@ -517,6 +528,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}
 %{_datadir}/qt/[!d]*
 %{_mandir}/man1/*
+%{_mandir}/man3/*
 
 %if %{!?_without_static:1}%{?_without_static:0}
 %files static
@@ -527,10 +539,6 @@ rm -rf $RPM_BUILD_ROOT
 %files doc-html
 %defattr(644,root,root,755)
 %{_docdir}/%{name}-doc-html-%{version}
-
-%files doc-man
-%defattr(644,root,root,755)
-%{_mandir}/man3/*
 
 %if %{!?_without_examples:1}%{?_without_examples:0}
 %files examples
