@@ -81,7 +81,7 @@ install -d $RPM_BUILD_ROOT/usr/X11R6/{bin,include/X11/qt,lib,man/{man1,man3}}
 
 install -s bin/moc $RPM_BUILD_ROOT/usr/X11R6/bin/moc
 install -s lib/libqt.so.*.* $RPM_BUILD_ROOT/usr/X11R6/lib
-ln -sf libqt.so.%{version} $RPM_BUILD_ROOT/usr/X11R6/lib/libqt.so
+ln -sf libqt.so.*.* $RPM_BUILD_ROOT/usr/X11R6/lib/libqt.so
 install man/man1/* $RPM_BUILD_ROOT/usr/X11R6/man/man1
 install man/man3/* $RPM_BUILD_ROOT/usr/X11R6/man/man3
 install include/* $RPM_BUILD_ROOT/usr/X11R6/include/X11/qt
@@ -104,8 +104,8 @@ for a in {tutorial,examples}/{Makefile,*/Makefile}; do
 	sed 's-^SYSCONF_LFLAGS_QT	= \$(QTDIR)/lib-SYSCONF_LFLAGS_QT	= /usr/X11R6/lib-' > $a
 done
 
-gzip -9nf $RPM_BUILD_ROOT/usr/X11R6/man/man[13]/*
-gzip -9nf README* LICENSE FAQ ANNOUNCE changes-* doc/*
+gzip -9nf $RPM_BUILD_ROOT/usr/X11R6/man/man[13]/* \
+	README* LICENSE FAQ ANNOUNCE changes-* doc/*
 
 %post   -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
@@ -125,7 +125,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc html tutorial examples doc changes-*.gz ANNOUNCE.gz
 %attr(755,root,root) /usr/X11R6/bin/*
-%attr(755,root,root) /usr/X11R6/lib/libqt.so
+%attr(755,root,root) /usr/X11R6/lib/lib*.so
 /usr/X11R6/lib/lib*.a
 /usr/X11R6/man/man[13]/*
 /usr/X11R6/include/X11/qt
