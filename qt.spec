@@ -1,3 +1,5 @@
+# TODO:
+# 	* /usr/X11R6/tools/designer/templates	=> /usr/X11R6/share/qt/templates
 %define		_snapshot	20020222
 Summary:	The Qt3 GUI application framework
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
@@ -5,7 +7,7 @@ Name:		qt
 #%define		libqui_version 1.0.0
 #%define		libeditor_version 1.0.0
 Version:	3.0.2
-Release:	0.%{_snapshot}.4
+Release:	0.%{_snapshot}.5
 #Release:	0.2
 Epoch:		1
 License:	GPL
@@ -24,7 +26,7 @@ Patch6:		%{name}-mysql_includes.patch
 #Patch8:		%{name}-plugins_path.patch
 ## Can not use DESTDIR. It is used internally.
 #Patch9:		%{name}-INSTALL_ROOT.patch
-#Patch10:	%{name}-FHS.patch
+Patch10:	%{name}-FHS.patch
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
 #-#BuildRequires:	findutils
@@ -159,7 +161,7 @@ Wtyczka ODBC do Qt.
 #%patch7 -p1
 #%patch8 -p1
 #%patch9 -p1
-#%patch10 -p1
+%patch10 -p1
 
 # There is no file pointed by this sym-link and there is cp -L in %%install
 rm include/qt_windows.h
