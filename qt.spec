@@ -127,7 +127,7 @@ mais informações sobre ele.
 
 %package static
 Summary:	Qt static libraries
-Summary(pl):	Biblioteki statyczne Qt.
+Summary(pl):	Biblioteki statyczne Qt
 Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{version}
 
