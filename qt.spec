@@ -484,6 +484,8 @@ perl -pi -e "
 
 # We provide qt style classes as plugins,
 # so make corresponding changes to the qconfig.h.
+chmod 644 $RPM_BUILD_ROOT%{_includedir}/qconfig.h
+
 cat >> $RPM_BUILD_ROOT%{_includedir}/qconfig.h << EOF
 
 /* All of these style classes we provide as plugins */
