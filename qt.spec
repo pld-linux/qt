@@ -341,7 +341,7 @@ Plugin de suporte a ODBC para Qt.
 %package plugin-psql
 Summary:	Database plugin for PostgreSQL Qt support
 Summary(pl):	Wtyczka PostgreSQL do Qt
-Summary(pt_BR):	Plugin de suporte a pgsql para Qt
+Summary(pt_BR):	Plugin de suporte a PostgreSQL para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 #Requires:	postgresql-libs
@@ -353,7 +353,7 @@ This package contains a multi-thread enabled plugin for accessing
 PostgreSQL database via the QSql classes.
 
 %description plugin-psql -l es
-Plugin de suporte a pgsql para Qt.
+Plugin de suporte a PostgreSQL para Qt.
 
 %description plugin-psql -l pl
 Ten pakiet zawiera wielow±tkow± wersjê wtyczki do Qt umo¿liwiaj±cej
@@ -532,7 +532,7 @@ korzystanie z us³ug unixODBC poprzez klasy QSql.
 %package st-plugin-psql
 Summary:	Database plugin for PostgreSQL support in single-threaded Qt
 Summary(pl):	Wtyczka PostgreSQL do jednow±tkowej wersji Qt
-Summary(pt_BR):	Plugin de suporte a pgsql para Qt
+Summary(pt_BR):	Plugin de suporte a PostgreSQL para Qt
 Group:		X11/Libraries
 Requires:	%{name}-st = %{epoch}:%{version}-%{release}
 #Requires:	postgresql-libs
