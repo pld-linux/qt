@@ -37,7 +37,7 @@ Group:		X11/Libraries
 Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
 # Source0-md5:	3e0a0c8429b0a974b39b5f535ddff01c
 Source1:	http://ftp.pld-linux.org/software/kde/%{name}-copy-patches-040819.tar.bz2
-# Source1-md5:	041ed90de2e2dbe9d74914e7c1d5213d
+# Source1-md5:	f35f461463d89f7b035530d8d1f02ad6
 Source2:	%{name}config.desktop
 Source3:	designer.desktop
 Source4:	assistant.desktop
