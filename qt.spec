@@ -60,14 +60,12 @@ BuildRequires:	byacc
 %{?with_cups:BuildRequires:	cups-devel}
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
+%{?with_pch:BuildRequires:	gcc >= 5:3.4.0}
 BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel >= 1.0.0
 BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	libstdc++-devel
 BuildRequires:	libungif-devel
-BuildRequires:	xcursor-devel
-BuildRequires:	xrender-devel
-BuildRequires:	xft-devel
 %{?with_mysql:BuildRequires:	mysql-devel}
 %ifarch %{ix86}
 %{?with_ibase:BuildRequires:Firebird-devel}
@@ -79,16 +77,16 @@ BuildRequires:	perl-base
 BuildRequires:	sed >= 4.0
 %{?with_odbc:BuildRequires:	unixODBC-devel}
 %{?with_sqlite:BuildRequires:	sqlite-devel}
+BuildRequires:	xcursor-devel
+BuildRequires:	xft-devel
+BuildRequires:	xrender-devel
 BuildRequires:	zlib-devel
 Requires:	OpenGL
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Conflicts:	kdelibs <= 8:3.2-0.030602.1
 Obsoletes:	qt-extensions
-%if %{with pch}
-BuildRequires:	gcc >= 5:3.4.0
-%endif
+
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1
-%define		_includedir	%{_prefix}/include/qt
 
 %description
 Qt is a GUI software toolkit which simplifies the task of writing and
@@ -559,7 +557,7 @@ DEFAULTOPT=" \
 	-verbose \
 	-prefix %{_prefix} \
 	-libdir %{_libdir} \
-	-headerdir %{_includedir} \
+	-headerdir %{_includedir}/qt \
 	-datadir %{_datadir}/qt \
 	-docdir %{_docdir}/%{name}-doc \
 	-sysconfdir %{_sysconfdir}/qt \
@@ -572,8 +570,8 @@ DEFAULTOPT=" \
 	-system-zlib \
 	-no-exceptions \
 	-ipv6 \
-	-I%{_prefix}/include/postgresql/server \
-	-I%{_prefix}/include/mysql \
+	-I%{_includedir}/postgresql/server \
+	-I%{_includedir}/mysql \
 	%{!?with_cups:-no-cups} \
 	%{?with_nas:-system-nas-sound} \
 	%{?with_nvidia:-dlopen-opengl} \
@@ -783,16 +781,16 @@ cp -dpR examples tutorial $RPM_BUILD_ROOT%{_examplesdir}/%{name}
 
 mv $RPM_BUILD_ROOT{%{_libdir}/*.prl,%{_examplesdir}/%{name}/lib}
 
-# From now qt includedir becomes %{_includedir}/qt
+# From now QMAKE_INCDIR_QT becomes %{_includedir}/qt
 perl -pi -e "
 	s|(QMAKE_INCDIR_QT\\s*=\\s*\\\$\\(QTDIR\\)/include)|\$1/qt|
 	" $RPM_BUILD_ROOT/%{_datadir}/qt/mkspecs/linux-g++/qmake.conf
 
 # We provide qt style classes as plugins,
 # so make corresponding changes to the qconfig.h.
-chmod 644 $RPM_BUILD_ROOT%{_includedir}/qconfig.h
+chmod 644 $RPM_BUILD_ROOT%{_includedir}/qt/qconfig.h
 
-cat >> $RPM_BUILD_ROOT%{_includedir}/qconfig.h << EOF
+cat >> $RPM_BUILD_ROOT%{_includedir}/qt/qconfig.h << EOF
 
 /* All of these style classes we provide as plugins */
 #define QT_NO_STYLE_CDE
@@ -896,7 +894,7 @@ EOF
 #%attr(755,root,root) %{_bindir}/qt32castcompat
 %attr(755,root,root) %{_bindir}/qtrename140
 %attr(755,root,root) %{_bindir}/uic
-%{_includedir}
+%{_includedir}/qt
 %{_libdir}/libqassistantclient.so
 %{_libdir}/libqt-mt.so
 %{_datadir}/qt/[!d]*
