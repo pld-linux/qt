@@ -11,8 +11,9 @@ Patch0:		qt.patch
 Patch1:		qt-opt.patch
 Patch2:		qt-enablegif.patch
 URL:		http://www.troll.no/
+BuildPrereq:	libstdc++-devel
+BuildPrereq:	XFree86-devel
 Buildroot:	/tmp/%{name}-%{version}-root
-Conflicts:	glibc <= 2.0.7
 
 %description
 Contains the shared library needed to run Qt applications, as well as
@@ -49,7 +50,6 @@ Summary(pl):	Qt extensions, rozrze¿enia dla QT biblioteki i pliki nag³ówkowe
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
 Requires:	%{name} = %{version}
-Conflicts:	glibc <= 2.0.7
 
 %description extensions
 Contains the Qt extension files with library and include files.
@@ -61,7 +61,7 @@ nag³ówkowe dla nastêpuj±cych pakietów: Motif/Lestif, OpenGL, Netscape oraz
 operacji na obrazach.
 
 %prep
-%setup -q
+%setup  -q
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -79,7 +79,8 @@ LD_LIBRARY_PATH=/usr/X11R6/lib make
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/usr/X11R6/{bin,include/X11/qt,lib,man/{man1,man3}}
+install -d $RPM_BUILD_ROOT/usr/X11R6/{bin,include/X11/qt,lib,man/{man1,man3}} \
+	$RPM_BUILD_ROOT/usr/src/examples/%{name}
 
 install -s bin/moc $RPM_BUILD_ROOT/usr/X11R6/bin/moc
 install -s lib/libqt.so.*.* $RPM_BUILD_ROOT/usr/X11R6/lib
@@ -107,6 +108,8 @@ for a in {tutorial,examples}/{Makefile,*/Makefile}; do
 	mv -vf $a. $a
 done
 
+cp -dpr tutorial examples $RPM_BUILD_ROOT/usr/src/examples/%{name}
+
 gzip -9nf $RPM_BUILD_ROOT/usr/X11R6/man/man[13]/* \
 	README* LICENSE FAQ ANNOUNCE changes-* doc/*
 
@@ -126,12 +129,13 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
-%doc html tutorial examples doc changes-*.gz ANNOUNCE.gz
+%doc html doc changes-*.gz ANNOUNCE.gz
 %attr(755,root,root) /usr/X11R6/bin/*
 %attr(755,root,root) /usr/X11R6/lib/lib*.so
 /usr/X11R6/lib/lib*.a
 /usr/X11R6/man/man[13]/*
 /usr/X11R6/include/X11/qt
+/usr/src/examples/%{name}
 
 %files extensions
 %attr(755,root,root) /usr/X11R6/lib/libqimgio.so.*.*
@@ -139,6 +143,8 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * Sat Apr 24 1999 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
   [1.44-6]
+- added BuildPrereq rules,
+- tutorial and examples moved to /usr/src/examples/%%{name},
 - new qt-opt.patch (added -fno-rtti -fno-exceptions .. it cuts libqt code
   size ~ 1/3 !?!),
 - added patch for enabling internal GIF reading,
