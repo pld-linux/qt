@@ -28,7 +28,7 @@ Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 #Version:	%{_ver}.%{_snap}
 Version:	%{_ver}
-Release:	3
+Release:	4
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
@@ -68,6 +68,7 @@ BuildRequires:	libmng-devel >= 1.0.0
 BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	libstdc++-devel
 BuildRequires:	libungif-devel
+BuildRequires:	qmake
 %{?with_mysql:BuildRequires:	mysql-devel}
 %ifarch %{ix86}
 %{?with_ibase:BuildRequires:Firebird-devel}
@@ -235,7 +236,6 @@ Summary(pl):	Æwiczenia i przyk³ady do Qt
 Summary(pt_BR):	Programas exemplo desenvolvidos com o Qt
 Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
-Requires(post):	qmake >= %{epoch}:%{version}-%{release}
 
 %description examples
 Example programs bundled with Qt version.
@@ -972,6 +972,28 @@ install tools/linguist/qm2ts/qm2ts.1 $RPM_BUILD_ROOT%{_mandir}/man1
 
 rm -rf `find $RPM_BUILD_ROOT -name CVS`
 
+export QTDIR=%{_usr}
+export QMAKESPEC=%{_datadir}/qt/mkspecs/linux-g++
+
+cd $RPM_BUILD_ROOT%{_examplesdir}/%{name}/examples
+
+for i in `find ./ -name \*.pro -printf "%h\n"`;
+do
+	cd $i
+	${QTDIR}/bin/qmake > /dev/null 2>&1
+	cd - > /dev/null 2>&1
+done
+
+cd $RPM_BUILD_ROOT%{_examplesdir}/%{name}/tutorial
+
+for i in `find ./ -name \*.pro -printf "%h\n"`;
+do
+	cd $i
+	${QTDIR}/bin/qmake > /dev/null 2>&1
+	cd - > /dev/null 2>&1
+done
+
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -995,29 +1017,6 @@ cat << EOF
 EOF
 
 %postun 	-p /sbin/ldconfig
-
-%post examples
-export QTDIR=%{_usr}
-export QMAKESPEC=%{_datadir}/qt/mkspecs/linux-g++
-
-cd %{_examplesdir}/%{name}/examples
-
-for i in `find ./ -name \*.pro -printf "%h\n"`;
-do
-	cd $i
-	${QTDIR}/bin/qmake > /dev/null 2>&1
-	cd - > /dev/null 2>&1
-done
-
-cd %{_examplesdir}/%{name}/tutorial
-
-for i in `find ./ -name \*.pro -printf "%h\n"`;
-do
-	cd $i
-	${QTDIR}/bin/qmake > /dev/null 2>&1
-	cd - > /dev/null 2>&1
-done
-
 
 %post 	st 	-p /sbin/ldconfig
 %postun	st 	-p /sbin/ldconfig
