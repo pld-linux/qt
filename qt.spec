@@ -22,7 +22,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.1.2
-Release:	1
+Release:	1.1
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -45,6 +45,7 @@ BuildRequires:	libmng-devel >= 1.0.0
 BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	libstdc++-devel
 BuildRequires:	libungif-devel
+BuildRequires:	XFree86-xft-devel
 %{!?_without_mysql:BuildRequires:	mysql-devel}
 BuildRequires:	perl
 %{!?_without_pgsql:BuildRequires:	postgresql-backend-devel}
