@@ -281,28 +281,29 @@ Narzedzia programistyczne QT.
 %patch11 -p1
 %patch12 -p1
 
-%build
-export QTDIR=`/bin/pwd`
-export YACC='byacc -d'
-export PATH=$QTDIR/bin:$PATH
-export LD_LIBRARY_PATH=$QTDIR/lib:$LD_LIBRARY_PATH
-
 rm -rf `find $RPM_BUILD_ROOT -name CVS`
 rm -rf `find . -name CVS`
 
 mv patches/apply_patches ./
+
+#%{__make} -f Makefile.cvs
+
+./apply_patches
 
 # change QMAKE_CFLAGS_RELEASE to build
 # properly optimized libs
 perl -pi -e "
 	s|-O2|%{rpmcflags}|;
 	" mkspecs/linux-g++/qmake.conf
+
+%build
+export QTDIR=`/bin/pwd`
+export YACC='byacc -d'
+export PATH=$QTDIR/bin:$PATH
+export LD_LIBRARY_PATH=$QTDIR/lib:$LD_LIBRARY_PATH
+
 # pass OPTFLAGS for qmake itself
 export OPTFLAGS="%{rpmcflags}"
-
-#%{__make} -f Makefile.cvs
-
-./apply_patches
 
 ##################################
 # DEFAULT OPTIONS FOR ALL BUILDS #
@@ -420,7 +421,7 @@ _EOF_
 %{__make} symlinks src-qmake src-moc sub-src
 
 # Dont make tools, only plugins.
-%{__make} -C plugins/src/ sub-imageformats sub-sqldrivers sub-styles
+%{__make} -C plugins/src sub-imageformats sub-sqldrivers sub-styles
 
 # This will not remove previously compiled libraries. But WILL remove
 # plugins. And even if they weren't removed, they would be overwritten
@@ -445,11 +446,12 @@ cp -R plugins/{imageformats,styles} plugins-st
 yes
 _EOF_
 
+export Z=`/bin/pwd`
+
 # Do not build tutorial and examples. Provide them as sources.
 #%%{__make} symlinks src-qmake src-moc sub-src sub-tools
-%{__make} sub-tools
-
-export Z=`/bin/pwd`
+%{__make} sub-tools \
+	UIC="LD_PRELOAD=$Z/lib/libqt-mt.so.3 $Z/bin/uic -L $Z/plugins"
 
 cd tools/designer/designer/
 lrelease designer_de.ts
@@ -477,7 +479,7 @@ install -d \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name}/lib \
 	$RPM_BUILD_ROOT%{_mandir}/man{1,3} \
 	
-install bin/{findtr,qt20fix,qtrename140} \
+install bin/{findtr,qt20fix,qtrename140,qt32castcompat} \
 	tools/{msg2qm/msg2qm,mergetr/mergetr} \
 	$RPM_BUILD_ROOT%{_bindir}
 
@@ -541,7 +543,6 @@ install translations/qt_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/q
 install translations/qt_ru.qm $RPM_BUILD_ROOT%{_datadir}/locale/ru/LC_MESSAGES/qt.qm
 install translations/qt_iw.qm $RPM_BUILD_ROOT%{_datadir}/locale/he/LC_MESSAGES/qt.qm
 
-
 install tools/designer/designer/designer_de.qm $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/designer.qm
 install tools/designer/designer/designer_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/designer.qm
 
@@ -589,7 +590,6 @@ rm -rf $RPM_BUILD_ROOT
 %lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/qt.qm
 %lang(he) %{_datadir}/locale/he/LC_MESSAGES/qt.qm
 %lang(ru) %{_datadir}/locale/ru/LC_MESSAGES/qt.qm
-
 
 %files devel
 %defattr(644,root,root,755)
