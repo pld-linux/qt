@@ -33,7 +33,7 @@ Patch2:		%{name}-mysql_includes.patch
 Patch3:		%{name}-FHS.patch
 Patch4:		%{name}-qmake-opt.patch
 Patch5:		%{name}-cursors.patch
-Patch6:         %{name}-qmake-nostatic.patch
+Patch6:		%{name}-qmake-nostatic.patch
 Patch7:		%{name}-qmlined-fix.patch
 URL:		http://www.trolltech.com/
 BuildRequires:	OpenGL-devel
@@ -85,8 +85,8 @@ Pakiet ten zawiera bibliotekê niezbêdn± do uruchamiania aplikacji Qt,
 jak równie¿ pliki README z Qt.
 
 %description -l pt_BR
-Contém as bibliotecas compartilhadas necessárias para rodar aplicações Qt, bem
-como os arquivos README.
+Contém as bibliotecas compartilhadas necessárias para rodar aplicações
+Qt, bem como os arquivos README.
 
 %package devel
 Summary:	Development files and documentation for the Qt GUI toolkit
@@ -106,14 +106,14 @@ Conflicts:	qt2-devel
 %description devel
 Contains the files necessary to develop applications using Qt: header
 files, the Qt meta object compiler, man pages, HTML documentation and
-example programs. See http://www.trolltech.com/ for more information about
-Qt, or file:/usr/share/doc/%{name}-%{version}/html/index.html for Qt
-documentation in HTML.
+example programs. See http://www.trolltech.com/ for more information
+about Qt, or file:/usr/share/doc/%{name}-%{version}/html/index.html
+for Qt documentation in HTML.
 
 %description devel -l es
-Contiene los archivos necesarios para desarrollar aplicaciones
-usando Qt: archivos de inclusión, compilador de metaobjetos Qt,
-páginas de manual, documentación HTML y programas ejemplo. Mira
+Contiene los archivos necesarios para desarrollar aplicaciones usando
+Qt: archivos de inclusión, compilador de metaobjetos Qt, páginas de
+manual, documentación HTML y programas ejemplo. Mira
 http://www.trolltech.com/ para más información sobre el Qt, o el
 archivo file:/usr/share/doc/%{name}-%{version}/html/index.html en la
 documentación en HTML.
@@ -121,14 +121,14 @@ documentación en HTML.
 %description devel -l pl
 Pakiet tem zawiera pliki potrzebne do tworzenia i kompilacji aplikacji
 korzystaj±cych z biblioteki Qt, jak pliki nag³ówkowe, meta kompiler
-(moc), dokumentacjê. Zobacz http://www.trolltech.com/ aby dowiedzieæ siê
-wiêcej o Qt. Dokumentacjê do biblioteki znajdziesz tak¿e pod:
+(moc), dokumentacjê. Zobacz http://www.trolltech.com/ aby dowiedzieæ
+siê wiêcej o Qt. Dokumentacjê do biblioteki znajdziesz tak¿e pod:
 /usr/share/doc/%{name}-%{version}/html/index.html
 
 %description devel -l pt_BR
-Contém os arquivos necessários para desenvolver aplicações usando Qt: arquivos
-de inclusão, compilador de meta-objetos Qt, veja http://www.trolltech.com/ para
-mais informações sobre ele.
+Contém os arquivos necessários para desenvolver aplicações usando Qt:
+arquivos de inclusão, compilador de meta-objetos Qt, veja
+http://www.trolltech.com/ para mais informações sobre ele.
 
 %package static
 Summary:	Qt static libraries
@@ -459,7 +459,7 @@ cp -R plugins-st/* $RPM_BUILD_ROOT%{_libdir}/qt/plugins-st/
 
 cp -dpR .qmake.cache examples tutorial \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name}
-	
+
 mv $RPM_BUILD_ROOT{%{_libdir}/*.prl,%{_examplesdir}/%{name}/lib}
 
 # Fix Makefiles for tutorial and examples. How people who made so cool
