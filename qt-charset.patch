@@ -9,13 +9,14 @@ diff -urN qt-2.3.0.org/src/tools/qtextcodec.cpp qt-2.3.0/src/tools/qtextcodec.cp
  
  
  static QList<QTextCodec> * all = 0;
-@@ -558,6 +559,18 @@
+@@ -558,6 +559,19 @@
  #ifdef _OS_WIN32_
      localeMapper = new QWindowsLocalCodec;
  #else
 +    
 +    // Use nl_langinfo first
-+    QCString origlocale = setlocale( LC_CTYPE, NULL);
++    QCString origlocale = setlocale( LC_CTYPE, NULL );
++    setlocale( LC_CTYPE, "" );
 +    char * codeset=nl_langinfo(CODESET); 
 +    setlocale( LC_CTYPE, origlocale.data() );
 +    if (codeset) {
