@@ -23,7 +23,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.2.0
-Release:	3
+Release:	4
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -32,8 +32,8 @@ Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
 #Source0:	http://www.kernel.pl/~adgor/kde/%{name}-copy-%{_snap}.tar.bz2
 #Source1:	ftp://ftp.trolltech.com/qsa/%{name}-designer-changes-qsa-beta3.tar.gz
 #%% Source1-md5:	61dbb6efe50e04fcaa5a592e9bf58664
-Source1:	http://ep09.kernel.pl/~djurban/snap/%{name}-patches-030811.tar.bz2
-# Source1-md5:	aa9a313a7266030933672b1ff259a5e8
+Source1:	http://ep09.kernel.pl/~djurban/snap/%{name}-patches-030816.tar.bz2
+# Source1-md5:	839e515034f9cef2991617a4f4141f01
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
@@ -44,6 +44,8 @@ Patch6:         %{name}-qmake-nostatic.patch
 Patch7:		%{name}-disable_tutorials.patch
 Patch8:         %{name}-locale.patch
 Patch9:         %{name}-make_use_of_locale.patch
+Patch10:        %{name}-make_assistant_use_global_docs.patch
+Patch11:        %{name}-fix_bug_59914.patch
 URL:		http://www.trolltech.com/products/qt/
 BuildRequires:	OpenGL-devel
 # incompatible with bison
@@ -275,6 +277,8 @@ Narzedzia programistyczne QT.
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
+%patch10 -p1
+%patch11 -p1
 
 %build
 export QTDIR=`/bin/pwd`
@@ -524,25 +528,28 @@ cat >> $RPM_BUILD_ROOT%{_includedir}/qconfig.h << EOF
 
 EOF
 
-install -d $RPM_BUILD_ROOT%{_datadir}/locale/LC_MESSAGES/{ar,de,fr,ru,he}
-install translations/qt_ar.qm $RPM_BUILD_ROOT%{_datadir}/locale/LC_MESSAGES/ar/qt.qm
-install translations/qt_de.qm $RPM_BUILD_ROOT%{_datadir}/locale/LC_MESSAGES/de/qt.qm
-install translations/qt_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale/LC_MESSAGES/fr/qt.qm
-install translations/qt_ru.qm $RPM_BUILD_ROOT%{_datadir}/locale/LC_MESSAGES/ru/qt.qm
-install translations/qt_iw.qm $RPM_BUILD_ROOT%{_datadir}/locale/LC_MESSAGES/he/qt.qm
+install -d $RPM_BUILD_ROOT%{_datadir}/locale/{ar,de,fr,ru,he}/LC_MESSAGES
+install translations/qt_ar.qm $RPM_BUILD_ROOT%{_datadir}/locale/ar/LC_MESSAGES/qt.qm
+install translations/qt_de.qm $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/qt.qm
+install translations/qt_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/qt.qm
+install translations/qt_ru.qm $RPM_BUILD_ROOT%{_datadir}/locale/ru/LC_MESSAGES/qt.qm
+install translations/qt_iw.qm $RPM_BUILD_ROOT%{_datadir}/locale/he/LC_MESSAGES/qt.qm
 
 
-install tools/designer/designer/designer_de.qm	$RPM_BUILD_ROOT%{_datadir}/locale/LC_MESSAGES/de/designer.qm
-install tools/designer/designer/designer_fr.qm  $RPM_BUILD_ROOT%{_datadir}/locale/LC_MESSAGES/fr/designer.qm
+install tools/designer/designer/designer_de.qm	$RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/designer.qm
+install tools/designer/designer/designer_fr.qm  $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/designer.qm
 
-install tools/assistant/assistant_de.qm  $RPM_BUILD_ROOT%{_datadir}/locale/LC_MESSAGES/de/assistant.qm
-install tools/assistant/assistant_fr.qm  $RPM_BUILD_ROOT%{_datadir}/locale/LC_MESSAGES/fr/assistant.qm
+install tools/assistant/assistant_de.qm  $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/assistant.qm
+install tools/assistant/assistant_fr.qm  $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/assistant.qm
 
-install tools/linguist/linguist/linguist_de.qm  $RPM_BUILD_ROOT%{_datadir}/locale/LC_MESSAGES/de/linguist.qm
-install tools/linguist/linguist/linguist_fr.qm  $RPM_BUILD_ROOT%{_datadir}/locale/LC_MESSAGES/fr/linguist.qm
+install tools/linguist/linguist/linguist_de.qm  $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/linguist.qm
+install tools/linguist/linguist/linguist_fr.qm  $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/linguist.qm
 
 
 install tools/linguist/qm2ts/qm2ts.1 $RPM_BUILD_ROOT%{_mandir}/man1
+
+install -d $RPM_BUILD_ROOT%{_sysconfdir}/qt
+echo -e "\n" > $RPM_BUILD_ROOT%{_sysconfdir}/qt/doclist
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -558,6 +565,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libeditor.so.*.*.*
 %attr(755,root,root) %{_libdir}/libqui.so.*.*.*
 %attr(755,root,root) %{_libdir}/libqt*.so.*.*.*
+%dir %{_sysconfdir}/qt
+%ghost %{_sysconfdir}/qt/doclist
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/plugins-?t
 %dir %{_libdir}/%{name}/plugins-?t/imageformats
@@ -569,11 +578,11 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/%{name}/plugins-?t/imageformats/*.so
 %attr(755,root,root) %{_libdir}/%{name}/plugins-?t/styles/*.so
 %dir %{_datadir}/qt
-%lang(ar) %{_datadir}/locale/LC_MESSAGES/ar/qt.qm
-%lang(de) %{_datadir}/locale/LC_MESSAGES/de/qt.qm
-%lang(fr) %{_datadir}/locale/LC_MESSAGES/fr/qt.qm
-%lang(he) %{_datadir}/locale/LC_MESSAGES/he/qt.qm
-%lang(ru) %{_datadir}/locale/LC_MESSAGES/ru/qt.qm
+%lang(ar) %{_datadir}/locale/ar/LC_MESSAGES/qt.qm
+%lang(de) %{_datadir}/locale/de/LC_MESSAGES/qt.qm
+%lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/qt.qm
+%lang(he) %{_datadir}/locale/he/LC_MESSAGES/qt.qm
+%lang(ru) %{_datadir}/locale/ru/LC_MESSAGES/qt.qm
 
 
 %files devel
@@ -634,9 +643,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/%{name}/plugins*/designer
 %attr(755,root,root) %{_libdir}/%{name}/plugins-?t/designer/*.so
 %{_datadir}/qt/designer
-%lang(de) %{_datadir}/locale/LC_MESSAGES/de/assistant.qm
-%lang(fr) %{_datadir}/locale/LC_MESSAGES/fr/assistant.qm
-%lang(de) %{_datadir}/locale/LC_MESSAGES/de/designer.qm
-%lang(fr) %{_datadir}/locale/LC_MESSAGES/fr/designer.qm
-%lang(de) %{_datadir}/locale/LC_MESSAGES/de/linguist.qm
-%lang(fr) %{_datadir}/locale/LC_MESSAGES/fr/linguist.qm
+%lang(de) %{_datadir}/locale/de/LC_MESSAGES/assistant.qm
+%lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/assistant.qm
+%lang(de) %{_datadir}/locale/de/LC_MESSAGES/designer.qm
+%lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/designer.qm
+%lang(de) %{_datadir}/locale/de/LC_MESSAGES/linguist.qm
+%lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/linguist.qm
