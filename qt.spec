@@ -21,7 +21,7 @@ Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.1.0
 Release:	0.%{_snapshot}.1
-Epoch:		5
+Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
 Source0:	ftp://ftp.kde.org/pub/kde/%{_state}/%{_kdever}/src/%{name}-x11-free-%{version}-%{_snapshot}.tar.gz
