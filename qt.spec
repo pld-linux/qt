@@ -16,7 +16,7 @@
 %define		_withsql	1
 %{!?with_sqlite:%{!?with_ibase:%{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}}}
 
-%define		_snap		040422
+%define		_snap		040430
 %define		_ver		3.3.2
 %define		_packager	adgor
 
