@@ -27,6 +27,7 @@ Patch3:		%{name}-postgresql_7_2.patch
 Patch4:		%{name}-mysql_includes.patch
 Patch5:		%{name}-FHS.patch
 Patch6:		%{name}-configure.patch
+Patch7:		%{name}-qmake-opt.patch
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
 BuildRequires:	freetype-devel >= 2.0.0
@@ -207,6 +208,7 @@ Plugin de suporte a ODBC para Qt.
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
+%patch7 -p1
 
 # There is no file pointed by this sym-link and there is cp -L in %%install
 rm -f include/qt_windows.h
@@ -244,6 +246,7 @@ for i in $STYLESLIST; do
 	DEFAULTSTYLES="$DEFAULTSTYLES -qt-style-$i"
 done
 
+OPTFLAGS="%{rpmcflags}" \
 ./configure \
 	$DEFAULTOPT \
 	-no-thread \
@@ -277,6 +280,7 @@ _EOF_
 # This will not remove previously compiled libraries.
 %{__make} clean
 
+OPTFLAGS="%{rpmcflags}" \
 ./configure \
 	$DEFAULTOPT \
 	-thread \
@@ -316,6 +320,7 @@ done
 # This will not remove previously compiled libraries.
 %{__make} clean
 
+OPTFLAGS="%{rpmcflags}" \
 ./configure \
 	$DEFAULTOPT \
 	-no-thread \
@@ -356,6 +361,7 @@ mkdir plugins-st
 cp -R plugins/{imageformats,sqldrivers,styles} plugins-st
 %{__make} clean
 
+OPTFLAGS="%{rpmcflags}" \
 ./configure \
 	$DEFAULTOPT \
 	-thread \
