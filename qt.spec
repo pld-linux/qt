@@ -30,7 +30,7 @@ BuildRequires:	postgresql-backend-devel
 BuildRequires:	postgresql-devel
 BuildRequires:	unixODBC-devel
 BuildRequires:	zlib-devel
-%ifnarch alpha
+%ifnarch alpha sparc
 BuildRequires:	objprelink
 %endif
 Requires:	OpenGL
