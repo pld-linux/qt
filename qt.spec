@@ -37,6 +37,7 @@ Patch5:		%{name}-cursors.patch
 Patch6:         %{name}-qmake-nostatic.patch
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
+BuildRequires:	XFree86-xrender-devel
 # incompatible with bison
 BuildRequires:	byacc
 BuildRequires:	flex
@@ -46,7 +47,7 @@ BuildRequires:	libmng-devel >= 1.0.0
 BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	libstdc++-devel
 BuildRequires:	libungif-devel
-BuildRequires:	XFree86-xft-devel
+BuildRequires:	xft-devel
 %{!?_without_mysql:BuildRequires:	mysql-devel}
 BuildRequires:	perl
 %{!?_without_pgsql:BuildRequires:	postgresql-backend-devel}
