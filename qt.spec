@@ -2,7 +2,7 @@ Summary:	The Qt2 GUI application framework
 Summary(pl):	Biblioteka Qt2 do tworzenia GUI
 Name:		qt
 Version:	2.1.0
-Release:	2
+Release:	3
 License:	QPL
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
@@ -20,11 +20,12 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_mandir		%{_prefix}/man
 
 %description
-Contains the shared library needed to run Qt applications, as well as the
-README files for Qt.
+Contains the shared library needed to run Qt applications, as well as
+the README files for Qt.
 
 %description -l pl
-Zawiera bibliotekê Qt wymagan± przez aplikacje, które z niej korzystaj±.
+Zawiera bibliotekê Qt wymagan± przez aplikacje, które z niej
+korzystaj±.
 
 %package devel
 Summary:	Include files and documentation needed to compile
@@ -36,15 +37,15 @@ Requires:	%{name} = %{version}
 %description devel
 Contains the files necessary to develop applications using Qt: header
 files, the Qt meta object compiler, man pages, HTML documentation and
-example programs. See http://www.troll.no/ for more information about Qt,
-or file:/usr/share/doc/%{name}-devel-%{version}/index.html for Qt
+example programs. See http://www.troll.no/ for more information about
+Qt, or file:/usr/share/doc/%{name}-devel-%{version}/index.html for Qt
 documentation in HTML.
 
 %description -l pl devel
 Pakiet tem zawiera pliki potrzebne do tworzenia i kompilacji aplikacji
-korzystaj±cych z biblioteki Qt, jak pliki nag³ówkowe, meta kompiler (moc),
-dokumentacjê. Zobacz http://www.troll.no/ aby dowiedzieæ siê wiêcej o Qt.
-Dokumentacjê do biblioteki znajdziesz tak¿e pod:
+korzystaj±cych z biblioteki Qt, jak pliki nag³ówkowe, meta kompiler
+(moc), dokumentacjê. Zobacz http://www.troll.no/ aby dowiedzieæ siê
+wiêcej o Qt. Dokumentacjê do biblioteki znajdziesz tak¿e pod:
 /usr/share/doc/%{name}-devel-%{version}/index.html
 
 %package extensions
@@ -62,8 +63,8 @@ Motif/Lesstif, OpenGL, image manipulation.
 
 %description -l pl extensions
 Pakiet zawiera zestaw rozsze¿eñ dla biblioteki Qt. Biblioteki dla
-nastêpuj±cych pakietów: Motif/Lestif, OpenGL, Netscape oraz operacji na
-obrazach.
+nastêpuj±cych pakietów: Motif/Lestif, OpenGL, Netscape oraz operacji
+na obrazach.
 
 %prep 
 %setup -q
