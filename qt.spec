@@ -22,7 +22,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.1.2
-Release:	0.%{_snap}.1
+Release:	1.%{_snap}.1
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
