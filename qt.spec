@@ -8,7 +8,9 @@ License:	GPL
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
 Source0:	ftp://ftp.troll.no/qt/source/%{name}-x11-%{version}.tar.gz
+Patch0:		qt-tools.patch
 BuildRequires:	libungif-devel
+BuildRequires:	libjpeg-devel
 BuildRequires:	zlib-devel
 BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	OpenGL-devel
@@ -64,6 +66,7 @@ Qt przyk³ady.
 
 %prep 
 %setup -q
+%patch0 -p1
 
 %build
 QTDIR=`/bin/pwd`; export QTDIR
@@ -72,6 +75,9 @@ QTDIR=`/bin/pwd`; export QTDIR
 	-sm \
 	-system-zlib \
 	-gif \
+	-thread \
+	-system-zlib \
+	-system-jpeg \
 	-system-libpng <<_EOF_
 yes
 _EOF_
@@ -91,6 +97,8 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir},%{_includedir},%{_mandir}/man3}
 	$RPM_BUILD_ROOT%{_datadir}/tutorial/%{name} \
 
 install bin/* $RPM_BUILD_ROOT%{_bindir}/
+install tools/msg2qm/msg2qm $RPM_BUILD_ROOT%{_bindir}/
+install tools/mergetr/mergetr $RPM_BUILD_ROOT%{_bindir}/
 
 install -s lib/libqt.so.%{version} $RPM_BUILD_ROOT%{_libdir}
 ln -sf libqt.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libqt.so
