@@ -2,11 +2,11 @@ Summary:	The Qt2 GUI application framework
 Summary(pl):	Biblioteka Qt2 do tworzenia GUI
 Name:		qt
 Version:	2.1.0
-Release:	1
-Copyright:	QPL
+Release:	2
+License:	QPL
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
-Source:		ftp://ftp.troll.no/qt/source/%{name}-x11-%{version}.tar.gz
+Source0:	ftp://ftp.troll.no/qt/source/%{name}-x11-%{version}.tar.gz
 BuildRequires:	libungif-devel
 BuildRequires:	zlib-devel
 BuildRequires:	libpng-devel
@@ -17,50 +17,53 @@ BuildRequires:	lesstif-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_prefix		/usr/X11R6
+%define		_mandir		%{_prefix}/man
 
 %description
-Contains the shared library needed to run Qt applications, as well as
-the README files for Qt.
+Contains the shared library needed to run Qt applications, as well as the
+README files for Qt.
 
 %description -l pl
 Zawiera bibliotekê Qt wymagan± przez aplikacje, które z niej korzystaj±.
 
 %package devel
-Summary:        Include files and documentation needed to compile
-Summary(pl):    Pliki nag³ówkowe, przyk³ady i dokumentacja do biblioteki 
-Group:          X11/Development/Libraries
-Group(pl):      X11/Programowanie/Biblioteki
-Requires:       %{name} = %{version}
+Summary:	Include files and documentation needed to compile
+Summary(pl):	Pliki nag³ówkowe, przyk³ady i dokumentacja do biblioteki 
+Group:		X11/Development/Libraries
+Group(pl):	X11/Programowanie/Biblioteki
+Requires:	%{name} = %{version}
 
 %description devel
 Contains the files necessary to develop applications using Qt: header
 files, the Qt meta object compiler, man pages, HTML documentation and
-example programs. See http://www.troll.no/ for more information about
-Qt, or file:/usr/share/doc/%{name}-devel-%{version}/index.html 
-for Qt documentation in HTML.
+example programs. See http://www.troll.no/ for more information about Qt,
+or file:/usr/share/doc/%{name}-devel-%{version}/index.html for Qt
+documentation in HTML.
 
 %description -l pl devel
 Pakiet tem zawiera pliki potrzebne do tworzenia i kompilacji aplikacji
 korzystaj±cych z biblioteki Qt, jak pliki nag³ówkowe, meta kompiler (moc),
 dokumentacjê. Zobacz http://www.troll.no/ aby dowiedzieæ siê wiêcej o Qt.
 Dokumentacjê do biblioteki znajdziesz tak¿e pod:
-/usr/share/doc/%{name}-devel-%{version}/index.html  
+/usr/share/doc/%{name}-devel-%{version}/index.html
 
 %package extensions
-Summary:        Qt extensions, library
-Summary(pl):    Qt extensions, rozrze¿enia dla QT biblioteki 
-Group:          X11/Libraries
-Group(pl):      X11/Biblioteki
-Requires:       %{name} = %{version}
+Summary:	Qt extensions, library
+Summary(pl):	Qt extensions, rozrze¿enia dla QT biblioteki 
+Group:		X11/Libraries
+Group(pl):	X11/Biblioteki
+Requires:	%{name} = %{version}
+Obsoletes:	qt-GL
+Obsoletes:	qt-Xt
 
 %description extensions
-Contains the Qt extension files with library.
-Contains extension for Motif/Lesstif, OpenGL, image manipulation.
+Contains the Qt extension files with library. Contains extension for
+Motif/Lesstif, OpenGL, image manipulation.
 
 %description -l pl extensions
-Pakiet zawiera zestaw rozsze¿eñ dla biblioteki Qt. Biblioteki dla 
-nastêpuj±cych pakietów: Motif/Lestif, OpenGL, Netscape oraz
-operacji na obrazach.
+Pakiet zawiera zestaw rozsze¿eñ dla biblioteki Qt. Biblioteki dla
+nastêpuj±cych pakietów: Motif/Lestif, OpenGL, Netscape oraz operacji na
+obrazach.
 
 %prep 
 %setup -q
@@ -97,7 +100,7 @@ echo " Compiling Extensions ..."
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir},%{_includedir},%{_mandir}/man3}
 install -d $RPM_BUILD_ROOT/usr/src/examples/%{name}
-install -d $RPM_BUILD_ROOT/usr/share/tutorial/%{name}
+install -d $RPM_BUILD_ROOT%{_datadir}/tutorial/%{name}
 
 install bin/* $RPM_BUILD_ROOT%{_bindir}/
 
@@ -129,7 +132,7 @@ for a in {tutorial,examples}/{Makefile,*/Makefile}; do
 done
 
 cp -dpr examples $RPM_BUILD_ROOT/usr/src/examples/%{name}
-cp -dpr tutorial $RPM_BUILD_ROOT/usr/share/tutorial/%{name}
+cp -dpr tutorial $RPM_BUILD_ROOT%{_datadir}/tutorial/%{name}
 				
 %post   -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
@@ -138,7 +141,7 @@ cp -dpr tutorial $RPM_BUILD_ROOT/usr/share/tutorial/%{name}
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(644, root, root, 755)
+%defattr(644,root,root,755)
 %doc LICENSE.QPL.gz
 %attr(755,root,root) %{_libdir}/libqt.so.*.*
 
@@ -150,7 +153,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/*.h
 %{_mandir}/man*/*
 /usr/src/examples/%{name}
-/usr/share/tutorial/%{name}
+%{_datadir}/tutorial/%{name}
 
 %files extensions
 %defattr(644,root,root,755)
