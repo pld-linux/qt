@@ -2,13 +2,14 @@ Summary:	The Qt GUI application framework: Shared library
 Summary(pl):	Biblioteka Qt do tworzenia GUI
 Name:		qt
 Version:	1.44
-Release:	2
+Release:	6
 Copyright:	distributable
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
 Source:		ftp://ftp.troll.no/qt/source/%{name}-%{version}.tar.gz
 Patch0:		qt.patch
 Patch1:		qt-opt.patch
+Patch2:		qt-enablegif.patch
 URL:		http://www.troll.no/
 Buildroot:	/tmp/%{name}-%{version}-root
 Conflicts:	glibc <= 2.0.7
@@ -63,6 +64,7 @@ operacji na obrazach.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 QTDIR=`/bin/pwd`; export QTDIR
@@ -134,6 +136,13 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) /usr/X11R6/lib/libqimgio.so.*.*
 
 %changelog
+* Sat Apr 24 1999 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
+  [1.44-6]
+- new qt-opt.patch (added -fno-rtti -fno-exceptions .. it cuts libqt code
+  size ~ 1/3 !?!),
+- added patch for enabling internal GIF reading,
+- recompiles on new rpm.
+
 * Fri Mar  5 1999 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
   [1.43-1]
 - removed compressing html doc,
