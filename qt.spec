@@ -2,6 +2,7 @@
 # Conditional build:
 %bcond_with	nas		# enable NAS audio support
 %bcond_with	nvidia		# prelink Qt/KDE and depend on NVIDIA binaries
+%bcond_without	xlibs		# use XFree86 libs instead of x.org
 %bcond_without	single		# don't build single-threaded libraries
 %bcond_without	static_libs	# don't build static libraries
 %bcond_without	cups		# disable CUPS support
@@ -49,10 +50,16 @@ BuildRequires:	byacc
 %{?with_cups:BuildRequires:	cups-devel}
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
+%if %{with xlibs}
 BuildRequires:	libXcursor-devel
 BuildRequires:	libXft-devel
 BuildRequires:	libXmu-devel
 BuildRequires:	libXrandr-devel
+%else
+BuildRequires:	XFree86-devel
+BuildRequires:	OpenGL-devel
+BuildRequires:	xft-devel
+%endif
 BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel >= 1.0.0
 BuildRequires:	libpng-devel >= 1.0.8
