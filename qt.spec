@@ -3,7 +3,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Name:		qt
 %define		libqui_version 1.0.0
 %define		libeditor_version 1.0.0
-Version:	3.0.0
+Version:	3.0.1
 Release:	0.1
 Epoch:		1
 License:	GPL
@@ -19,7 +19,8 @@ Source0:	ftp://ftp.troll.no/qt/source/%{name}-x11-free-%{version}.tar.gz
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-huge_val.patch
 Patch2:		%{name}-charset.patch
-Patch3:		http://www.research.att.com/~leonb/objprelink/%{name}-configs.patch
+# prelinking
+Patch3:		%{name}-qmake.patch
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
 BuildRequires:	freetype-devel
@@ -33,9 +34,9 @@ BuildRequires:	postgresql-backend-devel
 BuildRequires:	postgresql-devel
 BuildRequires:	unixODBC-devel
 BuildRequires:	zlib-devel
-#%ifnarch alpha
-#BuildRequires:	objprelink
-#%endif
+%ifnarch alpha
+BuildRequires:	objprelink
+%endif
 Requires:	OpenGL
 Requires:	XFree86-libs >= 4.0.2
 Requires:	libmng
@@ -184,9 +185,9 @@ Wtyczka ODBC do Qt.
 %patch0 -p1
 #%patch1 -p1
 #%patch2 -p1
-#%ifnarch alpha
-#%patch3 -p0
-#%endif
+%ifnarch alpha
+%patch3 -p1
+%endif
 
 %build
 QTDIR=`/bin/pwd`; export QTDIR
