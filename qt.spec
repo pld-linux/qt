@@ -238,11 +238,17 @@ DEFAULTOPT="-prefix %{_prefix} -bindir %{_bindir} -libdir %{_libdir} \
 	    -docdir %{_docdir}/%{name}-%{version} -headerdir %{_includedir} \
 	    -datadir %{_datadir}/qt
 	    -release -qt-gif -system-zlib -no-g++-exceptions -stl -remote -system-libpng \
-	    -system-libjpeg -system-libmng -system-nas-sound -sm -xinerama -xrender -xft -xkb"
+	    -system-libjpeg -system-libmng -sm -xinerama -xrender -xft -xkb"
+STYLESLIST="cde compact motif motifplus platinum sgi windows"
 
 ########################################################################
 # STATIC SINGLE-THREAD
 ########################################################################
+
+DEFAULTSTYLES=""
+for i in $STYLESLIST; do
+	DEFAULTSTYLES="$DEFAULTSTYLES -qt-style-$i"
+done
 
 ./configure \
 	$DEFAULTOPT \
@@ -260,13 +266,7 @@ DEFAULTOPT="-prefix %{_prefix} -bindir %{_bindir} -libdir %{_libdir} \
 %if %{!?_without_odbc:1}%{?_without_odbc:0}
 	-qt-sql-psql \
 %endif
-	-qt-style-cde \
-	-qt-style-compact \
-	-qt-style-motif \
-	-qt-style-motifplus \
-	-qt-style-platinum \
-	-qt-style-sgi \
-	-qt-style-windows \
+	$DEFAULTSTYLES \
 	-no-style-windowsxp \
 	<<_EOF_
 yes
@@ -299,13 +299,7 @@ _EOF_
 %if %{!?_without_odbc:1}%{?_without_odbc:0}
 	-qt-sql-psql \
 %endif
-	-qt-style-cde \
-	-qt-style-compact \
-	-qt-style-motif \
-	-qt-style-motifplus \
-	-qt-style-platinum \
-	-qt-style-sgi \
-	-qt-style-windows \
+	$DEFAULTSTYLES \
 	-no-style-windowsxp \
 	<<_EOF_
 yes
@@ -318,6 +312,12 @@ _EOF_
 ########################################################################
 # SHARED SINGLE-THREAD
 ########################################################################
+
+DEFAULTSTYLES=""
+for i in $STYLESLIST; do
+	DEFAULTSTYLES="$DEFAULTSTYLES -plugin-style-$i"
+done
+
 
 # This will not remove previously compiled libraries.
 %{__make} clean
@@ -339,13 +339,7 @@ _EOF_
 %if %{!?_without_odbc:1}%{?_without_odbc:0}
 	-plugin-sql-psql \
 %endif
-	-plugin-style-cde \
-	-plugin-style-compact \
-	-plugin-style-motif \
-	-plugin-style-motifplus \
-	-plugin-style-platinum \
-	-plugin-style-sgi \
-	-plugin-style-windows \
+	$DEFAULTSTYLES \
 	-no-style-windowsxp \
 	<<_EOF_
 yes
@@ -385,13 +379,7 @@ cp -R plugins/{imageformats,sqldrivers,styles} plugins-st
 %if %{!?_without_psql:1}%{?_without_psql:0}
 	-plugin-sql-psql \
 %endif
-	-plugin-style-cde \
-	-plugin-style-compact \
-	-plugin-style-motif \
-	-plugin-style-motifplus \
-	-plugin-style-platinum \
-	-plugin-style-sgi \
-	-plugin-style-windows \
+	$DEFAULTSTYLES \
 	-no-style-windowsxp \
 	<<_EOF_
 yes
