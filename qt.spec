@@ -382,7 +382,7 @@ if [ "%{_lib}" != "lib" ] ; then
 fi
 
 # pass OPTFLAGS for qmake itself
-export OPTFLAGS="%{rpmcflags}"
+export OPTFLAGS="%{rpmcflags} -DQT_CLEAN_NAMESPACE"
 
 %{__make} -f Makefile.cvs
 
@@ -391,6 +391,7 @@ export OPTFLAGS="%{rpmcflags}"
 ##################################
 
 DEFAULTOPT=" \
+	-DQT_CLEAN_NAMESPACE \
 	-verbose \
 	-prefix %{_prefix} \
 	-libdir %{_libdir} \
