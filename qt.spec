@@ -9,7 +9,7 @@
 %bcond_without	pgsql	# disable PostgreSQL support
 #
 
-#%%define 	_snap	030723
+#%%define 	_snap	030925
 
 %define 	_withsql	1
 %{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}
@@ -20,7 +20,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.2.1
-Release:	3
+Release:	4
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -28,9 +28,9 @@ Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
 # Source0-md5:	9ae022ffe7603ec34aba150f6cca257a
 #Source0:	http://www.kernel.pl/~adgor/kde/%{name}-copy-%{_snap}.tar.bz2
 #Source1:	ftp://ftp.trolltech.com/qsa/%{name}-designer-changes-qsa-beta3.tar.gz
-Source1:	http://www.kernel.pl/~djurban/snap/%{name}-patches-030831.tar.bz2
-# Source1-md5:	3fe3df6eb64289333839bc4373353082
-Source2:	%{name}-malloc.c
+Source1:	http://www.kernel.pl/~djurban/snap/%{name}-patches-030925.tar.bz2
+# Source1-md5:	4ecbe9cb29ece77dd8921a9d8723a1a8
+#Source2:	%{name}-malloc.c
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
@@ -45,7 +45,7 @@ Patch10:	%{name}-qmake_la_generation_fix.patch
 Patch11:	%{name}-qmlined-fix.patch
 Patch12:	%{name}-qmake-opt.patch
 Patch13:	%{name}-qmake-la-and-pc-fix.patch
-Patch14:	%{name}-use_own_malloc.patch
+Patch14:	%{name}-post321fixes.patch
 URL:		http://www.trolltech.com/products/qt/
 BuildRequires:	OpenGL-devel
 # incompatible with bison
@@ -354,7 +354,7 @@ Narzêdzia programistyczne QT.
 %patch11 -p1
 %patch12 -p1
 %patch13 -p1
-%patch14 -p1 
+%patch14 -p1
 
 rm -rf `find $RPM_BUILD_ROOT -name CVS`
 rm -rf `find . -name CVS`
@@ -371,7 +371,7 @@ perl -pi -e "
 	s|-O2|%{rpmcflags}|;
 	" mkspecs/linux-g++/qmake.conf
 
-install %{SOURCE2} src/kernel/malloc.c
+##install %{SOURCE2} src/kernel/malloc.c
 
 %build
 export QTDIR=`/bin/pwd`
