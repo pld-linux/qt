@@ -54,7 +54,7 @@ Patch8:		%{name}-gcc34.patch
 Patch9:		%{name}-autodetect-pch.patch
 Patch10:	%{name}-antialias.patch
 URL:		http://www.trolltech.com/products/qt/
-Icon:		%{name}.xpm
+Icon:		qt.xpm
 BuildRequires:	OpenGL-devel
 %{?with_nvidia:BuildRequires:	XFree86-driver-nvidia-devel < 1.0.4620}
 # incompatible with bison
