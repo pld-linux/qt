@@ -10,10 +10,13 @@
 %bcond_without	pgsql		# don't build PostgreSQL plugin
 %bcond_without	designer	# don't build designer (it takes long)
 %bcond_without	sqlite		# don't build SQLite plugin
-%bcond_with	ibase		# build ibase (InterBase/Firebird) plugin
+%bcond_without	ibase		# build ibase (InterBase/Firebird) plugin
 %bcond_with	pch		# enable pch in qmake
 %bcond_with	pch_devel	# enable experimental boost (for developers only!)
 #
+%ifnarch %{ix86} sparc sparcv9 ppc
+%undefine	with_ibase
+%endif
 %define		_withsql	1
 %{!?with_sqlite:%{!?with_ibase:%{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}}}
 
@@ -55,6 +58,7 @@ Patch9:		%{name}-autodetect-pch.patch
 Patch10:	%{name}-antialias.patch
 URL:		http://www.trolltech.com/products/qt/
 Icon:		qt.xpm
+%{?with_ibase:BuildRequires:	Firebird-devel}
 BuildRequires:	OpenGL-devel
 %{?with_nvidia:BuildRequires:	XFree86-driver-nvidia-devel < 1.0.4620}
 # incompatible with bison
@@ -70,9 +74,6 @@ BuildRequires:	libstdc++-devel
 BuildRequires:	libungif-devel
 BuildRequires:	qmake
 %{?with_mysql:BuildRequires:	mysql-devel}
-%ifarch %{ix86}
-%{?with_ibase:BuildRequires:Firebird-devel}
-%endif
 %{?with_nas:BuildRequires:	nas-devel}
 BuildRequires:	perl-base
 %{?with_pgsql:BuildRequires:	postgresql-backend-devel}
@@ -256,8 +257,7 @@ Summary(pl):	Wtyczka InterBase/Firebird do Qt
 Summary(pt_BR):	Plugin de suporte a InterBase/Firebird para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
-Provides:	%{name}-plugin-sql
-Requires:	Firebird-lib
+Provides:	%{name}-plugin-sql = %{epoch}:%{version}-%{release}
 
 %description plugin-ibase
 This package contains a multi-thread enabled plugin for accessing
@@ -276,7 +276,7 @@ Summary(pl):	Wtyczka MySQL do Qt
 Summary(pt_BR):	Plugin de suporte a MySQL para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
-Provides:	%{name}-plugin-sql
+Provides:	%{name}-plugin-sql = %{epoch}:%{version}-%{release}
 Obsoletes:	qt-plugins-mysql
 
 %description plugin-mysql
@@ -296,7 +296,7 @@ Summary(pl):	Wtyczka ODBC do Qt
 Summary(pt_BR):	Plugin de suporte a ODBC para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
-Provides:	%{name}-plugin-sql
+Provides:	%{name}-plugin-sql = %{epoch}:%{version}-%{release}
 Obsoletes:	qt-plugins-odbc
 
 %description plugin-odbc
@@ -316,9 +316,7 @@ Summary(pl):	Wtyczka PostgreSQL do Qt
 Summary(pt_BR):	Plugin de suporte a pgsql para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
-%{?with_single:Requires:	%{name}-st = %{epoch}:%{version}-%{release}}
-Provides:	%{name}-plugin-sql
-%{?with_single:Provides:	%{name}-plugin-sql-st = %{epoch}:%{version}-%{release}}
+Provides:	%{name}-plugin-sql = %{epoch}:%{version}-%{release}
 Obsoletes:	qt-plugins-psql
 
 %description plugin-psql
@@ -339,7 +337,7 @@ Summary(pl):	Wtyczka SQLite do Qt
 Summary(pt_BR):	Plugin de suporte a SQLite para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
-Provides:	%{name}-plugin-sql
+Provides:	%{name}-plugin-sql = %{epoch}:%{version}-%{release}
 
 %description plugin-sqlite
 This package contains a multi-thread enabled plugin for using the
@@ -897,9 +895,8 @@ install %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}
 install %{SOURCE3} $RPM_BUILD_ROOT%{_desktopdir}/designer.desktop
 %endif
 
-install %{SOURCE4} $RPM_BUILD_ROOT%{_desktopdir}/
-install %{SOURCE5} $RPM_BUILD_ROOT%{_desktopdir}/
-
+install %{SOURCE4} $RPM_BUILD_ROOT%{_desktopdir}
+install %{SOURCE5} $RPM_BUILD_ROOT%{_desktopdir}
 
 %if %{without designer}
 install bin/uic $RPM_BUILD_ROOT%{_bindir}
