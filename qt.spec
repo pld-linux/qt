@@ -2,14 +2,13 @@ Summary:	The Qt GUI application framework: Shared library
 Summary(pl):	Biblioteka Qt do tworzenia GUI
 Name:		qt
 Version:	1.44
-Release:	8
+Release:	9
 Copyright:	distributable
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
 Source:		ftp://ftp.troll.no/qt/source/%{name}-%{version}.tar.gz
 Patch0:		qt.patch
-Patch1:		qt-opt.patch
-Patch2:		qt-enablegif.patch
+Patch1:		qt-enablegif.patch
 URL:		http://www.troll.no/
 BuildRequires:	libstdc++-devel
 BuildRequires:	XFree86-devel
@@ -71,7 +70,6 @@ operacji na obrazach.
 %setup  -q
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
 
 %build
 QTDIR=`/bin/pwd`; export QTDIR
