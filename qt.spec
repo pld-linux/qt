@@ -1004,8 +1004,8 @@ cd %{_examplesdir}/%{name}/examples
 for i in `find ./ -name \*.pro -printf "%h\n"`;
 do
 	cd $i
-	${QTDIR}/bin/qmake
-	cd -
+	${QTDIR}/bin/qmake > /dev/null 2>&1
+	cd - > /dev/null 2>&1
 done
 
 cd %{_examplesdir}/%{name}/tutorial
@@ -1013,8 +1013,8 @@ cd %{_examplesdir}/%{name}/tutorial
 for i in `find ./ -name \*.pro -printf "%h\n"`;
 do
 	cd $i
-	${QTDIR}/bin/qmake
-	cd -
+	${QTDIR}/bin/qmake > /dev/null 2>&1
+	cd - > /dev/null 2>&1
 done
 
 
