@@ -238,7 +238,7 @@ Narzedzia programistyczne QT.
 %setup -q -n %{name}-x11-free-%{version}
 %patch0 -p1
 #%ifarch %{ix86} ppc
-#%{?_with_prelink:%patch1 -p1}
+#%%{?_with_prelink:%patch1 -p1}
 #%endif
 %patch1 -p1
 %patch2 -p1
