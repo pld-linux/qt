@@ -3,7 +3,7 @@ Summary(pl):	Biblioteka Qt2 do tworzenia GUI
 Name:		qt
 %define		libqutil_version 1.0.0
 Version:	2.3.0
-Release:	5
+Release:	6
 Epoch:		1
 License:	GPL
 Group:		X11/Libraries
