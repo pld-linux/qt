@@ -48,8 +48,11 @@ BuildRequires:	byacc
 %{?with_cups:BuildRequires:	cups-devel}
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
+BuildRequires:	libICE-devel
+BuildRequires:	libSM-devel
 BuildRequires:	libX11-devel
 BuildRequires:	libXcursor-devel
+BuildRequires:	libXext-devel
 BuildRequires:	libXmu-devel
 BuildRequires:	libXrandr-devel
 BuildRequires:	libXrender-devel
