@@ -3,7 +3,7 @@
 %bcond_with	nas		# enable NAS audio support
 %bcond_with	nvidia		# prelink Qt/KDE and depend on NVIDIA binaries
 %bcond_without	single		# don't build single-threaded libraries
-%bcond_without	static		# don't build static libraries
+%bcond_without	static_libs	# don't build static libraries
 %bcond_without	cups		# disable CUPS support
 %bcond_without	mysql		# disable MySQL support
 %bcond_without	odbc		# disable unixODBC support
@@ -23,12 +23,12 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	%{_ver}
-Release:	0.%{_snap}.2
+Release:	0.%{_snap}.3
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
-Source0:	http://ep09.pld-linux.org/~djurban/kde/%{name}-copy-%{_snap}.tar.bz2
-# Source0-md5:	f3a44775c9a2105fb7ee5a452da706b5	
+Source0:	http://ep09.pld-linux.org/~adgor/kde/%{name}-copy-%{_snap}.tar.bz2
+# Source0-md5:	6f1476ff9d3cca6e68346a9c4e21195d
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
@@ -39,7 +39,6 @@ Patch6:		%{name}-locale.patch
 Patch7:		%{name}-make_use_of_locale.patch
 Patch8:		%{name}-make_assistant_use_global_docs.patch
 Patch9:		%{name}-qmake-opt.patch
-Patch10:	%{name}-0034-qclipboard_recursion_fix.patch
 URL:		http://www.trolltech.com/products/qt/
 BuildRequires:	OpenGL-devel
 # incompatible with bison
@@ -356,7 +355,6 @@ Narzêdie do konfiguracji wygl±du i zachowania widgetów QT.
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
-%patch10 -p0
 
 ./apply_patches
 
@@ -406,7 +404,7 @@ DEFAULTOPT=" \
 #   OPTIONS FOR STATIC-{ST,MT}   #
 ##################################
 
-%if %{with static}
+%if %{with static_libs}
 STATICOPT=" \
 	-qt-imgfmt-jpeg \
 	-qt-imgfmt-mng \
@@ -421,7 +419,7 @@ STATICOPT=" \
 #      STATIC SINGLE-THREAD      #
 ##################################
 
-%if %{with static} && %{with single}
+%if %{with static_libs} && %{with single}
 ./configure \
 	$DEFAULTOPT \
 	$STATICOPT \
@@ -440,7 +438,7 @@ _EOF_
 #      STATIC MULTI-THREAD       #
 ##################################
 
-%if %{with static}
+%if %{with static_libs}
 ./configure \
 	$DEFAULTOPT \
 	$STATICOPT \
@@ -567,7 +565,7 @@ install bin/{findtr,qt20fix,qtrename140} \
 	tools/{msg2qm/msg2qm,mergetr/mergetr} \
 	$RPM_BUILD_ROOT%{_bindir}
 
-%if %{with static}
+%if %{with static_libs}
 install lib/libqt*.a		$RPM_BUILD_ROOT%{_libdir}
 %endif
 
@@ -640,8 +638,8 @@ install translations/qt_de.qm $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/q
 install translations/qt_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/qt.qm
 install translations/qt_ru.qm $RPM_BUILD_ROOT%{_datadir}/locale/ru/LC_MESSAGES/qt.qm
 install translations/qt_iw.qm $RPM_BUILD_ROOT%{_datadir}/locale/he/LC_MESSAGES/qt.qm
-install translations/qt_cs.qm $RPM_BUILD_ROOT%{_datadir}/locale/cs/LC_MESSAGES/cs.qm
-install translations/qt_sk.qm $RPM_BUILD_ROOT%{_datadir}/locale/sk/LC_MESSAGES/sk.qm
+install translations/qt_cs.qm $RPM_BUILD_ROOT%{_datadir}/locale/cs/LC_MESSAGES/qt.qm
+install translations/qt_sk.qm $RPM_BUILD_ROOT%{_datadir}/locale/sk/LC_MESSAGES/qt.qm
 
 
 %if %{with designer}
@@ -741,7 +739,7 @@ EOF
 %{_mandir}/man1/*
 %{_pkgconfigdir}/qt-mt.pc
 
-%if %{with static}
+%if %{with static_libs}
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libqt-mt.a
@@ -794,7 +792,7 @@ EOF
 %attr(755,root,root) %{_libdir}/libqt.so
 %{_pkgconfigdir}/qt.pc
 
-%if %{with static}
+%if %{with static_libs}
 %files st-static
 %defattr(644,root,root,755)
 %{_libdir}/libqt.a
