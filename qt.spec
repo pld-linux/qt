@@ -5,12 +5,12 @@
 %bcond_without	single		# don't build single-threaded libraries
 %bcond_without	static_libs	# don't build static libraries
 %bcond_without	cups		# disable CUPS support
-%bcond_without	mysql		# disable MySQL support
-%bcond_without	odbc		# disable unixODBC support
-%bcond_without	pgsql		# disable PostgreSQL support
+%bcond_without	mysql		# don't build MySQL plugin
+%bcond_without	odbc		# don't build unixODBC plugin
+%bcond_without	pgsql		# don't build PostgreSQL plugin
 %bcond_without	designer	# don't build designer (it takes long)
-%bcond_without	sqlite		# dont build sqlite
-%bcond_with	ibase		# dont build ibase
+%bcond_without	sqlite		# don't build SQLite plugin
+%bcond_with	ibase		# build ibase (InterBase/Firebird) plugin
 %bcond_with	pch		# enable pch in qmake
 %bcond_with	pch_devel	# enable experimental boost (for developers only!)
 #
@@ -201,6 +201,24 @@ Example programs made with Qt version %{version}.
 %description examples -l pt_BR
 Programas exemplo para o Qt versão %{version}.
 
+%package plugin-ibase
+Summary:        Database plugin for InterBase/Firebird Qt support
+Summary(pl):    Wtyczka InterBase/Firebird do Qt
+Summary(pt_BR): Plugin de suporte a InterBase/Firebird para Qt
+Group:          X11/Libraries
+Requires:       %{name} = %{epoch}:%{version}-%{release}
+Provides:       %{name}-plugin-sql
+Requires:	Firebird-lib
+
+%description plugin-ibase
+Database plugin for InterBase/Firebird Qt support.
+
+%description plugin-ibase -l pl
+Wtyczka InterBase/Firebird do Qt.
+
+%description plugin-ibase -l pt_BR
+Plugin de suporte a InterBase/Firebird para Qt.
+
 %package plugin-mysql
 Summary:	Database plugin for MySQL Qt support
 Summary(pl):	Wtyczka MySQL do Qt
@@ -209,7 +227,6 @@ Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Provides:	%{name}-plugin-sql
 Obsoletes:	qt-plugins-mysql
-Requires:	mysql-libs	
 
 %description plugin-mysql
 Database plugin for MySQL Qt support.
@@ -219,6 +236,24 @@ Wtyczka MySQL do Qt.
 
 %description plugin-mysql -l pt_BR
 Plugin de suporte a MySQL para Qt.
+
+%package plugin-odbc
+Summary:	Database plugin for ODBC Qt support
+Summary(pl):	Wtyczka ODBC do Qt
+Summary(pt_BR):	Plugin de suporte a ODBC para Qt
+Group:		X11/Libraries
+Requires:	%{name} = %{epoch}:%{version}-%{release}
+Provides:	%{name}-plugin-sql
+Obsoletes:	qt-plugins-odbc
+
+%description plugin-odbc
+Database plugin for ODBC Qt support.
+
+%description plugin-odbc -l pl
+Wtyczka ODBC do Qt.
+
+%description plugin-odbc -l pt_BR
+Plugin de suporte a ODBC para Qt.
 
 %package plugin-psql
 Summary:	Database plugin for PostgreSQL Qt support
@@ -230,7 +265,6 @@ Requires:	%{name} = %{epoch}:%{version}-%{release}
 Provides:	%{name}-plugin-sql
 %{?with_single:Provides:	%{name}-plugin-sql-st = %{epoch}:%{version}-%{release}}
 Obsoletes:	qt-plugins-psql
-Requires:	postgresql-libs	
 
 %description plugin-psql
 Database plugin for pgsql Qt support.
@@ -241,60 +275,22 @@ Wtyczka PostgreSQL do Qt.
 %description plugin-psql -l es
 Plugin de suporte a pgsql para Qt.
 
-%package plugin-odbc
-Summary:	Database plugin for ODBC Qt support
-Summary(pl):	Wtyczka ODBC do Qt
-Summary(pt_BR):	Plugin de suporte a ODBC para Qt
-Group:		X11/Libraries
-Requires:	%{name} = %{epoch}:%{version}-%{release}
-Provides:	%{name}-plugin-sql
-Obsoletes:	qt-plugins-odbc
-Requires:	unixODBC
-
-%description plugin-odbc
-Database plugin for ODBC Qt support.
-
-%description plugin-odbc -l pl
-Wtyczka ODBC do Qt.
-
-%description plugin-odbc -l pt_BR
-Plugin de suporte a ODBC para Qt.
-
 %package plugin-sqlite
-Summary:        Database plugin for sqlite Qt support
-Summary(pl):    Wtyczka sqlite do Qt
-Summary(pt_BR): Plugin de suporte a sqlite para Qt
+Summary:        Database plugin for SQLite Qt support
+Summary(pl):    Wtyczka SQLite do Qt
+Summary(pt_BR): Plugin de suporte a SQLite para Qt
 Group:          X11/Libraries
 Requires:       %{name} = %{epoch}:%{version}-%{release}
 Provides:       %{name}-plugin-sql
-Requires:	sqlite
 
 %description plugin-sqlite
-Database plugin for sqlite Qt support.
+Database plugin for SQLite Qt support.
 
 %description plugin-sqlite -l pl
-Wtyczka sqlite do Qt.
+Wtyczka SQLite do Qt.
 
 %description plugin-sqlite -l pt_BR
-Plugin de suporte a sqlite para Qt.
-
-%package plugin-ibase
-Summary:        Database plugin for ibase Qt support
-Summary(pl):    Wtyczka ibase do Qt
-Summary(pt_BR): Plugin de suporte a ibase para Qt
-Group:          X11/Libraries
-Requires:       %{name} = %{epoch}:%{version}-%{release}
-Provides:       %{name}-plugin-sql
-Requires:	Firebird-lib
-
-%description plugin-ibase
-Database plugin for ibase Qt support.
-
-%description plugin-ibase -l pl
-Wtyczka ibase do Qt.
-
-%description plugin-ibase -l pt_BR
-Plugin de suporte a ibase para Qt.
+Plugin de suporte a SQLite para Qt.
 
 %package st
 Summary:	Single-threaded Qt library
@@ -334,13 +330,25 @@ Single-threaded Qt static libraries.
 %description st-static -l pl
 Jednow±tkowa statyczna biblioteka Qt.
 
+%package st-plugin-ibase
+Summary:        Database plugin for InterBase/Firebird support in single-threaded Qt
+Summary(pl):    Wtyczka InterBase/Firebird do jednow±tkowej wersji Qt
+Group:          X11/Libraries
+Requires:       %{name}-st = %{epoch}:%{version}-%{release}
+Provides:       %{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
+
+%description st-plugin-ibase
+Database plugin for InterBase/Firebird support in single-threaded Qt.
+
+%description st-plugin-ibase -l pl
+Wtyczka InterBase/Firebird do jednow±tkowej wersji Qt.
+
 %package st-plugin-mysql
 Summary:	Database plugin for MySQL support in single-threaded Qt
 Summary(pl):	Wtyczka MySQL do jednow±tkowej wersji Qt
 Group:		X11/Libraries
 Requires:	%{name}-st = %{epoch}:%{version}-%{release}
 Provides:	%{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
-Requires:       mysql-libs
 
 %description st-plugin-mysql
 Database plugin for MySQL support in single-threaded Qt.
@@ -348,20 +356,18 @@ Database plugin for MySQL support in single-threaded Qt.
 %description st-plugin-mysql -l pl
 Wtyczka MySQL do jednow±tkowej wersji Qt.
 
-%package st-plugin-ibase
-Summary:        Database plugin for ibase support in single-threaded Qt
-Summary(pl):    Wtyczka ibase do jednow±tkowej wersji Qt
-Group:          X11/Libraries
-Requires:       %{name}-st = %{epoch}:%{version}-%{release}
-Provides:       %{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
-Requires:       Firebird-lib
+%package st-plugin-odbc
+Summary:	Database plugin for ODBC support in single-threaded Qt
+Summary(pl):	Wtyczka ODBC do jednow±tkowej wersji Qt
+Group:		X11/Libraries
+Requires:	%{name}-st = %{epoch}:%{version}-%{release}
+Provides:	%{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
 
-%description st-plugin-ibase
-Database plugin for ibase support in single-threaded Qt.
+%description st-plugin-odbc
+Database plugin for ODBC support in single-threaded Qt.
 
-%description st-plugin-ibase -l pl
-Wtyczka ibase do jednow±tkowej wersji Qt.
-
+%description st-plugin-odbc -l pl
+Wtyczka ODBC do jednow±tkowej wersji Qt.
 
 %package st-plugin-psql
 Summary:	Database plugin for PostgreSQL support in single-threaded Qt
@@ -370,7 +376,6 @@ Summary(pt_BR):	Plugin de suporte a pgsql para Qt
 Group:		X11/Libraries
 Requires:	%{name}-st = %{epoch}:%{version}-%{release}
 Provides:	%{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
-Requires:       postgresql-libs
 
 %description st-plugin-psql
 Database plugin for PostgreSQL support in single-threaded Qt.
@@ -378,33 +383,18 @@ Database plugin for PostgreSQL support in single-threaded Qt.
 %description st-plugin-psql -l pl
 Wtyczka PostgreSQL do jednow±tkowej wersji Qt.
 
-%package st-plugin-odbc
-Summary:	Database plugin for ODBC support in single-threaded Qt
-Summary(pl):	Wtyczka ODBC do jednow±tkowej wersji Qt
-Group:		X11/Libraries
-Requires:	%{name}-st = %{epoch}:%{version}-%{release}
-Provides:	%{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
-Requires:       unixODBC
-
-%description st-plugin-odbc
-Database plugin for ODBC support in single-threaded Qt.
-
-%description st-plugin-odbc -l pl
-Wtyczka ODBC do jednow±tkowej wersji Qt.
-
 %package st-plugin-sqlite
-Summary:        Database plugin for sqlite support in single-threaded Qt
-Summary(pl):    Wtyczka sqlite do jednow±tkowej wersji Qt
+Summary:        Database plugin for SQLite support in single-threaded Qt
+Summary(pl):    Wtyczka SQLite do jednow±tkowej wersji Qt
 Group:          X11/Libraries
 Requires:       %{name}-st = %{epoch}:%{version}-%{release}
-Requires:	sqlite
 Provides:       %{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
 
 %description st-plugin-sqlite
-Database plugin for sqlite support in single-threaded Qt.
+Database plugin for SQLite support in single-threaded Qt.
 
 %description st-plugin-sqlite -l pl
-Wtyczka sqlite do jednow±tkowej wersji Qt.
+Wtyczka SQLite do jednow±tkowej wersji Qt.
 
 %package style-cde
 Summary:	Qt style - CDE
@@ -862,6 +852,9 @@ EOF
 %post 	st 	-p /sbin/ldconfig
 %postun	st 	-p /sbin/ldconfig
 
+%post	designer-libs -p /sbin/ldconfig
+%postun	designer-libs -p /sbin/ldconfig
+
 %files
 %defattr(644,root,root,755)
 %doc FAQ LICENSE.* README* changes*
@@ -1016,10 +1009,9 @@ EOF
 %attr(755,root,root) %{_libdir}/libdesignercore.so.*.*.*
 %attr(755,root,root) %{_libdir}/libeditor.so.*.*.*
 %attr(755,root,root) %{_libdir}/libqui.so.*.*.*
-%{_libdir}/libqui.so
-%{_libdir}/libdesignercore.so
-%{_libdir}/libeditor.so
-
+%attr(755,root,root) %{_libdir}/libdesignercore.so
+%attr(755,root,root) %{_libdir}/libeditor.so
+%attr(755,root,root) %{_libdir}/libqui.so
 
 %files designer
 %defattr(644,root,root,755)
@@ -1031,7 +1023,6 @@ EOF
 %lang(de) %{_datadir}/locale/de/LC_MESSAGES/designer.qm
 %lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/designer.qm
 %endif
-
 
 %files utils
 %defattr(644,root,root,755)
