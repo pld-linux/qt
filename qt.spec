@@ -21,19 +21,16 @@ Patch5:		%{name}-FHS.patch
 Patch6:		%{name}-configure.patch
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
-BuildRequires:	freetype-devel
+BuildRequires:	freetype-devel >= 2.0.0
 BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel >= 1.0.0
 BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	libstdc++-devel
 BuildRequires:	libungif-devel
 BuildRequires:	mysql-devel
+BuildRequires:	perl
 BuildRequires:	postgresql-backend-devel
 BuildRequires:	postgresql-devel
-# Requires by ./configure.
-BuildRequires:	sed
-BuildRequires:	perl
-BuildRequires:	findutils
 BuildRequires:	unixODBC-devel
 BuildRequires:	zlib-devel
 %ifarch %{ix86} ppc
