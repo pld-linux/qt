@@ -278,9 +278,6 @@ DEFAULTOPT=" \
 	%{!?_without_odbc:-qt-sql-odbc} \
 	%{!?_without_pgsql:-qt-sql-psql} \
 	-qt-gif \
-	-qt-imgfmt-jpeg \
-	-qt-imgfmt-mng \
-	-qt-imgfmt-png \
 	-sm \
 	-stl \
 	-system-libjpeg \
@@ -313,6 +310,9 @@ OPTFLAGS="%{rpmcflags}" \
 	-no-thread \
 	-static \
 	-plugindir %{_libdir}/qt/plugins-st \
+	-qt-imgfmt-png \
+	-qt-imgfmt-jpeg \
+	-qt-imgfmt-mng \
 	$DEFAULTSTYLES \
 	<<_EOF_
 yes
@@ -336,6 +336,9 @@ OPTFLAGS="%{rpmcflags}" \
 	-thread \
 	-static \
 	-plugindir %{_libdir}/qt/plugins-mt \
+	-qt-imgfmt-png \
+	-qt-imgfmt-jpeg \
+	-qt-imgfmt-mng \
 	$DEFAULTSTYLES \
 	<<_EOF_
 yes
@@ -367,6 +370,9 @@ OPTFLAGS="%{rpmcflags}" \
 	-no-thread \
 	-shared \
 	-plugindir %{_libdir}/qt/plugins-st \
+	-plugin-imgfmt-png \
+	-plugin-imgfmt-jpeg \
+	-plugin-imgfmt-mng \
 	$DEFAULTSTYLES \
 	<<_EOF_
 yes
@@ -399,6 +405,9 @@ OPTFLAGS="%{rpmcflags}" \
 	-thread \
 	-shared \
 	-plugindir %{_libdir}/qt/plugins-mt \
+	-plugin-imgfmt-png \
+	-plugin-imgfmt-jpeg \
+	-plugin-imgfmt-mng \
 	$DEFAULTSTYLES \
 	<<_EOF_
 yes
