@@ -25,6 +25,9 @@ Patch3:		%{name}-FHS.patch
 Patch4:		%{name}-QFont.patch
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
+# icompatible with bison
+BuildRequires:	byacc
+BuildRequires	flex
 BuildRequires:	freetype-devel >= 2.0.0
 BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel >= 1.0.0
