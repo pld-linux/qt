@@ -67,6 +67,7 @@ BuildRequires:	libstdc++-devel
 BuildRequires:	libungif-devel
 BuildRequires:	xcursor
 BuildRequires:	xrender
+BuildRequires:	xft
 %{?with_mysql:BuildRequires:	mysql-devel}
 %ifarch %{ix86}
 %{?with_ibase:BuildRequires:Firebird-devel}
