@@ -5,7 +5,7 @@ Name:		qt
 %define		libqui_version 1.0.0
 %define		libeditor_version 1.0.0
 Version:	3.0.2
-Release:	0.%{_snapshot}.2
+Release:	0.%{_snapshot}.3
 Epoch:		1
 License:	GPL
 Group:		X11/Libraries
@@ -17,6 +17,8 @@ Patch2:		%{name}-charset.patch
 Patch3:		%{name}-qmake.patch
 Patch4:		%{name}-parse_error.patch
 Patch5:		%{name}-postgresql_7_2.patch
+Patch6:		%{name}-mysql_includes.patch
+Patch7:		%{name}-style_windowsxp_missing_include.patch
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
 BuildRequires:	freetype-devel
@@ -144,6 +146,8 @@ Wtyczka ODBC do Qt.
 %endif
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
+#%patch7 -p1
 
 # There is no file pointed by this sym-link and there is cp -L in %%install
 rm include/qt_windows.h
@@ -156,101 +160,250 @@ LD_LIBRARY_PATH=%{_libdir} ; export LD_LIBRARY_PATH
 sed 's/-O2/%{rpmcflags}/' mkspecs/linux-g++/qmake.conf > qmk.tmp
 mv -f qmk.tmp mkspecs/linux-g++/qmake.conf
 
-DEFAULTOPT="-prefix %{_prefix} -bindir %{_bindir} -libdir %{_libdir} -docdir %{_docdir} \
-            -headerdir %{_includedir} -plugindir %{_libdir}/qt/plugins  -plugindir %{_datadir}/qt \
+DEFAULTOPT="-prefix %{_prefix} -bindir %{_bindir} -libdir %{_libdir} \
+	    -docdir %{_docdir}/%{name}-%{version} -headerdir %{_includedir} \
+	    -plugindir %{_libdir}/qt/plugins -datadir %{_datadir}/qt \
 	    -release -qt-gif -system-zlib -no-g++-exceptions -stl -remote -system-libpng \
 	    -system-libjpeg -system-libmng -sm -xinerama -xrender -xft -xkb"
 
+########################################################################
+# STATIC MULTI-THREAD
+########################################################################
+
 ./configure \
 	$DEFAULTOPT \
-	-shared <<_EOF_
+	-thread \
+	-static \
+	-qt-imgfmt-png \
+	-qt-imgfmt-jpeg \
+	-qt-imgfmt-mng \
+	-qt-sql-mysql \
+	-qt-sql-odbc \
+	-qt-sql-psql \
+	-qt-style-cde \
+	-qt-style-compact \
+	-qt-style-motif \
+	-qt-style-motifplus \
+	-qt-style-platinum \
+	-qt-style-sgi \
+	-qt-style-windows \
+	-no-style-windowsxp \
+	<<_EOF_
 yes
 _EOF_
 
+# Build libraries and everything needed to do this. Do not build examples and 
+# such. They will be built with shared, sigle-thread libraries.
+%{__make} symlinks src-qmake src-moc sub-src
+
+########################################################################
+# STATIC SIGNLE-THREAD
+########################################################################
+
+# This will not remove previously compiled libraries.
+%{__make} clean
+
+./configure \
+	$DEFAULTOPT \
+	-no-thread \
+	-static \
+	-qt-imgfmt-png \
+	-qt-imgfmt-jpeg \
+	-qt-imgfmt-mng \
+	-qt-sql-mysql \
+	-qt-sql-odbc \
+	-qt-sql-psql \
+	-qt-style-cde \
+	-qt-style-compact \
+	-qt-style-motif \
+	-qt-style-motifplus \
+	-qt-style-platinum \
+	-qt-style-sgi \
+	-qt-style-windows \
+	-no-style-windowsxp \
+	<<_EOF_
+yes
+_EOF_
+
+# Build libraries and everything needed to do this. Do not build examples and 
+# such. They will be built with shared, sigle-thread libraries.
+%{__make} symlinks src-qmake src-moc sub-src
+
+########################################################################
+# SHARED MULTI-THREAD
+########################################################################
+
+# This will not remove previously compiled libraries.
+%{__make} clean
+
+./configure \
+	$DEFAULTOPT \
+	-thread \
+	-shared \
+	-plugin-imgfmt-png \
+	-plugin-imgfmt-jpeg \
+	-plugin-imgfmt-mng \
+	-plugin-sql-mysql \
+	-plugin-sql-odbc \
+	-plugin-sql-psql \
+	-plugin-style-cde \
+	-plugin-style-compact \
+	-plugin-style-motif \
+	-plugin-style-motifplus \
+	-plugin-style-platinum \
+	-plugin-style-sgi \
+	-plugin-style-windows \
+	-no-style-windowsxp \
+	<<_EOF_
+yes
+_EOF_
+
+# Build libraries and everything needed to do this. Do not build examples and 
+# such. They will be built with shared, sigle-thread libraries.
+%{__make} symlinks src-qmake src-moc sub-src
+
+########################################################################
+# SHARED SINGLE-THREAD
+########################################################################
+
+# This will not remove previously compiled libraries.
+%{__make} clean
+
+./configure \
+	$DEFAULTOPT \
+	-no-thread \
+	-shared \
+	-plugin-imgfmt-png \
+	-plugin-imgfmt-jpeg \
+	-plugin-imgfmt-mng \
+	-plugin-sql-mysql \
+	-plugin-sql-odbc \
+	-plugin-sql-psql \
+	-plugin-style-cde \
+	-plugin-style-compact \
+	-plugin-style-motif \
+	-plugin-style-motifplus \
+	-plugin-style-platinum \
+	-plugin-style-sgi \
+	-plugin-style-windows \
+	-no-style-windowsxp \
+	<<_EOF_
+yes
+_EOF_
+
+# Do not build tutorial and examples. Provide them as sources.
 %{__make} symlinks src-qmake src-moc sub-src sub-tools
 
-# Build extra tools and plugins
-(cd plugins/src/sqldrivers/mysql && $QTDIR/bin/qmake -o Makefile \
-	"INCLUDEPATH+=/usr/include/mysql" "LIBS+=-L/usr/lib -lmysqlclient" mysql.pro)
-(cd plugins/src/sqldrivers/odbc && $QTDIR/bin/qmake \
-	"INCLUDEPATH+=/usr/include" "LIBS+=-L/usr/lib -lodbc")
-(cd plugins/src/sqldrivers/psql && $QTDIR/bin/qmake \
-	"INCLUDEPATH+=/usr/include/postgresql" "LIBS+=-L/usr/lib -lpq")
-
-for dir in tools/mergetr tools/msg2qm tools/makeqpf tools/qembed tools/qvfb \
-           extensions/xt/src plugins/src/accessible plugins/src/codecs \
-	   plugins/src/imageformats plugins/src/styles \
-	   plugins/src/sqldrivers/mysql plugins/src/sqldrivers/odbc \
-	   plugins/src/sqldrivers/psql ; do
-  %{__make} -C $dir
-done
-
-./configure \
-	$DEFAULTOPT \
-	-thread <<_EOF_
-yes
-_EOF_
-
-%{__make} symlinks src-qmake src-moc sub-src
-
-./configure \
-	$DEFAULTOPT \
-	-static <<_EOF_
-yes
-_EOF_
-
-%{__make} symlinks src-qmake src-moc sub-src
+#-#./configure \
+#-#	$DEFAULTOPT \
+#-#	-shared <<_EOF_
+#-#yes
+#-#_EOF_
+#-#
+#-#%{__make} symlinks src-qmake src-moc sub-src sub-tools
+#-#
+#-## Build extra tools and plugins
+#-#(cd plugins/src/sqldrivers/mysql && $QTDIR/bin/qmake -o Makefile \
+#-#	"INCLUDEPATH+=/usr/include/mysql" "LIBS+=-L/usr/lib -lmysqlclient" mysql.pro)
+#-#(cd plugins/src/sqldrivers/odbc && $QTDIR/bin/qmake \
+#-#	"INCLUDEPATH+=/usr/include" "LIBS+=-L/usr/lib -lodbc")
+#-#(cd plugins/src/sqldrivers/psql && $QTDIR/bin/qmake \
+#-#	"INCLUDEPATH+=/usr/include/postgresql" "LIBS+=-L/usr/lib -lpq")
+#-#
+#-#for dir in tools/mergetr tools/msg2qm tools/makeqpf tools/qembed tools/qvfb \
+#-#           extensions/xt/src plugins/src/accessible plugins/src/codecs \
+#-#	   plugins/src/imageformats plugins/src/styles \
+#-#	   plugins/src/sqldrivers/mysql plugins/src/sqldrivers/odbc \
+#-#	   plugins/src/sqldrivers/psql ; do
+#-#  %{__make} -C $dir
+#-#done
+#-#
+#-#./configure \
+#-#	$DEFAULTOPT \
+#-#	-thread <<_EOF_
+#-#yes
+#-#_EOF_
+#-#
+#-#%{__make} symlinks src-qmake src-moc sub-src
+#-#
+#-#./configure \
+#-#	$DEFAULTOPT \
+#-#	-static <<_EOF_
+#-#yes
+#-#_EOF_
+#-#
+#-#%{__make} symlinks src-qmake src-moc sub-src
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT{%{_bindir},%{_includedir},%{_mandir}/man{1,3}} \
+QTDIR=`/bin/pwd`; export QTDIR
+LD_LIBRARY_PATH=%{_libdir} ; export LD_LIBRARY_PATH
+
+%{__make} install INSTALL_ROOT=$RPM_BUILD_ROOT
+
+install -d $RPM_BUILD_ROOT%{_mandir}/man{1,3} \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name} \
-	$RPM_BUILD_ROOT%{_datadir}/tutorial/%{name} \
-	$RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/{sqldrivers,imageformats,designer,styles}
-
-rm -f   bin/*.bat
-install bin/*			$RPM_BUILD_ROOT%{_bindir}/
-install tools/msg2qm/msg2qm	$RPM_BUILD_ROOT%{_bindir}/
-install tools/mergetr/mergetr	$RPM_BUILD_ROOT%{_bindir}/
-install tools/makeqpf/makeqpf	$RPM_BUILD_ROOT%{_bindir}/
-install tools/qembed/qembed	$RPM_BUILD_ROOT%{_bindir}/
-install tools/qvfb/qvfb		$RPM_BUILD_ROOT%{_bindir}/
-install qmake/qmake		$RPM_BUILD_ROOT%{_bindir}/
-
-install plugins/sqldrivers/*.so		$RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/sqldrivers
-install plugins/imageformats/*.so	$RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/imageformats
-install plugins/designer/*.so		$RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/designer
-#install plugins/styles/*.so		$RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/styles
-
-install lib/libqt.so.%{version}	$RPM_BUILD_ROOT%{_libdir}
-ln -sf	libqt.so.%{version}	$RPM_BUILD_ROOT%{_libdir}/libqt.so
-
-install lib/libqui.so.%{libqui_version}	$RPM_BUILD_ROOT%{_libdir}
-ln -sf	libqui.so.%{libqui_version}	$RPM_BUILD_ROOT%{_libdir}/libqui.so
-
-install lib/libqt-mt.so.%{version}	$RPM_BUILD_ROOT%{_libdir}
-ln -sf	libqt-mt.so.%{version}		$RPM_BUILD_ROOT%{_libdir}/libqt-mt.so
-
-install lib/libeditor.so.%{libeditor_version}	$RPM_BUILD_ROOT%{_libdir}
-ln -sf	libeditor.so.%{libeditor_version}	$RPM_BUILD_ROOT%{_libdir}/libeditor.so
-
-install lib/*.a		$RPM_BUILD_ROOT%{_libdir}
-
-cp -pRL include/*	$RPM_BUILD_ROOT%{_includedir}
+	$RPM_BUILD_ROOT/usr/src/tutorials/%{name}
 
 install doc/man/man1/*	$RPM_BUILD_ROOT%{_mandir}/man1
 install doc/man/man3/*	$RPM_BUILD_ROOT%{_mandir}/man3
 
-# $(QTDIR)/{bin,lib,include} is used - change to /usr/X11R6/{bin,lib,include}
-# also remove -I referring to qt build directory
-for a in {tutorial,examples}/{Makefile,*/Makefile}; do
-	sed 's@\$(QTDIR)@%{_prefix}@g;s@-I[^ ]linux-g++@@g' $a > $a.
-	mv -f $a. $a
-done
+install lib/libqt.a	$RPM_BUILD_ROOT%{_libdir}
+install lib/libqt-mt.a	$RPM_BUILD_ROOT%{_libdir}
+
+install lib/libqt-mt*	$RPM_BUILD_ROOT%{_libdir}
 
 cp -dpr examples $RPM_BUILD_ROOT%{_examplesdir}/%{name}
-cp -dpr tutorial $RPM_BUILD_ROOT%{_datadir}/tutorial/%{name}
+cp -dpr tutorial $RPM_BUILD_ROOT/usr/src/tutorials/%{name}
+
+#-#install -d $RPM_BUILD_ROOT{%{_bindir},%{_includedir},%{_mandir}/man{1,3}} \
+#-#	$RPM_BUILD_ROOT%{_examplesdir}/%{name} \
+#-#	$RPM_BUILD_ROOT%{_datadir}/tutorial/%{name} \
+#-#	$RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/{sqldrivers,imageformats,designer,styles}
+#-#
+#-#rm -f   bin/*.bat
+#-#install bin/*			$RPM_BUILD_ROOT%{_bindir}/
+#-#install tools/msg2qm/msg2qm	$RPM_BUILD_ROOT%{_bindir}/
+#-#install tools/mergetr/mergetr	$RPM_BUILD_ROOT%{_bindir}/
+#-#install tools/makeqpf/makeqpf	$RPM_BUILD_ROOT%{_bindir}/
+#-#install tools/qembed/qembed	$RPM_BUILD_ROOT%{_bindir}/
+#-#install tools/qvfb/qvfb		$RPM_BUILD_ROOT%{_bindir}/
+#-#install qmake/qmake		$RPM_BUILD_ROOT%{_bindir}/
+#-#
+#-#install plugins/sqldrivers/*.so		$RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/sqldrivers
+#-#install plugins/imageformats/*.so	$RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/imageformats
+#-#install plugins/designer/*.so		$RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/designer
+#-##install plugins/styles/*.so		$RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/styles
+#-#
+#-#install lib/libqt.so.%{version}	$RPM_BUILD_ROOT%{_libdir}
+#-#ln -sf	libqt.so.%{version}	$RPM_BUILD_ROOT%{_libdir}/libqt.so
+#-#
+#-#install lib/libqui.so.%{libqui_version}	$RPM_BUILD_ROOT%{_libdir}
+#-#ln -sf	libqui.so.%{libqui_version}	$RPM_BUILD_ROOT%{_libdir}/libqui.so
+#-#
+#-#install lib/libqt-mt.so.%{version}	$RPM_BUILD_ROOT%{_libdir}
+#-#ln -sf	libqt-mt.so.%{version}		$RPM_BUILD_ROOT%{_libdir}/libqt-mt.so
+#-#
+#-#install lib/libeditor.so.%{libeditor_version}	$RPM_BUILD_ROOT%{_libdir}
+#-#ln -sf	libeditor.so.%{libeditor_version}	$RPM_BUILD_ROOT%{_libdir}/libeditor.so
+#-#
+#-#install lib/*.a		$RPM_BUILD_ROOT%{_libdir}
+#-#
+#-#cp -pRL include/*	$RPM_BUILD_ROOT%{_includedir}
+#-#
+#-#install doc/man/man1/*	$RPM_BUILD_ROOT%{_mandir}/man1
+#-#install doc/man/man3/*	$RPM_BUILD_ROOT%{_mandir}/man3
+#-#
+#-## $(QTDIR)/{bin,lib,include} is used - change to /usr/X11R6/{bin,lib,include}
+#-## also remove -I referring to qt build directory
+#-#for a in {tutorial,examples}/{Makefile,*/Makefile}; do
+#-#	sed 's@\$(QTDIR)@%{_prefix}@g;s@-I[^ ]linux-g++@@g' $a > $a.
+#-#	mv -f $a. $a
+#-#done
+#-#
+#-#cp -dpr examples $RPM_BUILD_ROOT%{_examplesdir}/%{name}
+#-#cp -dpr tutorial $RPM_BUILD_ROOT%{_datadir}/tutorial/%{name}
 
 gzip -9nf LICENSE.QPL
 
@@ -273,20 +426,23 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/%{name}/plugins/styles
 %dir %{_libdir}/%{name}/plugins/sqldrivers
 %attr(755,root,root) %{_libdir}/%{name}/plugins/imageformats/*.so
-#%attr(755,root,root) %{_libdir}/%{name}/plugins/styles/*.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins/styles/*.so
 
 %files devel
 %defattr(644,root,root,755)
-%doc doc/html/*
+%doc %{_docdir}
 %attr(755,root,root) %{_bindir}/*
 %{_libdir}/libqt.so
+%{_libdir}/libqt-mt.so
 %{_libdir}/libqui.so
 %{_libdir}/libeditor.so
-%{_libdir}/libqt-mt.so
 %{_includedir}
 %{_mandir}/man?/*
 %dir %{_libdir}/%{name}/plugins/designer
 %attr(755,root,root) %{_libdir}/%{name}/plugins/designer/*.so
+%dir %{_datadir}/qt
+%{_datadir}/qt/mkspecs
+%{_datadir}/qt/templates
 
 %files static
 %defattr(644,root,root,755)
@@ -295,7 +451,7 @@ rm -rf $RPM_BUILD_ROOT
 %files examples
 %defattr(644,root,root,755)
 /usr/src/examples/%{name}
-%{_datadir}/tutorial/%{name}
+/usr/src/tutorials/%{name}
 
 %files plugins-mysql
 %defattr(644,root,root,755)
