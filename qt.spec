@@ -263,7 +263,7 @@ perl -pi -e "
 	s|-O2|%{rpmcflags}|;
 	" mkspecs/linux-g++/qmake.conf
 
-DEFAULTOPT="-prefix %{_prefix} \
+DEFAULTOPT=" \
 	-datadir %{_datadir}/qt \
 	-docdir %{_docdir}/%{name}-doc-%{version} \
 	-enable-opengl \
@@ -272,6 +272,7 @@ DEFAULTOPT="-prefix %{_prefix} \
 	%{?_without_cups:-no-cups"} \
 	-no-exceptions \
 	-no-g++-exceptions \
+	-prefix %{_prefix} \
 	%{!?_without_mysql:-qt-sql-mysql} \
 	%{!?_without_odbc:-qt-sql-odbc} \
 	%{!?_without_pgsql:-qt-sql-psql} \
@@ -310,6 +311,7 @@ OPTFLAGS="%{rpmcflags}" \
 	$DEFAULTOPT \
 	-no-thread \
 	-static \
+	-plugindir %{_libdir}/qt/plugins-st \
 	$DEFAULTSTYLES \
 	<<_EOF_
 yes
