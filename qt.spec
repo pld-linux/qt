@@ -2,18 +2,18 @@ Summary:	The Qt2 GUI application framework
 Summary(pl):	Biblioteka Qt2 do tworzenia GUI
 Name:		qt
 %define		libqutil_version 1.0.0
-Version:	2.2.3
-Release:	7
+Version:	2.2.4
+Release:	1
 Epoch:		1
 License:	GPL
 Group:		X11/Libraries
 Group(de):	X11/Libraries
+Group(es):	X11/Bibliotecas
 Group(pl):	X11/Biblioteki
 Source0:	ftp://ftp.troll.no/qt/source/%{name}-x11-%{version}.tar.gz
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-huge_val.patch
-Patch2:		%{name}-printdialog.patch
-Patch3:		%{name}-AA.patch.bz2
+Patch2:		%{name}-AA.patch.bz2
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
 BuildRequires:	libungif-devel
@@ -79,8 +79,7 @@ Qt przyk³ady.
 %setup -q
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
-%patch3 -p0
+#%patch2 -p0
 
 %build
 QTDIR=`/bin/pwd`; export QTDIR
