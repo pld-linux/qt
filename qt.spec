@@ -891,7 +891,7 @@ LD_PRELOAD=$QTDIR/%{_lib}/libqt-mt.so.3 lrelease linguist_fr.ts
 cd $QTDIR/translations/
 for i in *.ts ;
 do
-        LD_PRELOAD=$QTDIR/%{_lib}/libqt-mt.so.3 lrelease ${i}
+	LD_PRELOAD=$QTDIR/%{_lib}/libqt-mt.so.3 lrelease ${i}
 done
 cd -
 
@@ -942,7 +942,7 @@ install bin/uic $RPM_BUILD_ROOT%{_bindir}
 %endif
 
 # Because trolltech fails to think.
-rm -rf  $RPM_BUILD_ROOT%{_bindir}/qmake
+rm -rf $RPM_BUILD_ROOT%{_bindir}/qmake
 install qmake/qmake $RPM_BUILD_ROOT%{_bindir}/qmake
 install tools/qtconfig/images/appicon.png \
 	$RPM_BUILD_ROOT%{_pixmapsdir}/qtconfig.png
