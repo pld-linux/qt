@@ -8,10 +8,10 @@
 %bcond_without	odbc	# disable unixODBC support
 %bcond_without	pgsql	# disable PostgreSQL support
 
-#%%define	_snap	030925
-
 %define		_withsql	1
 %{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}
+
+%define		_pset 031029
 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
@@ -19,17 +19,14 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.2.2
-Release:	1
+Release:	2
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
 Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
 # Source0-md5:	77d6e71e603fa54b9898d3364ef42aef
-#Source0:	http://www.kernel.pl/~adgor/kde/%{name}-copy-%{_snap}.tar.bz2
-#Source1:	ftp://ftp.trolltech.com/qsa/%{name}-designer-changes-qsa-beta3.tar.gz
-Source1:	http://www.kernel.pl/~djurban/snap/%{name}-patches-030925.tar.bz2
-# Source1-md5:	4ecbe9cb29ece77dd8921a9d8723a1a8
-#Source2:	%{name}-malloc.c
+Source1:	http://www.kernel.pl/~adgor/kde/%{name}-copy-patches-%{_pset}.tar.bz2
+# Source1-md5:	d76fc8b81687dcf89c6b215d7e4048bf
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
@@ -335,7 +332,6 @@ QT Development Utilities.
 Narzêdzia programistyczne QT.
 
 %prep
-#%%setup -q -n %{name}-copy
 %setup -q -n %{name}-x11-free-%{version} -a1
 %patch0 -p1
 %patch1 -p1
@@ -351,12 +347,16 @@ Narzêdzia programistyczne QT.
 %patch11 -p1
 #%patch12 -p1
 
-rm -rf `find $RPM_BUILD_ROOT -name CVS`
 rm -rf `find . -name CVS`
 
-mv patches/apply_patches .
-
-#%{__make} -f Makefile.cvs
+# They currently don't apply
+cat >> patches/DISABLED << EOF
+0005
+0006
+0007
+0010
+0029
+EOF
 
 ./apply_patches
 
@@ -365,8 +365,6 @@ mv patches/apply_patches .
 perl -pi -e "
 	s|-O2|%{rpmcflags}|;
 	" mkspecs/linux-g++/qmake.conf
-
-##install %{SOURCE2} src/kernel/malloc.c
 
 %build
 export QTDIR=`/bin/pwd`
@@ -636,13 +634,21 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 /sbin/ldconfig
-echo "#####################################################"
-echo "# After qt 3.2.0 the single version was separated.  #"
-echo "# Please install qt-st if you really require it.    #"
-echo "# If you do not use qt-st explicitly, please ignore #"
-echo "# this, as you will not notice any changes. In most #"
-echo "# cases do not install qt-st, as it is obsoleted.   #"
-echo "#####################################################"
+
+cat << EOF
+
+ *******************************************************
+ *                                                     *
+ *  NOTE:                                              *
+ *  After qt 3.2.0 the single version was separated.   *
+ *  Please install qt-st if you really require it.     *
+ *  If you do not use qt-st explicitly, please ignore  *
+ *  this, as you will not notice any changes. In most  *
+ *  cases do not install qt-st, as it is obsoleted.    *
+ *                                                     *
+ *******************************************************
+
+EOF
 
 %postun -p /sbin/ldconfig
 %post st -p /sbin/ldconfig
