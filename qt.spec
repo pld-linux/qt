@@ -142,8 +142,8 @@ cp -drp tutorial $RPM_BUILD_ROOT/usr/share/tutorial/%{name}
 %post   -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
 
-%post   ext -p /sbin/ldconfig
-%postun ext -p /sbin/ldconfig
+%post   extensions -p /sbin/ldconfig
+%postun extensions -p /sbin/ldconfig
 
 %clean
 rm -rf $RPM_BUILD_ROOT
