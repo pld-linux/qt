@@ -140,7 +140,7 @@ Statyczne biblioteki Qt.
 %package examples
 Summary:	Example programs made with Qt version %{version}
 Summary(pl):	Æwiczenia i przyk³ady do Qt
-Summary(pt_BR):	Programas exemplo desenvolvidos com o Qt 
+Summary(pt_BR):	Programas exemplo desenvolvidos com o Qt
 Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{version}
 
@@ -276,7 +276,7 @@ OPTFLAGS="%{rpmcflags}" \
 yes
 _EOF_
 
-# Build libraries and everything needed to do this. Do not build examples and 
+# Build libraries and everything needed to do this. Do not build examples and
 # such. They will be built with shared, sigle-thread libraries.
 %{__make} symlinks src-qmake src-moc sub-src
 
@@ -310,7 +310,7 @@ OPTFLAGS="%{rpmcflags}" \
 yes
 _EOF_
 
-# Build libraries and everything needed to do this. Do not build examples and 
+# Build libraries and everything needed to do this. Do not build examples and
 # such. They will be built with shared, sigle-thread libraries.
 %{__make} symlinks src-qmake src-moc sub-src
 
@@ -351,7 +351,7 @@ OPTFLAGS="%{rpmcflags}" \
 yes
 _EOF_
 
-# Build libraries and everything needed to do this. Do not build examples and 
+# Build libraries and everything needed to do this. Do not build examples and
 # such. They will be built with shared, multi-thread libraries.
 %{__make} symlinks src-qmake src-moc sub-src
 # Dont make tools, only plugins.
