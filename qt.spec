@@ -279,8 +279,7 @@ STYLESLIST="cde compact motif motifplus platinum sgi windows"
 ########################################################################
 # STATIC SINGLE-THREAD
 ########################################################################
-%if %{?_with_static:1}0
-%if %{?_with_single:1}0
+%if %{?_with_static:%{?_with_single:1}}0
 DEFAULTSTYLES=""
 for i in $STYLESLIST; do
 	DEFAULTSTYLES="$DEFAULTSTYLES -qt-style-$i"
@@ -307,13 +306,14 @@ _EOF_
 # Build libraries and everything needed to do this. Do not build examples and
 # such. They will be built with shared, sigle-thread libraries.
 %{__make} symlinks src-qmake src-moc sub-src
-%endif # with single
+%{__make} clean
+%endif # _with_single_static
 ########################################################################
 # STATIC MULTI-THREAD
 ########################################################################
+%if %{?_with_static:1}0
 
 # This will not remove previously compiled libraries.
-%{__make} clean
 
 OPTFLAGS="%{rpmcflags}" \
 ./configure \
@@ -390,9 +390,7 @@ _EOF_
 rm -rf plugins-st
 mkdir plugins-st
 cp -R plugins/{imageformats,styles} plugins-st
-%if %{_withsql}
-cp -R plugins/sqldrivers plugins-st
-%endif
+%{?_withsql:cp -R plugins/sqldrivers plugins-st}
 
 %{__make} clean
 %endif # without single
@@ -485,9 +483,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/%{name}/plugins-st/imageformats
 %dir %{_libdir}/%{name}/plugins-st/network
 %dir %{_libdir}/%{name}/plugins-st/styles
-%if %{_withsql}
-%dir %{_libdir}/%{name}/plugins-st/sqldrivers
-%endif
+%{?_withsql:%dir %{_libdir}/%{name}/plugins-st/sqldrivers}
 %attr(755,root,root) %{_libdir}/%{name}/plugins-st/imageformats/*.so
 %attr(755,root,root) %{_libdir}/%{name}/plugins-st/styles/*.so
 %endif
