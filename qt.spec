@@ -42,10 +42,10 @@ Dokumentacjê do biblioteki znajdziesz tak¿e pod:
 %patch -p1
 
 %build
-QTDIR=`/bin/pwd` export QTDIR
+QTDIR=`/bin/pwd`; export QTDIR
 make linux-g++-shared
 LD_LIBRARY_PATH=/usr/X11R6/lib \
-make	SYSCONF_CFLAGS=$RPM_OPT_FLAGS \
+make	SYSCONF_CFLAGS="$RPM_OPT_FLAGS" \
 	SYSCONF_CFLAGS_LIB="$RPM_OPT_FLAGS -fPIC" \
 	SYSCONF_CFLAGS_SHOBJ="$RPM_OPT_FLAGS -fPIC"
 
