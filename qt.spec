@@ -23,6 +23,7 @@ BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	libstdc++-devel
 BuildRequires:	zlib-devel
 Requires:	XFree86-libs >= 4.0.2
+Requires:	libmng
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	qt-extensions
 
