@@ -24,7 +24,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.2
-Release:	0.%{_snap}.4
+Release:	0.%{_snap}.5
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -435,11 +435,10 @@ export QTDIR=`/bin/pwd`
 %{__make} install INSTALL_ROOT=$RPM_BUILD_ROOT
 
 install -d \
-	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-mt/network \
+	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-mt/{network,qsa} \
 	%{?_with_single:$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st/network} \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name}/lib \
 	$RPM_BUILD_ROOT%{_mandir}/man{1,3} \
-	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-mt/qsa
 	
 install bin/{findtr,qt20fix,qtrename140} \
 	tools/{msg2qm/msg2qm,mergetr/mergetr} \
@@ -467,7 +466,12 @@ perl -pi -e "
 	" $RPM_BUILD_ROOT/%{_datadir}/qt/mkspecs/linux-g++/qmake.conf
 
 plik="$RPM_BUILD_ROOT/%{_datadir}/qt/mkspecs/linux-g++/qmake.conf"
-cat $plik|grep -v QMAKE_CFLAGS_RELEASE|grep -v QMAKE_CXXFLAGS_RELEASE|grep -v QMAKE_CFLAGS_DEBUG|grep -v QMAKE_CXXFLAGS_DEBUG > $plik.1
+cat $plik \
+	|grep -v QMAKE_CFLAGS_RELEASE \
+	|grep -v QMAKE_CXXFLAGS_RELEASE \
+	|grep -v QMAKE_CFLAGS_DEBUG \
+	|grep -v QMAKE_CXXFLAGS_DEBUG \
+	> $plik.1
 
 echo -e "QMAKE_CFLAGS_RELEASE\t=\t%%{rpmcflags}" > $plik
 echo -e "QMAKE_CXXFLAGS_RELEASE\t=\t%%{rpmcflags}" >> $plik
