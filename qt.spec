@@ -2,12 +2,12 @@ Summary:     The Qt GUI application framework: Shared library
 Summary(pl): Biblioteka Qt do tworzenia GUI
 Name:        qt
 Version:     1.42
-Release:     3
-Source0:     ftp://ftp.troll.no/qt/source/%{name}-%{version}.tar.gz
-Patch0:      qt.patch
+Release:     4
 Copyright:   distributable
 Group:       X11/Libraries
 Group(pl):   x11/Biblioteki
+Source:	     ftp://ftp.troll.no/qt/source/%{name}-%{version}.tar.gz
+Patch:       qt.patch
 URL:         http://www.troll.no/
 Buildroot:   /tmp/%{name}-%{version}-root
 
@@ -131,7 +131,8 @@ for a in {tutorial,examples}/{Makefile,*/Makefile}; do
   mv -v ${a}.2 $a
 done
 
-gzip -9nf $RPM_BUILD_ROOT/usr/X11R6/man/man{1,3}/*
+gzip -9nf $RPM_BUILD_ROOT/usr/X11R6/man/man[13]/*
+gzip -9nf README* LICENSE FAQ ANNOUNCE changes-* doc html
 
 %post   -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
@@ -142,7 +143,7 @@ rm -rf $RPM_BUILD_DIR/%name-%version
 
 %files
 %defattr(644, root, root, 755)
-%doc LICENSE README* FAQ
+%doc LICENSE.gz README*.gz FAQ.gz
 /usr/X11R6/lib/lib*.so.*.*
 
 %files extensions
@@ -157,7 +158,7 @@ rm -rf $RPM_BUILD_DIR/%name-%version
 
 %files devel
 %defattr(644, root, root, 755)
-%doc html tutorial examples doc changes-* ANNOUNCE
+%doc html tutorial examples doc changes-*.gz ANNOUNCE.gz
 %attr(755, root, root) /usr/X11R6/bin/*
 %attr(644, root,  man) /usr/X11R6/man/man[13]/*
 /usr/X11R6/include/X11/qt
@@ -165,6 +166,10 @@ rm -rf $RPM_BUILD_DIR/%name-%version
 
 
 %changelog
+* Wed Feb 17 1999 Micha³ Kuratczyk <kura@wroclaw.art.pl>
+  [1.42-4]
+- added gzipping documentation
+
 * Fri Feb  5 1999 Wojciech "Sas" Ciêciwa <cieciwa@alpha.zarz.agh.edu.pl>
   [1.42-3]
 - separate extensions.
