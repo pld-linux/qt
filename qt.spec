@@ -231,7 +231,7 @@ Narzedzia programistyczne QT.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
+#%patch4 -p1
 
 # mkspecs has wrong includes which makes it require patching every files that uses qmake
 # this is a fix
