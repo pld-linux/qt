@@ -1,19 +1,19 @@
 # TODO:
 # 	* /usr/X11R6/tools/designer/templates	=> /usr/X11R6/share/qt/templates
-%define		_snapshot	20020222
+#%define		_snapshot	20020222
 Summary:	The Qt3 GUI application framework
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Name:		qt
 #%define		libqui_version 1.0.0
 #%define		libeditor_version 1.0.0
-Version:	3.0.2
-Release:	0.%{_snapshot}.7
-#Release:	0.2
+Version:	3.0.3
+#Release:	0.%{_snapshot}.7
+Release:	0.1
 Epoch:		1
 License:	GPL
 Group:		X11/Libraries
-Source0:	ftp://ftp.trolltech.com/qt/snapshots/%{name}-x11-free-%{version}-snapshot-%{_snapshot}.tar.bz2
-#Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.gz
+#Source0:	ftp://ftp.trolltech.com/qt/snapshots/%{name}-x11-free-%{version}-snapshot-%{_snapshot}.tar.bz2
+Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.gz
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-huge_val.patch
 Patch2:		%{name}-charset.patch
@@ -147,8 +147,8 @@ Qt ODBC plugin.
 Wtyczka ODBC do Qt.
 
 %prep
-%setup -q -n %{name}-x11-free-%{version}-snapshot-%{_snapshot}
-#%setup -q -n %{name}-x11-free-%{version}
+#%setup -q -n %{name}-x11-free-%{version}-snapshot-%{_snapshot}
+%setup -q -n %{name}-x11-free-%{version}
 %patch0 -p1
 #%patch1 -p1
 #%patch2 -p1
@@ -435,7 +435,7 @@ cp -dpr tutorial $RPM_BUILD_ROOT/usr/src/tutorials/%{name}
 #-#cp -dpr examples $RPM_BUILD_ROOT%{_examplesdir}/%{name}
 #-#cp -dpr tutorial $RPM_BUILD_ROOT%{_datadir}/tutorial/%{name}
 
-gzip -9nf LICENSE.QPL
+#gzip -9nf LICENSE.QPL
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -446,10 +446,10 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc LICENSE.QPL.gz
-%attr(755,root,root) %{_libdir}/libqt.so.*.*
-%attr(755,root,root) %{_libdir}/libqui.so.*.*
-%attr(755,root,root) %{_libdir}/libeditor.so.*.*
-%attr(755,root,root) %{_libdir}/libqt-mt.so.*.*
+%attr(755,root,root) %{_libdir}/libqt.so.*.*.*
+%attr(755,root,root) %{_libdir}/libqui.so.*.*.*
+%attr(755,root,root) %{_libdir}/libeditor.so.*.*.*
+%attr(755,root,root) %{_libdir}/libqt-mt.so.*.*.*
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/plugins
 %dir %{_libdir}/%{name}/plugins/imageformats
