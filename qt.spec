@@ -6,7 +6,7 @@ Summary:	The Qt3 GUI application framework
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Name:		qt
 Version:	3.0.4
-Release:	0.9.2
+Release:	0.9.3
 Epoch:		1
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -249,7 +249,7 @@ _EOF_
 	$DEFAULTOPT \
 	-no-thread \
 	-shared \
-	-plugindir %{_libdir}/qt/plugins \
+	-plugindir %{_libdir}/qt/plugins-st \
 	-plugin-imgfmt-png \
 	-plugin-imgfmt-jpeg \
 	-plugin-imgfmt-mng \
@@ -312,7 +312,6 @@ _EOF_
 %{__make} symlinks src-qmake src-moc sub-src sub-tools
 
 %install
-cd qt-x11-free-3.0.4
 rm -rf $RPM_BUILD_ROOT
 
 QTDIR=`/bin/pwd`; export QTDIR
@@ -324,7 +323,7 @@ PATH="$QTDIR/bin:$PATH"
 install -d $RPM_BUILD_ROOT%{_mandir}/man{1,3} \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name} \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name}/lib \
-	$RPM_BUILD_ROOT%{_libdir}/qt/plugins
+	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st
 
 install doc/man/man1/*		$RPM_BUILD_ROOT%{_mandir}/man1
 install doc/man/man3/*		$RPM_BUILD_ROOT%{_mandir}/man3
@@ -335,7 +334,7 @@ install lib/libqt-mt.a		$RPM_BUILD_ROOT%{_libdir}
 install lib/libqt.so.*.*.*	$RPM_BUILD_ROOT%{_libdir}
 ln -s libqt.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libqt.so
 
-cp -R plugins-st/* $RPM_BUILD_ROOT%{_libdir}/qt/plugins
+cp -R plugins-st/* $RPM_BUILD_ROOT%{_libdir}/qt/plugins-st/
 
 cp -p lib/libqt-mt.prl $RPM_BUILD_ROOT%{_examplesdir}/%{name}/lib
 cp -dpR .qmake.cache examples tutorial \
