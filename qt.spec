@@ -65,6 +65,8 @@ BuildRequires:	libmng-devel >= 1.0.0
 BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	libstdc++-devel
 BuildRequires:	libungif-devel
+BuildRequires:	xcursor
+BuildRequires:	xrender
 %{?with_mysql:BuildRequires:	mysql-devel}
 %ifarch %{ix86}
 %{?with_ibase:BuildRequires:Firebird-devel}
@@ -484,8 +486,8 @@ Biblioteki do IDE s³u¿±cego do projektowania GUI za pomoc± biblioteki QT.
 #setup -q -n %{name}-copy-%{_snap}
 %setup -q -n %{name}-x11-free-%{version} -a1
 %patch0 -p1
-%patch1 -p1
-%patch2 -p1
+##atch1 -p1
+##atch2 -p1
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
@@ -569,6 +571,8 @@ DEFAULTOPT=" \
 	-system-zlib \
 	-no-exceptions \
 	-ipv6 \
+	-I%{_includedir}/postgresql/server \
+	-I%{_includedir}/mysql \
 	%{!?with_cups:-no-cups} \
 	%{?with_nas:-system-nas-sound} \
 	%{?with_nvidia:-dlopen-opengl} \
