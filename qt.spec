@@ -10,6 +10,7 @@ Source:		ftp://ftp.troll.no/qt/source/%{name}-%{version}.tar.gz
 Patch0:		qt.patch
 Patch1:		qt-opt.patch
 URL:		http://www.troll.no/
+BuildPrereq:	Mesa-devel
 Buildroot:	/tmp/%{name}-%{version}-root
 Conflicts:	glibc <= 2.0.7
 
