@@ -148,7 +148,6 @@ Example programs made with Qt version %{version}.
 %description examples -l pt_BR
 Programas exemplo para o Qt versão %{version}.
 
-%if %{!?_without_mysql:1}%{?_without_mysql:0}
 %package plugins-mysql
 Summary:	Database plugin for mysql Qt support
 Summary(pl):	Wtyczka MySQL do Qt
@@ -164,9 +163,7 @@ Wtyczka MySQL do Qt.
 
 %description plugins-mysql -l pt_BR
 Plugin de suporte a mysql para Qt.
-%endif
 
-%if %{!?_without_psql:1}%{?_without_psql:0}
 %package plugins-psql
 Summary:	Database plugin for pgsql Qt support
 Summary(pl):	Wtyczka PostgreSQL do Qt
@@ -182,9 +179,7 @@ Wtyczka PostgreSQL do Qt.
 
 %description plugins-psql -l es
 Plugin de suporte a pgsql para Qt.
-%endif
 
-%if %{!?_without_odbc:1}%{?_without_odbc:0}
 %package plugins-odbc
 Summary:	Database plugin for ODBC Qt support
 Summary(pl):	Wtyczka ODBC do Qt
@@ -200,12 +195,11 @@ Wtyczka ODBC do Qt.
 
 %description plugins-odbc -l pt_BR
 Plugin de suporte a ODBC para Qt.
-%endif
 
 %prep
 %setup -q -n %{name}-x11-free-%{version}
 %patch0 -p1
-%ifnarch %{ix86} ppc
+%ifarch %{ix86} ppc
 %{?_with_prelink:%patch1 -p1}
 %endif
 %patch2 -p1
