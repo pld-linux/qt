@@ -14,7 +14,7 @@
 %define		_withsql	1
 %{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}
 
-%define		_snap	040122
+%define		_snap	040203
 %define		_ver	3.3.0
 
 Summary:	The Qt3 GUI application framework
@@ -23,12 +23,12 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	%{_ver}
-Release:	0.%{_snap}.3
+Release:	0.%{_snap}.1
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
 Source0:	http://ep09.pld-linux.org/~adgor/kde/%{name}-copy-%{_snap}.tar.bz2
-# Source0-md5:	6f1476ff9d3cca6e68346a9c4e21195d
+# Source0-md5:	269ece879dfefbcab852031ce6288654
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
