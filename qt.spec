@@ -300,7 +300,6 @@ DEFAULTOPT=" \
 	-headerdir %{_includedir} \
 	%{?_without_cups:-no-cups} \
 	-no-exceptions \
-	-no-stl \
 	-no-style-windowsxp \
 	-prefix %{_prefix} \
 	-qt-gif \
