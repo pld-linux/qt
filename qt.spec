@@ -43,6 +43,7 @@ Patch3:		%{name}-FHS.patch
 Patch6:         %{name}-qmake-nostatic.patch
 Patch7:		%{name}-disable_tutorials.patch
 Patch8:         %{name}-locale.patch
+URL:		http://www.trolltech.com/products/qt/
 BuildRequires:	OpenGL-devel
 # incompatible with bison
 BuildRequires:	byacc
