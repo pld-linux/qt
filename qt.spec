@@ -24,7 +24,7 @@ Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
-Version:	3.2
+Version:	3.2.0
 Release:	0.%{_snap}.1
 Epoch:		6
 License:	GPL / QPL
@@ -72,7 +72,6 @@ Obsoletes:	qt-extensions
 
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1
 %define		_includedir	%{_prefix}/include/qt
-%define         _qt_sl		3.1.2
 
 %description
 Qt is a GUI software toolkit which simplifies the task of writing and
@@ -451,7 +450,7 @@ install lib/libqt*.a		$RPM_BUILD_ROOT%{_libdir}
 
 %if %{?_with_single:1}0
 install lib/libqt.so.*.*.*	$RPM_BUILD_ROOT%{_libdir}
-ln -sf libqt.so.%{_qt_sl}	$RPM_BUILD_ROOT%{_libdir}/libqt.so
+ln -sf libqt.so.%{version}	$RPM_BUILD_ROOT%{_libdir}/libqt.so
 cp -R plugins-st/*		$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st/
 %endif
 
