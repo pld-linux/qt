@@ -1,5 +1,4 @@
 #
-#
 # Conditional build:
 # _without_mysql	- without mysql support
 # _without_psql		- without PostgreSQL support
@@ -7,9 +6,7 @@
 #
 # _without_static	- don't build static library
 # _without_examples	- don't build and include samples
-
-%define		no_compress_doc		1
-
+#
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
@@ -26,7 +23,6 @@ Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
 Patch3:		%{name}-FHS.patch
 Patch4:		%{name}-QFont.patch
-
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
 BuildRequires:	freetype-devel >= 2.0.0
@@ -117,7 +113,7 @@ mais informações sobre ele.
 
 %package static
 Summary:	Qt static libraries
-Summary(pl):	Biblioteki statyczne Qt.
+Summary(pl):	Biblioteki statyczne Qt
 Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{version}
 
@@ -130,7 +126,7 @@ Statyczne biblioteki Qt.
 %package examples
 Summary:	Example programs made with Qt version %{version}
 Summary(pl):	Æwiczenia i przyk³ady do Qt
-Summary(pt_BR):	Programas exemplo desenvolvidos com o Qt 
+Summary(pt_BR):	Programas exemplo desenvolvidos com o Qt
 Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{version}
 
@@ -205,10 +201,8 @@ Plugin de suporte a ODBC para Qt.
 # mkspecs has wrong includes which makes it require patching every files that uses qmake
 # this is a fix
 cd mkspecs
-for katalog in *
-do
-        if [ -d $katalog ]
-	then
+for katalog in * ; do
+        if [ -d $katalog ]; then
 		cd $katalog
 		echo "$katalog"
 		sed -e "s/\$(QTDIR)\/include/\$(QTDIR)\/include\/qt/g"  qmake.conf >> qmake.conf.1
@@ -216,7 +210,6 @@ do
 		cd ..
 	fi
 done
-													
 cd ..
 
 # There is no file pointed by this sym-link and there is cp -L in %%install
@@ -239,14 +232,13 @@ perl -pi -e "
 find examples -name '*.pro' -exec \
 	perl -pi -e 's|(DEPENDPATH=)../../include|$1%{_includedir}|' {} \;
 
-
-	
 DEFAULTOPT="-prefix %{_prefix} -docdir %{_docdir}/%{name}-%{version} \
 	    -datadir %{_datadir}/qt -headerdir %{_includedir}\
 	    -release -qt-gif -system-zlib -no-g++-exceptions -stl \
 	    -system-libpng -system-libjpeg -system-libmng -sm -xinerama \
 	    -xrender -xft -xkb -enable-opengl"
 STYLESLIST="cde compact motif motifplus platinum sgi windows"
+
 ########################################################################
 # STATIC SINGLE-THREAD
 ########################################################################
@@ -273,11 +265,9 @@ OPTFLAGS="%{rpmcflags}" \
 yes
 _EOF_
 
-# Build libraries and everything needed to do this. Do not build examples and 
+# Build libraries and everything needed to do this. Do not build examples and
 # such. They will be built with shared, sigle-thread libraries.
 %{__make} symlinks src-qmake src-moc sub-src
-
-
 
 ########################################################################
 # STATIC MULTI-THREAD
@@ -303,7 +293,7 @@ OPTFLAGS="%{rpmcflags}" \
 yes
 _EOF_
 
-# Build libraries and everything needed to do this. Do not build examples and 
+# Build libraries and everything needed to do this. Do not build examples and
 # such. They will be built with shared, sigle-thread libraries.
 %{__make} symlinks src-qmake src-moc sub-src
 %endif #_without_static
@@ -339,7 +329,7 @@ OPTFLAGS="%{rpmcflags}" \
 yes
 _EOF_
 
-# Build libraries and everything needed to do this. Do not build examples and 
+# Build libraries and everything needed to do this. Do not build examples and
 # such. They will be built with shared, multi-thread libraries.
 %{__make} symlinks src-qmake src-moc sub-src
 
@@ -379,8 +369,6 @@ _EOF_
 # Do not build tutorial and examples. Provide them as sources.
 %{__make} symlinks src-qmake src-moc sub-src sub-tools
 
-
-
 %install
 rm -rf $RPM_BUILD_ROOT
 
@@ -388,12 +376,7 @@ QTDIR=`/bin/pwd`; export QTDIR
 LD_LIBRARY_PATH="$QTDIR/lib" ; export LD_LIBRARY_PATH
 PATH="$QTDIR/bin:$PATH"
 
-# Trolltech sucks and swallows.
-perl -pi -e "s/^	strip/	-strip/;" src/Makefile
-
 %{__make} install INSTALL_ROOT=$RPM_BUILD_ROOT
-
-gzip INSTALL FAQ MANIFEST LICENSE.* PLATFORMS README*
 
 rm -rf `find $RPM_BUILD_ROOT -name CVS`
 
@@ -403,7 +386,8 @@ install -d $RPM_BUILD_ROOT{%{_mandir}/man{1,3},%{_examplesdir}/%{name}/lib} \
 	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st \
 	$RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}/html
 
-install bin/findtr tools/msg2qm/msg2qm tools/mergetr/mergetr \
+install bin/{findtr,qt20fix,qtrename140} \
+	tools/msg2qm/msg2qm tools/mergetr/mergetr \
 	$RPM_BUILD_ROOT%{_bindir}
 
 install doc/man/man1/*		$RPM_BUILD_ROOT%{_mandir}/man1
@@ -413,8 +397,7 @@ install lib/libqt.a		$RPM_BUILD_ROOT%{_libdir}
 install lib/libqt-mt.a		$RPM_BUILD_ROOT%{_libdir}
 
 install lib/libqt.so.*.*.*	$RPM_BUILD_ROOT%{_libdir}
-
-ln -s libqt.so.%{_qt_sl} $RPM_BUILD_ROOT%{_libdir}/libqt.so
+ln -sf libqt.so.%{_qt_sl} $RPM_BUILD_ROOT%{_libdir}/libqt.so
 
 cp -R plugins-st/* $RPM_BUILD_ROOT%{_libdir}/qt/plugins-st/
 
@@ -444,7 +427,7 @@ perl -pi -e "
 	" $RPM_BUILD_ROOT/%{_datadir}/qt/kspecs/linux-g++/qmake.conf
 
 %clean
-%{!?_without_clean:rm -rf $RPM_BUILD_ROOT}
+rm -rf $RPM_BUILD_ROOT
 
 %post	-p /sbin/ldconfig
 %postun	-p /sbin/ldconfig
@@ -452,7 +435,7 @@ perl -pi -e "
 %files
 %defattr(644,root,root,755)
 #%{_docdir}/%{name}-%{version}/LICENSE.QPL
-%doc INSTALL* FAQ* MANIFEST* LICENSE.* PLATFORMS* README*
+%doc FAQ LICENSE.* README* changes*
 %attr(755,root,root) %{_libdir}/libqt.so.*
 %attr(755,root,root) %{_libdir}/libqui.so.*
 #%attr(755,root,root) %{_libdir}/libeditor.so.*
@@ -494,7 +477,7 @@ perl -pi -e "
 %if %{!?_without_examples:1}%{?_without_examples:0}
 %files examples
 %defattr(644,root,root,755)
-/usr/src/examples/%{name}
+%{_examplesdir}/%{name}
 %endif
 
 %if %{!?_without_mysql:1}%{?_without_mysql:0}
