@@ -8,7 +8,7 @@ Name:		qt
 #%define		libeditor_version 1.0.0
 Version:	3.0.3
 #Release:	0.%{_snapshot}.7
-Release:	0.1
+Release:	0.2
 Epoch:		1
 License:	GPL
 Group:		X11/Libraries
@@ -376,13 +376,14 @@ install -d $RPM_BUILD_ROOT%{_mandir}/man{1,3} \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name} \
 	$RPM_BUILD_ROOT/usr/src/tutorials/%{name}
 
-install doc/man/man1/*	$RPM_BUILD_ROOT%{_mandir}/man1
-install doc/man/man3/*	$RPM_BUILD_ROOT%{_mandir}/man3
+install doc/man/man1/*		$RPM_BUILD_ROOT%{_mandir}/man1
+install doc/man/man3/*		$RPM_BUILD_ROOT%{_mandir}/man3
 
-install lib/libqt.a	$RPM_BUILD_ROOT%{_libdir}
-install lib/libqt-mt.a	$RPM_BUILD_ROOT%{_libdir}
+install lib/libqt.a		$RPM_BUILD_ROOT%{_libdir}
+install lib/libqt-mt.a		$RPM_BUILD_ROOT%{_libdir}
 
-install lib/libqt-mt*	$RPM_BUILD_ROOT%{_libdir}
+install lib/libqt-mt.so.*.*.*	$RPM_BUILD_ROOT%{_libdir}
+ln -s libqt-mt.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libqt-mt.so
 
 cp -dpr examples $RPM_BUILD_ROOT%{_examplesdir}/%{name}
 cp -dpr tutorial $RPM_BUILD_ROOT/usr/src/tutorials/%{name}
