@@ -571,7 +571,7 @@ export QTDIR=`/bin/pwd`
 
 install -d \
 	$RPM_BUILD_ROOT%{_sysconfdir}/qt \
-	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-mt/{network,qsa} \
+	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-mt/{crypto,network,qsa} \
 	%{?with_single:$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st/network} \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name}/lib \
 	$RPM_BUILD_ROOT%{_mandir}/man{1,3} \
@@ -713,11 +713,12 @@ EOF
 %attr(755,root,root) %{_libdir}/libqt-mt.so.*.*.*
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/plugins-mt
+%dir %{_libdir}/%{name}/plugins-mt/crypto
+%dir %{_libdir}/%{name}/plugins-mt/imageformats
+%attr(755,root,root) %{_libdir}/%{name}/plugins-mt/imageformats/*.so
 %dir %{_libdir}/%{name}/plugins-mt/network
 %dir %{_libdir}/%{name}/plugins-mt/qsa
 %{?_withsql:%dir %{_libdir}/%{name}/plugins-mt/sqldrivers}
-%dir %{_libdir}/%{name}/plugins-mt/imageformats
-%attr(755,root,root) %{_libdir}/%{name}/plugins-mt/imageformats/*.so
 %dir %{_libdir}/%{name}/plugins-mt/styles
 %attr(755,root,root) %{_libdir}/%{name}/plugins-mt/styles/*.so
 %dir %{_datadir}/qt
@@ -838,6 +839,7 @@ EOF
 %attr(755,root,root) %{_bindir}/assistant
 %if %{with designer}
 %attr(755,root,root) %{_bindir}/designer
+%{_desktopdir}/designer.desktop
 %endif
 %attr(755,root,root) %{_bindir}/linguist
 %dir %{_libdir}/%{name}/plugins-?t/designer
@@ -851,7 +853,6 @@ EOF
 %endif
 %lang(de) %{_datadir}/locale/de/LC_MESSAGES/linguist.qm
 %lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/linguist.qm
-%{_desktopdir}/designer.desktop
 
 %files -n qtconfig
 %defattr(644,root,root,755)
