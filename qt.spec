@@ -25,7 +25,7 @@ Patch3:		%{name}-FHS.patch
 Patch4:		%{name}-QFont.patch
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
-# icompatible with bison
+# incompatible with bison
 BuildRequires:	byacc
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
@@ -145,7 +145,6 @@ Qt documentation in man pages format.
 
 %description doc-man -l pl
 Dokumentacja qt w formacie stron man.
-
 
 %package examples
 Summary:	Example programs made with Qt version %{version}
