@@ -105,14 +105,14 @@ yes
 _EOF_
 
 LD_LIBRARY_PATH=%{_libdir}
-SYSCONF_CFLAGS="-pipe -DNO_DEBUG %{?debug:-O0 -g}%{!?debug:$RPM_OPT_FLAGS}"
-SYSCONF_CXXFLAGS="-pipe -DNO_DEBUG %{?debug:-O0 -g}%{!?debug:$RPM_OPT_FLAGS}"
+SYSCONF_CFLAGS="-pipe -DNO_DEBUG %{rpmcflags}"
+SYSCONF_CXXFLAGS="-pipe -DNO_DEBUG %{rpmcflags}"
 export LD_LIBRARY_PATH SYSCONF_CFLAGS SYSCONF_CXXFLAGS
 
 %{__make} symlinks  src-moc src-mt sub-src sub-tools\
 %ifnarch alpha
-        SYSCONF_CFLAGS="%{?debug:-O0 -g}%{!?debug:$RPM_OPT_FLAGS}" \
-	SYSCONF_CXXFLAGS="%{?debug:-O0 -g}%{!?debug:$RPM_OPT_FLAGS}"
+        SYSCONF_CFLAGS="%{rpmcflags}" \
+	SYSCONF_CXXFLAGS="%{rpmcflags}"
 %else
         SYSCONF_CFLAGS="%{!?debug:-0O}%{?debug:-O0 -g}" \
 	SYSCONF_CXXFLAGS="%{!?debug:-O0}%{?debug:-O0 -g}"
