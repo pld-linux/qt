@@ -1,0 +1,9 @@
+--- qt-x11-free-3.1.2/src/compat/qmlined.h.orig	Mon Feb 24 08:30:04 2003
++++ qt-x11-free-3.1.2/src/compat/qmlined.h	Fri Jun 13 10:56:15 2003
+@@ -22,5 +22,5 @@
+ *****************************************************************************/
+ #ifndef QMLINED_H
+ #define QMLINED_H
+-#include "qtmultilineedit.h"
++#include "qmultilineedit.h"
+ #endif
