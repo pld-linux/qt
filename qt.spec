@@ -1,6 +1,7 @@
 # TODO:
 # - hack assistant, to use some global config file with documentation list
-#
+# - hack linguist to make it use translations
+# - hack qt to use translations
 # Conditional build:
 # _with_nas		- enable nas audio support
 # _with_single		- build also single threaded libraries
