@@ -36,8 +36,7 @@ Patch5:		%{name}-cursors.patch
 Patch6:		%{name}-qmake-nostatic.patch
 Patch7:		%{name}-qmlined-fix.patch
 Patch8:		%{name}-locale.patch
-
-URL:		http://www.trolltech.com/
+URL:		http://www.trolltech.com/products/qt/
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
 # incompatible with bison
