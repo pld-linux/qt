@@ -700,7 +700,6 @@ echo -e "QMAKE_CFLAGS_RELEASE\t=\t%{rpmcflags}" >> $plik
 echo -e "QMAKE_CXXFLAGS_RELEASE\t=\t%{rpmcxxflags}" >> $plik
 echo -e "QMAKE_CFLAGS_DEBUG\t=\t%{debugcflags}" >> $plik
 echo -e "QMAKE_CXXFLAGS_DEBUG\t=\t%{debugcflags}" >> $plik
-%{?with_pch:echo -e "DEFINES\t+=\tUSING_PCH" >> $plik}
 
 %build
 export QTDIR=`/bin/pwd`
