@@ -10,7 +10,7 @@
 # _without_static	- don't build static library
 # _without_examples	- don't build and include samples
 
-%define		_snapshot	20020930
+%define		_snapshot	20021024
 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
@@ -24,16 +24,11 @@ License:	GPL / QPL
 Group:		X11/Libraries
 Source0:	%{name}-copy.tar.bz2
 Patch0:		%{name}-tools.patch
-#Patch1:	%{name}-qmake.patch
-#Patch2:	%{name}-parse_error.patch
-Patch3:		%{name}-postgresql_7_2.patch
-Patch4:		%{name}-mysql_includes.patch
-Patch5:		%{name}-FHS.patch
-#Patch6:	%{name}-configure.patch
-#Patch7:	%{name}-qmake-opt.patch
-Patch8:		%{name}-QFont.patch
-#Patch9:	%{name}-fix-lv.patch
-#Patch10:	%{name}-gcc31dlopen.patch
+Patch1:		%{name}-postgresql_7_2.patch
+Patch2:		%{name}-mysql_includes.patch
+Patch3:		%{name}-FHS.patch
+Patch4:		%{name}-QFont.patch
+Patch5:		%{name}-QClipboard.patch
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
 BuildRequires:	freetype-devel >= 2.0.0
@@ -204,15 +199,12 @@ Plugin de suporte a ODBC para Qt.
 #%ifarch %{ix86} ppc
 #%{?_with_prelink:%patch1 -p1}
 #%endif
-#%patch2 -p1
+%patch1 -p1
+%patch2 -p1
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
-#%patch6 -p1
-#%patch7 -p1
-%patch8 -p1
-#%patch9 -p1
-#%patch10 -p1
+
 
 # There is no file pointed by this sym-link and there is cp -L in %%install
 rm -f include/qt_windows.h
@@ -242,6 +234,7 @@ DEFAULTOPT="-prefix %{_prefix} -docdir %{_docdir}/%{name}-%{version} \
 	    -system-libpng -system-libjpeg -system-libmng -sm -xinerama \
 	    -xrender -xft -xkb -enable-opengl"
 STYLESLIST="cde compact motif motifplus platinum sgi windows"
+rm -rf $QTDIR/projects.pro
 %{__make} -f Makefile.cvs
 ########################################################################
 # STATIC SINGLE-THREAD
@@ -268,10 +261,12 @@ OPTFLAGS="%{rpmcflags}" \
 	<<_EOF_
 yes
 _EOF_
-
+%{__make} -f Makefile.cvs
 # Build libraries and everything needed to do this. Do not build examples and 
 # such. They will be built with shared, sigle-thread libraries.
 %{__make} symlinks src-qmake src-moc sub-src
+
+
 
 ########################################################################
 # STATIC MULTI-THREAD
@@ -296,7 +291,7 @@ OPTFLAGS="%{rpmcflags}" \
 	<<_EOF_
 yes
 _EOF_
-
+%{__make} -f Makefile.cvs
 # Build libraries and everything needed to do this. Do not build examples and 
 # such. They will be built with shared, sigle-thread libraries.
 %{__make} symlinks src-qmake src-moc sub-src
@@ -332,10 +327,11 @@ OPTFLAGS="%{rpmcflags}" \
 	<<_EOF_
 yes
 _EOF_
-
+%{__make} -f Makefile.cvs
 # Build libraries and everything needed to do this. Do not build examples and 
 # such. They will be built with shared, multi-thread libraries.
 %{__make} symlinks src-qmake src-moc sub-src
+
 # Dont make tools, only plugins.
 %{__make} -C plugins/src/ sub-imageformats sub-sqldrivers sub-styles
 
@@ -368,9 +364,11 @@ OPTFLAGS="%{rpmcflags}" \
 	<<_EOF_
 yes
 _EOF_
-
+%{__make} -f Makefile.cvs
 # Do not build tutorial and examples. Provide them as sources.
 %{__make} symlinks src-qmake src-moc sub-src sub-tools
+
+
 
 %install
 rm -rf $RPM_BUILD_ROOT
