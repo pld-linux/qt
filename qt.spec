@@ -31,7 +31,7 @@ Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 #Version:	%{_ver}.%{_snap}
 Version:	%{_ver}
-Release:	5
+Release:	5.1
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
@@ -56,6 +56,11 @@ Patch8:		%{name}-gcc34.patch
 # for troll only
 Patch9:		%{name}-autodetect-pch.patch
 Patch10:	%{name}-antialias.patch
+#
+Patch11:	%{name}-x11-free-misc.patch
+Patch12:	%{name}-x11-free-quiet.patch
+Patch13:	%{name}-x11-mono.patch
+Patch14:	%{name}-x11-qfontdatabase_x11.patch
 URL:		http://www.trolltech.com/products/qt/
 Icon:		qt.xpm
 %{?with_ibase:BuildRequires:	Firebird-devel}
@@ -628,6 +633,10 @@ graficznego - Qt Designer.
 %patch8 -p1
 %patch9 -p1
 %patch10 -p1
+%patch11 -p1
+%patch12 -p1
+%patch13 -p1
+%patch14 -p1
 
 cat >> patches/DISABLED <<EOF
 0005
@@ -643,6 +652,8 @@ EOF
 plik="mkspecs/linux-g++/qmake.conf"
 
 perl -pi -e "
+	s|QMAKE_CC.*=.*gcc|QMAKE_CC = %{__cc}|;
+	s|QMAKE_CXX.*=.*g\+\+|QMAKE_CXX = %{__cxx}|;
 	s|/usr/X11R6/lib|/usr/X11R6/%{_lib}|;
 	s|/usr/lib|%{_libdir}|;
 	s|\\(QTDIR\\)/lib|\\(QTDIR\\)/%{_lib}|;
@@ -735,7 +746,6 @@ STATICOPT=" \
 	<<_EOF_
 yes
 _EOF_
-
 # Do not build tutorial and examples. Provide them as sources.
 %{__make} symlinks src-qmake src-moc sub-src
 
