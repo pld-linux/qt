@@ -7,7 +7,7 @@
 %bcond_without	mysql	# disable MySQL support
 %bcond_without	odbc	# disable unixODBC support
 %bcond_without	pgsql	# disable PostgreSQL support
-#
+
 
 #%%define 	_snap	030925
 
