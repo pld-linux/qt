@@ -86,6 +86,7 @@ Requires:	OpenGL
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Conflicts:	kdelibs <= 8:3.2-0.030602.1
 Obsoletes:	qt-extensions
+Obsoletes:	qt-utils
 
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1
 
@@ -606,7 +607,7 @@ za pomoc± biblioteki QT.
 Summary:	Libraries IDE used for GUI designing with QT library
 Summary(pl):	Biblioteki do IDE s³u¿±cego do projektowania GUI za pomoc± biblioteki QT
 Group:		X11/Applications
-Requires:	%{name} = %{epoch}:%{version}-%{release}
+Requires:	%{name} >= %{epoch}:%{version}-%{release}
 
 %description designer-libs
 Libraries used by the Qt GUI Designer.
