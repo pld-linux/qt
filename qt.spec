@@ -255,8 +255,8 @@ rm -rf `find . -name CVS`
 rm -f include/qt_windows.h
 
 %build
-QTDIR=`/bin/pwd`; export QTDIR
-LD_LIBRARY_PATH="$QTDIR/lib" ; export LD_LIBRARY_PATH
+export QTDIR=`/bin/pwd`
+export LD_LIBRARY_PATH="$QTDIR/lib"
 PATH="$QTDIR/bin:$PATH"
 
 # change QMAKE_CFLAGS_RELEASE to build properly optimized libs
@@ -449,21 +449,20 @@ _EOF_
 %install
 rm -rf $RPM_BUILD_ROOT
 
-QTDIR=`/bin/pwd`; export QTDIR
-LD_LIBRARY_PATH="$QTDIR/lib" ; export LD_LIBRARY_PATH
-PATH="$QTDIR/bin:$PATH"
+export QTDIR=`/bin/pwd`
 
 %{__make} install INSTALL_ROOT=$RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT{%{_mandir}/man{1,3},%{_examplesdir}/%{name}/lib} \
-	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-{m,s}t/network
-
+install -d \
+	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-mt/network \
+	$RPM_BUILD_ROOT%{_datadir}/qt/mkspecs/default/features \
+	$RPM_BUILD_ROOT%{_examplesdir}/%{name}/lib \
+	$RPM_BUILD_ROOT%{_mandir}/man{1,3} \
+	%{?_with_single:$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st/network}
+	
 install bin/{findtr,qt20fix,qtrename140} \
 	tools/msg2qm/msg2qm tools/mergetr/mergetr \
 	$RPM_BUILD_ROOT%{_bindir}
-
-install doc/man/man1/*		$RPM_BUILD_ROOT%{_mandir}/man1
-install doc/man/man3/*		$RPM_BUILD_ROOT%{_mandir}/man3
 
 %if %{?_with_static:1}0
 install lib/libqt.a		$RPM_BUILD_ROOT%{_libdir}
@@ -472,15 +471,16 @@ install lib/libqt-mt.a		$RPM_BUILD_ROOT%{_libdir}
 
 %if %{?_with_single:1}0
 install lib/libqt.so.*.*.*	$RPM_BUILD_ROOT%{_libdir}
-ln -sf libqt.so.%{_qt_sl} $RPM_BUILD_ROOT%{_libdir}/libqt.so
-cp -R plugins-st/* $RPM_BUILD_ROOT%{_libdir}/qt/plugins-st/
+ln -sf libqt.so.%{_qt_sl}	$RPM_BUILD_ROOT%{_libdir}/libqt.so
+cp -R plugins-st/*		$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st/
 %endif
 
-cp -dpR .qmake.cache examples tutorial \
-	$RPM_BUILD_ROOT%{_examplesdir}/%{name}
+install doc/man/man1/*		$RPM_BUILD_ROOT%{_mandir}/man1
+install doc/man/man3/*		$RPM_BUILD_ROOT%{_mandir}/man3
+
+cp -dpR .qmake.cache examples tutorial $RPM_BUILD_ROOT%{_examplesdir}/%{name}
 	
 mv $RPM_BUILD_ROOT{%{_libdir}/*.prl,%{_examplesdir}/%{name}/lib}
-mkdir $RPM_BUILD_ROOT%{_datadir}/qt/mkspecs/default/features
 
 # Fix Makefiles for tutorial and examples. How people who made
 # so cool library could screw build process so badly?
@@ -559,15 +559,15 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %{_docdir}/%{name}-doc-%{version}
 
-%files man
-%defattr(644,root,root,755)
-%{_mandir}/man3/*
-
 %if %{!?_without_examples:1}%{?_without_examples:0}
 %files examples
 %defattr(644,root,root,755)
 %{_examplesdir}/%{name}
 %endif
+
+%files man
+%defattr(644,root,root,755)
+%{_mandir}/man3/*
 
 %if %{!?_without_mysql:1}%{?_without_mysql:0}
 %files plugins-mysql
