@@ -269,9 +269,10 @@ DEFAULTOPT=" \
 	-enable-opengl \
 	-fast \
 	-headerdir %{_includedir} \
-	%{?_without_cups:-no-cups"} \
+	%{?_without_cups:-no-cups} \
 	-no-exceptions \
 	-no-g++-exceptions \
+	-no-style-windowsxp \
 	-prefix %{_prefix} \
 	%{!?_without_mysql:-qt-sql-mysql} \
 	%{!?_without_odbc:-qt-sql-odbc} \
@@ -282,21 +283,21 @@ DEFAULTOPT=" \
 	-qt-imgfmt-png \
 	-sm \
 	-stl \
-	-no-style-windowsxp \
 	-system-libjpeg \
 	-system-libmng \
 	-system-libpng \
-	%{?_with_nas:-system-nas-sound}
+	%{?_with_nas:-system-nas-sound} \
 	-system-zlib \
 	-xft \
 	-xinerama \
 	-xkb \
 	-xrender \
-	%{!?debug:-release}%{?debug:-debug}
-"
+	%{!?debug:-release}%{?debug:-debug}"
 
 STYLESLIST="cde compact motif motifplus platinum sgi windows"
+
 %{__make} -f Makefile.cvs
+
 ########################################################################
 # STATIC SINGLE-THREAD
 ########################################################################
