@@ -5,7 +5,7 @@
 Summary:	The Qt3 GUI application framework
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Name:		qt
-Version:	3.0.3
+Version:	3.0.4
 Release:	0.9.1
 Epoch:		1
 License:	GPL / QPL
@@ -29,6 +29,8 @@ BuildRequires:	libungif-devel
 BuildRequires:	mysql-devel
 BuildRequires:	postgresql-backend-devel
 BuildRequires:	postgresql-devel
+# Requires by ./configure.
+BuildRequires:	sed
 BuildRequires:	perl
 BuildRequires:	findutils
 BuildRequires:	unixODBC-devel
@@ -308,6 +310,7 @@ _EOF_
 %{__make} symlinks src-qmake src-moc sub-src sub-tools
 
 %install
+cd qt-x11-free-3.0.4
 rm -rf $RPM_BUILD_ROOT
 
 QTDIR=`/bin/pwd`; export QTDIR
@@ -319,7 +322,7 @@ PATH="$QTDIR/bin:$PATH"
 install -d $RPM_BUILD_ROOT%{_mandir}/man{1,3} \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name} \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name}/lib \
-	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-mt
+	$RPM_BUILD_ROOT%{_libdir}/qt/plugins
 
 install doc/man/man1/*		$RPM_BUILD_ROOT%{_mandir}/man1
 install doc/man/man3/*		$RPM_BUILD_ROOT%{_mandir}/man3
@@ -330,7 +333,6 @@ install lib/libqt-mt.a		$RPM_BUILD_ROOT%{_libdir}
 install lib/libqt.so.*.*.*	$RPM_BUILD_ROOT%{_libdir}
 ln -s libqt.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libqt.so
 
-mv $RPM_BUILD_ROOT%{_libdir}/qt/plugins/* $RPM_BUILD_ROOT%{_libdir}/qt/plugins-mt
 cp -R plugins-st/* $RPM_BUILD_ROOT%{_libdir}/qt/plugins
 
 cp -p lib/libqt-mt.prl $RPM_BUILD_ROOT%{_examplesdir}/%{name}/lib
@@ -363,10 +365,10 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libeditor.so.*
 %attr(755,root,root) %{_libdir}/libqt-mt.so.*
 %dir %{_libdir}/%{name}
-%dir %{_libdir}/%{name}/plugins
-%dir %{_libdir}/%{name}/plugins/imageformats
-%dir %{_libdir}/%{name}/plugins/styles
-%dir %{_libdir}/%{name}/plugins/sqldrivers
+%dir %{_libdir}/%{name}/plugins*
+%dir %{_libdir}/%{name}/plugins*/imageformats
+%dir %{_libdir}/%{name}/plugins*/styles
+%dir %{_libdir}/%{name}/plugins*/sqldrivers
 %attr(755,root,root) %{_libdir}/%{name}/plugins*/imageformats/*.so
 %attr(755,root,root) %{_libdir}/%{name}/plugins*/styles/*.so
 
@@ -380,8 +382,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libeditor.so
 %{_includedir}
 %{_mandir}/man?/*
-%dir %{_libdir}/%{name}/plugins/designer
-%attr(755,root,root) %{_libdir}/%{name}/plugins/designer/*.so
+%dir %{_libdir}/%{name}/plugins*/designer
+%attr(755,root,root) %{_libdir}/%{name}/plugins*/designer/*.so
 %dir %{_datadir}/qt
 %{_datadir}/qt/mkspecs
 %{_datadir}/qt/designer
