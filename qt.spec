@@ -4,7 +4,7 @@ Name:		qt
 %define		libqui_version 1.0.0
 %define		libeditor_version 1.0.0
 Version:	3.0.0
-Release:	1
+Release:	0.1
 Epoch:		1
 License:	GPL
 Group:		X11/Libraries
@@ -26,6 +26,7 @@ BuildRequires:	libungif-devel
 BuildRequires:	zlib-devel
 BuildRequires:	mysql-devel
 BuildRequires:	unixODBC-devel
+BuildRequires:	postgresql-devel
 BuildRequires:	freetype-devel
 #%ifnarch alpha
 #BuildRequires:	objprelink
@@ -101,6 +102,42 @@ Qt tutorial/examples.
 %description examples -l pl
 Qt æwiczenia/przyk³ady.
 
+%package plugins-mysql
+Summary:	Qt MySQL plugin
+Summary(pl):	Plugin MySQL do Qt
+Group:		X11/Libraries
+Requires:	%{name} = %{version}
+
+%description plugins-mysql
+Qt MySQL plugin.
+
+%description plugins-mysql -l pl
+Plugin MySQL do Qt.
+
+%package plugins-psql
+Summary:	Qt PostgreSQL plugin
+Summary(pl):	Plugin PostgreSQL do Qt
+Group:		X11/Libraries
+Requires:	%{name} = %{version}
+
+%description plugins-psql
+Qt PostgreSQL plugin.
+
+%description plugins-psql -l pl
+Plugin PostgreSQL do Qt.
+
+%package plugins-odbc
+Summary:	Qt ODBC plugin
+Summary(pl):	Plugin ODBC do Qt
+Group:		X11/Libraries
+Requires:	%{name} = %{version}
+
+%description plugins-odbc
+Qt ODBC plugin.
+
+%description plugins-odbc -l pl
+Plugin ODBC do Qt.
+
 %prep
 %setup -q -n %{name}-x11-free-%{version}
 #%patch0 -p1
@@ -137,11 +174,14 @@ _EOF_
 	"INCLUDEPATH+=/usr/include/mysql" "LIBS+=-L/usr/lib -lmysqlclient" mysql.pro)
 (cd plugins/src/sqldrivers/odbc && $QTDIR/bin/qmake \
 	"INCLUDEPATH+=/usr/include" "LIBS+=-L/usr/lib -lodbc")            
+(cd plugins/src/sqldrivers/pgsql && $QTDIR/bin/gmake \
+	"INCLUDEPATH+=/usr/include/postgresql" "LIBS+=-L/usr/lib -lpq")
 
 for dir in tools/mergetr tools/msg2qm tools/makeqpf tools/qembed tools/qvfb \
            extensions/xt/src plugins/src/accessible plugins/src/codecs \
 	   plugins/src/imageformats plugins/src/styles \
-	   plugins/src/sqldrivers/mysql plugins/src/sqldrivers/odbc ; do
+	   plugins/src/sqldrivers/mysql plugins/src/sqldrivers/odbc \
+	   plugins/src/sqldrivers/pgsql ; do
   %{__make} -C $dir \
 	SYSCONF_CFLAGS="%{rpmcflags}" \
 	SYSCONF_CXXFLAGS="%{rpmcflags}"
@@ -170,9 +210,10 @@ _EOF_
 %install
 rm -rf $RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{name},%{_includedir},%{_mandir}/man{1,3}} \
+install -d $RPM_BUILD_ROOT{%{_bindir},%{_includedir},%{_mandir}/man{1,3}} \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name} \
 	$RPM_BUILD_ROOT%{_datadir}/tutorial/%{name} \
+	$RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/{sqldrivers,imageformats,designer}
 
 rm -f   bin/*.bat
 install bin/*			$RPM_BUILD_ROOT%{_bindir}/
@@ -183,7 +224,10 @@ install tools/qembed/qembed	$RPM_BUILD_ROOT%{_bindir}/
 install tools/qvfb/qvfb		$RPM_BUILD_ROOT%{_bindir}/
 install qmake/qmake		$RPM_BUILD_ROOT%{_bindir}/
 
-install plugins/*/*.so		$RPM_BUILD_ROOT%{_libdir}/%{name}
+install plugins/sqldrivers/*.so		$RPM_BUILD_ROOT%{_libdir}/%{name}/sqldrivers
+install plugins/imageformats/*.so	$RPM_BUILD_ROOT%{_libdir}/%{name}/imageformats
+install plugins/designer/*.so		$RPM_BUILD_ROOT%{_libdir}/%{name}/designer
+install plugins/styles/*.so		$RPM_BUILD_ROOT%{_libdir}/%{name}/styles
 
 install lib/libqt.so.%{version}	$RPM_BUILD_ROOT%{_libdir}
 ln -s -f libqt.so.%{version}	$RPM_BUILD_ROOT%{_libdir}/libqt.so
@@ -199,7 +243,7 @@ ln -s -f libeditor.so.%{libeditor_version}	$RPM_BUILD_ROOT%{_libdir}/libeditor.s
 
 install lib/*.a		$RPM_BUILD_ROOT%{_libdir}
 
-cp -a include/*		$RPM_BUILD_ROOT%{_includedir}
+cp -pRL include/*	$RPM_BUILD_ROOT%{_includedir}
 
 install doc/man/man1/*	$RPM_BUILD_ROOT%{_mandir}/man1
 install doc/man/man3/*	$RPM_BUILD_ROOT%{_mandir}/man3
@@ -230,7 +274,11 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libeditor.so.*.*
 %attr(755,root,root) %{_libdir}/libqt-mt.so.*.*
 %dir %{_libdir}/%{name}
-%attr(755,root,root) %{_libdir}/%{name}/*.so
+%dir %{_libdir}/%{name}/plguins
+%dir %{_libdir}/%{name}/plguins/imageformats
+%dir %{_libdir}/%{name}/plguins/sqldrivers
+%attr(755,root,root) %{_libdir}/%{name}/plugins/imageformats/*.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins/styles/*.so
 
 %files devel
 %defattr(644,root,root,755)
@@ -242,6 +290,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libqt-mt.so
 %{_includedir}
 %{_mandir}/man?/*
+%dir %{_libdir}/%{name}/plguins/designer
+%attr(755,root,root) %{_libdir}/%{name}/plugins/designer/*.so
 
 %files static
 %defattr(644,root,root,755)
@@ -251,3 +301,15 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 /usr/src/examples/%{name}
 %{_datadir}/tutorial/%{name}
+
+%files plugins-mysql
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/plugins/sqldrivers/lib*mysql.so
+
+%files plugins-psql
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/plugins/sqldrivers/lib*osql.so
+
+%files plugins-odbc
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/plugins/sqldrivers/lib*odbc.so
