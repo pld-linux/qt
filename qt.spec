@@ -7,6 +7,9 @@
 #
 # Conditional build:
 # _without_prelink	- without objprelink (problems with new binutils?)
+# _without_mysql	- without mysql support
+# _without_psql		- without PostgreSQL support
+# _without_odbc		- without unixODBC support
 #
 Summary:	The Qt3 GUI application framework
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
@@ -33,11 +36,17 @@ BuildRequires:	libmng-devel >= 1.0.0
 BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	libstdc++-devel
 BuildRequires:	libungif-devel
+%if %{!?_without_mysql:1}%{?_without_mysql:0}
 BuildRequires:	mysql-devel
+%endif
 BuildRequires:	perl
+%if %{!?_without_psql:1}%{?_without_psql:0}
 BuildRequires:	postgresql-backend-devel
 BuildRequires:	postgresql-devel
+%endif
+%if %{!?_without_odbc:1}%{?_without_odbc:0}
 BuildRequires:	unixODBC-devel
+%endif
 BuildRequires:	zlib-devel
 %ifarch %{ix86} ppc
 %{!?_without_prelink:BuildRequires:	objprelink}
@@ -106,6 +115,7 @@ Qt tutorial/examples.
 %description examples -l pl
 Æwiczenia/przyk³ady do Qt.
 
+%if %{!?_without_mysql:1}%{?_without_mysql:0}
 %package plugins-mysql
 Summary:	Qt MySQL plugin
 Summary(pl):	Wtyczka MySQL do Qt
@@ -117,7 +127,9 @@ Qt MySQL plugin.
 
 %description plugins-mysql -l pl
 Wtyczka MySQL do Qt.
+%endif
 
+%if %{!?_without_psql:1}%{?_without_psql:0}
 %package plugins-psql
 Summary:	Qt PostgreSQL plugin
 Summary(pl):	Wtyczka PostgreSQL do Qt
@@ -129,7 +141,9 @@ Qt PostgreSQL plugin.
 
 %description plugins-psql -l pl
 Wtyczka PostgreSQL do Qt.
+%endif
 
+%if %{!?_without_odbc:1}%{?_without_odbc:0}
 %package plugins-odbc
 Summary:	Qt ODBC plugin
 Summary(pl):	Wtyczka ODBC do Qt
@@ -141,6 +155,7 @@ Qt ODBC plugin.
 
 %description plugins-odbc -l pl
 Wtyczka ODBC do Qt.
+%endif
 
 %prep
 %setup -q -n %{name}-x11-free-%{version}
@@ -189,9 +204,15 @@ DEFAULTOPT="-prefix %{_prefix} -bindir %{_bindir} -libdir %{_libdir} \
 	-qt-imgfmt-png \
 	-qt-imgfmt-jpeg \
 	-qt-imgfmt-mng \
+%if %{!?_without_odbc:1}%{?_without_odbc:0}
 	-qt-sql-mysql \
+%endif
+%if %{!?_without_odbc:1}%{?_without_odbc:0}
 	-qt-sql-odbc \
+%endif
+%if %{!?_without_odbc:1}%{?_without_odbc:0}
 	-qt-sql-psql \
+%endif
 	-qt-style-cde \
 	-qt-style-compact \
 	-qt-style-motif \
@@ -222,9 +243,15 @@ _EOF_
 	-qt-imgfmt-png \
 	-qt-imgfmt-jpeg \
 	-qt-imgfmt-mng \
+%if %{!?_without_odbc:1}%{?_without_odbc:0}
 	-qt-sql-mysql \
+%endif
+%if %{!?_without_odbc:1}%{?_without_odbc:0}
 	-qt-sql-odbc \
+%endif
+%if %{!?_without_odbc:1}%{?_without_odbc:0}
 	-qt-sql-psql \
+%endif
 	-qt-style-cde \
 	-qt-style-compact \
 	-qt-style-motif \
@@ -256,9 +283,15 @@ _EOF_
 	-plugin-imgfmt-png \
 	-plugin-imgfmt-jpeg \
 	-plugin-imgfmt-mng \
+%if %{!?_without_odbc:1}%{?_without_odbc:0}
 	-plugin-sql-mysql \
+%endif
+%if %{!?_without_odbc:1}%{?_without_odbc:0}
 	-plugin-sql-odbc \
+%endif
+%if %{!?_without_odbc:1}%{?_without_odbc:0}
 	-plugin-sql-psql \
+%endif
 	-plugin-style-cde \
 	-plugin-style-compact \
 	-plugin-style-motif \
@@ -296,9 +329,15 @@ cp -R plugins/{imageformats,sqldrivers,styles} plugins-st
 	-plugin-imgfmt-png \
 	-plugin-imgfmt-jpeg \
 	-plugin-imgfmt-mng \
+%if %{!?_without_mysql:1}%{?_without_mysql:0}
 	-plugin-sql-mysql \
+%endif
+%if %{!?_without_odbc:1}%{?_without_odbc:0}
 	-plugin-sql-odbc \
+%endif
+%if %{!?_without_psql:1}%{?_without_psql:0}
 	-plugin-sql-psql \
+%endif
 	-plugin-style-cde \
 	-plugin-style-compact \
 	-plugin-style-motif \
@@ -402,14 +441,20 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 /usr/src/examples/%{name}
 
+%if %{!?_without_mysql:1}%{?_without_mysql:0}
 %files plugins-mysql
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}/plugins*/sqldrivers/lib*mysql.so
+%endif
 
+%if %{!?_without_psql:1}%{?_without_psql:0}
 %files plugins-psql
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}/plugins*/sqldrivers/lib*psql.so
+%endif
 
+%if %{!?_without_odbc:1}%{?_without_odbc:0}
 %files plugins-odbc
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}/plugins*/sqldrivers/lib*odbc.so
+%endif
