@@ -13,7 +13,7 @@
 # _without_pgsql	- without PostgreSQL support
 #
 
-%define 	_snap	030606
+%define 	_snap	030623
 
 %define 	_withsql	1
 
@@ -25,13 +25,13 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.2.0
-Release:	0.%{_snap}.2
+Release:	0.%{_snap}.0.1
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
 #Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
-Source0:	%{name}-copy-%{_snap}.tar.bz2
-# Source0-md5:	1e89a731d421c18b11ed3214b840fb7b
+Source0:	http://www.kernel.pl/~adgor/kde/%{name}-copy-%{_snap}.tar.bz2
+# Source0-md5:	1f86240652a3466a7ae29440cf8a8121
 #Source1:	ftp://ftp.trolltech.com/qsa/%{name}-designer-changes-qsa-beta3.tar.gz
 #%% Source1-md5:	61dbb6efe50e04fcaa5a592e9bf58664
 Patch0:		%{name}-tools.patch
@@ -43,9 +43,9 @@ Patch3:		%{name}-FHS.patch
 Patch6:         %{name}-qmake-nostatic.patch
 Patch7:		%{name}-disable_tutorials.patch
 BuildRequires:	OpenGL-devel
-BuildRequires:	XFree86-devel >= 4.3.0
 # incompatible with bison
 BuildRequires:	byacc
+%{!?_without_cups:BuildRequires:        cups-devel}
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
 BuildRequires:	libjpeg-devel
@@ -54,16 +54,15 @@ BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	libstdc++-devel
 BuildRequires:	libungif-devel
 %{!?_without_mysql:BuildRequires:	mysql-devel}
+%{?_with_nas:BuildRequires:		nas-devel}
 BuildRequires:	perl
 %{!?_without_pgsql:BuildRequires:	postgresql-backend-devel}
 %{!?_without_pgsql:BuildRequires:	postgresql-devel}
 %{!?_without_odbc:BuildRequires:	unixODBC-devel}
-%{!?_without_cups:BuildRequires:        cups-devel}
-%{?_with_nas:BuildRequires:	nas-devel}
-BuildRequires:	zlib-devel
-%{?_with_prelink:BuildRequires:	objprelink}
+BuildRequires:	xcursor-devel
 BuildRequires:	xft-devel
-%{?_with_single:Provides:	%{name}-st = %{epoch}:%{version}}
+BuildRequires:	zlib-devel
+%{?_with_single:Provides:	%{name}-st = %{epoch}:%{version}-%{release}}
 Requires:	OpenGL
 Requires:	XFree86-libs >= 4.0.2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -99,7 +98,7 @@ Summary(es):	Archivos de inclusión y documentación necesaria para compilar aplic
 Summary(pl):	Pliki nag³ówkowe, przyk³ady i dokumentacja do biblioteki
 Summary(pt_BR):	Arquivos de inclusão e documentação necessária para compilar aplicações Qt
 Group:		X11/Development/Libraries
-Requires:	%{name} = %{epoch}:%{version}
+Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	XFree86-devel
 Requires:	freetype-devel
 Requires:	libjpeg-devel
@@ -139,8 +138,8 @@ mais informações sobre ele.
 Summary:	Qt static libraries
 Summary(pl):	Biblioteki statyczne Qt
 Group:		X11/Development/Libraries
-Requires:	%{name}-devel = %{epoch}:%{version}
-%{?_with_single:Provides:	%{name}-static-st = %{epoch}:%{version}}
+Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
+%{?_with_single:Provides: %{name}-static-st = %{epoch}:%{version}-%{release}}
 
 %description static
 Static QT libraries.
@@ -177,7 +176,7 @@ Summary:	Example programs made with Qt version %{version}
 Summary(pl):	Æwiczenia i przyk³ady do Qt
 Summary(pt_BR):	Programas exemplo desenvolvidos com o Qt
 Group:		X11/Development/Libraries
-Requires:	%{name}-devel = %{epoch}:%{version}
+Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
 
 %description examples
 Example programs made with Qt version %{version}.
@@ -193,10 +192,10 @@ Summary:	Database plugin for mysql Qt support
 Summary(pl):	Wtyczka MySQL do Qt
 Summary(pt_BR):	Plugin de suporte a mysql para Qt
 Group:		X11/Libraries
-Requires:	%{name} = %{epoch}:%{version}
-%{?_with_single:Requires:	%{name}-st = %{epoch}:%{version}}
+Requires:	%{name} = %{epoch}:%{version}-%{release}
+%{?_with_single:Requires: %{name}-st = %{epoch}:%{version}-%{release}}
 Provides:	%{name}-plugin-sql
-%{?_with_single:Provides:	%{name}-plugin-sql-st = %{epoch}:%{version}}
+%{?_with_single:Provides: %{name}-plugin-sql-st = %{epoch}:%{version}-%{release}}
 Obsoletes:	%{name}-plugins-mysql
 
 %description plugin-mysql
@@ -213,10 +212,10 @@ Summary:	Database plugin for pgsql Qt support
 Summary(pl):	Wtyczka PostgreSQL do Qt
 Summary(pt_BR):	Plugin de suporte a pgsql para Qt
 Group:		X11/Libraries
-Requires:	%{name} = %{epoch}:%{version}
-%{?_with_single:Requires:	%{name}-st = %{epoch}:%{version}}
+Requires:	%{name} = %{epoch}:%{version}-%{release}
+%{?_with_single:Requires: %{name}-st = %{epoch}:%{version}-%{release}}
 Provides:	%{name}-plugin-sql
-%{?_with_single:Provides:	%{name}-plugin-sql-st = %{epoch}:%{version}}
+%{?_with_single:Provides: %{name}-plugin-sql-st = %{epoch}:%{version}-%{release}}
 Obsoletes:	%{name}-plugins-psql
 
 %description plugin-psql
@@ -233,10 +232,10 @@ Summary:	Database plugin for ODBC Qt support
 Summary(pl):	Wtyczka ODBC do Qt
 Summary(pt_BR):	Plugin de suporte a ODBC para Qt
 Group:		X11/Libraries
-Requires:	%{name} = %{epoch}:%{version}
-%{?_with_single:Requires:	%{name}-st = %{epoch}:%{version}}
+Requires:	%{name} = %{epoch}:%{version}-%{release}
+%{?_with_single:Requires: %{name}-st = %{epoch}:%{version}-%{release}}
 Provides:	%{name}-plugin-sql
-%{?_with_single:Provides:	%{name}-plugin-sql-st = %{epoch}:%{version}}
+%{?_with_single:Provides: %{name}-plugin-sql-st = %{epoch}:%{version}-%{release}}
 Obsoletes:	%{name}-plugins-odbc
 
 %description plugin-odbc
@@ -252,7 +251,7 @@ Plugin de suporte a ODBC para Qt.
 Summary:	QT Utils
 Summary(pl):	Narzêdzia QT
 Group:		X11/Development/Tools
-Requires:	%{name}-devel = %{epoch}:%{version}
+Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
 
 %description utils
 QT Development Utilities.
@@ -288,20 +287,21 @@ perl -pi -e "
 ##################################
 
 DEFAULTOPT=" \
+	-prefix %{_prefix} \
+	-headerdir %{_includedir} \
 	-datadir %{_datadir}/qt \
 	-docdir %{_docdir}/%{name}-doc \
+	-sysconfdir %{_sysconfdir} \
 	-fast \
-	-headerdir %{_includedir} \
-	%{?_without_cups:-no-cups} \
-	-no-exceptions \
-	-no-style-windowsxp \
-	-prefix %{_prefix} \
 	-qt-gif \
 	-system-libjpeg \
 	-system-libmng \
 	-system-libpng \
-	%{?_with_nas:-system-nas-sound} \
 	-system-zlib \
+	-no-exceptions \
+	-no-style-windowsxp \
+	%{?_without_cups:-no-cups} \
+	%{?_with_nas:-system-nas-sound} \
 	%{?debug:-debug}"
 
 ##############################
@@ -510,7 +510,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc FAQ LICENSE.* README* changes*
 %attr(755,root,root) %{_libdir}/libqassistantclient.so.*.*.*
-%attr(755,root,root) %{_libdir}/libdesigner.so.*.*.*
+%attr(755,root,root) %{_libdir}/libdesignercore.so.*.*.*
 %attr(755,root,root) %{_libdir}/libeditor.so.*.*.*
 %attr(755,root,root) %{_libdir}/libqui.so.*.*.*
 %attr(755,root,root) %{_libdir}/libqt*.so.*.*.*
@@ -531,7 +531,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/[!adl]*
 %attr(755,root,root) %{_bindir}/l[!i]*
 %{_libdir}/libqassistantclient.so
-%{_libdir}/libdesigner.so
+%{_libdir}/libdesignercore.so
 %{_libdir}/libeditor.so
 %{_libdir}/libqui.so
 %{_libdir}/libqt*.so
