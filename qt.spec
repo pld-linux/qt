@@ -21,8 +21,8 @@ Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
-Version:	3.1.1
-Release:	3.1
+Version:	3.1.2
+Release:	0.1
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -33,6 +33,7 @@ Patch2:		%{name}-mysql_includes.patch
 Patch3:		%{name}-FHS.patch
 Patch4:		%{name}-qmake-opt.patch
 Patch5:		%{name}-cursors.patch
+Patch6:         %{name}-qmake-nostatic.patch
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
 # incompatible with bison
@@ -488,9 +489,12 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc FAQ LICENSE.* README* changes*
+%attr(755,root,root) %{_libdir}/libdesigner.so.*
+%attr(755,root,root) %{_libdir}/libeditor.so.*
+%attr(755,root,root) %{_libdir}/libqassistantclient.so.*
 %attr(755,root,root) %{_libdir}/libqt.so.*
-%attr(755,root,root) %{_libdir}/libqui.so.*
 %attr(755,root,root) %{_libdir}/libqt-mt.so.*
+%attr(755,root,root) %{_libdir}/libqui.so.*
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/plugins*
 %dir %{_libdir}/%{name}/plugins*/imageformats
@@ -506,6 +510,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/[!adl]*
 %attr(755,root,root) %{_bindir}/l[!i]*
+%{_libdir}/libdesigner.so
+%{_libdir}/libeditor.so
+%{_libdir}/libqassistantclient.so
 %{_libdir}/libqt.so
 %{_libdir}/libqt-mt.so
 %{_libdir}/libqui.so
