@@ -24,7 +24,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	%{_ver}.%{_snap}
-Release:	2
+Release:	3
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
@@ -42,6 +42,7 @@ Patch8:		%{name}-make_assistant_use_global_docs.patch
 Patch9:		%{name}-qmake-opt.patch
 Patch10:	%{name}-xcursor_version.patch
 Patch11:	%{name}-gcc34.patch
+Patch12:	%{name}-qrichtext-fix-strike-out.patch
 URL:		http://www.trolltech.com/products/qt/
 BuildRequires:	OpenGL-devel
 %{?with_nvidia:BuildRequires:	XFree86-driver-nvidia-devel < 1.0.4620}
@@ -393,6 +394,7 @@ Narzêdie do konfiguracji wygl±du i zachowania widgetów QT.
 %patch9 -p1
 %patch10 -p1
 %patch11 -p1
+%patch12 -p1
 
 ./apply_patches
 
