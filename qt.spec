@@ -50,16 +50,15 @@ BuildRequires:	byacc
 %{?with_cups:BuildRequires:	cups-devel}
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
+BuildRequires:	XFree86-devel
+BuildRequires:	OpenGL-devel
 %if %{with xlibs}
 BuildRequires:	libXcursor-devel
 BuildRequires:	libXft-devel
-BuildRequires:	libXmu-devel
-BuildRequires:	libXrandr-devel
+BuildRequires:	libXrender-devel
 %else
-BuildRequires:	XFree86-devel
-BuildRequires:	OpenGL-devel
-BuildRequires:	xft-devel
 BuildRequires:	xcursor-devel
+BuildRequires:	xft-devel
 BuildRequires:	xrender-devel
 %endif
 BuildRequires:	libjpeg-devel
