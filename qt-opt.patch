@@ -5,13 +5,13 @@
  				 $(SYSCONF_AR) $(DESTDIR)$(SYSCONF_LINK_TARGET_STATIC) $(OBJECTS) $(OBJMOC) 
  # Compiling application source
 -SYSCONF_CXXFLAGS	= -pipe -O2 -fno-strength-reduce
-+SYSCONF_CXXFLAGS	= -pipe $(RPM_OPT_FLAGS)
++SYSCONF_CXXFLAGS	= -pipe $(RPM_OPT_FLAGS) -fno-rtti
  # Compiling library source
 -SYSCONF_CXXFLAGS_LIB	= -O2 -fno-strength-reduce -fPIC
-+SYSCONF_CXXFLAGS_LIB	= $(RPM_OPT_FLAGS) -fPIC
++SYSCONF_CXXFLAGS_LIB	= $(RPM_OPT_FLAGS) -fno-rtti -fPIC
  # Compiling shared-object source
 -SYSCONF_CXXFLAGS_SHOBJ	= -O2 -fno-strength-reduce -fPIC
-+SYSCONF_CXXFLAGS_SHOBJ	= $(RPM_OPT_FLAGS) -fPIC
++SYSCONF_CXXFLAGS_SHOBJ	= $(RPM_OPT_FLAGS) -fno-rtti -fPIC
  # Default link type (stati linking is still be used where required)
  SYSCONF_LINK_LIB	= $(SYSCONF_LINK_LIB_SHARED)
  SYSCONF_LINK_TARGET	= $(SYSCONF_LINK_TARGET_SHARED)
