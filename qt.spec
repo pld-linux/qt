@@ -5,8 +5,8 @@
 Summary:	The Qt3 GUI application framework
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Name:		qt
-Version:	3.0.3
-Release:	0.10
+Version:	3.0.4
+Release:	0.1
 Epoch:		3
 License:	GPL / QPL
 Group:		X11/Libraries
