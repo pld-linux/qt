@@ -12,7 +12,7 @@
 %bcond_without	sqlite		# dont build sqlite
 %bcond_with	ibase		# dont build ibase
 %bcond_with	pch		# enable pch in qmake
-%bcond_with	pch_devel	# enable experimetnal boost (for developers only!)
+%bcond_with	pch_devel	# enable experimental boost (for developers only!)
 #
 %define		_withsql	1
 %{!?with_sqlite:%{!?with_ibase:%{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}}}
@@ -805,7 +805,7 @@ cat >> $RPM_BUILD_ROOT%{_includedir}/qt/qconfig.h << EOF
 EOF
 
 %if %{with pch_devel}
-cd $RPM_BUILD_ROOT
+cd $RPM_BUILD_ROOT%{_includedir}/qt
 for h in qevent.h qglist.h qmap.h qobject.h qpixmap.h \
     qptrlist.h qstring.h qstrlist.h qstringlist.h \
     qvaluelist.h qwidget.h; do
