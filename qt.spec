@@ -32,8 +32,8 @@ Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
 Source0:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-%{_snap}.tar.bz2
+# Source0-md5:	125ceb493ca10e827a79eb04eee02a1e
 #Source0:	ftp://ftp.trolltech.com/qt/source/qt-x11-free-%{version}.tar.bz2
-# Source0-md5:	903cad618274ad84d7d13fd0027a6c3c
 #Source1:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-patches-040427.tar.bz2
 ##%% Source1-md5:	ec9cfcbeee331483184bed6807cd8394
 Source2:	%{name}config.desktop
