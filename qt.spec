@@ -224,10 +224,10 @@ install tools/qembed/qembed	$RPM_BUILD_ROOT%{_bindir}/
 install tools/qvfb/qvfb		$RPM_BUILD_ROOT%{_bindir}/
 install qmake/qmake		$RPM_BUILD_ROOT%{_bindir}/
 
-install plugins/sqldrivers/*.so		$RPM_BUILD_ROOT%{_libdir}/%{name}/sqldrivers
-install plugins/imageformats/*.so	$RPM_BUILD_ROOT%{_libdir}/%{name}/imageformats
-install plugins/designer/*.so		$RPM_BUILD_ROOT%{_libdir}/%{name}/designer
-install plugins/styles/*.so		$RPM_BUILD_ROOT%{_libdir}/%{name}/styles
+install plugins/sqldrivers/*.so		$RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/sqldrivers
+install plugins/imageformats/*.so	$RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/imageformats
+install plugins/designer/*.so		$RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/designer
+install plugins/styles/*.so		$RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/styles
 
 install lib/libqt.so.%{version}	$RPM_BUILD_ROOT%{_libdir}
 ln -s -f libqt.so.%{version}	$RPM_BUILD_ROOT%{_libdir}/libqt.so
