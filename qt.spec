@@ -17,7 +17,7 @@
 %define		_withsql	1
 %{!?with_sqlite:%{!?with_ibase:%{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}}}
 
-%define		_snap		040430
+%define		_snap		040505
 %define		_ver		3.3.2
 %define		_packager	adgor
 
@@ -28,12 +28,12 @@ Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	%{_ver}.%{_snap}
 #Version:	%{_ver}
-Release:	2
+Release:	1
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
 Source0:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-%{_snap}.tar.bz2
-# Source0-md5:	125ceb493ca10e827a79eb04eee02a1e
+# Source0-md5:	b0d646283371017dc5fc6ed258d37509
 #Source0:	ftp://ftp.trolltech.com/qt/source/qt-x11-free-%{version}.tar.bz2
 #Source1:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-patches-040427.tar.bz2
 ##%% Source1-md5:	ec9cfcbeee331483184bed6807cd8394
