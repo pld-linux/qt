@@ -14,6 +14,7 @@ URL:		http://www.troll.no/
 BuildPrereq:	libstdc++-devel
 BuildPrereq:	XFree86-devel
 BuildPrereq:	Mesa-devel
+BuildPrereq:	libjpeg-devel
 Buildroot:	/tmp/%{name}-%{version}-root
 
 %description
