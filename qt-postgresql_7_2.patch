@@ -1,0 +1,12 @@
+diff -urN qt-x11-free-3.0.2-snapshot-20020222.orig/plugins/src/sqldrivers/psql/psql.pro qt-x11-free-3.0.2-snapshot-20020222/plugins/src/sqldrivers/psql/psql.pro
+--- qt-x11-free-3.0.2-snapshot-20020222.orig/plugins/src/sqldrivers/psql/psql.pro	Thu Feb 21 02:11:16 2002
++++ qt-x11-free-3.0.2-snapshot-20020222/plugins/src/sqldrivers/psql/psql.pro	Sat Feb 23 20:36:11 2002
+@@ -6,6 +6,8 @@
+ unix {
+ 	OBJECTS_DIR	= .obj
+ 	LIBS   	*= -lpq
++	QMAKE_CFLAGS += -I/usr/include/postgresql/server
++	QMAKE_CXXFLAGS += -I/usr/include/postgresql/server
+ }
+ 
+ win32 {
