@@ -62,15 +62,14 @@
  void Profile::removeDocFileEntry( const QString &docfile )
  {
      docs.remove( docfile );
---- qt-x11-free-3.2.0/tools/assistant/profile.h.orig	2003-07-08 21:29:51.000000000 +0200
-+++ qt-x11-free-3.2.0/tools/assistant/profile.h	2003-08-16 23:34:01.789882560 +0200
-@@ -39,7 +39,8 @@
-     enum ProfileType { DefaultProfile, UserProfile };    
-     
+--- qt-x11-free-3.2.1/tools/assistant/profile.h.orig	2003-08-01 12:46:13.000000000 +0200
++++ qt-x11-free-3.2.1/tools/assistant/profile.h	2003-08-31 15:56:52.000000000 +0200
+@@ -39,7 +39,7 @@
+ public:
+     enum ProfileType { DefaultProfile, UserProfile };
      Profile();
--    
+-
 +    ~Profile();
-+     
      inline bool isValid() const;
  
      inline void addDCF( const QString &docfile );
