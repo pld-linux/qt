@@ -38,6 +38,7 @@ Patch3:		%{name}-FHS.patch
 Patch4:		%{name}-qmake-opt.patch
 Patch5:		%{name}-cursors.patch
 Patch6:         %{name}-qmake-nostatic.patch
+Patch7:		%{name}-disable_tutorials.patch
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.3.0
 BuildRequires:	XFree86-xft-devel
@@ -255,6 +256,7 @@ Narzedzia programistyczne QT.
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
+%patch7 -p1
 
 # Remove CVS stuff
 rm -rf `find . -name CVS`
@@ -435,9 +437,9 @@ export QTDIR=`/bin/pwd`
 install -d \
 	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-mt/network \
 	%{?_with_single:$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st/network} \
-	$RPM_BUILD_ROOT%{_datadir}/qt/mkspecs/default/features \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name}/lib \
-	$RPM_BUILD_ROOT%{_mandir}/man{1,3}
+	$RPM_BUILD_ROOT%{_mandir}/man{1,3} \
+	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-mt/qsa
 	
 install bin/{findtr,qt20fix,qtrename140} \
 	tools/{msg2qm/msg2qm,mergetr/mergetr} \
@@ -508,6 +510,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/%{name}/plugins-?t
 %dir %{_libdir}/%{name}/plugins-?t/imageformats
 %dir %{_libdir}/%{name}/plugins-?t/network
+# There wont be any qsa linked with st.
+%dir %{_libdir}/%{name}/plugins-mt/qsa
 %{?_withsql:%dir %{_libdir}/%{name}/plugins-?t/sqldrivers}
 %dir %{_libdir}/%{name}/plugins-?t/styles
 %attr(755,root,root) %{_libdir}/%{name}/plugins-?t/imageformats/*.so
