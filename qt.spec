@@ -40,6 +40,7 @@ Patch7:		%{name}-make_use_of_locale.patch
 Patch8:		%{name}-make_assistant_use_global_docs.patch
 Patch9:		%{name}-qmake-opt.patch
 Patch10:	%{name}-xcursor_version.patch
+Patch11:	%{name}-gcc34.patch
 URL:		http://www.trolltech.com/products/qt/
 BuildRequires:	OpenGL-devel
 %{?with_nvidia:BuildRequires:	XFree86-driver-nvidia-devel < 1.0.4620}
@@ -390,6 +391,7 @@ Narzêdie do konfiguracji wygl±du i zachowania widgetów QT.
 %patch8 -p1
 %patch9 -p1
 %patch10 -p1
+%patch11 -p1
 
 ./apply_patches
 
@@ -406,7 +408,7 @@ export PATH=$QTDIR/bin:$PATH
 export LD_LIBRARY_PATH=$QTDIR/lib:$LD_LIBRARY_PATH
 
 # pass OPTFLAGS for qmake itself
-export OPTFLAGS="%{rpmcflags}"
+export OPTFLAGS="%{rpmcflags} -DQT_CLEAN_NAMESPACE"
 
 %{__make} -f Makefile.cvs
 
@@ -415,6 +417,7 @@ export OPTFLAGS="%{rpmcflags}"
 ##################################
 
 DEFAULTOPT=" \
+	-DQT_CLEAN_NAMESPACE \
 	-verbose \
 	-prefix %{_prefix} \
 	-headerdir %{_includedir} \
