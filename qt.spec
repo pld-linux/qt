@@ -20,9 +20,7 @@
 %define		_withsql	1
 %{!?with_sqlite:%{!?with_ibase:%{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}}}
 
-%define		_snap		040422
-%define		_ver		3.3.2
-%define		_packager	djurban
+%define		_ver		3.3.3
 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
@@ -37,9 +35,9 @@ License:	GPL/QPL
 Group:		X11/Libraries
 #Source0:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-%{_snap}.tar.bz2
 Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
-# Source0-md5:	903cad618274ad84d7d13fd0027a6c3c
-Source1:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-patches-040531.tar.bz2
-# Source1-md5:	2e38e44b6ef26bfb8a7f3b6900ee53c0
+# Source0-md5:	3e0a0c8429b0a974b39b5f535ddff01c
+Source1:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-patches-040819.tar.bz2
+# Source1-md5:	041ed90de2e2dbe9d74914e7c1d5213d
 Source2:	%{name}config.desktop
 Source3:	designer.desktop
 Source4:	assistant.desktop
@@ -51,13 +49,10 @@ Patch3:		%{name}-disable_tutorials.patch
 Patch4:		%{name}-locale.patch
 Patch5:		%{name}-make_use_of_locale.patch
 Patch6:		%{name}-qmake-opt.patch
-Patch7:		%{name}-xcursor_version.patch
 Patch8:		%{name}-gcc34.patch
 # for troll only
-Patch9:		%{name}-autodetect-pch.patch
 Patch10:	%{name}-antialias.patch
 #
-Patch11:	%{name}-x11-free-misc.patch
 Patch12:	%{name}-x11-free-quiet.patch
 Patch13:	%{name}-x11-mono.patch
 Patch14:	%{name}-x11-qfontdatabase_x11.patch
@@ -618,7 +613,6 @@ Biblioteki wykorzystywane przez narzêdzie projektowania interfejsu
 graficznego - Qt Designer.
 
 %prep
-#setup -q -n %{name}-copy-%{_snap}
 %setup -q -n %{name}-x11-free-%{version} -a1
 %patch0 -p1
 %patch1 -p1
@@ -627,22 +621,12 @@ graficznego - Qt Designer.
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
-%patch7 -p1
 %patch8 -p1
-%patch9 -p1
 %patch10 -p1
-%patch11 -p1
 %patch12 -p1
 %patch13 -p1
 %patch14 -p1
 
-cat >> patches/DISABLED <<EOF
-0005
-0039
-0042
-0043
-0047
-EOF
 ./apply_patches
 
 # change QMAKE_CFLAGS_RELEASE to build
