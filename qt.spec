@@ -70,7 +70,7 @@ Obsoletes:	qt-extensions
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1
 %define		_includedir	%{_prefix}/include/qt
 %define         _qt_sl		3.1.2
-%define         no_install_post_chrpath         0
+
 
 %description
 Qt is a GUI software toolkit which simplifies the task of writing and
