@@ -15,9 +15,9 @@ Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
-Version:	%{_snapshot}
-Release:	2
-Epoch:		4
+Version:	3.1
+Release:	0.%{_snapshot}.1
+Epoch:		5
 License:	GPL / QPL
 Group:		X11/Libraries
 Source0:	%{name}-copy.tar.bz2
