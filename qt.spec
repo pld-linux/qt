@@ -49,6 +49,7 @@ Patch3:		%{name}-disable_tutorials.patch
 Patch4:		%{name}-locale.patch
 Patch5:		%{name}-make_use_of_locale.patch
 Patch6:		%{name}-qmake-opt.patch
+Patch7:		%{name}-locale-charmap.patch
 Patch8:		%{name}-gcc34.patch
 # for troll only
 Patch10:	%{name}-antialias.patch
@@ -640,6 +641,7 @@ graficznego - Qt Designer.
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
+%patch7 -p1
 %patch8 -p1
 %patch10 -p1
 %patch12 -p1
