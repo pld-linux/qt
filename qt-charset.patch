@@ -1,0 +1,23 @@
+diff -durN qt-2.3.0.orgi/src/tools/qtextcodec.cpp qt-2.3.0/src/tools/qtextcodec.cpp
+--- qt-2.3.0.orgi/src/tools/qtextcodec.cpp	Mon Mar  5 19:09:36 2001
++++ qt-2.3.0/src/tools/qtextcodec.cpp	Sun Mar 18 12:54:45 2001
+@@ -58,6 +58,7 @@
+ #include <stdlib.h>
+ #include <ctype.h>
+ #include <locale.h>
++#include <langinfo.h>
+ 
+ 
+ static QList<QTextCodec> * all = 0;
+@@ -558,6 +559,11 @@
+ #ifdef _OS_WIN32_
+     localeMapper = new QWindowsLocalCodec;
+ #else
++    
++    // Use nl_langinfo first
++    char * codeset=nl_langinfo(CODESET); 
++    if (codeset) return codecForName( codeset );
++    
+     // Very poorly defined and followed standards causes lots of code
+     // to try to get all the cases...
+ 
