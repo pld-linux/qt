@@ -1,0 +1,10 @@
+diff -urN qt-x11-free-3.0.2-snapshot-20020222.orig/plugins/src/styles/windowsxp/main.cpp qt-x11-free-3.0.2-snapshot-20020222/plugins/src/styles/windowsxp/main.cpp
+--- qt-x11-free-3.0.2-snapshot-20020222.orig/plugins/src/styles/windowsxp/main.cpp	Mon Nov 26 22:35:51 2001
++++ qt-x11-free-3.0.2-snapshot-20020222/plugins/src/styles/windowsxp/main.cpp	Mon Feb 25 17:53:31 2002
+@@ -1,5 +1,6 @@
+ #include <private/qstyleinterface_p.h>
+ #include <qobjectcleanuphandler.h>
++#include <qglobal.h>
+ 
+ #include "qwindowsxpstyle.h"
+ 
