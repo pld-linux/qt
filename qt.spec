@@ -19,7 +19,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.2.3
-Release:	3
+Release:	4
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -42,6 +42,7 @@ Patch7:		%{name}-make_use_of_locale.patch
 Patch8:		%{name}-make_assistant_use_global_docs.patch
 Patch9:		%{name}-qmake-opt.patch
 Patch10:	%{name}-qmake-la-and-pc-fix.patch
+Patch11:	%{name}-0034-qclipboard_recursion_fix.patch
 URL:		http://www.trolltech.com/products/qt/
 BuildRequires:	OpenGL-devel
 # incompatible with bison
@@ -348,6 +349,7 @@ Narzêdzia programistyczne QT.
 %patch8 -p1
 %patch9 -p1
 %patch10 -p1
+%patch11 -p0
 
 mv patches/apply_patches ./
 ./apply_patches
