@@ -455,7 +455,7 @@ install lib/libqt-mt.a		$RPM_BUILD_ROOT%{_libdir}
 install lib/libqt.so.*.*.*	$RPM_BUILD_ROOT%{_libdir}
 ln -sf libqt.so.%{_qt_sl} $RPM_BUILD_ROOT%{_libdir}/libqt.so
 
-cp -R plugins-st/* $RPM_BUILD_ROOT%{_libdir}/qt/plugins-st/
+cp -R plugins-st/* $RPM_BUILD_ROOT%{_libdir}/qt/plugins-st
 
 cp -dpR .qmake.cache examples tutorial \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name}
@@ -474,7 +474,7 @@ find $RPM_BUILD_ROOT%{_examplesdir}/%{name} -regex '.*/\(examples\|tutorial\).*/
 
 perl -pi -e "
 	s|(QMAKE_INCDIR_QT\\s*=\\s*\\\$\\(QTDIR\\)/include)|\$1/qt|
-	" $RPM_BUILD_ROOT/%{_datadir}/qt/kspecs/linux-g++/qmake.conf
+	" $RPM_BUILD_ROOT%{_datadir}/qt/kspecs/linux-g++/qmake.conf
 
 # We provide qt style classes as plugins,
 # so make corresponding changes to the qconfig.h.
