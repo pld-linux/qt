@@ -15,12 +15,11 @@ BuildRequires:	libpng-devel
 BuildRequires:	Mesa-devel
 BuildRequires:	XFree86-devel
 BuildRequires:	libstdc++-devel
-#uncoment this line if You need Motif support for Qt 
-#BuildRequires: lesstif-devel
-Buildroot: /tmp/%{name}-%{version}-root
+BuildRequires: lesstif-devel
+Buildroot:	/tmp/%{name}-%{version}-root
 
-%define	_prefix	/usr/X11R6
-%define	_mandir	/usr/share/man
+%define		_prefix		/usr/X11R6
+%define		_mandir		%{_prefix}/man
 
 %description
 Contains the shared library needed to run Qt applications, as well as
@@ -87,11 +86,8 @@ SYSCONF_CXXFLAGS="-pipe -DNO_DEBUG $RPM_OPT_FLAGS" \
 echo " Compiling Extensions ..."
 (cd extensions/opengl/src;LD_LIBRARY_PATH=%{_libdir};make)
 (cd extensions/imageio/src;LD_LIBRARY_PATH=%{_libdir};make)
-# If You need Motif/Lesstif support for Qt
-# uncoment line below and line in %files ext section
-# and rebuild package.
-#(cd extensions/xt/src;LD_LIBRARY_PATH=%{_libdir};make \
-#	INCPATH="-I%{_includepatch} -I../../../include")
+(cd extensions/xt/src;LD_LIBRARY_PATH=%{_libdir};make \
+	INCPATH="-I%{_includepatch} -I../../../include")
 
 # tutorial
 (cd tutorial;LD_LIBRARY_PATH=%{_libdir};make)
@@ -143,17 +139,11 @@ done
 cp -dpr examples $RPM_BUILD_ROOT/usr/src/examples/%{name}
 cp -drp tutorial $RPM_BUILD_ROOT/usr/share/tutorial/%{name}
 				
-%post   
-/sbin/ldconfig
+%post   -p /sbin/ldconfig
+%postun -p /sbin/ldconfig
 
-%post ext
-/sbin/ldconfig
-
-%postun 
-/sbin/ldconfig
-
-%postun ext
-/sbin/ldconfig
+%post   ext -p /sbin/ldconfig
+%postun ext -p /sbin/ldconfig
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -178,4 +168,4 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(755,root,root,755)
 %{_libdir}/libqimgio.so*
 %{_libdir}/libqgl.a*
-#%{_libdir}/libqxt.a*
+%{_libdir}/libqxt.a*
