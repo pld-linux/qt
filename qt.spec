@@ -2,7 +2,7 @@ Summary:	The Qt GUI application framework: Shared library
 Summary(pl):	Biblioteka Qt do tworzenia GUI
 Name:		qt
 Version:	1.44
-Release:	1
+Release:	2
 Copyright:	distributable
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
@@ -81,7 +81,7 @@ install -d $RPM_BUILD_ROOT/usr/X11R6/{bin,include/X11/qt,lib,man/{man1,man3}}
 
 install -s bin/moc $RPM_BUILD_ROOT/usr/X11R6/bin/moc
 install -s lib/libqt.so.*.* $RPM_BUILD_ROOT/usr/X11R6/lib
-ln -sf libqt.so.*.* $RPM_BUILD_ROOT/usr/X11R6/lib/libqt.so
+ln -sf libqt.so.%{version} $RPM_BUILD_ROOT/usr/X11R6/lib/libqt.so
 install man/man1/* $RPM_BUILD_ROOT/usr/X11R6/man/man1
 install man/man3/* $RPM_BUILD_ROOT/usr/X11R6/man/man3
 install include/* $RPM_BUILD_ROOT/usr/X11R6/include/X11/qt
