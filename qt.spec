@@ -22,6 +22,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	qt-extensions
 
 %define		_prefix		/usr/X11R6
+%define		_includedir	%{_prefix}/include/qt
 %define		_mandir		%{_prefix}/man
 
 %description
@@ -154,7 +155,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libqt.so
 %{_libdir}/libqutil.so
 %{_libdir}/libqt-mt.so
-%{_includedir}/*.h
+%{_includedir}
 %{_mandir}/man*/*
 
 %files examples
