@@ -8,27 +8,29 @@
 # _without_odbc		- without unixODBC support
 #
 
+%define		_snapshot	20020930
+
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
-Version:	20020930
-Release:	1
+Version:	%{_snapshot}
+Release:	2
 Epoch:		4
 License:	GPL / QPL
 Group:		X11/Libraries
 Source0:	%{name}-copy.tar.bz2
 Patch0:		%{name}-tools.patch
-#Patch1:		%{name}-qmake.patch
-#Patch2:		%{name}-parse_error.patch
+#Patch1:	%{name}-qmake.patch
+#Patch2:	%{name}-parse_error.patch
 Patch3:		%{name}-postgresql_7_2.patch
 Patch4:		%{name}-mysql_includes.patch
 Patch5:		%{name}-FHS.patch
-#Patch6:		%{name}-configure.patch
-#Patch7:		%{name}-qmake-opt.patch
-#Patch8:		%{name}-QFont.patch
-#Patch9:		%{name}-fix-lv.patch
+#Patch6:	%{name}-configure.patch
+#Patch7:	%{name}-qmake-opt.patch
+Patch8:		%{name}-QFont.patch
+#Patch9:	%{name}-fix-lv.patch
 #Patch10:	%{name}-gcc31dlopen.patch
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
@@ -211,7 +213,7 @@ Plugin de suporte a ODBC para Qt.
 %patch5 -p1
 #%patch6 -p1
 #%patch7 -p1
-#%patch8 -p1
+%patch8 -p1
 #%patch9 -p1
 #%patch10 -p1
 
@@ -404,15 +406,18 @@ LD_LIBRARY_PATH="$QTDIR/lib" ; export LD_LIBRARY_PATH
 PATH="$QTDIR/bin:$PATH"
 
 # Trolltech sucks and swallows.
+
 perl -pi -e "s/^	strip/	-strip/;" src/Makefile
+
 %{__make} install INSTALL_ROOT=$RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT%{_mandir}/man{1,3} \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name} \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name}/lib \
 	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st
-rm -rf `find . -name CVS`
-install bin/findtr tools/msg2qm/msg2qm tools/mergetr/mergetr $RPM_BUILD_ROOT%{_bindir}
+
+install bin/findtr tools/msg2qm/msg2qm tools/mergetr/mergetr \
+	$RPM_BUILD_ROOT%{_bindir}
 
 install doc/man/man1/*		$RPM_BUILD_ROOT%{_mandir}/man1
 install doc/man/man3/*		$RPM_BUILD_ROOT%{_mandir}/man3
@@ -421,13 +426,15 @@ install lib/libqt.a		$RPM_BUILD_ROOT%{_libdir}
 install lib/libqt-mt.a		$RPM_BUILD_ROOT%{_libdir}
 
 install lib/libqt.so.*.*.*	$RPM_BUILD_ROOT%{_libdir}
+
 ln -s libqt.so.%{_qt_sl} $RPM_BUILD_ROOT%{_libdir}/libqt.so
 
 cp -R plugins-st/* $RPM_BUILD_ROOT%{_libdir}/qt/plugins-st/
 
-cp -p lib/libqt-mt.prl $RPM_BUILD_ROOT%{_examplesdir}/%{name}/lib
 cp -dpR .qmake.cache examples tutorial \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name}
+
+mv $RPM_BUILD_ROOT{%{_libdir}/*.prl,%{_examplesdir}/%{name}/lib}
 
 # Fix Makefiles for tutorial and examples. How people who made so cool
 # library could screw build process so badly?
@@ -442,10 +449,11 @@ find $RPM_BUILD_ROOT%{_examplesdir}/%{name} -regex '.*/\(examples\|tutorial\).*/
 perl -pi -e "
 	s|(QMAKE_INCDIR_QT\\s*=\\s*\\\$\\(QTDIR\\)/include)|\$1/qt|
 	" $RPM_BUILD_ROOT/%{_datadir}/qt/kspecs/linux-g++/qmake.conf
+
 rm -rf `find . -name CVS`
-rm -rf `find . -name *.prl`
+
 %clean
-rm -rf $RPM_BUILD_ROOT
+%{!?_without_clean:rm -rf $RPM_BUILD_ROOT}
 
 %post	-p /sbin/ldconfig
 %postun	-p /sbin/ldconfig
