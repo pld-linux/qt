@@ -1,17 +1,17 @@
-#%define		_snapshot	20020222
+%define		_snapshot	20020222
 Summary:	The Qt3 GUI application framework
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Name:		qt
-%define		libqui_version 1.0.0
-%define		libeditor_version 1.0.0
+#%define		libqui_version 1.0.0
+#%define		libeditor_version 1.0.0
 Version:	3.0.2
-#Release:	0.%{_snapshot}.3
-Release:	0.2
+Release:	0.%{_snapshot}.4
+#Release:	0.2
 Epoch:		1
 License:	GPL
 Group:		X11/Libraries
-#Source0:	ftp://ftp.trolltech.com/qt/snapshots/%{name}-x11-free-%{version}-snapshot-%{_snapshot}.tar.bz2
-Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.gz
+Source0:	ftp://ftp.trolltech.com/qt/snapshots/%{name}-x11-free-%{version}-snapshot-%{_snapshot}.tar.bz2
+#Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.gz
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-huge_val.patch
 Patch2:		%{name}-charset.patch
@@ -22,12 +22,12 @@ Patch5:		%{name}-postgresql_7_2.patch
 Patch6:		%{name}-mysql_includes.patch
 #Patch7:		%{name}-style_windowsxp_missing_include.patch
 #Patch8:		%{name}-plugins_path.patch
-# Can not use DESTDIR. It is used internally.
-Patch9:		%{name}-INSTALL_ROOT.patch
-Patch10:	%{name}-FHS.patch
+## Can not use DESTDIR. It is used internally.
+#Patch9:		%{name}-INSTALL_ROOT.patch
+#Patch10:	%{name}-FHS.patch
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
-BuildRequires:	findutils
+#-#BuildRequires:	findutils
 BuildRequires:	freetype-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel >= 1.0.0
@@ -145,8 +145,8 @@ Qt ODBC plugin.
 Wtyczka ODBC do Qt.
 
 %prep
-#%setup -q -n %{name}-x11-free-%{version}-snapshot-%{_snapshot}
-%setup -q -n %{name}-x11-free-%{version}
+%setup -q -n %{name}-x11-free-%{version}-snapshot-%{_snapshot}
+#%setup -q -n %{name}-x11-free-%{version}
 %patch0 -p1
 #%patch1 -p1
 #%patch2 -p1
@@ -158,8 +158,8 @@ Wtyczka ODBC do Qt.
 %patch6 -p1
 #%patch7 -p1
 #%patch8 -p1
-%patch9 -p1
-%patch10 -p1
+#%patch9 -p1
+#%patch10 -p1
 
 # There is no file pointed by this sym-link and there is cp -L in %%install
 rm include/qt_windows.h
@@ -173,23 +173,18 @@ PATH="$QTDIR/bin:$PATH"
 sed 's/-O2/%{rpmcflags}/' mkspecs/linux-g++/qmake.conf > qmk.tmp
 mv -f qmk.tmp mkspecs/linux-g++/qmake.conf
 
-# Change path of plugins %{_prefix}/plugins -> %{_prefix}/lib/qt/plugins
-find plugins -name '*.pro' | while read name; do
-	mv "$name" "${name}_"
-	sed -e 's@$$QT_PREFIX/plugins/@$$QT_PREFIX/lib/qt/plugins/@' \
-		< "${name}_" \
-		> "$name"
-	rm -f "${name}_"
-done
-
-# TODO: TO BE REMOVED
-DEFAULTOPT="-prefix /usr/X11R6 -bindir /usr/X11R6/bin -libdir /usr/X11R6/lib \
-	    -docdir /usr/share/doc/qt-3.0.2 -headerdir /usr/X11R6/include \
-	    -release -qt-gif -system-zlib -no-g++-exceptions -stl -remote -system-libpng \
-	    -system-libjpeg -system-libmng -sm -xinerama -xrender -xft -xkb"
+#-## Change path of plugins %{_prefix}/plugins -> %{_prefix}/lib/qt/plugins
+#-#find plugins -name '*.pro' | while read name; do
+#-#	mv "$name" "${name}_"
+#-#	sed -e 's@$$QT_PREFIX/plugins/@$$QT_PREFIX/lib/qt/plugins/@' \
+#-#		< "${name}_" \
+#-#		> "$name"
+#-#	rm -f "${name}_"
+#-#done
 
 DEFAULTOPT="-prefix %{_prefix} -bindir %{_bindir} -libdir %{_libdir} \
 	    -docdir %{_docdir}/%{name}-%{version} -headerdir %{_includedir} \
+	    -plugindir %{_libdir}/qt/plugins -datadir %{_datadir}/qt
 	    -release -qt-gif -system-zlib -no-g++-exceptions -stl -remote -system-libpng \
 	    -system-libjpeg -system-libmng -sm -xinerama -xrender -xft -xkb"
 
