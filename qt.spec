@@ -1,20 +1,22 @@
 #
 # Conditional build:
-%bcond_with	nas		# enable NAS audio support
-%bcond_with	nvidia		# prelink Qt/KDE and depend on NVIDIA binaries
-%bcond_without	single		# don't build single-threaded libraries
-%bcond_without	static_libs	# don't build static libraries
 %bcond_without	cups		# disable CUPS support
-%bcond_without	mysql		# disable MySQL support
-%bcond_without	odbc		# disable unixODBC support
-%bcond_without	pgsql		# disable PostgreSQL support
 %bcond_without	designer	# don't build designer (it takes long)
-%bcond_without	pch		# without precompiled headers support
+%bcond_with	ibase		# dont build ibase
+%bcond_with	nas		# enable NAS audio support
+%bcond_without	mysql		# disable MySQL support
+%bcond_with	nvidia		# prelink Qt/KDE and depend on NVIDIA binaries
+%bcond_without	odbc		# disable unixODBC support
+%bcond_without	pch		# enable pch in qmake
+%bcond_without	pgsql		# disable PostgreSQL support
+%bcond_without	single		# don't build single-threaded libraries
+%bcond_without	sqlite		# dont build sqlite
+%bcond_without	static_libs	# don't build static libraries
 #
 %define		_withsql	1
-%{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}
+%{!?with_sqlite:%{!?with_ibase:%{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}}}
 
-%define		_snap		040430
+%define		_snap		040422
 %define		_ver		3.3.2
 %define		_packager	adgor
 
@@ -25,13 +27,13 @@ Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	%{_ver}.%{_snap}
 #Version:	%{_ver}
-Release:	1
+Release:	2
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
 Source0:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-%{_snap}.tar.bz2
-# Source0-md5:	125ceb493ca10e827a79eb04eee02a1e
 #Source0:	ftp://ftp.trolltech.com/qt/source/qt-x11-free-%{version}.tar.bz2
+# Source0-md5:	903cad618274ad84d7d13fd0027a6c3c
 #Source1:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-patches-040427.tar.bz2
 ##%% Source1-md5:	ec9cfcbeee331483184bed6807cd8394
 Source2:	%{name}config.desktop
@@ -64,12 +66,19 @@ BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	libstdc++-devel
 BuildRequires:	libungif-devel
 %{?with_mysql:BuildRequires:	mysql-devel}
+%ifarch %{ix86}
+%{?with_ibase:BuildRequires:Firebird-devel}
+%endif
 %{?with_nas:BuildRequires:	nas-devel}
 BuildRequires:	perl-base
 %{?with_pgsql:BuildRequires:	postgresql-backend-devel}
 %{?with_pgsql:BuildRequires:	postgresql-devel}
 BuildRequires:	sed >= 4.0
 %{?with_odbc:BuildRequires:	unixODBC-devel}
+%{?with_sqlite:BuildRequires:	sqlite-devel}
+BuildRequires:	xcursor-devel
+BuildRequires:	xft-devel
+BuildRequires:	xrender-devel
 BuildRequires:	zlib-devel
 Requires:	OpenGL
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -77,7 +86,6 @@ Conflicts:	kdelibs <= 8:3.2-0.030602.1
 Obsoletes:	qt-extensions
 
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1
-%define		_includedir	%{_prefix}/include/qt
 
 %description
 Qt is a GUI software toolkit which simplifies the task of writing and
@@ -201,6 +209,7 @@ Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Provides:	%{name}-plugin-sql
 Obsoletes:	qt-plugins-mysql
+Requires:	mysql-libs	
 
 %description plugin-mysql
 Database plugin for MySQL Qt support.
@@ -221,6 +230,7 @@ Requires:	%{name} = %{epoch}:%{version}-%{release}
 Provides:	%{name}-plugin-sql
 %{?with_single:Provides:	%{name}-plugin-sql-st = %{epoch}:%{version}-%{release}}
 Obsoletes:	qt-plugins-psql
+Requires:	postgresql-libs	
 
 %description plugin-psql
 Database plugin for pgsql Qt support.
@@ -239,6 +249,7 @@ Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Provides:	%{name}-plugin-sql
 Obsoletes:	qt-plugins-odbc
+Requires:	unixODBC
 
 %description plugin-odbc
 Database plugin for ODBC Qt support.
@@ -248,6 +259,42 @@ Wtyczka ODBC do Qt.
 
 %description plugin-odbc -l pt_BR
 Plugin de suporte a ODBC para Qt.
+
+%package plugin-sqlite
+Summary:        Database plugin for sqlite Qt support
+Summary(pl):    Wtyczka sqlite do Qt
+Summary(pt_BR): Plugin de suporte a sqlite para Qt
+Group:          X11/Libraries
+Requires:       %{name} = %{epoch}:%{version}-%{release}
+Provides:       %{name}-plugin-sql
+Requires:	sqlite
+
+%description plugin-sqlite
+Database plugin for sqlite Qt support.
+
+%description plugin-sqlite -l pl
+Wtyczka sqlite do Qt.
+
+%description plugin-sqlite -l pt_BR
+Plugin de suporte a sqlite para Qt.
+
+%package plugin-ibase
+Summary:        Database plugin for ibase Qt support
+Summary(pl):    Wtyczka ibase do Qt
+Summary(pt_BR): Plugin de suporte a ibase para Qt
+Group:          X11/Libraries
+Requires:       %{name} = %{epoch}:%{version}-%{release}
+Provides:       %{name}-plugin-sql
+Requires:	Firebird-lib
+
+%description plugin-ibase
+Database plugin for ibase Qt support.
+
+%description plugin-ibase -l pl
+Wtyczka ibase do Qt.
+
+%description plugin-ibase -l pt_BR
+Plugin de suporte a ibase para Qt.
 
 %package st
 Summary:	Single-threaded Qt library
@@ -293,12 +340,28 @@ Summary(pl):	Wtyczka MySQL do jednow±tkowej wersji Qt
 Group:		X11/Libraries
 Requires:	%{name}-st = %{epoch}:%{version}-%{release}
 Provides:	%{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
+Requires:       mysql-libs
 
 %description st-plugin-mysql
 Database plugin for MySQL support in single-threaded Qt.
 
 %description st-plugin-mysql -l pl
 Wtyczka MySQL do jednow±tkowej wersji Qt.
+
+%package st-plugin-ibase
+Summary:        Database plugin for ibase support in single-threaded Qt
+Summary(pl):    Wtyczka ibase do jednow±tkowej wersji Qt
+Group:          X11/Libraries
+Requires:       %{name}-st = %{epoch}:%{version}-%{release}
+Provides:       %{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
+Requires:       Firebird-lib
+
+%description st-plugin-ibase
+Database plugin for ibase support in single-threaded Qt.
+
+%description st-plugin-ibase -l pl
+Wtyczka ibase do jednow±tkowej wersji Qt.
+
 
 %package st-plugin-psql
 Summary:	Database plugin for PostgreSQL support in single-threaded Qt
@@ -307,6 +370,7 @@ Summary(pt_BR):	Plugin de suporte a pgsql para Qt
 Group:		X11/Libraries
 Requires:	%{name}-st = %{epoch}:%{version}-%{release}
 Provides:	%{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
+Requires:       postgresql-libs
 
 %description st-plugin-psql
 Database plugin for PostgreSQL support in single-threaded Qt.
@@ -320,12 +384,27 @@ Summary(pl):	Wtyczka ODBC do jednow±tkowej wersji Qt
 Group:		X11/Libraries
 Requires:	%{name}-st = %{epoch}:%{version}-%{release}
 Provides:	%{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
+Requires:       unixODBC
 
 %description st-plugin-odbc
 Database plugin for ODBC support in single-threaded Qt.
 
 %description st-plugin-odbc -l pl
 Wtyczka ODBC do jednow±tkowej wersji Qt.
+
+%package st-plugin-sqlite
+Summary:        Database plugin for sqlite support in single-threaded Qt
+Summary(pl):    Wtyczka sqlite do jednow±tkowej wersji Qt
+Group:          X11/Libraries
+Requires:       %{name}-st = %{epoch}:%{version}-%{release}
+Requires:	sqlite
+Provides:       %{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
+
+%description st-plugin-sqlite
+Database plugin for sqlite support in single-threaded Qt.
+
+%description st-plugin-sqlite -l pl
+Wtyczka sqlite do jednow±tkowej wersji Qt.
 
 %package style-cde
 Summary:	Qt style - CDE
@@ -405,8 +484,8 @@ Biblioteki do IDE s³u¿±cego do projektowania GUI za pomoc± biblioteki QT.
 %setup -q -n %{name}-copy-%{_snap}
 #%setup -q -n %{name}-x11-free-%{version} -a1
 %patch0 -p1
-%patch1 -p1
-%patch2 -p1
+##atch1 -p1
+##atch2 -p1
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
@@ -476,7 +555,7 @@ DEFAULTOPT=" \
 	-verbose \
 	-prefix %{_prefix} \
 	-libdir %{_libdir} \
-	-headerdir %{_includedir} \
+	-headerdir %{_includedir}/qt \
 	-datadir %{_datadir}/qt \
 	-docdir %{_docdir}/%{name}-doc \
 	-sysconfdir %{_sysconfdir}/qt \
@@ -489,6 +568,8 @@ DEFAULTOPT=" \
 	-system-zlib \
 	-no-exceptions \
 	-ipv6 \
+	-I%{_includedir}/postgresql/server \
+	-I%{_includedir}/mysql \
 	%{!?with_cups:-no-cups} \
 	%{?with_nas:-system-nas-sound} \
 	%{?with_nvidia:-dlopen-opengl} \
@@ -506,6 +587,8 @@ STATICOPT=" \
 	%{?with_mysql:-qt-sql-mysql} \
 	%{?with_odbc:-qt-sql-odbc} \
 	%{?with_pgsql:-qt-sql-psql} \
+	%{?with_sqlite:-qt-sql-sqlite} \
+	%{?with_ibase:-qt-sql-ibase} \
 	-static"
 %endif
 
@@ -559,6 +642,8 @@ SHAREDOPT=" \
 	%{?with_mysql:-plugin-sql-mysql} \
 	%{?with_odbc:-plugin-sql-odbc} \
 	%{?with_pgsql:-plugin-sql-psql} \
+	%{?with_sqlite:-plugin-sql-sqlite} \
+	%{?with_ibase:-plugin-sql-ibase} \
 	-plugin-style-cde \
 	-plugin-style-compact \
 	-plugin-style-motif \
@@ -680,6 +765,10 @@ sed -i 's/Exec=designer-qt3/Exec=designer/' \
     $RPM_BUILD_ROOT%{_desktopdir}/designer.desktop	
 %endif
 
+%if %{without designer}
+install bin/uic $RPM_BUILD_ROOT%{_bindir}
+%endif
+
 install tools/qtconfig/images/appicon.png \
 	$RPM_BUILD_ROOT%{_pixmapsdir}/qtconfig.png
 
@@ -690,16 +779,16 @@ cp -dpR examples tutorial $RPM_BUILD_ROOT%{_examplesdir}/%{name}
 
 mv $RPM_BUILD_ROOT{%{_libdir}/*.prl,%{_examplesdir}/%{name}/lib}
 
-# From now qt includedir becomes %{_includedir}/qt
+# From now QMAKE_INCDIR_QT becomes %{_includedir}/qt
 perl -pi -e "
 	s|(QMAKE_INCDIR_QT\\s*=\\s*\\\$\\(QTDIR\\)/include)|\$1/qt|
 	" $RPM_BUILD_ROOT/%{_datadir}/qt/mkspecs/linux-g++/qmake.conf
 
 # We provide qt style classes as plugins,
 # so make corresponding changes to the qconfig.h.
-chmod 644 $RPM_BUILD_ROOT%{_includedir}/qconfig.h
+chmod 644 $RPM_BUILD_ROOT%{_includedir}/qt/qconfig.h
 
-cat >> $RPM_BUILD_ROOT%{_includedir}/qconfig.h << EOF
+cat >> $RPM_BUILD_ROOT%{_includedir}/qt/qconfig.h << EOF
 
 /* All of these style classes we provide as plugins */
 #define QT_NO_STYLE_CDE
@@ -803,7 +892,7 @@ EOF
 #%attr(755,root,root) %{_bindir}/qt32castcompat
 %attr(755,root,root) %{_bindir}/qtrename140
 %attr(755,root,root) %{_bindir}/uic
-%{_includedir}
+%{_includedir}/qt
 %{_libdir}/libqassistantclient.so
 %{_libdir}/libqt-mt.so
 %{_datadir}/qt/[!d]*
@@ -846,6 +935,18 @@ EOF
 %attr(755,root,root) %{_libdir}/%{name}/plugins-mt/sqldrivers/lib*odbc.so
 %endif
 
+%if %{with sqlite}
+%files plugin-sqlite
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/plugins-mt/sqldrivers/lib*sqlite.so
+%endif
+
+%if %{with ibase}
+%files plugin-ibase
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/plugins-mt/sqldrivers/lib*ibase.so
+%endif
+
 %if %{with single}
 %files st
 %defattr(644,root,root,755)
@@ -886,6 +987,18 @@ EOF
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}/plugins-st/sqldrivers/lib*odbc.so
 %endif
+
+%if %{with sqlite}
+%files st-plugin-sqlite
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/plugins-st/sqldrivers/lib*sqlite.so
+%endif
+
+%if %{with ibase}
+%files st-plugin-ibase
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/plugins-st/sqldrivers/lib*ibase.so
+%endif
 %endif
 
 %if %{with designer}
@@ -894,9 +1007,9 @@ EOF
 %attr(755,root,root) %{_libdir}/libdesignercore.so.*.*.*
 %attr(755,root,root) %{_libdir}/libeditor.so.*.*.*
 %attr(755,root,root) %{_libdir}/libqui.so.*.*.*
-%{_libdir}/libqui.so
 %{_libdir}/libdesignercore.so
 %{_libdir}/libeditor.so
+%{_libdir}/libqui.so
 
 
 %files designer
