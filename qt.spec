@@ -8,7 +8,7 @@ Name:		qt
 #%define		libeditor_version 1.0.0
 Version:	3.0.3
 #Release:	0.%{_snapshot}.7
-Release:	0.3
+Release:	0.4
 Epoch:		1
 License:	GPL
 Group:		X11/Libraries
@@ -476,7 +476,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/%{name}/plugins/designer/*.so
 %dir %{_datadir}/qt
 %{_datadir}/qt/mkspecs
-%{_datadir}/qt/designer/templates
+%{_datadir}/qt/designer
 
 %files static
 %defattr(644,root,root,755)
