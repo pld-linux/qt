@@ -23,7 +23,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.2.0
-Release:	2
+Release:	3
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -32,8 +32,8 @@ Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
 #Source0:	http://www.kernel.pl/~adgor/kde/%{name}-copy-%{_snap}.tar.bz2
 #Source1:	ftp://ftp.trolltech.com/qsa/%{name}-designer-changes-qsa-beta3.tar.gz
 #%% Source1-md5:	61dbb6efe50e04fcaa5a592e9bf58664
-Source1:	http://ep09.kernel.pl/~djurban/snap/%{name}-patches-030801.tar.bz2
-# Source1-md5:	edc2340cd8317b19515718de29102219
+Source1:	http://ep09.kernel.pl/~djurban/snap/%{name}-patches-030811.tar.bz2
+# Source1-md5:	aa9a313a7266030933672b1ff259a5e8
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
