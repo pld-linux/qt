@@ -60,7 +60,9 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	qt-extensions
 
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1
+%define		_prefix		/usr/X11R6
 %define		_includedir	%{_prefix}/include/qt
+%define		_mandir		%{_prefix}/man
 %define         _qt_sl		%{version}
 
 %description
@@ -441,7 +443,7 @@ rm -rf `find $RPM_BUILD_ROOT -name CVS`
 rm -rf `find . -name CVS`
 
 install -d $RPM_BUILD_ROOT{%{_mandir}/man{1,3},%{_examplesdir}/%{name}/lib} \
-	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st
+	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-{m,s}t/network
 install bin/{findtr,qt20fix,qtrename140} \
 	tools/msg2qm/msg2qm tools/mergetr/mergetr \
 	$RPM_BUILD_ROOT%{_bindir}
@@ -496,6 +498,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/plugins*
 %dir %{_libdir}/%{name}/plugins*/imageformats
+%dir %{_libdir}/%{name}/plugins*/network
 %dir %{_libdir}/%{name}/plugins*/styles
 %if %{_withsql}
 %dir %{_libdir}/%{name}/plugins*/sqldrivers
