@@ -445,7 +445,7 @@ lrelease designer_fr.ts
 cd $Z/tools/assistant
 lrelease assistant_de.ts
 lrelease assistant_fr.ts
-cd $Z/tools/linguist
+cd $Z/tools/linguist/linguist
 lrelease linguist_de.ts
 lrelease linguist_fr.ts
 cd $Z
