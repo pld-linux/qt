@@ -1,7 +1,7 @@
 #
 # Conditional build:
 %bcond_with	nas		# enable NAS audio support
-%bcond_with	nvidia		# prelink Qt/KDE and depend on NVIDIA binaries (broken at this moment)
+%bcond_with	nvidia		# prelink Qt/KDE and depend on NVIDIA binaries
 %bcond_without	single		# don't build single-threaded libraries
 %bcond_without	static_libs	# don't build static libraries
 %bcond_without	cups		# disable CUPS support
@@ -21,9 +21,9 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	%{_ver}
-Release:	0.%{_snap}.0.1
+Release:	0.%{_snap}.1
 Epoch:		6
-License:	GPL / QPL
+License:	GPL/QPL
 Group:		X11/Libraries
 Source0:	http://ep09.pld-linux.org/~djurban/kde/%{name}-copy-%{_snap}.tar.bz2
 # Source0-md5:	b68d75187d4bf35fb2d4ee9f87cc268c
@@ -37,8 +37,7 @@ Patch6:		%{name}-locale.patch
 Patch7:		%{name}-make_use_of_locale.patch
 Patch8:		%{name}-make_assistant_use_global_docs.patch
 Patch9:		%{name}-qmake-opt.patch
-Patch10:	%{name}-qmake-la-and-pc-fix.patch
-Patch11:	%{name}-fix_nptl.patch
+Patch10:	%{name}-fix_nptl.patch
 URL:		http://www.trolltech.com/products/qt/
 BuildRequires:	OpenGL-devel
 # incompatible with bison
@@ -53,6 +52,7 @@ BuildRequires:	libstdc++-devel
 BuildRequires:	libungif-devel
 %{?with_mysql:BuildRequires:	mysql-devel}
 %{?with_nas:BuildRequires:	nas-devel}
+%{?with_nvidia:BuildRequires:	XFree86-driver-nvidia-devel =< 1.0.4496-1.1}
 BuildRequires:	perl-base
 %{?with_pgsql:BuildRequires:	postgresql-backend-devel}
 %{?with_pgsql:BuildRequires:	postgresql-devel}
@@ -354,8 +354,7 @@ Narzêdie do konfiguracji wygl±du i zachowania widgetów QT.
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
-#%patch10 -p1
-%patch11 -p0
+%patch10 -p0
 
 ./apply_patches
 
@@ -573,6 +572,12 @@ cp -R plugins-st/*		$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st
 
 install debian/maintain/qtconfig.desktop \
 	$RPM_BUILD_ROOT%{_desktopdir}
+
+install debian/maintain/designer-qt3.desktop \
+	$RPM_BUILD_ROOT%{_desktopdir}/designer.desktop
+
+sed -i 's/Exec=designer-qt3/Exec=designer/' \
+    $RPM_BUILD_ROOT%{_desktopdir}/designer.desktop	
 
 install tools/qtconfig/images/appicon.png \
 	$RPM_BUILD_ROOT%{_pixmapsdir}/qtconfig.png
@@ -809,6 +814,7 @@ EOF
 %lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/designer.qm
 %lang(de) %{_datadir}/locale/de/LC_MESSAGES/linguist.qm
 %lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/linguist.qm
+%{_desktopdir}/designer.desktop
 
 %files -n qtconfig
 %defattr(644,root,root,755)
