@@ -283,6 +283,9 @@ Narzedzia programistyczne QT.
 %build
 export QTDIR=`/bin/pwd`
 export YACC='byacc -d'
+export PATH=$QTDIR/bin:$PATH
+export LD_LIBRARY_PATH=$QTDIR/lib:$LD_LIBRARY_PATH
+			
 
 mv patches/apply_patches ./
 
@@ -440,6 +443,7 @@ _EOF_
 # Do not build tutorial and examples. Provide them as sources.
 #%%{__make} symlinks src-qmake src-moc sub-src sub-tools
 %{__make} sub-tools
+
 
 export Z=`/bin/pwd`
 
