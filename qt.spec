@@ -13,19 +13,7 @@
 #
 
 %define 	_nosql	0
-
-%if %{!?_without_mysql:1}%{?_without_mysql:0}
-%define		_nosql	%{_nosql}+1
-%endif
-
-%if %{!?_without_psql:1}%{?_without_psql:0}
-%define         _nosql  %{_nosql}+1
-%endif
-
-%if %{!?_without_odbc:1}%{?_without_odbc:0}
-%define         _nosql  %{_nosql}+1
-%endif
-
+%{?_without_mysql:%{?_without_psql:%{?_without_odbc:%define _nosql 1}}}
 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
@@ -42,7 +30,8 @@ Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
 Patch3:		%{name}-FHS.patch
-Patch4:		%{name}-QFont.patch
+Patch4:		%{name}-qmake-opt.patch
+Patch5:		%{name}-QFont.patch
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
 # incompatible with bison
@@ -253,7 +242,8 @@ Narzedzia programistyczne QT.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-#%patch4 -p1
+%patch4 -p1
+#%patch5 -p1
 
 # mkspecs has wrong includes what makes it require patching every files that uses qmake
 # this is a fix
@@ -276,14 +266,11 @@ rm -f include/qt_windows.h
 QTDIR=`/bin/pwd`; export QTDIR
 LD_LIBRARY_PATH="$QTDIR/lib" ; export LD_LIBRARY_PATH
 PATH="$QTDIR/bin:$PATH"
-if [ -f %{_pkgconfigdir}/libpng12.pc ] ; then
-	PNGCFLAGS=" `pkg-config libpng12 --cflags`"
-fi
 
-# change QMAKE_CFLAGS_RELEASE
-#perl -pi -e "
-#	s|-O2|%{rpmcflags}${PNGCFLAGS}|;
-#	" mkspecs/linux-g++/qmake.conf
+# change QMAKE_CFLAGS_RELEASE to build properly optimized libs
+perl -pi -e "
+	s|-O2|%{rpmcflags}|;
+	" mkspecs/linux-g++/qmake.conf
 
 # Fix examples (second part in install section).
 #find examples -name '*.pro' -exec \
@@ -410,7 +397,7 @@ _EOF_
 rm -rf plugins-st
 mkdir plugins-st
 cp -R plugins/{imageformats,styles} plugins-st
-%if %{_nosql < 3}
+%if %{_nosql}
 cp -R plugins/sqldrivers plugins-st
 %endif
 
@@ -504,7 +491,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/%{name}/plugins*
 %dir %{_libdir}/%{name}/plugins*/imageformats
 %dir %{_libdir}/%{name}/plugins*/styles
-%if %{_nosql < 3}
+%if %{_nosql}
 %dir %{_libdir}/%{name}/plugins*/sqldrivers
 %endif
 %attr(755,root,root) %{_libdir}/%{name}/plugins*/imageformats/*.so
