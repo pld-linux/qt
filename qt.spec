@@ -11,26 +11,21 @@
 %define		_withsql	1
 %{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}
 
-#%define		_snap	031108
+%define		_snap	031122
+%define		_ver	3.2.3
 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
-Version:	3.2.3
+Version:	%{_ver}.%{_snap}
 Release:	1
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
-#Source0:	http://www.kernel.pl/~adgor/kde/%{name}-copy-%{_snap}.tar.bz2
-Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
-# Source0-md5:	cd6df28c81ac00d97d62bd9942b8da03
-#Source1:	ftp://ftp.netscape.com/pub/sdk/plugin/unix/unix-sdk-3.0b5.tar.Z
-##Source1:	http://www.kernel.pl/~djurban/pld/unix-sdk-3.0b5.tar.Z
-## Source1-md5:	1e43785d5697c60937e8d6236e7d7d7e
-Source2:	http://www.kernel.pl/~djurban/snap/%{name}-patches-031115.tar.bz2	
-# Source2-md5:	2ad72a8bcb6dddd1c597ed883faa9efb
+Source0:	http://www.kernel.pl/~adgor/kde/%{name}-copy-%{_snap}.tar.bz2
+# Source0-md5:	d61437cdcc5d33dc7cbd5f4005df36d9
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
@@ -334,8 +329,7 @@ QT Development Utilities.
 Narzêdzia programistyczne QT.
 
 %prep
-#%%setup -q -n %{name}-copy-%{_snap}
-%setup -q -a2 -n %{name}-x11-free-%{version}
+%setup -q -n %{name}-copy-%{_snap}
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -348,7 +342,11 @@ Narzêdzia programistyczne QT.
 %patch9 -p1
 %patch10 -p1
 
-mv patches/apply_patches ./
+# qboosh, which is better?!
+cat >> patches/DISABLED << EOF
+0029
+EOF
+
 ./apply_patches
 
 # change QMAKE_CFLAGS_RELEASE to build
@@ -363,13 +361,10 @@ export YACC='byacc -d'
 export PATH=$QTDIR/bin:$PATH
 export LD_LIBRARY_PATH=$QTDIR/lib:$LD_LIBRARY_PATH
 
-
-##cp PluginSDK30b5/include/* extensions/nsplugin/src
-##cp PluginSDK30b5/common/npunix.c extensions/nsplugin/src
 # pass OPTFLAGS for qmake itself
 export OPTFLAGS="%{rpmcflags}"
 
-#%%{__make} -f Makefile.cvs
+%{__make} -f Makefile.cvs
 
 ##################################
 # DEFAULT OPTIONS FOR ALL BUILDS #
@@ -558,7 +553,7 @@ install lib/libqt*.a		$RPM_BUILD_ROOT%{_libdir}
 
 %if %{with single}
 install lib/libqt.so.*.*.*	$RPM_BUILD_ROOT%{_libdir}
-ln -sf libqt.so.%{version}	$RPM_BUILD_ROOT%{_libdir}/libqt.so
+ln -sf libqt.so.%{_ver}		$RPM_BUILD_ROOT%{_libdir}/libqt.so
 install lib/qt.pc		$RPM_BUILD_ROOT%{_pkgconfigdir}
 cp -R plugins-st/*		$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st
 %endif
@@ -640,7 +635,7 @@ cat << EOF
  *  NOTE:                                              *
  *  After qt 3.2.0 the single threaded version was     *
  *  separated. Please install qt-st if You really need *
- *  it. If you do not use qt-st explicitly, please     *
+ *  it. If You do not use qt-st explicitly, please     *
  *  ignore this, as You will not notice any changes.   *
  *  In most cases do not install qt-st, as it is       *
  *  obsoleted.                                         *
