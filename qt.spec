@@ -13,7 +13,7 @@ Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
-Version:	20020928
+Version:	20020930
 Release:	1
 Epoch:		4
 License:	GPL / QPL
@@ -364,6 +364,7 @@ _EOF_
 # This will not remove previously compiled libraries. But WILL remove
 # plugins. And even if they weren't removed, they would be overwritten
 # by next compilation. So they must be backed up.
+rm -rf plugins-st
 mkdir plugins-st
 cp -R plugins/{imageformats,sqldrivers,styles} plugins-st
 %{__make} clean
