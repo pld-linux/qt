@@ -263,12 +263,26 @@ perl -pi -e "
 	s|-O2|%{rpmcflags}|;
 	" mkspecs/linux-g++/qmake.conf
 
-DEFAULTOPT="-prefix %{_prefix} -docdir %{_docdir}/%{name}-doc-%{version} \
-	    -datadir %{_datadir}/qt -headerdir %{_includedir}\
-	    -qt-gif -system-zlib -no-g++-exceptions -stl \
-	    -no-exceptions \
-	    -system-libpng -system-libjpeg -system-libmng -sm -xinerama \
-	    -xrender -xft -xkb -enable-opengl"
+DEFAULTOPT="-prefix %{_prefix} \
+	-datadir %{_datadir}/qt \
+	-docdir %{_docdir}/%{name}-doc-%{version} \
+	-enable-opengl \
+	-headerdir %{_includedir}\
+	-no-exceptions \
+	-no-g++-exceptions \
+	-qt-gif \
+	-sm \
+	-stl \
+	-system-libjpeg \
+	-system-libmng \
+	-system-libpng \
+	-system-zlib \
+	-xft \
+	-xinerama \
+	-xkb \
+	-xrender \
+"
+
 %{?_with_nas:DEFAULTOPT="$DEFAULTOPT -system-nas-sound"}
 %{?_without_cups:DEFAULTOPT="$DEFAULTOPT -no-cups"}
 %{?debug:DEFAULTOPT="$DEFAULTOPT -debug"}
