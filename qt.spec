@@ -12,6 +12,7 @@
 %bcond_without	sqlite		# dont build sqlite
 %bcond_with	ibase		# dont build ibase
 %bcond_with	pch		# enable pch in qmake
+%bcond_with	pch_devel	# enable experimetnal boost (for developers only!)
 #
 %define		_withsql	1
 %{!?with_sqlite:%{!?with_ibase:%{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}}}
@@ -802,6 +803,16 @@ cat >> $RPM_BUILD_ROOT%{_includedir}/qt/qconfig.h << EOF
 #define QT_NO_STYLE_WINDOWS
 
 EOF
+
+%if %{with pch_devel}
+cd $RPM_BUILD_ROOT
+for h in qevent.h qglist.h qmap.h qobject.h qpixmap.h \
+    qptrlist.h qstring.h qstrlist.h qstringlist.h \
+    qvaluelist.h qwidget.h; do
+    %{__cxx} -s $h
+done
+cd -
+%endif
 
 install -d $RPM_BUILD_ROOT%{_datadir}/locale/{ar,de,fr,ru,he,cs,sk}/LC_MESSAGES
 install translations/qt_ar.qm $RPM_BUILD_ROOT%{_datadir}/locale/ar/LC_MESSAGES/qt.qm
