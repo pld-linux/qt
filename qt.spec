@@ -22,7 +22,7 @@
 
 %define		_snap		040422
 %define		_ver		3.3.2
-%define		_packager	adgor
+%define		_packager	djurban
 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
@@ -31,15 +31,15 @@ Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 #Version:	%{_ver}.%{_snap}
 Version:	%{_ver}
-Release:	4
+Release:	5
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
 #Source0:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-%{_snap}.tar.bz2
 Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
 # Source0-md5:	903cad618274ad84d7d13fd0027a6c3c
-Source1:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-patches-040427.tar.bz2
-# Source1-md5:	ec9cfcbeee331483184bed6807cd8394
+Source1:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-patches-040531.tar.bz2
+# Source1-md5:	2e38e44b6ef26bfb8a7f3b6900ee53c0
 Source2:	%{name}config.desktop
 Source3:	designer.desktop
 Source4:	assistant.desktop
@@ -969,25 +969,23 @@ install tools/linguist/qm2ts/qm2ts.1 $RPM_BUILD_ROOT%{_mandir}/man1
 
 rm -rf `find $RPM_BUILD_ROOT -name CVS`
 
-export QTDIR=%{_usr}
-export QMAKESPEC=%{_datadir}/qt/mkspecs/linux-g++
 
 cd $RPM_BUILD_ROOT%{_examplesdir}/%{name}/examples
-
-for i in `find ./ -name \*.pro -printf "%h\n"`;
+for i in `find ./ -name Makefile`;
 do
-	cd $i
-	${QTDIR}/bin/qmake > /dev/null 2>&1
-	cd - > /dev/null 2>&1
+
+%{__sed} -i -e "s,$RPM_BUILD_DIR,/usr,g" $i
+%{__sed} -i -e "s,examples,src/examples/qt/examples,g" $i
+
 done
 
 cd $RPM_BUILD_ROOT%{_examplesdir}/%{name}/tutorial
-
-for i in `find ./ -name \*.pro -printf "%h\n"`;
+for i in `find ./ -name Makefile`;
 do
-	cd $i
-	${QTDIR}/bin/qmake > /dev/null 2>&1
-	cd - > /dev/null 2>&1
+
+%{__sed} -i -e "s,$RPM_BUILD_DIR,/usr,g" $i
+%{__sed} -i -e "s,examples,src/examples/qt/tutorial,g" $i
+
 done
 
 
