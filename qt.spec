@@ -13,7 +13,7 @@ Epoch:		1
 License:	GPL
 Group:		X11/Libraries
 #Source0:	ftp://ftp.trolltech.com/qt/snapshots/%{name}-x11-free-%{version}-snapshot-%{_snapshot}.tar.bz2
-Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.gz
+Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-huge_val.patch
 Patch2:		%{name}-charset.patch
