@@ -20,23 +20,24 @@
 %{!?with_sqlite:%{!?with_ibase:%{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}}}
 
 %define		_ver		3.3.3
+%define		_snap		040916
 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
-#Version:	%{_ver}.%{_snap}
-Version:	%{_ver}
-Release:	4
+Version:	%{_ver}.%{_snap}
+#Version:	%{_ver}
+Release:	1
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
-#Source0:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-%{_snap}.tar.bz2
-Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
+Source0:	http://ftp.pld-linux.org/software/kde/%{name}-copy-%{_snap}.tar.bz2
+#Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
 # Source0-md5:	3e0a0c8429b0a974b39b5f535ddff01c
-Source1:	http://ftp.pld-linux.org/software/kde/%{name}-copy-patches-040819.tar.bz2
-# Source1-md5:	f35f461463d89f7b035530d8d1f02ad6
+#Source1:	http://ftp.pld-linux.org/software/kde/%{name}-copy-patches-040819.tar.bz2
+#%% Source1-md5:	f35f461463d89f7b035530d8d1f02ad6
 Source2:	%{name}config.desktop
 Source3:	designer.desktop
 Source4:	assistant.desktop
@@ -51,9 +52,7 @@ Patch5:		%{name}-make_use_of_locale.patch
 Patch6:		%{name}-qmake-opt.patch
 Patch7:		%{name}-locale-charmap.patch
 Patch8:		%{name}-gcc34.patch
-# for troll only
 Patch10:	%{name}-antialias.patch
-#
 Patch12:	%{name}-x11-free-quiet.patch
 Patch13:	%{name}-x11-mono.patch
 Patch14:	%{name}-x11-qfontdatabase_x11.patch
@@ -83,6 +82,7 @@ BuildRequires:	xcursor-devel
 BuildRequires:	xft-devel
 BuildRequires:	xrender-devel
 BuildRequires:	zlib-devel
+BuildRequires:	byacc
 #Requires:	xft
 #Requires:	xcursor
 #Requires:	xrender
@@ -633,7 +633,7 @@ Biblioteki wykorzystywane przez narzêdzie projektowania interfejsu
 graficznego - Qt Designer.
 
 %prep
-%setup -q -n %{name}-x11-free-%{version} -a1
+%setup -q -n %{name} 
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -683,6 +683,7 @@ echo -e "QMAKE_CXXFLAGS_DEBUG\t=\t%{debugcflags}" >> $plik
 export QTDIR=`/bin/pwd`
 export PATH=$QTDIR/bin:$PATH
 export LD_LIBRARY_PATH=$QTDIR/%{_lib}:$LD_LIBRARY_PATH
+export YACC='byacc -d'
 
 if [ "%{_lib}" != "lib" ] ; then
 	ln -s lib "%{_lib}"
@@ -691,7 +692,7 @@ fi
 # pass OPTFLAGS to build qmake itself with optimization
 export OPTFLAGS="%{rpmcflags}"
 
-#%{__make} -f Makefile.cvs
+%{__make} -f Makefile.cvs
 
 ##################################
 # DEFAULT OPTIONS FOR ALL BUILDS #
