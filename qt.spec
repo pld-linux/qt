@@ -80,7 +80,9 @@ QTDIR=`/bin/pwd`; export QTDIR
 
 #make  RPM_OPT_FLAGS="$RPM_OPT_FLAGS"
 
-LD_LIBRARY_PAYH=%{_libdir} make
+LD_LIBRARY_PAYH=%{_libdir} make \
+SYSCONF_CFLAGS="-pipe -DNO_DEBUG $RPM_OPT_FLAGS" \
+SYSCONF_CXXFLAGS="-pipe -DNO_DEBUG $RPM_OPT_FLAGS" \
 
 echo " Compiling Extensions ..."
 (cd extensions/opengl/src;LD_LIBRARY_PATH=%{_libdir};make)
@@ -126,7 +128,7 @@ if [ -f lib/libqxt.a ] ; then
 fi
 install extensions/xt/src/*.h $RPM_BUILD_ROOT%{_includedir}/
 	
-bzip2 -9 $RPM_BUILD_ROOT%{_mandir}/man[13]/* \
+gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man[13]/* \
 	ANNOUNCE FAQ README* MANIFEST PLATFORMS changes* LICENSE.QPL
 
 for a in {tutorial,examples}/{Makefile,*/Makefile}; do
@@ -156,7 +158,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644, root, root, 755)
-%doc {ANNOUNCE,FAQ,README*,MANIFEST,changes*,PLATFORMS,LICENSE.QPL}.bz2
+%doc {ANNOUNCE,FAQ,README*,MANIFEST,changes*,PLATFORMS,LICENSE.QPL}.gz
 %attr(755,root,root) %{_libdir}/libqt.so.%{version}
 
 %files devel
@@ -175,27 +177,3 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libqimgio.so*
 %{_libdir}/libqgl.a*
 #%{_libdir}/libqxt.a*
-
-%changelog
-* Thr Aug 12 1999 Wojciech "Sas" Ciêciwa <cieciwa@alpha.zarz.agh.edu.pl>
-  [2.0.1-3]
-- fixes problem with tutorial and examples.
-
-* Wed Aug 11 1999 Wojciech "Sas" Ciêciwa <cieciwa@alpha.zarz.agh.edu.pl>
-- fixes BuildRequires problem.
-
-* Tue Aug 10 1999 Wojciech "Sas" Ciêciwa <cieciwa@alpha.zarz.agh.edu.pl>
-  [2.0.1-2]
-- fixes problem with Lesstif.
-
-* Mon Aug  9 1999 Wojciech "Sas" Ciêciwa <cieciwa@alpha.zarz.agh.edu.pl>
-  [2.0.1-1]
-- update to last version.
-
-* Tue Jun 15 1999 Wojciech "Sas" Ciêciwa <cieciwa@alpha.zarz.agh.edu.pl>
-  [2.00beta2-snapshot-19990614-1]
-- update to last version.
-
-* Mon Jun 14 1999 Wojciech "Sas" Ciêciwa <cieciwa@alpha.zarz.agh.edu.pl>
-  [2.00beta2-snapshot-19990613-1]
-- build RPM.
