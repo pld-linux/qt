@@ -356,14 +356,20 @@ mv patches/apply_patches ./
 # properly optimized libs
 perl -pi -e "
 	s|-O2|%{rpmcflags}|;
+	s|/usr/X11R6/lib|/usr/X11R6/%{_lib}|;
+	s|/usr/lib|%{_libdir}|;
+	s|\\(QTDIR\\)/lib|\\(QTDIR\\)/%{_lib}|;
 	" mkspecs/linux-g++/qmake.conf
 
 %build
 export QTDIR=`/bin/pwd`
 export YACC='byacc -d'
 export PATH=$QTDIR/bin:$PATH
-export LD_LIBRARY_PATH=$QTDIR/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$QTDIR/%{_lib}:$LD_LIBRARY_PATH
 
+if [ "%{_lib}" != "lib" ] ; then
+	ln -s lib "%{_lib}"
+fi
 
 ##cp PluginSDK30b5/include/* extensions/nsplugin/src
 ##cp PluginSDK30b5/common/npunix.c extensions/nsplugin/src
@@ -379,6 +385,7 @@ export OPTFLAGS="%{rpmcflags}"
 DEFAULTOPT=" \
 	-verbose \
 	-prefix %{_prefix} \
+	-libdir %{_libdir} \
 	-headerdir %{_includedir} \
 	-datadir %{_datadir}/qt \
 	-docdir %{_docdir}/%{name}-doc \
@@ -475,7 +482,7 @@ SHAREDOPT=" \
 %if %{with single}
 # workaround for some nasty bug to avoid
 # linking plugins statically with -lqt-mt
-rm -f lib/libqt-mt.prl
+rm -f %{_lib}/libqt-mt.prl
 
 ./configure \
 	$DEFAULTOPT \
@@ -519,17 +526,17 @@ export Z=`/bin/pwd`
 # Do not build tutorial and examples. Provide them as sources.
 #%%{__make} symlinks src-qmake src-moc sub-src sub-tools
 %{__make} sub-tools \
-	UIC="LD_PRELOAD=$Z/lib/libqt-mt.so.3 $Z/bin/uic -L $Z/plugins"
+	UIC="LD_PRELOAD=$Z/%{_lib}/libqt-mt.so.3 $Z/bin/uic -L $Z/plugins"
 
 cd tools/designer/designer
-LD_PRELOAD=$Z/lib/libqt-mt.so.3 lrelease designer_de.ts
-LD_PRELOAD=$Z/lib/libqt-mt.so.3 lrelease designer_fr.ts
+LD_PRELOAD=$Z/%{_lib}/libqt-mt.so.3 lrelease designer_de.ts
+LD_PRELOAD=$Z/%{_lib}/libqt-mt.so.3 lrelease designer_fr.ts
 cd $Z/tools/assistant
-LD_PRELOAD=$Z/lib/libqt-mt.so.3 lrelease assistant_de.ts
-LD_PRELOAD=$Z/lib/libqt-mt.so.3 lrelease assistant_fr.ts
+LD_PRELOAD=$Z/%{_lib}/libqt-mt.so.3 lrelease assistant_de.ts
+LD_PRELOAD=$Z/%{_lib}/libqt-mt.so.3 lrelease assistant_fr.ts
 cd $Z/tools/linguist/linguist
-LD_PRELOAD=$Z/lib/libqt-mt.so.3 lrelease linguist_de.ts
-LD_PRELOAD=$Z/lib/libqt-mt.so.3 lrelease linguist_fr.ts
+LD_PRELOAD=$Z/%{_lib}/libqt-mt.so.3 lrelease linguist_de.ts
+LD_PRELOAD=$Z/%{_lib}/libqt-mt.so.3 lrelease linguist_fr.ts
 cd $Z
 
 ##make -C extensions/nsplugin/src
@@ -554,13 +561,13 @@ install bin/{findtr,qt20fix,qtrename140,qt32castcompat} \
 	$RPM_BUILD_ROOT%{_bindir}
 
 %if %{with static_libs}
-install lib/libqt*.a		$RPM_BUILD_ROOT%{_libdir}
+install %{_lib}/libqt*.a		$RPM_BUILD_ROOT%{_libdir}
 %endif
 
 %if %{with single}
-install lib/libqt.so.*.*.*	$RPM_BUILD_ROOT%{_libdir}
+install %{_lib}/libqt.so.*.*.*	$RPM_BUILD_ROOT%{_libdir}
 ln -sf libqt.so.%{version}	$RPM_BUILD_ROOT%{_libdir}/libqt.so
-install lib/qt.pc		$RPM_BUILD_ROOT%{_pkgconfigdir}
+install %{_lib}/qt.pc		$RPM_BUILD_ROOT%{_pkgconfigdir}
 cp -R plugins-st/*		$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st
 %endif
 
