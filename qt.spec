@@ -15,7 +15,7 @@
 %define		_withsql	1
 %{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}
 
-%define		_snap	040325
+%define		_snap	040404
 %define		_ver	3.3.1
 
 Summary:	The Qt3 GUI application framework
@@ -24,12 +24,12 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	%{_ver}.%{_snap}
-Release:	2
+Release:	1
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
 Source0:	http://ep09.pld-linux.org/~adgor/kde/%{name}-copy-%{_snap}.tar.bz2
-# Source0-md5:	6980db235a6aa2b16ad8d10501edabd9
+# Source0-md5:	ee7331d1f81df1d41484ab5d950a657d
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
@@ -42,7 +42,6 @@ Patch8:		%{name}-make_assistant_use_global_docs.patch
 Patch9:		%{name}-qmake-opt.patch
 Patch10:	%{name}-xcursor_version.patch
 Patch11:	%{name}-gcc34.patch
-Patch12:	%{name}-tiny-qstring-speedup.patch
 URL:		http://www.trolltech.com/products/qt/
 BuildRequires:	OpenGL-devel
 %{?with_nvidia:BuildRequires:	XFree86-driver-nvidia-devel < 1.0.4620}
@@ -394,7 +393,6 @@ Narzêdie do konfiguracji wygl±du i zachowania widgetów QT.
 %patch9 -p1
 %patch10 -p1
 %patch11 -p1
-%patch12 -p1
 
 ./apply_patches
 
