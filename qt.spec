@@ -12,8 +12,8 @@
 # _without_cups		- disable cups support
 #
 
-%define 	_nosql	0
-%{?_without_mysql:%{?_without_psql:%{?_without_odbc:%define _nosql 1}}}
+%define 	_withsql	0
+%{?_without_mysql:%{?_without_psql:%{?_without_odbc:%define _withsql 1}}}
 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
@@ -397,7 +397,7 @@ _EOF_
 rm -rf plugins-st
 mkdir plugins-st
 cp -R plugins/{imageformats,styles} plugins-st
-%if %{_nosql}
+%if %{_withsql}
 cp -R plugins/sqldrivers plugins-st
 %endif
 
@@ -491,7 +491,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/%{name}/plugins*
 %dir %{_libdir}/%{name}/plugins*/imageformats
 %dir %{_libdir}/%{name}/plugins*/styles
-%if %{_nosql}
+%if %{_withsql}
 %dir %{_libdir}/%{name}/plugins*/sqldrivers
 %endif
 %attr(755,root,root) %{_libdir}/%{name}/plugins*/imageformats/*.so
