@@ -524,11 +524,13 @@ cat >> $RPM_BUILD_ROOT%{_includedir}/qconfig.h << EOF
 
 EOF
 
-install -d $RPM_BUILD_ROOT%{_datadir}/locale/LC_MESSAGES/{ar,de,fr,ru}
+install -d $RPM_BUILD_ROOT%{_datadir}/locale/LC_MESSAGES/{ar,de,fr,ru,he}
 install translations/qt_ar.qm $RPM_BUILD_ROOT%{_datadir}/locale/LC_MESSAGES/ar/qt.qm
 install translations/qt_de.qm $RPM_BUILD_ROOT%{_datadir}/locale/LC_MESSAGES/de/qt.qm
 install translations/qt_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale/LC_MESSAGES/fr/qt.qm
 install translations/qt_ru.qm $RPM_BUILD_ROOT%{_datadir}/locale/LC_MESSAGES/ru/qt.qm
+install translations/qt_iw.qm $RPM_BUILD_ROOT%{_datadir}/locale/LC_MESSAGES/he/qt.qm
+
 
 install tools/designer/designer/designer_de.qm	$RPM_BUILD_ROOT%{_datadir}/locale/LC_MESSAGES/de/designer.qm
 install tools/designer/designer/designer_fr.qm  $RPM_BUILD_ROOT%{_datadir}/locale/LC_MESSAGES/fr/designer.qm
@@ -567,10 +569,11 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/%{name}/plugins-?t/imageformats/*.so
 %attr(755,root,root) %{_libdir}/%{name}/plugins-?t/styles/*.so
 %dir %{_datadir}/qt
-%lang(ar) %{_datadir}/locale/ar/LC_MESSAGES/qt.qm
-%lang(de) %{_datadir}/locale/de/LC_MESSAGES/qt.qm
-%lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/qt.qm
-%lang(ru) %{_datadir}/locale/ru/LC_MESSAGES/qt.qm
+%lang(ar) %{_datadir}/locale/LC_MESSAGES/ar/qt.qm
+%lang(de) %{_datadir}/locale/LC_MESSAGES/de/qt.qm
+%lang(fr) %{_datadir}/locale/LC_MESSAGES/fr/qt.qm
+%lang(he) %{_datadir}/locale/LC_MESSAGES/he/qt.qm
+%lang(ru) %{_datadir}/locale/LC_MESSAGES/ru/qt.qm
 
 
 %files devel
@@ -631,9 +634,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/%{name}/plugins*/designer
 %attr(755,root,root) %{_libdir}/%{name}/plugins-?t/designer/*.so
 %{_datadir}/qt/designer
-%lang(de) %{_datadir}/locale/de/LC_MESSAGES/assistant.qm
-%lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/assistant.qm
-%lang(de) %{_datadir}/locale/de/LC_MESSAGES/designer.qm
-%lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/designer.qm
-%lang(de) %{_datadir}/locale/de/LC_MESSAGES/linguist.qm
-%lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/linguist.qm
+%lang(de) %{_datadir}/locale/LC_MESSAGES/de/assistant.qm
+%lang(fr) %{_datadir}/locale/LC_MESSAGES/fr/assistant.qm
+%lang(de) %{_datadir}/locale/LC_MESSAGES/de/designer.qm
+%lang(fr) %{_datadir}/locale/LC_MESSAGES/fr/designer.qm
+%lang(de) %{_datadir}/locale/LC_MESSAGES/de/linguist.qm
+%lang(fr) %{_datadir}/locale/LC_MESSAGES/fr/linguist.qm
