@@ -35,7 +35,7 @@ Patch4:		%{name}-qmake-opt.patch
 Patch5:		%{name}-cursors.patch
 Patch6:         %{name}-qmake-nostatic.patch
 Patch7:		%{name}-qmlined-fix.patch
-URL:		http://www.troll.com/
+URL:		http://www.trolltech.com/
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
 # incompatible with bison
@@ -104,7 +104,7 @@ Conflicts:	qt2-devel
 %description devel
 Contains the files necessary to develop applications using Qt: header
 files, the Qt meta object compiler, man pages, HTML documentation and
-example programs. See http://www.troll.com/ for more information about
+example programs. See http://www.trolltech.com/ for more information about
 Qt, or file:/usr/share/doc/%{name}-%{version}/html/index.html for Qt
 documentation in HTML.
 
@@ -112,14 +112,14 @@ documentation in HTML.
 Contiene los archivos necesarios para desarrollar aplicaciones
 usando Qt: archivos de inclusión, compilador de metaobjetos Qt,
 páginas de manual, documentación HTML y programas ejemplo. Mira
-http://www.troll.com/ para más información sobre el Qt, o el
+http://www.trolltech.com/ para más información sobre el Qt, o el
 archivo file:/usr/share/doc/%{name}-%{version}/html/index.html en la
 documentación en HTML.
 
 %description devel -l pl
 Pakiet tem zawiera pliki potrzebne do tworzenia i kompilacji aplikacji
 korzystaj±cych z biblioteki Qt, jak pliki nag³ówkowe, meta kompiler
-(moc), dokumentacjê. Zobacz http://www.troll.com/ aby dowiedzieæ siê
+(moc), dokumentacjê. Zobacz http://www.trolltech.com/ aby dowiedzieæ siê
 wiêcej o Qt. Dokumentacjê do biblioteki znajdziesz tak¿e pod:
 /usr/share/doc/%{name}-%{version}/html/index.html
 
