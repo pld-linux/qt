@@ -1,12 +1,13 @@
-#
 # Conditional build:
 # _with_nas		- enable nas audio support
+# _with_single		- build also single threaded libraries
+# _with_static		- build also static libraries
+#
 # _without_cups		- disable cups support
 # _without_mysql	- without mysql support
 # _without_odbc		- without unixODBC support
 # _without_pgsql	- without PostgreSQL support
-# _with_static		- build static library
-# _with_single		- build single threaded library
+#
 
 %define 	_snap	030405
 
@@ -61,7 +62,7 @@ Obsoletes:	qt-extensions
 
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1
 %define		_includedir	%{_prefix}/include/qt
-%define         _qt_sl		%{version}
+%define         _qt_sl		3.1.2
 
 %description
 Qt is a GUI software toolkit which simplifies the task of writing and
@@ -250,7 +251,8 @@ Narzedzia programistyczne QT.
 # Remove CVS stuff
 rm -rf `find . -name CVS`
 
-# There is no file pointed by this sym-link and there is cp -L in %%install
+# There is no file pointed by this sym-link
+# and there is cp -L in %%install
 rm -f include/qt_windows.h
 
 %build
@@ -258,7 +260,8 @@ export QTDIR=`/bin/pwd`
 export LD_LIBRARY_PATH="$QTDIR/lib"
 PATH="$QTDIR/bin:$PATH"
 
-# change QMAKE_CFLAGS_RELEASE to build properly optimized libs
+# change QMAKE_CFLAGS_RELEASE to build
+# properly optimized libs
 perl -pi -e "
 	s|-O2|%{rpmcflags}|;
 	" mkspecs/linux-g++/qmake.conf
@@ -272,39 +275,33 @@ perl -pi -e "
 DEFAULTOPT=" \
 	-datadir %{_datadir}/qt \
 	-docdir %{_docdir}/%{name}-doc \
-	-enable-opengl \
 	-fast \
 	-headerdir %{_includedir} \
 	%{?_without_cups:-no-cups} \
 	-no-exceptions \
-	-no-g++-exceptions \
 	-no-style-windowsxp \
 	-prefix %{_prefix} \
 	-qt-gif \
-	-sm \
-	-stl \
 	-system-libjpeg \
 	-system-libmng \
 	-system-libpng \
 	%{?_with_nas:-system-nas-sound} \
 	-system-zlib \
-	-xft \
-	-xinerama \
-	-xkb \
-	-xrender \
-	%{!?debug:-release}%{?debug:-debug}"
+	%{?debug:-debug}"
 
-STYLESLIST="cde compact motif motifplus platinum sgi windows"
-
-####################################
-# STYLES FOR SINGLE & MULTI STATIC #
-####################################
+##############################
+# OPTIONS FOR STATIC-{ST,MT} #
+##############################
 
 %if %{?_with_static:1}0
-DEFAULTSTYLES=""
-for i in $STYLESLIST; do
-	DEFAULTSTYLES="$DEFAULTSTYLES -qt-style-$i"
-done
+STATICOPT=" \
+	-qt-imgfmt-jpeg \
+	-qt-imgfmt-mng \
+	-qt-imgfmt-png \
+	%{!?_without_mysql:-qt-sql-mysql} \
+	%{!?_without_odbc:-qt-sql-odbc} \
+	%{!?_without_pgsql:-qt-sql-psql} \
+	-static"
 %endif
 
 ########################
@@ -317,16 +314,7 @@ done
 OPTFLAGS="%{rpmcflags}" \
 ./configure \
 	$DEFAULTOPT \
-	$DEFAULTSTYLES \
-	-no-thread \
-	-static \
-	-plugindir %{_libdir}/qt/plugins-st \
-	-qt-imgfmt-jpeg \
-	-qt-imgfmt-mng \
-	-qt-imgfmt-png \
-	%{!?_without_mysql:-qt-sql-mysql} \
-	%{!?_without_odbc:-qt-sql-odbc} \
-	%{!?_without_pgsql:-qt-sql-psql} \
+	$STATICOPT \
 	<<_EOF_
 yes
 _EOF_
@@ -346,16 +334,8 @@ _EOF_
 OPTFLAGS="%{rpmcflags}" \
 ./configure \
 	$DEFAULTOPT \
-	$DEFAULTSTYLES \
+	$STATICOPT \
 	-thread \
-	-static \
-	-plugindir %{_libdir}/qt/plugins-mt \
-	-qt-imgfmt-jpeg \
-	-qt-imgfmt-mng \
-	-qt-imgfmt-png \
-	%{!?_without_mysql:-qt-sql-mysql} \
-	%{!?_without_odbc:-qt-sql-odbc} \
-	%{!?_without_pgsql:-qt-sql-psql} \
 	<<_EOF_
 yes
 _EOF_
@@ -367,37 +347,39 @@ _EOF_
 %{__make} clean
 %endif
 
-####################################
-# STYLES FOR SINGLE & MULTI SHARED #
-####################################
+##############################
+# OPTIONS FOR SHARED-{ST,MT} #
+##############################
 
-DEFAULTSTYLES=""
-for i in $STYLESLIST; do
-	DEFAULTSTYLES="$DEFAULTSTYLES -plugin-style-$i"
-done
-
-########################
-# SHARED SINGLE-THREAD #
-########################
-
-%if %{?_with_single:1}0
-# workaround for some nasty bug to avoid linking plugins statically
-# with -lqt-mt
-rm -f lib/libqt-mt.prl
-
-OPTFLAGS="%{rpmcflags}" \
-./configure \
-	$DEFAULTOPT \
-	$DEFAULTSTYLES \
-	-no-thread \
-	-shared \
-	-plugindir %{_libdir}/qt/plugins-st \
+SHAREDOPT=" \
 	-plugin-imgfmt-jpeg \
 	-plugin-imgfmt-mng \
 	-plugin-imgfmt-png \
 	%{!?_without_mysql:-plugin-sql-mysql} \
 	%{!?_without_odbc:-plugin-sql-odbc} \
 	%{!?_without_pgsql:-plugin-sql-psql} \
+	-plugin-style-cde \
+	-plugin-style-compact \
+	-plugin-style-motif \
+	-plugin-style-motifplus \
+	-plugin-style-platinum \
+	-plugin-style-sgi \
+	-plugin-style-windows"
+	
+########################
+# SHARED SINGLE-THREAD #
+########################
+
+%if %{?_with_single:1}0
+# workaround for some nasty bug to avoid
+# linking plugins statically with -lqt-mt
+rm -f lib/libqt-mt.prl
+
+OPTFLAGS="%{rpmcflags}" \
+./configure \
+	$DEFAULTOPT \
+	$SHAREDOPT \
+	-plugindir %{_libdir}/qt/plugins-st \
 	<<_EOF_
 yes
 _EOF_
@@ -425,16 +407,9 @@ cp -R plugins/{imageformats,styles} plugins-st
 OPTFLAGS="%{rpmcflags}" \
 ./configure \
 	$DEFAULTOPT \
-	$DEFAULTSTYLES \
+	$SHAREDOPT \
 	-thread \
-	-shared \
 	-plugindir %{_libdir}/qt/plugins-mt \
-	-plugin-imgfmt-png \
-	-plugin-imgfmt-jpeg \
-	-plugin-imgfmt-mng \
-	%{!?_without_mysql:-plugin-sql-mysql} \
-	%{!?_without_odbc:-plugin-sql-odbc} \
-	%{!?_without_pgsql:-plugin-sql-psql} \
 	<<_EOF_
 yes
 _EOF_
@@ -451,10 +426,10 @@ export QTDIR=`/bin/pwd`
 
 install -d \
 	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-mt/network \
+	%{?_with_single:$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st/network} \
 	$RPM_BUILD_ROOT%{_datadir}/qt/mkspecs/default/features \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name}/lib \
-	$RPM_BUILD_ROOT%{_mandir}/man{1,3} \
-	%{?_with_single:$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st/network}
+	$RPM_BUILD_ROOT%{_mandir}/man{1,3}
 	
 install bin/{findtr,qt20fix,qtrename140} \
 	tools/{msg2qm/msg2qm,mergetr/mergetr} \
@@ -481,6 +456,22 @@ perl -pi -e "
 	s|(QMAKE_INCDIR_QT\\s*=\\s*\\\$\\(QTDIR\\)/include)|\$1/qt|
 	" $RPM_BUILD_ROOT/%{_datadir}/qt/mkspecs/linux-g++/qmake.conf
 
+# We provide qt style classes as plugins,
+# so make corresponding changes to the qconfig.h.
+chmod 644 $RPM_BUILD_ROOT%{_includedir}/qconfig.h
+
+cat >> $RPM_BUILD_ROOT%{_includedir}/qconfig.h << EOF
+
+/* All of these style classes we provide as plugins */
+#define QT_NO_STYLE_CDE
+#define QT_NO_STYLE_COMPACT
+#define QT_NO_STYLE_MOTIF
+#define QT_NO_STYLE_MOTIFPLUS
+#define QT_NO_STYLE_PLATINUM
+#define QT_NO_STYLE_SGI
+#define QT_NO_STYLE_WINDOWS
+EOF
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -490,45 +481,30 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc FAQ LICENSE.* README* changes*
+%attr(755,root,root) %{_libdir}/libqassistantclient.so.*
 %attr(755,root,root) %{_libdir}/libdesigner.so.*
 %attr(755,root,root) %{_libdir}/libeditor.so.*
-%attr(755,root,root) %{_libdir}/libqassistantclient.so.*
-%if %{?_with_single:1}0
-%attr(755,root,root) %{_libdir}/libqt.so.*
-%dir %{_libdir}/%{name}/plugins-st
-%dir %{_libdir}/%{name}/plugins-st/imageformats
-%dir %{_libdir}/%{name}/plugins-st/network
-%dir %{_libdir}/%{name}/plugins-st/styles
-%{?_withsql:%dir %{_libdir}/%{name}/plugins-st/sqldrivers}
-%attr(755,root,root) %{_libdir}/%{name}/plugins-st/imageformats/*.so
-%attr(755,root,root) %{_libdir}/%{name}/plugins-st/styles/*.so
-%endif
-%attr(755,root,root) %{_libdir}/libqt-mt.so.*
 %attr(755,root,root) %{_libdir}/libqui.so.*
+%attr(755,root,root) %{_libdir}/libqt*.so.*
 %dir %{_libdir}/%{name}
-%dir %{_libdir}/%{name}/plugins-mt
-%dir %{_libdir}/%{name}/plugins-mt/imageformats
-%dir %{_libdir}/%{name}/plugins-mt/network
-%dir %{_libdir}/%{name}/plugins-mt/styles
-%if %{_withsql}
-%dir %{_libdir}/%{name}/plugins-mt/sqldrivers
-%endif
-%attr(755,root,root) %{_libdir}/%{name}/plugins-mt/imageformats/*.so
-%attr(755,root,root) %{_libdir}/%{name}/plugins-mt/styles/*.so
+%dir %{_libdir}/%{name}/plugins-?t
+%dir %{_libdir}/%{name}/plugins-?t/imageformats
+%dir %{_libdir}/%{name}/plugins-?t/network
+%{?_withsql:%dir %{_libdir}/%{name}/plugins-?t/sqldrivers}
+%dir %{_libdir}/%{name}/plugins-?t/styles
+%attr(755,root,root) %{_libdir}/%{name}/plugins-?t/imageformats/*.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins-?t/styles/*.so
 %dir %{_datadir}/qt
 
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/[!adl]*
 %attr(755,root,root) %{_bindir}/l[!i]*
+%{_libdir}/libqassistantclient.so
 %{_libdir}/libdesigner.so
 %{_libdir}/libeditor.so
-%{_libdir}/libqassistantclient.so
-%if %{?_with_single:1}0
-%{_libdir}/libqt.so
-%endif
-%{_libdir}/libqt-mt.so
 %{_libdir}/libqui.so
+%{_libdir}/libqt*.so
 %{_includedir}
 %{_datadir}/qt/[!d]*
 %{_mandir}/man1/*
@@ -551,25 +527,22 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %{_mandir}/man3/*
 
-%if %{!?_without_mysql:1}%{?_without_mysql:0}
+%if %{!?_without_mysql:1}0
 %files plugins-mysql
 %defattr(644,root,root,755)
-%{?_with_single:%attr(755,root,root) %{_libdir}/%{name}/plugins-st/sqldrivers/lib*mysql.so}
-%attr(755,root,root) %{_libdir}/%{name}/plugins-mt/sqldrivers/lib*mysql.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins-?t/sqldrivers/lib*mysql.so
 %endif
 
-%if %{!?_without_pgsql:1}%{?_without_pgsql:0}
+%if %{!?_without_pgsql:1}0
 %files plugins-psql
 %defattr(644,root,root,755)
-%{?_with_single:%attr(755,root,root) %{_libdir}/%{name}/plugins-st/sqldrivers/lib*psql.so}
-%attr(755,root,root) %{_libdir}/%{name}/plugins-mt/sqldrivers/lib*psql.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins-?t/sqldrivers/lib*psql.so
 %endif
 
-%if %{!?_without_odbc:1}%{?_without_odbc:0}
+%if %{!?_without_odbc:1}0
 %files plugins-odbc
 %defattr(644,root,root,755)
-%{?_with_single:%attr(755,root,root) %{_libdir}/%{name}/plugins-st/sqldrivers/lib*odbc.so}
-%attr(755,root,root) %{_libdir}/%{name}/plugins-mt/sqldrivers/lib*odbc.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins-?t/sqldrivers/lib*odbc.so
 %endif
 
 %files utils
@@ -577,5 +550,5 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/[ad]*
 %attr(755,root,root) %{_bindir}/li*
 %dir %{_libdir}/%{name}/plugins*/designer
-%attr(755,root,root) %{_libdir}/%{name}/plugins*/designer/*.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins-?t/designer/*.so
 %{_datadir}/qt/designer
