@@ -12,9 +12,9 @@
 %{?_without_mysql:%{?_without_pgsql:%{?_without_odbc:%define _withsql 0}}}
 
 Summary:	The Qt3 GUI application framework
-Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
+Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt3
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
-Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
+Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt3
 Name:		qt
 Version:	3.1.2
 Release:	7
@@ -22,7 +22,7 @@ Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
 Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
-# Source0-md5: 156591717687799c69cf3f8b64a898f2
+# Source0-md5:	156591717687799c69cf3f8b64a898f2
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
@@ -37,7 +37,7 @@ BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
 # incompatible with bison
 BuildRequires:	byacc
-%{!?_without_cups:BuildRequires:        cups-devel}
+%{!?_without_cups:BuildRequires:	cups-devel}
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
 BuildRequires:	libjpeg-devel
@@ -62,8 +62,8 @@ Obsoletes:	qt-extensions
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1
 %define		_prefix		/usr/X11R6
 %define		_includedir	%{_prefix}/include/qt
-%define         _qt_sl		%{version}
-%define         _mandir         %{_prefix}/man
+%define		_qt_sl		%{version}
+%define		_mandir		%{_prefix}/man
 
 %description
 Qt is a GUI software toolkit which simplifies the task of writing and
@@ -134,14 +134,14 @@ Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{epoch}:%{version}
 
 %description static
-Static QT libraries.
+Static Qt libraries.
 
 %description static -l pl
 Statyczne biblioteki Qt.
 
 %package doc-html
-Summary:	QT Documentation in HTML format
-Summary(pl):	Dokumentacja QT w formacie HTML
+Summary:	Qt Documentation in HTML format
+Summary(pl):	Dokumentacja Qt w formacie HTML
 Group:		X11/Development/Libraries
 
 %description doc-html
@@ -215,16 +215,16 @@ Wtyczka ODBC do Qt.
 Plugin de suporte a ODBC para Qt.
 
 %package utils
-Summary:	QT Utils
-Summary(pl):	Narzêdzia QT
+Summary:	Qt Utils
+Summary(pl):	Narzêdzia Qt
 Group:		X11/Development/Tools
 Requires:	%{name}-devel = %{epoch}:%{version}
 
 %description utils
-QT Development Utilities.
+Qt Development Utilities.
 
 %description utils -l pl
-Narzedzia programistyczne QT.
+Narzedzia programistyczne Qt.
 
 %prep
 %setup -q -n %{name}-x11-free-%{version}
@@ -245,10 +245,10 @@ Narzedzia programistyczne QT.
 # this is a fix
 cd mkspecs
 for katalog in * ; do
-        if [ -d $katalog ]; then
+	if [ -d $katalog ]; then
 		cd $katalog
 		echo "$katalog"
-		sed -e "s/\$(QTDIR)\/include/\$(QTDIR)\/include\/qt/g"  qmake.conf >> qmake.conf.1
+		sed -e "s/\$(QTDIR)\/include/\$(QTDIR)\/include\/qt/g" qmake.conf >> qmake.conf.1
 		mv -f qmake.conf.1 qmake.conf
 		cd ..
 	fi
