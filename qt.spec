@@ -82,14 +82,17 @@ Qt przyk³ady.
 %build
 QTDIR=`/bin/pwd`; export QTDIR
 ./configure \
+	-gif \
+	-no-g++-exceptions \
+	-release \
 	-shared \
 	-sm \
 	-system-zlib \
-	-gif \
-	-thread \
+	-system-libmng \
+	-system-libpng \
 	-system-zlib \
 	-system-jpeg \
-	-system-libpng <<_EOF_
+	-thread <<_EOF_
 yes
 _EOF_
 
