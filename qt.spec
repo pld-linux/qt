@@ -7,7 +7,7 @@
 # _without_odbc		- without unixODBC support
 # _without_pgsql	- without PostgreSQL support
 # _without_static	- don't build static library
-#
+# _without_single	- don't build single threaded library
 
 %define 	_snap	030405
 
@@ -287,6 +287,7 @@ STYLESLIST="cde compact motif motifplus platinum sgi windows"
 # STATIC SINGLE-THREAD
 ########################################################################
 %if %{!?_without_static:1}%{?_without_static:0}
+%if %{!?_without_single:1}%{?_without_single:0}
 DEFAULTSTYLES=""
 for i in $STYLESLIST; do
 	DEFAULTSTYLES="$DEFAULTSTYLES -qt-style-$i"
@@ -313,7 +314,7 @@ _EOF_
 # Build libraries and everything needed to do this. Do not build examples and
 # such. They will be built with shared, sigle-thread libraries.
 %{__make} symlinks src-qmake src-moc sub-src
-
+%endif # without single
 ########################################################################
 # STATIC MULTI-THREAD
 ########################################################################
@@ -347,7 +348,7 @@ _EOF_
 ########################################################################
 # SHARED SINGLE-THREAD
 ########################################################################
-
+%if %{!?_without_single:1}%{?_without_single:0}
 DEFAULTSTYLES=""
 for i in $STYLESLIST; do
 	DEFAULTSTYLES="$DEFAULTSTYLES -plugin-style-$i"
@@ -401,7 +402,7 @@ cp -R plugins/sqldrivers plugins-st
 %endif
 
 %{__make} clean
-
+%endif # without single
 OPTFLAGS="%{rpmcflags}" \
 ./configure \
 	$DEFAULTOPT \
@@ -485,19 +486,30 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libdesigner.so.*
 %attr(755,root,root) %{_libdir}/libeditor.so.*
 %attr(755,root,root) %{_libdir}/libqassistantclient.so.*
+%if %{!?_without_single:1}%{?_without_single:0}
 %attr(755,root,root) %{_libdir}/libqt.so.*
+%dir %{_libdir}/%{name}/plugins-st
+%dir %{_libdir}/%{name}/plugins-st/imageformats
+%dir %{_libdir}/%{name}/plugins-st/network
+%dir %{_libdir}/%{name}/plugins-st/styles
+%if %{_withsql}
+%dir %{_libdir}/%{name}/plugins-st/sqldrivers
+%endif
+%attr(755,root,root) %{_libdir}/%{name}/plugins-st/imageformats/*.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins-st/styles/*.so
+%endif
 %attr(755,root,root) %{_libdir}/libqt-mt.so.*
 %attr(755,root,root) %{_libdir}/libqui.so.*
 %dir %{_libdir}/%{name}
-%dir %{_libdir}/%{name}/plugins*
-%dir %{_libdir}/%{name}/plugins*/imageformats
-%dir %{_libdir}/%{name}/plugins*/network
-%dir %{_libdir}/%{name}/plugins*/styles
+%dir %{_libdir}/%{name}/plugins-mt
+%dir %{_libdir}/%{name}/plugins-mt/imageformats
+%dir %{_libdir}/%{name}/plugins-mt/network
+%dir %{_libdir}/%{name}/plugins-mt/styles
 %if %{_withsql}
-%dir %{_libdir}/%{name}/plugins*/sqldrivers
+%dir %{_libdir}/%{name}/plugins-mt/sqldrivers
 %endif
-%attr(755,root,root) %{_libdir}/%{name}/plugins*/imageformats/*.so
-%attr(755,root,root) %{_libdir}/%{name}/plugins*/styles/*.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins-mt/imageformats/*.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins-mt/styles/*.so
 %dir %{_datadir}/qt
 
 %files devel
@@ -507,7 +519,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libdesigner.so
 %{_libdir}/libeditor.so
 %{_libdir}/libqassistantclient.so
+%if %{!?_without_single:1}%{?_without_single:0}
 %{_libdir}/libqt.so
+%endif
 %{_libdir}/libqt-mt.so
 %{_libdir}/libqui.so
 %{_includedir}
@@ -537,19 +551,28 @@ rm -rf $RPM_BUILD_ROOT
 %if %{!?_without_mysql:1}%{?_without_mysql:0}
 %files plugins-mysql
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/plugins*/sqldrivers/lib*mysql.so
+%if %{!?_without_single:1}%{?_without_single:0}
+%attr(755,root,root) %{_libdir}/%{name}/plugins-st/sqldrivers/lib*mysql.so
+%endif
+%attr(755,root,root) %{_libdir}/%{name}/plugins-mt/sqldrivers/lib*mysql.so
 %endif
 
 %if %{!?_without_pgsql:1}%{?_without_pgsql:0}
 %files plugins-psql
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/plugins*/sqldrivers/lib*psql.so
+%if %{!?_without_single:1}%{?_without_single:0}
+%attr(755,root,root) %{_libdir}/%{name}/plugins-st/sqldrivers/lib*psql.so
+%endif
+%attr(755,root,root) %{_libdir}/%{name}/plugins-mt/sqldrivers/lib*psql.so
 %endif
 
 %if %{!?_without_odbc:1}%{?_without_odbc:0}
 %files plugins-odbc
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/plugins*/sqldrivers/lib*odbc.so
+%if %{!?_without_single:1}%{?_without_single:0}
+%attr(755,root,root) %{_libdir}/%{name}/plugins-st/sqldrivers/lib*odbc.so
+%endif
+%attr(755,root,root) %{_libdir}/%{name}/plugins-mt/sqldrivers/lib*odbc.so
 %endif
 
 %files utils
