@@ -1,0 +1,12 @@
+diff -urN qt-x11-free-3.0.2-snapshot-20020222.orig/src/sql/drivers/mysql/qsql_mysql.h qt-x11-free-3.0.2-snapshot-20020222/src/sql/drivers/mysql/qsql_mysql.h
+--- qt-x11-free-3.0.2-snapshot-20020222.orig/src/sql/drivers/mysql/qsql_mysql.h	Fri Feb  8 14:38:37 2002
++++ qt-x11-free-3.0.2-snapshot-20020222/src/sql/drivers/mysql/qsql_mysql.h	Sun Feb 24 23:25:37 2002
+@@ -46,7 +46,7 @@
+ #include <qt_windows.h>
+ #endif
+ 
+-#include <mysql.h>
++#include <mysql/mysql.h>
+ 
+ class QMYSQLDriverPrivate;
+ class QMYSQLResultPrivate;
