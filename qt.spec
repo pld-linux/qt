@@ -51,14 +51,14 @@ make	SYSCONF_CFLAGS=$RPM_OPT_FLAGS \
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/usr/X11R6/{bin,include/qt,lib,man/{man1,man3}}
+install -d $RPM_BUILD_ROOT/usr/X11R6/{bin,include/X11/qt,lib,man/{man1,man3}}
 
 install -s bin/moc $RPM_BUILD_ROOT/usr/X11R6/bin/moc
 install -s lib/libqt.so.*.* $RPM_BUILD_ROOT/usr/X11R6/lib
 ln -sf libqt.so.%{version} $RPM_BUILD_ROOT/usr/X11R6/lib/libqt.so
 install man/man1/* $RPM_BUILD_ROOT/usr/X11R6/man/man1
 install man/man3/* $RPM_BUILD_ROOT/usr/X11R6/man/man3
-install include/* $RPM_BUILD_ROOT/usr/X11R6/include/qt
+install include/* $RPM_BUILD_ROOT/usr/X11R6/include/X11/qt
 
 for a in {tutorial,examples}/{Makefile,*/Makefile}; do
   sed 's-^SYSCONF_MOC.*-SYSCONF_MOC		= /usr/X11R6/bin/moc-' < $a > ${a}.2
@@ -81,7 +81,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc html tutorial examples doc changes-* ANNOUNCE
 %attr(755, root, root) /usr/X11R6/bin/*
 %attr(644, root,  man) /usr/X11R6/man/man[13]/*
-/usr/X11R6/include/qt
+/usr/X11R6/include/X11/qt
 %attr(  -, root, root) /usr/X11R6/lib/lib*.so
 
 %changelog
