@@ -2,8 +2,8 @@ Summary:	The Qt2 GUI application framework
 Summary(pl):	Biblioteka Qt2 do tworzenia GUI
 Name:		qt
 %define		libqutil_version 1.0.0
-Version:	2.2.4
-Release:	2
+Version:	2.3.0
+Release:	1
 Epoch:		1
 License:	GPL
 Group:		X11/Libraries
@@ -110,7 +110,7 @@ export LD_LIBRARY_PATH SYSCONF_CFLAGS SYSCONF_CXXFLAGS
 	SYSCONF_CXXFLAGS="%{?debug:-O0 -g}%{!?debug:$RPM_OPT_FLAGS}"
 %else
         SYSCONF_CFLAGS="%{!?debug:-0O}%{?debug:-O0 -g}" \
-	SYSCONF_CXXFLAGS="%{!?debug:-O00}%{?debug:-O0 -g}"
+	SYSCONF_CXXFLAGS="%{!?debug:-O0}%{?debug:-O0 -g}"
 %endif
 	
 %install
