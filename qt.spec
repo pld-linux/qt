@@ -28,30 +28,31 @@ Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 #Version:	%{_ver}.%{_snap}
 Version:	%{_ver}
-Release:	2.1
+Release:	3
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
 #Source0:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-%{_snap}.tar.bz2
-Source0:	ftp://ftp.trolltech.com/qt/source/qt-x11-free-%{version}.tar.bz2
+Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
 # Source0-md5:	903cad618274ad84d7d13fd0027a6c3c
 Source1:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-patches-040427.tar.bz2
 # Source1-md5:	ec9cfcbeee331483184bed6807cd8394
 Source2:	%{name}config.desktop
 Source3:	designer.desktop
+Source4:	assistant.desktop
+Source5:	linguist.desktop
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-FHS.patch
 Patch2:		%{name}-qmake-nostatic.patch
 Patch3:		%{name}-disable_tutorials.patch
 Patch4:		%{name}-locale.patch
 Patch5:		%{name}-make_use_of_locale.patch
-Patch6:		%{name}-make_assistant_use_global_docs.patch
-Patch7:		%{name}-qmake-opt.patch
-Patch8:		%{name}-xcursor_version.patch
-Patch9:		%{name}-gcc34.patch
+Patch6:		%{name}-qmake-opt.patch
+Patch7:		%{name}-xcursor_version.patch
+Patch8:		%{name}-gcc34.patch
 # for troll only
-Patch10:	%{name}-autodetect-pch.patch
-Patch11:	%{name}-antialias.patch
+Patch9:		%{name}-autodetect-pch.patch
+Patch10:	%{name}-antialias.patch
 URL:		http://www.trolltech.com/products/qt/
 BuildRequires:	OpenGL-devel
 %{?with_nvidia:BuildRequires:	XFree86-driver-nvidia-devel < 1.0.4620}
@@ -205,7 +206,7 @@ Programas exemplo para o Qt versão %{version}.
 %package plugin-ibase
 Summary:	Database plugin for InterBase/Firebird Qt support
 Summary(pl):	Wtyczka InterBase/Firebird do Qt
-Summary(pt_BR): Plugin de suporte a InterBase/Firebird para Qt
+Summary(pt_BR):	Plugin de suporte a InterBase/Firebird para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Provides:	%{name}-plugin-sql
@@ -279,7 +280,7 @@ Plugin de suporte a pgsql para Qt.
 %package plugin-sqlite
 Summary:	Database plugin for SQLite Qt support
 Summary(pl):	Wtyczka SQLite do Qt
-Summary(pt_BR): Plugin de suporte a SQLite para Qt
+Summary(pt_BR):	Plugin de suporte a SQLite para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Provides:	%{name}-plugin-sql
@@ -300,11 +301,12 @@ Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 
 %description st
-Single-threaded Qt library (deprecated, for foreign applications only).
+Single-threaded Qt library (deprecated, for foreign applications
+only).
 
 %description st -l pl
-Jednow±tkowa wersja biblioteki Qt (nie zalecana, instniej±ca na potrzeby
-obcych aplikacji).
+Jednow±tkowa wersja biblioteki Qt (nie zalecana, instniej±ca na
+potrzeby obcych aplikacji).
 
 %package st-devel
 Summary:	Development files for single-threaded Qt library
@@ -469,7 +471,8 @@ Requires:	%{name} = %{epoch}:%{version}-%{release}
 Libraries IDE used for GUI designing with QT library.
 
 %description designer-libs -l pl
-Biblioteki do IDE s³u¿±cego do projektowania GUI za pomoc± biblioteki QT.
+Biblioteki do IDE s³u¿±cego do projektowania GUI za pomoc± biblioteki
+QT.
 
 %prep
 #setup -q -n %{name}-copy-%{_snap}
@@ -484,8 +487,7 @@ Biblioteki do IDE s³u¿±cego do projektowania GUI za pomoc± biblioteki QT.
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
-%{?with_pch:%patch10 -p1}
-%patch11 -p1
+%patch10 -p1
 
 cat >> patches/DISABLED <<EOF
 0005
@@ -725,7 +727,7 @@ export QTDIR=`/bin/pwd`
 
 install -d \
 	$RPM_BUILD_ROOT%{_sysconfdir}/qt \
-	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-mt/{crypto,network,qsa} \
+	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-mt/{crypto,network} \
 	%{?with_single:$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st/network} \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name}/lib \
 	$RPM_BUILD_ROOT%{_mandir}/man{1,3} \
@@ -750,10 +752,11 @@ install %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}
 
 %if %{with designer}
 install %{SOURCE3} $RPM_BUILD_ROOT%{_desktopdir}/designer.desktop
-
-sed -i 's/Exec=designer-qt3/Exec=designer/' \
-	$RPM_BUILD_ROOT%{_desktopdir}/designer.desktop	
 %endif
+
+install %{SOURCE4} $RPM_BUILD_ROOT%{_desktopdir}/
+install %{SOURCE5} $RPM_BUILD_ROOT%{_desktopdir}/
+
 
 %if %{without designer}
 install bin/uic $RPM_BUILD_ROOT%{_bindir}
@@ -868,7 +871,6 @@ EOF
 %dir %{_libdir}/%{name}/plugins-mt/imageformats
 %attr(755,root,root) %{_libdir}/%{name}/plugins-mt/imageformats/*.so
 %dir %{_libdir}/%{name}/plugins-mt/network
-%dir %{_libdir}/%{name}/plugins-mt/qsa
 %{?_withsql:%dir %{_libdir}/%{name}/plugins-mt/sqldrivers}
 %dir %{_libdir}/%{name}/plugins-mt/styles
 %attr(755,root,root) %{_libdir}/%{name}/plugins-mt/styles/*.so
@@ -1033,6 +1035,8 @@ EOF
 %lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/assistant.qm
 %lang(de) %{_datadir}/locale/de/LC_MESSAGES/linguist.qm
 %lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/linguist.qm
+%{_desktopdir}/assistant.desktop
+%{_desktopdir}/linguist.desktop
 
 %files -n qtconfig
 %defattr(644,root,root,755)
