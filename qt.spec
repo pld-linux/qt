@@ -2,14 +2,14 @@ Summary:	The Qt2 GUI application framework
 Summary(pl):	Biblioteka Qt2 do tworzenia GUI
 Name:		qt
 Version:	2.1.1
-Release:	2
+Release: 3
 License:	QPL
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
 Source0:	ftp://ftp.troll.no/qt/source/%{name}-x11-%{version}.tar.gz
 BuildRequires:	libungif-devel
 BuildRequires:	zlib-devel
-BuildRequires:	libpng-devel
+BuildRequires:	libpng >= 1.0.8
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel
 BuildRequires:	libstdc++-devel
