@@ -1,15 +1,3 @@
-diff -urN qt-x11-free-3.0.2-snapshot-20020222.orig/plugins/src/sqldrivers/psql/psql.pro qt-x11-free-3.0.2-snapshot-20020222/plugins/src/sqldrivers/psql/psql.pro
---- qt-x11-free-3.0.2-snapshot-20020222.orig/plugins/src/sqldrivers/psql/psql.pro	Thu Feb 21 02:11:16 2002
-+++ qt-x11-free-3.0.2-snapshot-20020222/plugins/src/sqldrivers/psql/psql.pro	Mon Feb 25 13:47:12 2002
-@@ -6,6 +6,8 @@
- unix {
- 	OBJECTS_DIR	= .obj
- 	LIBS   	*= -lpq
-+	QMAKE_CFLAGS += -I/usr/include/postgresql/server
-+	QMAKE_CXXFLAGS += -I/usr/include/postgresql/server
- }
- 
- win32 {
 diff -urN qt-x11-free-3.0.2-snapshot-20020222.orig/src/qtmain.pro qt-x11-free-3.0.2-snapshot-20020222/src/qtmain.pro
 --- qt-x11-free-3.0.2-snapshot-20020222.orig/src/qtmain.pro	Fri Jan 25 20:24:45 2002
 +++ qt-x11-free-3.0.2-snapshot-20020222/src/qtmain.pro	Mon Feb 25 13:45:23 2002
@@ -34,3 +22,16 @@ diff -urN qt-x11-free-3.0.2-snapshot-20020222.orig/src/qtmain.pro qt-x11-free-3.
  }
  
  aix-g++ {
+--- qt-copy/plugins/src/sqldrivers/psql/psql.pro.orig       Thu Feb 21 02:11:16 2002
++++ qt-copy/plugins/src/sqldrivers/psql/psql.pro    Mon Feb 25 13:47:12 2002
+@@ -8,6 +8,10 @@
+ 	!contains( LIBS, .*pq.* ) {
+ 	    LIBS	*= -lpq
+ 	}
++
++        QMAKE_CFLAGS += -I/usr/include/postgresql/server
++        QMAKE_CXXFLAGS += -I/usr/include/postgresql/server
++
+ }
+ 
+ win32 {
