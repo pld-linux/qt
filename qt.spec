@@ -571,8 +571,8 @@ DEFAULTOPT=" \
 	-system-zlib \
 	-no-exceptions \
 	-ipv6 \
-	-I%{_includedir}/postgresql/server \
-	-I%{_includedir}/mysql \
+	-I%{_prefix}/include/postgresql/server \
+	-I%{_prefix}/include/mysql \
 	%{!?with_cups:-no-cups} \
 	%{?with_nas:-system-nas-sound} \
 	%{?with_nvidia:-dlopen-opengl} \
