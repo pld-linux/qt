@@ -719,6 +719,7 @@ DEFAULTOPT=" \
 	%{!?with_cups:-no-cups} \
 	%{?with_nas:-system-nas-sound} \
 	%{?with_nvidia:-dlopen-opengl} \
+	%{?with_pch:-pch} \
 	%{?debug:-debug}"
 
 ##################################
