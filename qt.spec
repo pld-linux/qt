@@ -116,48 +116,48 @@ export LD_LIBRARY_PATH SYSCONF_CFLAGS SYSCONF_CXXFLAGS
 %endif
 	
 %install
-%{__rm} -rf $RPM_BUILD_ROOT
-%{__install} -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir},%{_includedir},%{_mandir}/man3} \
+rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir},%{_includedir},%{_mandir}/man3} \
 	$RPM_BUILD_ROOT/usr/src/examples/%{name} \
 	$RPM_BUILD_ROOT%{_datadir}/tutorial/%{name} \
 
-%{__install} bin/* $RPM_BUILD_ROOT%{_bindir}/
-%{__install} tools/msg2qm/msg2qm $RPM_BUILD_ROOT%{_bindir}/
-%{__install} tools/mergetr/mergetr $RPM_BUILD_ROOT%{_bindir}/
+install bin/* $RPM_BUILD_ROOT%{_bindir}/
+install tools/msg2qm/msg2qm $RPM_BUILD_ROOT%{_bindir}/
+install tools/mergetr/mergetr $RPM_BUILD_ROOT%{_bindir}/
 
-%{__install} lib/libqt.so.%{version} $RPM_BUILD_ROOT%{_libdir}
-%{__ln_s} -f libqt.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libqt.so
+install lib/libqt.so.%{version} $RPM_BUILD_ROOT%{_libdir}
+ln -s -f libqt.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libqt.so
 
-%{__install} lib/libqutil.so.%{libqutil_version} $RPM_BUILD_ROOT%{_libdir}
-%{__ln_s} -f libqutil.so.%{libqutil_version} $RPM_BUILD_ROOT%{_libdir}/libqutil.so
+install lib/libqutil.so.%{libqutil_version} $RPM_BUILD_ROOT%{_libdir}
+ln -s -f libqutil.so.%{libqutil_version} $RPM_BUILD_ROOT%{_libdir}/libqutil.so
 
-%{__install} lib/libqt-mt.so.%{version} $RPM_BUILD_ROOT%{_libdir}
-%{__ln_s} -f libqt-mt.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libqt-mt.so
+install lib/libqt-mt.so.%{version} $RPM_BUILD_ROOT%{_libdir}
+ln -s -f libqt-mt.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libqt-mt.so
 
 # empty symlinks
-%{__rm} -f include/qt_mac.h include/qt_windows.h include/jri.h \
+rm -f include/qt_mac.h include/qt_windows.h include/jri.h \
 	include/jritypes.h include/npapi.h include/npupp.h
-%{__install} include/* $RPM_BUILD_ROOT/%{_includedir}
+install include/* $RPM_BUILD_ROOT/%{_includedir}
 
-%{__install} doc/man/man3/* $RPM_BUILD_ROOT%{_mandir}/man3
+install doc/man/man3/* $RPM_BUILD_ROOT%{_mandir}/man3
 
 for a in {tutorial,examples}/{Makefile,*/Makefile}; do
-	%{__cat} $a | sed 's-^SYSCONF_MOC.*-SYSCONF_MOC = %{_bindir}/moc -' | \
-	%{__sed} 's-^SYSCONF_CXXFLAGS_QT	= \$(QTDIR)/include-SYSCONF_CXXFLAGS_QT = %{_includedir}-' | \
-	%{__sed} 's-^SYSCONF_LFLAGS_QT	= \$(QTDIR)/lib-SYSCONF_LFLAGS_QT = %{_libdir}-' > $a.
-	%{__mv} -f $a. $a
+	cat $a | sed 's-^SYSCONF_MOC.*-SYSCONF_MOC = %{_bindir}/moc -' | \
+	sed 's-^SYSCONF_CXXFLAGS_QT	= \$(QTDIR)/include-SYSCONF_CXXFLAGS_QT = %{_includedir}-' | \
+	sed 's-^SYSCONF_LFLAGS_QT	= \$(QTDIR)/lib-SYSCONF_LFLAGS_QT = %{_libdir}-' > $a.
+	mv -f $a. $a
 done
 
-%{__cp} -dpr examples $RPM_BUILD_ROOT/usr/src/examples/%{name}
-%{__cp} -dpr tutorial $RPM_BUILD_ROOT%{_datadir}/tutorial/%{name}
+cp -dpr examples $RPM_BUILD_ROOT/usr/src/examples/%{name}
+cp -dpr tutorial $RPM_BUILD_ROOT%{_datadir}/tutorial/%{name}
 				
-%{__gzip} -9nf LICENSE.QPL
+gzip -9nf LICENSE.QPL
 
 %post -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
 
 %clean
-%{__rm} -rf $RPM_BUILD_ROOT
+rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
