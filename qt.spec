@@ -6,8 +6,8 @@ Release:	1
 Copyright:	QPL
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
-Source:		ftp://ftp.troll.no/qt/snapshots/%{name}-%{version}-snapshot-20000114.tar.gz
-Patch0:		qt-copy-against-20000114.patch
+Source:		ftp://ftp.troll.no/qt/snapshots/%{name}-%{version}-snapshot-20000228.tar.gz
+#Patch0:		qt-copy-against-20000114.patch
 BuildRequires:	libungif-devel
 BuildRequires:	zlib-devel
 BuildRequires:	libpng-devel
@@ -65,7 +65,7 @@ operacji na obrazach.
 
 %prep 
 %setup -q -n qt-public-cvs
-%patch0 -p1
+#%patch0 -p1
 
 %build
 QTDIR=`/bin/pwd`; export QTDIR
