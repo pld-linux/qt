@@ -3,7 +3,6 @@
 #   *.png files aren't installed.
 #
 # Conditional build:
-# _with_prelink		- with objprelink (problems with new binutils?)
 # _without_mysql	- without mysql support
 # _without_psql		- without PostgreSQL support
 # _without_odbc		- without unixODBC support
@@ -14,24 +13,23 @@ Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
-Version:	3.0.5
-Release:	6
-Epoch:		3
+Version:	20020928
+Release:	1
+Epoch:		4
 License:	GPL / QPL
 Group:		X11/Libraries
-Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
-Source1:	%{name}-designer.desktop
+Source0:	%{name}-copy.tar.bz2
 Patch0:		%{name}-tools.patch
-Patch1:		%{name}-qmake.patch
-Patch2:		%{name}-parse_error.patch
+#Patch1:		%{name}-qmake.patch
+#Patch2:		%{name}-parse_error.patch
 Patch3:		%{name}-postgresql_7_2.patch
 Patch4:		%{name}-mysql_includes.patch
 Patch5:		%{name}-FHS.patch
-Patch6:		%{name}-configure.patch
-Patch7:		%{name}-qmake-opt.patch
-Patch8:		%{name}-QFont.patch
-Patch9:		%{name}-fix-lv.patch
-Patch10:	%{name}-gcc31dlopen.patch
+#Patch6:		%{name}-configure.patch
+#Patch7:		%{name}-qmake-opt.patch
+#Patch8:		%{name}-QFont.patch
+#Patch9:		%{name}-fix-lv.patch
+#Patch10:	%{name}-gcc31dlopen.patch
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
 BuildRequires:	freetype-devel >= 2.0.0
@@ -62,7 +60,7 @@ Obsoletes:	qt-extensions
 %define		_prefix		/usr/X11R6
 %define		_includedir	%{_prefix}/include/qt
 %define		_mandir		%{_prefix}/man
-
+%define         _qt_sl		3.1.0
 %description
 Qt is a GUI software toolkit which simplifies the task of writing and
 maintaining GUI (Graphical User Interface) applications for the X
@@ -202,19 +200,19 @@ Wtyczka ODBC do Qt.
 Plugin de suporte a ODBC para Qt.
 
 %prep
-%setup -q -n %{name}-x11-free-%{version}
+%setup -q -n %{name}-copy
 %patch0 -p1
-%ifarch %{ix86} ppc
-%{?_with_prelink:%patch1 -p1}
-%endif
-%patch2 -p1
+#%ifarch %{ix86} ppc
+#%{?_with_prelink:%patch1 -p1}
+#%endif
+#%patch2 -p1
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
-%patch6 -p1
-%patch7 -p1
-%patch8 -p1
-%patch9 -p1
+#%patch6 -p1
+#%patch7 -p1
+#%patch8 -p1
+#%patch9 -p1
 #%patch10 -p1
 
 # There is no file pointed by this sym-link and there is cp -L in %%install
@@ -237,13 +235,15 @@ perl -pi -e "
 find examples -name '*.pro' -exec \
 	perl -pi -e 's|(DEPENDPATH=)../../include|$1%{_includedir}|' {} \;
 
+
+	
 DEFAULTOPT="-prefix %{_prefix} -docdir %{_docdir}/%{name}-%{version} \
 	    -datadir %{_datadir}/qt -headerdir %{_includedir}\
 	    -release -qt-gif -system-zlib -no-g++-exceptions -stl \
 	    -system-libpng -system-libjpeg -system-libmng -sm -xinerama \
 	    -xrender -xft -xkb -enable-opengl"
 STYLESLIST="cde compact motif motifplus platinum sgi windows"
-
+%{__make} -f Makefile.cvs
 ########################################################################
 # STATIC SINGLE-THREAD
 ########################################################################
@@ -409,11 +409,8 @@ perl -pi -e "s/^	strip/	-strip/;" src/Makefile
 install -d $RPM_BUILD_ROOT%{_mandir}/man{1,3} \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name} \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name}/lib \
-	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st \
-	$RPM_BUILD_ROOT%{_applnkdir}/Development
-
-install %{SOURCE1} $RPM_BUILD_ROOT%{_applnkdir}/Development
-
+	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st
+rm -rf `find . -name CVS`
 install bin/findtr tools/msg2qm/msg2qm tools/mergetr/mergetr $RPM_BUILD_ROOT%{_bindir}
 
 install doc/man/man1/*		$RPM_BUILD_ROOT%{_mandir}/man1
@@ -423,7 +420,7 @@ install lib/libqt.a		$RPM_BUILD_ROOT%{_libdir}
 install lib/libqt-mt.a		$RPM_BUILD_ROOT%{_libdir}
 
 install lib/libqt.so.*.*.*	$RPM_BUILD_ROOT%{_libdir}
-ln -s libqt.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libqt.so
+ln -s libqt.so.%{_qt_sl} $RPM_BUILD_ROOT%{_libdir}/libqt.so
 
 cp -R plugins-st/* $RPM_BUILD_ROOT%{_libdir}/qt/plugins-st/
 
@@ -444,7 +441,8 @@ find $RPM_BUILD_ROOT%{_examplesdir}/%{name} -regex '.*/\(examples\|tutorial\).*/
 perl -pi -e "
 	s|(QMAKE_INCDIR_QT\\s*=\\s*\\\$\\(QTDIR\\)/include)|\$1/qt|
 	" $RPM_BUILD_ROOT/%{_datadir}/qt/kspecs/linux-g++/qmake.conf
-
+rm -rf `find . -name CVS`
+rm -rf `find . -name *.prl`
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -457,6 +455,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libqt.so.*
 %attr(755,root,root) %{_libdir}/libqui.so.*
 %attr(755,root,root) %{_libdir}/libeditor.so.*
+%attr(755,root,root) %{_libdir}/libqassistantclient.so.*
+%attr(755,root,root) %{_libdir}/libdesigner.so.* 
 %attr(755,root,root) %{_libdir}/libqt-mt.so.*
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/plugins*
@@ -468,6 +468,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
+%doc %{_docdir}
 %attr(755,root,root) %{_bindir}/*
 %{_libdir}/libqt.so
 %{_libdir}/libqt-mt.so
@@ -478,9 +479,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/%{name}/plugins*/designer
 %attr(755,root,root) %{_libdir}/%{name}/plugins*/designer/*.so
 %dir %{_datadir}/qt
+%{_datadir}/qt/phrasebooks
 %{_datadir}/qt/mkspecs
 %{_datadir}/qt/designer
-%{_applnkdir}/Development/*
 
 %files static
 %defattr(644,root,root,755)
