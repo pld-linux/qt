@@ -409,8 +409,8 @@ cp -dpR .qmake.cache examples tutorial \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name}
 	
 cd $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}
-mv [!h]* html
-mv h?[!m]* html
+#mv [!h]* html
+#mv h?[!m]* html
 cd -
 cp LICENSE.QPL $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}
 
