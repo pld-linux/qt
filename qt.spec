@@ -274,10 +274,10 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libeditor.so.*.*
 %attr(755,root,root) %{_libdir}/libqt-mt.so.*.*
 %dir %{_libdir}/%{name}
-%dir %{_libdir}/%{name}/plguins
-%dir %{_libdir}/%{name}/plguins/imageformats
-%dir %{_libdir}/%{name}/plguins/styles
-%dir %{_libdir}/%{name}/plguins/sqldrivers
+%dir %{_libdir}/%{name}/plugins
+%dir %{_libdir}/%{name}/plugins/imageformats
+%dir %{_libdir}/%{name}/plugins/styles
+%dir %{_libdir}/%{name}/plugins/sqldrivers
 %attr(755,root,root) %{_libdir}/%{name}/plugins/imageformats/*.so
 #%attr(755,root,root) %{_libdir}/%{name}/plugins/styles/*.so
 
@@ -309,7 +309,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files plugins-psql
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/plugins/sqldrivers/lib*osql.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins/sqldrivers/lib*psql.so
 
 %files plugins-odbc
 %defattr(644,root,root,755)
