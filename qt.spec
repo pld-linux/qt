@@ -267,7 +267,8 @@ DEFAULTOPT="-prefix %{_prefix} \
 	-datadir %{_datadir}/qt \
 	-docdir %{_docdir}/%{name}-doc-%{version} \
 	-enable-opengl \
-	-headerdir %{_includedir}\
+	-headerdir %{_includedir} \
+	%{?_without_cups:-no-cups"} \
 	-no-exceptions \
 	-no-g++-exceptions \
 	-qt-gif \
@@ -276,18 +277,15 @@ DEFAULTOPT="-prefix %{_prefix} \
 	-system-libjpeg \
 	-system-libmng \
 	-system-libpng \
+	%{?_with_nas:-system-nas-sound}
 	-system-zlib \
 	-xft \
 	-xinerama \
 	-xkb \
 	-xrender \
+	%{?debug:-release}%{!?debug:-debug}
 "
 
-%{?_with_nas:DEFAULTOPT="$DEFAULTOPT -system-nas-sound"}
-%{?_without_cups:DEFAULTOPT="$DEFAULTOPT -no-cups"}
-%{?debug:DEFAULTOPT="$DEFAULTOPT -debug"}
-%{!?debug:DEFAULTOPT="$DEFAULTOPT -release"}
-	
 STYLESLIST="cde compact motif motifplus platinum sgi windows"
 %{__make} -f Makefile.cvs
 ########################################################################
