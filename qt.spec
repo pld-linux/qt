@@ -846,7 +846,6 @@ cat << EOF
 
 EOF
 
-%post	 	-p /sbin/ldconfig
 %postun 	-p /sbin/ldconfig
 
 %post 	st 	-p /sbin/ldconfig
