@@ -7,8 +7,8 @@ diff -urN qt-x11-free-3.0.4.orig/configure qt-x11-free-3.0.4/configure
  [ '!' -z "$LicenseKey" ] && echo "#define QT_PRODUCT_LICENSEKEY \"$LicenseKey\"" >>qconfig.h.new
 -[ '!' -z "$QT_INSTALL_PLUGINS" ] && echo "#define QT_INSTALL_PLUGINS ${QT_INSTALL_PLUGINS}" >>qconfig.h.new
 -[ '!' -z "$QT_INSTALL_DATA" ]    && echo "#define QT_INSTALL_DATA    ${QT_INSTALL_DATA}"    >>qconfig.h.new
-+[ '!' -z "$QT_INSTALL_PLUGINS" ] && echo "#define QT_INSTALL_PLUGINS ${QT_INSTALL_PLUGINS}" >>$outpath/include/qconfig.h.new
-+[ '!' -z "$QT_INSTALL_DATA" ]    && echo "#define QT_INSTALL_DATA    ${QT_INSTALL_DATA}"    >>$outpath/include/qconfig.h.new
++[ '!' -z "$QT_INSTALL_PLUGINS" ] && echo "#define QT_INSTALL_PLUGINS \"${QT_INSTALL_PLUGINS}\"" >>$outpath/include/qconfig.h.new
++[ '!' -z "$QT_INSTALL_DATA" ]    && echo "#define QT_INSTALL_DATA    \"${QT_INSTALL_DATA}\""    >>$outpath/include/qconfig.h.new
  
  # avoid unecessary rebuilds by copying only if qconfig.h has changed
  if cmp -s $outpath/include/qconfig.h $outpath/include/qconfig.h.new; then
