@@ -2,7 +2,7 @@ Summary:     The Qt GUI application framework: Shared library
 Summary(pl): Biblioteka Qt do tworzenia GUI
 Name:        qt
 Version:     1.42
-Release:     1
+Release:     2
 Source0:     ftp://ftp.troll.no/qt/source/%{name}-%{version}.tar.gz
 Patch0:      qt.patch
 Copyright:   distributable
@@ -65,6 +65,8 @@ for a in {tutorial,examples}/{Makefile,*/Makefile}; do
   mv -v ${a}.2 $a
 done
 
+gzip -9nf $RPM_BUILD_ROOT/usr/X11R6/man/man{1,3}/*
+
 %post   -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
 
@@ -85,6 +87,11 @@ rm -rf $RPM_BUILD_ROOT
 %attr(  -, root, root) /usr/X11R6/lib/lib*.so
 
 %changelog
+* Mon Dec  9 1998 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
+  [1.42-2]
+- added gzipping man pages,
+- recompiled against libstdc++.so.2.9.
+
 * Tue Sep 15 1998 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
   [1.40-3]
 - added pl translation (based on translation maked by Jacek Konieczny
