@@ -2,7 +2,7 @@
 # Conditional build:
 %bcond_with	nas		# enable NAS audio support
 %bcond_with	nvidia		# prelink Qt/KDE and depend on NVIDIA binaries
-%bcond_without	xlibs		# use XFree86 libs instead of x.org
+%bcond_with	xlibs		# use x.org libs instead of XFree86 libs
 %bcond_without	single		# don't build single-threaded libraries
 %bcond_without	static_libs	# don't build static libraries
 %bcond_without	cups		# disable CUPS support
