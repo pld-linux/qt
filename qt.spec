@@ -9,22 +9,6 @@ Release:	0.0.%{_snapshot}.1
 Epoch:		1
 License:	GPL
 Group:		X11/Libraries
-Group(cs):	X11/Knihovny
-Group(da):	X11/Biblioteker
-Group(de):	X11/Bibliotheken
-Group(es):	X11/Bibliotecas
-Group(fr):	X11/Librairies
-Group(is):	X11/Ağgerğasöfn
-Group(it):	X11/Librerie
-Group(ja):	X11/¥é¥¤¥Ö¥é¥ê
-Group(no):	X11/Biblioteker
-Group(pl):	X11/Biblioteki
-Group(pt):	X11/Bibliotecas
-Group(pt_BR):	X11/Bibliotecas
-Group(ru):	X11/âÉÂÌÉÏÔÅËÉ
-Group(sl):	X11/Knji¾nice
-Group(sv):	X11/Bibliotek
-Group(uk):	X11/â¦ÂÌ¦ÏÔÅËÉ
 Source0:	ftp://ftp.troll.no/qt/source/%{name}-x11-free-%{version}%{_snapshot}.tar.gz
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-huge_val.patch
@@ -72,22 +56,6 @@ jak równie¿ pliki README z Qt.
 Summary:	Include files and documentation needed to compile
 Summary(pl):	Pliki nag³ówkowe, przyk³ady i dokumentacja do biblioteki
 Group:		X11/Development/Libraries
-Group(cs):	X11/Vıvojové prostøedky/Knihovny
-Group(da):	X11/Udvikling/Biblioteker
-Group(de):	X11/Entwicklung/Bibliotheken
-Group(es):	X11/Desarrollo/Bibliotecas
-Group(fr):	X11/Development/Librairies
-Group(is):	X11/Şróunartól/Ağgerğasöfn
-Group(it):	X11/Sviluppo/Librerie
-Group(ja):	X11/³«È¯/¥é¥¤¥Ö¥é¥ê
-Group(no):	X11/Applikasjoner/Biblioteker
-Group(pl):	X11/Programowanie/Biblioteki
-Group(pt):	X11/Desenvolvimento/Bibliotecas
-Group(pt_BR):	X11/Desenvolvimento/Bibliotecas
-Group(ru):	X11/òÁÚÒÁÂÏÔËÁ/âÉÂÌÉÏÔÅËÉ
-Group(sl):	X11/Razvoj/Knji¾nice
-Group(sv):	X11/Utveckling/Bibliotek
-Group(uk):	X11/òÏÚÒÏÂËÁ/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name} = %{version}
 Requires:	XFree86-devel
 Requires:	libstdc++-devel
@@ -110,22 +78,6 @@ wiêcej o Qt. Dokumentacjê do biblioteki znajdziesz tak¿e pod:
 Summary:	Qt static libraries
 Summary(pl):	Biblioteki statyczne Qt.
 Group:		X11/Development/Libraries
-Group(cs):	X11/Vıvojové prostøedky/Knihovny
-Group(da):	X11/Udvikling/Biblioteker
-Group(de):	X11/Entwicklung/Bibliotheken
-Group(es):	X11/Desarrollo/Bibliotecas
-Group(fr):	X11/Development/Librairies
-Group(is):	X11/Şróunartól/Ağgerğasöfn
-Group(it):	X11/Sviluppo/Librerie
-Group(ja):	X11/³«È¯/¥é¥¤¥Ö¥é¥ê
-Group(no):	X11/Applikasjoner/Biblioteker
-Group(pl):	X11/Programowanie/Biblioteki
-Group(pt):	X11/Desenvolvimento/Bibliotecas
-Group(pt_BR):	X11/Desenvolvimento/Bibliotecas
-Group(ru):	X11/òÁÚÒÁÂÏÔËÁ/âÉÂÌÉÏÔÅËÉ
-Group(sl):	X11/Razvoj/Knji¾nice
-Group(sv):	X11/Utveckling/Bibliotek
-Group(uk):	X11/òÏÚÒÏÂËÁ/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name}-devel = %{version}
 
 %description static
@@ -138,22 +90,6 @@ Statyczne biblioteki Qt.
 Summary:	Qt tutorial/examples
 Summary(pl):	Qt æwiczenia/przyk³ady
 Group:		X11/Development/Libraries
-Group(cs):	X11/Vıvojové prostøedky/Knihovny
-Group(da):	X11/Udvikling/Biblioteker
-Group(de):	X11/Entwicklung/Bibliotheken
-Group(es):	X11/Desarrollo/Bibliotecas
-Group(fr):	X11/Development/Librairies
-Group(is):	X11/Şróunartól/Ağgerğasöfn
-Group(it):	X11/Sviluppo/Librerie
-Group(ja):	X11/³«È¯/¥é¥¤¥Ö¥é¥ê
-Group(no):	X11/Applikasjoner/Biblioteker
-Group(pl):	X11/Programowanie/Biblioteki
-Group(pt):	X11/Desenvolvimento/Bibliotecas
-Group(pt_BR):	X11/Desenvolvimento/Bibliotecas
-Group(ru):	X11/òÁÚÒÁÂÏÔËÁ/âÉÂÌÉÏÔÅËÉ
-Group(sl):	X11/Razvoj/Knji¾nice
-Group(sv):	X11/Utveckling/Bibliotek
-Group(uk):	X11/òÏÚÒÏÂËÁ/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name}-devel = %{version}
 
 %description examples
@@ -166,22 +102,6 @@ Qt æwiczenia/przyk³ady.
 Summary:	Qt MySQL plugin
 Summary(pl):	Wtyczka MySQL do Qt
 Group:		X11/Libraries
-Group(cs):	X11/Knihovny
-Group(da):	X11/Biblioteker
-Group(de):	X11/Bibliotheken
-Group(es):	X11/Bibliotecas
-Group(fr):	X11/Librairies
-Group(is):	X11/Ağgerğasöfn
-Group(it):	X11/Librerie
-Group(ja):	X11/¥é¥¤¥Ö¥é¥ê
-Group(no):	X11/Biblioteker
-Group(pl):	X11/Biblioteki
-Group(pt):	X11/Bibliotecas
-Group(pt_BR):	X11/Bibliotecas
-Group(ru):	X11/âÉÂÌÉÏÔÅËÉ
-Group(sl):	X11/Knji¾nice
-Group(sv):	X11/Bibliotek
-Group(uk):	X11/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name} = %{version}
 
 %description plugins-mysql
@@ -194,22 +114,6 @@ Wtyczka MySQL do Qt.
 Summary:	Qt PostgreSQL plugin
 Summary(pl):	Wtyczka PostgreSQL do Qt
 Group:		X11/Libraries
-Group(cs):	X11/Knihovny
-Group(da):	X11/Biblioteker
-Group(de):	X11/Bibliotheken
-Group(es):	X11/Bibliotecas
-Group(fr):	X11/Librairies
-Group(is):	X11/Ağgerğasöfn
-Group(it):	X11/Librerie
-Group(ja):	X11/¥é¥¤¥Ö¥é¥ê
-Group(no):	X11/Biblioteker
-Group(pl):	X11/Biblioteki
-Group(pt):	X11/Bibliotecas
-Group(pt_BR):	X11/Bibliotecas
-Group(ru):	X11/âÉÂÌÉÏÔÅËÉ
-Group(sl):	X11/Knji¾nice
-Group(sv):	X11/Bibliotek
-Group(uk):	X11/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name} = %{version}
 
 %description plugins-psql
@@ -222,22 +126,6 @@ Wtyczka PostgreSQL do Qt.
 Summary:	Qt ODBC plugin
 Summary(pl):	Wtyczka ODBC do Qt
 Group:		X11/Libraries
-Group(cs):	X11/Knihovny
-Group(da):	X11/Biblioteker
-Group(de):	X11/Bibliotheken
-Group(es):	X11/Bibliotecas
-Group(fr):	X11/Librairies
-Group(is):	X11/Ağgerğasöfn
-Group(it):	X11/Librerie
-Group(ja):	X11/¥é¥¤¥Ö¥é¥ê
-Group(no):	X11/Biblioteker
-Group(pl):	X11/Biblioteki
-Group(pt):	X11/Bibliotecas
-Group(pt_BR):	X11/Bibliotecas
-Group(ru):	X11/âÉÂÌÉÏÔÅËÉ
-Group(sl):	X11/Knji¾nice
-Group(sv):	X11/Bibliotek
-Group(uk):	X11/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name} = %{version}
 
 %description plugins-odbc
