@@ -1,25 +1,23 @@
 Summary:	The Qt2 GUI application framework
 Summary(pl):	Biblioteka Qt2 do tworzenia GUI
 Name:		qt
-Version:	2.0.1
-Release:	3.1
+Version:	2.1.0
+Release:	1
 Copyright:	QPL
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
-#ftp:		ftp.troll.no
-#path:		qt/source
-Source:		qt-%version.tar.gz
+Source:		ftp://ftp.troll.no/qt/snapshots/%{name}-%{version}-snapshot-20000114.tar.gz
+Patch0:		qt-copy-against-20000114.patch
 BuildRequires:	libungif-devel
 BuildRequires:	zlib-devel
 BuildRequires:	libpng-devel
 BuildRequires:	Mesa-devel
 BuildRequires:	XFree86-devel
 BuildRequires:	libstdc++-devel
-BuildRequires: lesstif-devel
+BuildRequires:	lesstif-devel
 Buildroot:	/tmp/%{name}-%{version}-root
 
 %define		_prefix		/usr/X11R6
-%define		_mandir		%{_prefix}/man
 
 %description
 Contains the shared library needed to run Qt applications, as well as
@@ -65,8 +63,9 @@ Pakiet zawiera zestaw rozsze¿eñ dla biblioteki Qt. Biblioteki dla
 nastêpuj±cych pakietów: Motif/Lestif, OpenGL, Netscape oraz
 operacji na obrazach.
 
-%prep
-%setup -q
+%prep 
+%setup -q -n qt-public-cvs
+%patch0 -p1
 
 %build
 QTDIR=`/bin/pwd`; export QTDIR
@@ -77,15 +76,17 @@ QTDIR=`/bin/pwd`; export QTDIR
 	-gif \
 	-system-libpng
 
-#make  RPM_OPT_FLAGS="$RPM_OPT_FLAGS"
-
-LD_LIBRARY_PATH=%{_libdir} make \
-SYSCONF_CFLAGS="-pipe -DNO_DEBUG $RPM_OPT_FLAGS" \
-SYSCONF_CXXFLAGS="-pipe -DNO_DEBUG $RPM_OPT_FLAGS" \
+LD_LIBRARY_PATH=%{_libdir} ;	export LD_LIBRARY_PATH
+SYSCONF_CFLAGS="-pipe -DNO_DEBUG $RPM_OPT_FLAGS" ;	export SYSCONF_CFLAGS
+SYSCONF_CXXFLAGS="-pipe -DNO_DEBUG $RPM_OPT_FLAGS" ;	export SYSCONF_CXXFLAGS
+make
 
 echo " Compiling Extensions ..."
-(cd extensions/opengl/src;LD_LIBRARY_PATH=%{_libdir};make)
 (cd extensions/imageio/src;LD_LIBRARY_PATH=%{_libdir};make)
+(cd extensions/network/src;LD_LIBRARY_PATH=%{_libdir};make)
+(cd extensions/nsplugin/src;LD_LIBRARY_PATH=%{_libdir};make)
+(cd extensions/opengl/src;LD_LIBRARY_PATH=%{_libdir};make)
+(cd extensions/xembed/src;LD_LIBRARY_PATH=%{_libdir};make)
 (cd extensions/xt/src;LD_LIBRARY_PATH=%{_libdir};make \
 	INCPATH="-I%{_includepatch} -I../../../include")
 
@@ -97,37 +98,34 @@ echo " Compiling Extensions ..."
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir},%{_includedir},%{_mandir}/man{1,3}}
+install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir},%{_includedir}}
 install -d $RPM_BUILD_ROOT/usr/src/examples/%{name}
 install -d $RPM_BUILD_ROOT/usr/share/tutorial/%{name}
 
 install bin/* $RPM_BUILD_ROOT/%{_bindir}/
 
-install -s lib/lib*.so* $RPM_BUILD_ROOT/%{_libdir}
+install -s lib/libqt.so.%{version} $RPM_BUILD_ROOT/%{_libdir}
+ln -sf libqt.so.%{version} $RPM_BUILD_ROOT/%{_libdir}/libqt.so
 
 install lib/lib*.a $RPM_BUILD_ROOT%{_libdir}
 
+## FIXME empty symlink
+rm -f include/qpropertyinfo.h
 install include/* $RPM_BUILD_ROOT/%{_includedir}
-install man/man1/* $RPM_BUILD_ROOT/%{_mandir}/man1
-install man/man3/* $RPM_BUILD_ROOT/%{_mandir}/man3
 
 # Extensions
-install -s lib/libqimgio.so.*.* $RPM_BUILD_ROOT%{_libdir}
-ln -sf libqimgio.so.0.1 $RPM_BUILD_ROOT%{_libdir}/libqimgio.so
 install extensions/imageio/src/*.h $RPM_BUILD_ROOT%{_includedir}
-
-install lib/libqgl.a $RPM_BUILD_ROOT%{_libdir}
+install extensions/network/src/*.h $RPM_BUILD_ROOT%{_includedir}
+install extensions/nsplugin/src/*.h $RPM_BUILD_ROOT%{_includedir}
 install extensions/opengl/src/*.h $RPM_BUILD_ROOT%{_includedir}
+install extensions/xembed/src/*.h $RPM_BUILD_ROOT%{_includedir}
+install extensions/xt/src/*.h $RPM_BUILD_ROOT%{_includedir}
 
-if [ -f lib/libqxt.a ] ; then
-        install lib/libqxt.a $RPM_BUILD_ROOT%{_libdir}
-fi
-install extensions/xt/src/*.h $RPM_BUILD_ROOT%{_includedir}/
 
 strip --strip-unneeded $RPM_BUILD_ROOT/%{_bindir}/* || :
+strip --strip-unneeded $RPM_BUILD_ROOT/%{_libdir}/*.so*
 
-gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man[13]/* \
-	ANNOUNCE FAQ README* MANIFEST PLATFORMS changes* LICENSE.QPL
+gzip -9nf LICENSE.QPL
 
 for a in {tutorial,examples}/{Makefile,*/Makefile}; do
         cat $a | sed 's-^SYSCONF_MOC.*-SYSCONF_MOC = %{_bindir}/moc -' | \
@@ -137,35 +135,33 @@ for a in {tutorial,examples}/{Makefile,*/Makefile}; do
 done
 
 cp -dpr examples $RPM_BUILD_ROOT/usr/src/examples/%{name}
-cp -drp tutorial $RPM_BUILD_ROOT/usr/share/tutorial/%{name}
+cp -dpr tutorial $RPM_BUILD_ROOT/usr/share/tutorial/%{name}
 				
 %post   -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
-
-%post   extensions -p /sbin/ldconfig
-%postun extensions -p /sbin/ldconfig
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644, root, root, 755)
-%doc {ANNOUNCE,FAQ,README*,MANIFEST,changes*,PLATFORMS,LICENSE.QPL}.gz
+%doc LICENSE.QPL.gz
 %attr(755,root,root) %{_libdir}/libqt.so.%{version}
 
 %files devel
-%defattr(644, root, root, 755)
+%defattr(644,root,root,755)
 %doc doc/*
 %attr(755,root,root) %{_bindir}/*
 %{_libdir}/libqt.so
-%{_libdir}/*.a
-%{_mandir}/man[13]/*
-%{_includedir}/*
+%{_includedir}/*.h
 /usr/src/examples/%{name}
 /usr/share/tutorial/%{name}
 
 %files extensions
-%defattr(755,root,root,755)
-%{_libdir}/libqimgio.so*
-%{_libdir}/libqgl.a*
-%{_libdir}/libqxt.a*
+%defattr(644,root,root,755)
+%{_libdir}/libqgl.a
+%{_libdir}/libqimgio.a
+%{_libdir}/libqnetwork.a
+%{_libdir}/libqnp.a
+%{_libdir}/libqxembed.a
+%{_libdir}/libqxt.a
