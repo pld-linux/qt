@@ -1,0 +1,385 @@
+diff -Nur qt-x11-free-3.3.2.orig/src/kernel/qapplication_x11.cpp qt-x11-free-3.3.2/src/kernel/qapplication_x11.cpp
+--- qt-x11-free-3.3.2.orig/src/kernel/qapplication_x11.cpp	2004-04-19 11:36:02.000000000 +0200
++++ qt-x11-free-3.3.2/src/kernel/qapplication_x11.cpp	2004-05-12 23:10:49.895694064 +0200
+@@ -241,7 +241,11 @@
+ Atom		qt_gbackground_properties	= 0;
+ Atom		qt_x_incr		= 0;
+ Atom		qt_utf8_string = 0;
++
++// detect broken window managers
++Atom            qt_sgi_desks_manager    = 0;
+ bool		qt_broken_wm		= FALSE;
++static void qt_detect_broken_window_manager();
+ 
+ // NET WM support
+ Atom		qt_net_supported	= 0;
+@@ -1013,7 +1017,7 @@
+     }
+ 
+     qt_broken_wm =
+-	settings.readBoolEntry("/qt/brokenWindowManager", FALSE);
++	settings.readBoolEntry("/qt/brokenWindowManager", qt_broken_wm);
+ 
+     qt_resolve_symlinks =
+ 	settings.readBoolEntry("/qt/resolveSymlinks", TRUE);
+@@ -1289,6 +1293,27 @@
+ }
+ 
+ 
++static void qt_detect_broken_window_manager()
++{
++    Atom type;
++    int format;
++    ulong nitems, after;
++    uchar *data = 0;
++
++    // look for SGI's 4Dwm
++    int e = XGetWindowProperty(appDpy, QPaintDevice::x11AppRootWindow(),
++                               qt_sgi_desks_manager, 0, 1, False, XA_WINDOW,
++                               &type, &format, &nitems, &after, &data);
++    if (data)
++        XFree(data);
++
++    if (e == Success && type == XA_WINDOW && format == 32 && nitems == 1 && after == 0) {
++        // detected SGI 4Dwm
++        qt_broken_wm = TRUE;
++    }
++}
++
++
+ // update the supported array
+ void qt_get_net_supported()
+ {
+@@ -1892,6 +1917,7 @@
+ 	qt_x11_intern_atom( "_NET_WM_NAME", &qt_net_wm_name );
+ 	qt_x11_intern_atom( "_NET_WM_ICON_NAME", &qt_net_wm_icon_name );
+ 	qt_x11_intern_atom( "UTF8_STRING", &qt_utf8_string );
++        qt_x11_intern_atom( "_SGI_DESKS_MANAGER", &qt_sgi_desks_manager );
+ 
+ 	qt_xdnd_setup();
+ 	qt_x11_motifdnd_init();
+@@ -1899,6 +1925,9 @@
+ 	// Finally create all atoms
+ 	qt_x11_process_intern_atoms();
+ 
++        // look for broken window managers
++        qt_detect_broken_window_manager();
++
+ 	// initialize NET lists
+ 	qt_get_net_supported();
+ 	qt_get_net_virtual_roots();
+diff -Nur qt-x11-free-3.3.2.orig/src/kernel/qfontdatabase.cpp qt-x11-free-3.3.2/src/kernel/qfontdatabase.cpp
+--- qt-x11-free-3.3.2.orig/src/kernel/qfontdatabase.cpp	2004-04-19 11:36:07.000000000 +0200
++++ qt-x11-free-3.3.2/src/kernel/qfontdatabase.cpp	2004-05-12 23:10:49.897693768 +0200
+@@ -467,7 +467,7 @@
+     // Ogham,
+     0x1680,
+     // SpacingModifiers,
+-    0x02b0,
++    0x02c7,
+     // CombiningMarks,
+     0x0300,
+ 
+@@ -543,15 +543,15 @@
+     // LetterlikeSymbols,
+     0x2122,
+     // NumberForms,
+-    0x215b,
++    0x2160,
+     // MathematicalOperators,
+     0x222b,
+     // TechnicalSymbols,
+-    0x2440,
++    0x2312,
+     // GeometricSymbols,
+     0x2500,
+     // MiscellaneousSymbols,
+-    0x2600,
++    0x2640,
+     // EnclosedAndSquare,
+     0x2460,
+     // Braille,
+@@ -920,12 +920,14 @@
+ 	      script, scriptName( script ).latin1(),
+ 	      request.weight, request.italic, request.stretch, request.pixelSize, pitch );
+ 
++    bool usesFontConfig = FALSE;
+ #ifdef QT_XFT2
+     if (family_name.isEmpty()
+ 	|| family_name == "Sans Serif"
+ 	|| family_name == "Serif"
+ 	|| family_name == "Monospace") {
+ 	fe = loadFontConfigFont(fp, request, script);
++        usesFontConfig = (fe != 0);
+     }
+     if (!fe)
+ #endif
+@@ -949,7 +951,7 @@
+ #ifdef Q_WS_WIN
+ 		 && ucstricmp( try_family->english_name, family_name ) != 0
+ #endif
+-		 )
++                )
+ 		continue;
+ 
+ 	    if ( family_name.isEmpty() )
+@@ -969,7 +971,7 @@
+ 			override_script = QFont::Han_SimplifiedChinese;
+ 			score_adjust = 200;
+ 		    } else if (override_script == QFont::Han_SimplifiedChinese
+-			&& (try_family->scripts[QFont::Han_TraditionalChinese] & QtFontFamily::Supported)) {
++                               && (try_family->scripts[QFont::Han_TraditionalChinese] & QtFontFamily::Supported)) {
+ 			override_script = QFont::Han_TraditionalChinese;
+ 			score_adjust = 200;
+ 		    } else {
+@@ -978,20 +980,20 @@
+ 		    }
+ 		} else
+ #endif
+-		if (family_name.isEmpty()) {
+-		    continue;
+-		} else if (try_family->scripts[QFont::UnknownScript] & QtFontFamily::Supported) {
+-		    // try with the unknown script (for a symbol font)
+-		    override_script = QFont::UnknownScript;
++                    if (family_name.isEmpty()) {
++                        continue;
++                    } else if (try_family->scripts[QFont::UnknownScript] & QtFontFamily::Supported) {
++                        // try with the unknown script (for a symbol font)
++                        override_script = QFont::UnknownScript;
+ #ifndef QT_XFT2
+-		} else if (try_family->scripts[QFont::Unicode] & QtFontFamily::Supported) {
+-		    // try with the unicode script instead
+-		    override_script = QFont::Unicode;
+-#endif
+-		} else {
+-		    // family not supported by unicode/unknown scripts
+-		    continue;
+-		}
++                    } else if (try_family->scripts[QFont::Unicode] & QtFontFamily::Supported) {
++                        // try with the unicode script instead
++                        override_script = QFont::Unicode;
++#endif
++                    } else {
++                        // family not supported by unicode/unknown scripts
++                        continue;
++                    }
+ 	    }
+ 
+ 	    QtFontFoundry *try_foundry = 0;
+@@ -1134,7 +1136,12 @@
+ 	}
+ 
+ 	if ( fp ) {
+-	    QFontCache::Key key( request, script,
++            QFontDef def = request;
++            if (def.family.isEmpty()) {
++                def.family = fp->request.family;
++                def.family = def.family.left(def.family.find(','));
++            }
++	    QFontCache::Key key( def, script,
+ #ifdef Q_WS_WIN
+ 				 (int)fp->paintdevice
+ #else
+@@ -1142,15 +1149,17 @@
+ #endif
+ 		);
+ 	    QFontCache::instance->insertEngine( key, fe );
+-	    for ( int i = 0; i < QFont::NScripts; ++i ) {
+-		if ( i == script ) continue;
+-
+-		if (!canRender(fe, (QFont::Script) i))
+-		    continue;
+-
+-		key.script = i;
+-		QFontCache::instance->insertEngine( key, fe );
+-	    }
++            if (!usesFontConfig) {
++                for ( int i = 0; i < QFont::NScripts; ++i ) {
++                    if ( i == script ) continue;
++
++                    if (!canRender(fe, (QFont::Script) i))
++                        continue;
++
++                    key.script = i;
++                    QFontCache::instance->insertEngine( key, fe );
++                }
++            }
+ 	}
+     } else {
+ 	if ( request.family.isEmpty() ) {
+diff -Nur qt-x11-free-3.3.2.orig/src/kernel/qfontdatabase_x11.cpp qt-x11-free-3.3.2/src/kernel/qfontdatabase_x11.cpp
+--- qt-x11-free-3.3.2.orig/src/kernel/qfontdatabase_x11.cpp	2004-04-19 11:36:05.000000000 +0200
++++ qt-x11-free-3.3.2/src/kernel/qfontdatabase_x11.cpp	2004-05-12 23:10:49.899693472 +0200
+@@ -973,8 +973,11 @@
+ 	QtFontFoundry *foundry
+ 	    = family->foundry( QString::null,  TRUE );
+ 
+-	for ( int i = 0; i < QFont::LastPrivateScript; ++i )
++	for ( int i = 0; i < QFont::LastPrivateScript; ++i ) {
++            if (i == QFont::UnknownScript)
++                continue;
+ 	    family->scripts[i] = QtFontFamily::Supported;
++        }
+ 
+ 	QtFontStyle::Key styleKey;
+ 	styleKey.oblique = FALSE;
+diff -Nur qt-x11-free-3.3.2.orig/src/kernel/qfontengine_x11.cpp qt-x11-free-3.3.2/src/kernel/qfontengine_x11.cpp
+--- qt-x11-free-3.3.2.orig/src/kernel/qfontengine_x11.cpp	2004-04-19 11:36:09.000000000 +0200
++++ qt-x11-free-3.3.2/src/kernel/qfontengine_x11.cpp	2004-05-12 23:10:49.891694657 +0200
+@@ -1395,29 +1395,17 @@
+ 	xftfs->charmap = -1;
+     }
+ #else
+-    int symbol = -1;
+-    int charmap = -1;
++    _cmap = -1;
++    // Xft maps Unicode and adobe roman for us.
+     for (int i = 0; i < _face->num_charmaps; ++i) {
+-	FT_CharMap cm = _face->charmaps[i];
+-//  	qDebug("font has charmap %x", cm->encoding);
+-	if (charmap == -1 && cm->encoding == ft_encoding_unicode)
+-	    charmap = i;
+-	// we don't use FT_ENCODING_MS_SYMBOL in 3.3, as it maps to U+0xf0xx. All of the fonts
+-	// tested also provide a FT_ENCODING_APPLE_ROMAN table that works for the basic range.
+-	if (symbol == -1
+-	    && (/*cm->encoding == FT_ENCODING_MS_SYMBOL ||*/
+-		cm->encoding == ft_encoding_adobe_custom
+-		|| cm->encoding == ft_encoding_apple_roman)) {
+-	    symbol = i;
+-	}
+-    }
+-
+-    // symbol font
+-    if (symbol != -1 && (charmap == -1 || cmap))
+-	charmap = symbol;
+-    if (charmap != -1) {
+-// 	qDebug("using charmap %x", _face->charmaps[charmap]->encoding);
+-	FT_Set_Charmap(_face, _face->charmaps[charmap]);
++        FT_CharMap cm = _face->charmaps[i];
++//         qDebug("font has charmap %x", cm->encoding);
++        if (cm->encoding == ft_encoding_adobe_custom
++            || cm->encoding == ft_encoding_symbol) {
++//             qDebug("font has adobe custom or ms symbol charmap");
++            _cmap = i;
++            break;
++        }
+     }
+ #endif // QT_XFT2
+ 
+@@ -1458,6 +1446,15 @@
+     }
+ }
+ 
++static glyph_t getAdobeCharIndex(XftFont *font, int cmap, uint ucs4)
++{
++    FT_Face _face = XftLockFace( font );
++    FT_Set_Charmap(_face, _face->charmaps[cmap]);
++    glyph_t g = FT_Get_Char_Index(_face, ucs4);
++    XftUnlockFace(font);
++    return g;
++}
++
+ QFontEngine::Error QFontEngineXft::stringToCMap( const QChar *str, int len, glyph_t *glyphs, advance_t *advances, int *nglyphs, bool mirrored ) const
+ {
+     if ( *nglyphs < len ) {
+@@ -1473,7 +1470,7 @@
+ 	    if ( !glyphs[i] ) {
+ 		if (uc == 0xa0)
+ 		    uc = 0x20;
+-		glyph_t glyph = FT_Get_Char_Index(_face, uc);
++		glyph_t glyph = XftCharIndex(0, _font, uc);
+ 		glyphs[i] = glyph;
+ 		if ( uc < cmapCacheSize )
+ 		    ((QFontEngineXft *)this)->cmapCache[uc] = glyph;
+@@ -1486,7 +1483,7 @@
+ 	    if ( !glyphs[i] ) {
+ 		if (uc == 0xa0)
+ 		    uc = 0x20;
+-		glyph_t glyph = FT_Get_Char_Index(_face, uc);
++		glyph_t glyph = XftCharIndex(0, _font, uc);
+ 		glyphs[i] = glyph;
+ 		if ( uc < cmapCacheSize )
+ 		    ((QFontEngineXft *)this)->cmapCache[uc] = glyph;
+@@ -2067,13 +2064,22 @@
+     bool allExist = TRUE;
+ 
+ #ifdef QT_XFT2
+-    for ( int i = 0; i < len; i++ ) {
+-	if (!FT_Get_Char_Index(_face, string[i].unicode())) {
+-	    allExist = FALSE;
+-	    break;
+-	}
++    if (_cmap != -1) {
++        for ( int i = 0; i < len; i++ ) {
++            if (!XftCharExists(0, _font, string[i].unicode())
++                && getAdobeCharIndex(_font, _cmap, string[i].unicode()) == 0) {
++                allExist = FALSE;
++                break;
++            }
++        }
++    } else {
++        for ( int i = 0; i < len; i++ ) {
++            if (!XftCharExists(0, _font, string[i].unicode())) {
++                allExist = FALSE;
++                break;
++            }
++        }
+     }
+-
+ #else
+     glyph_t glyphs[256];
+     int nglyphs = 255;
+diff -Nur qt-x11-free-3.3.2.orig/src/kernel/qscriptengine_x11.cpp qt-x11-free-3.3.2/src/kernel/qscriptengine_x11.cpp
+--- qt-x11-free-3.3.2.orig/src/kernel/qscriptengine_x11.cpp	2004-04-19 11:36:07.000000000 +0200
++++ qt-x11-free-3.3.2/src/kernel/qscriptengine_x11.cpp	2004-05-12 23:10:49.906692436 +0200
+@@ -1533,7 +1533,8 @@
+ 
+ 	openType->applyGSUBFeature(FT_MAKE_TAG( 'c', 'c', 'm', 'p' ));
+ 
+-	where[0] = TRUE;
++	where[0] = (from == 0
++                    || !(string.unicode()[from-1].isLetter() ||  string.unicode()[from-1].isMark()));
+ 	openType->applyGSUBFeature(FT_MAKE_TAG( 'i', 'n', 'i', 't' ), where);
+ 	openType->applyGSUBFeature(FT_MAKE_TAG( 'n', 'u', 'k', 't' ));
+ 
+@@ -1720,7 +1721,7 @@
+ 	switch( newState ) {
+ 	case Control:
+ 	    newState = state;
+-	    if (state == Halant)
++	    if (state == Halant && uc[pos].unicode() == 0x200d /* ZWJ */)
+ 		break;
+ 	    goto finish;
+ 	case Consonant:
+@@ -2257,8 +2258,8 @@
+     KHDEBUG("state[%d]=%d (uc=%4x)", pos, state, uc[pos].unicode() );
+     pos++;
+ 
+-    if (state != Khmer_Cons) {
+-	if (state != Khmer_IndV && state != Khmer_Other)
++    if (state != Khmer_Cons && state != Khmer_IndV) {
++	if (state != Khmer_Other)
+ 	    *invalid = TRUE;
+ 	goto finish;
+     }
+diff -Nur qt-x11-free-3.3.2.orig/src/kernel/qtextengine.cpp qt-x11-free-3.3.2/src/kernel/qtextengine.cpp
+--- qt-x11-free-3.3.2.orig/src/kernel/qtextengine.cpp	2004-04-19 11:36:07.000000000 +0200
++++ qt-x11-free-3.3.2/src/kernel/qtextengine.cpp	2004-05-12 23:10:49.907692288 +0200
+@@ -53,6 +53,7 @@
+ #define BIDI_DEBUG 0//2
+ #if (BIDI_DEBUG >= 1)
+ #include <iostream>
++using namespace std;
+ 
+ static const char *directions[] = {
+     "DirL", "DirR", "DirEN", "DirES", "DirET", "DirAN", "DirCS", "DirB", "DirS", "DirWS", "DirON",
+@@ -419,7 +420,8 @@
+ 		case QChar::DirON:
+ 		    if( status.eor != QChar::DirR && status.eor != QChar::DirAL ) {
+ 			//last stuff takes embedding dir
+-			if(control.direction() == QChar::DirR || status.lastStrong == QChar::DirR) {
++			if(control.direction() == QChar::DirR
++                           || status.lastStrong == QChar::DirR || status.lastStrong == QChar::DirAL) {
+ 			    appendItems(engine, sor, eor, control, dir);
+ 			    dir = QChar::DirON; status.eor = QChar::DirON;
+ 			    dir = QChar::DirR;
