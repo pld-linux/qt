@@ -3,7 +3,7 @@ Summary(pl):	Biblioteka Qt2 do tworzenia GUI
 Name:		qt
 %define		libqutil_version 1.0.0
 Version:	2.3.1
-Release:	1
+Release:	2
 Epoch:		1
 License:	GPL
 Group:		X11/Libraries
@@ -14,6 +14,7 @@ Source0:	ftp://ftp.troll.no/qt/source/%{name}-x11-%{version}.tar.gz
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-huge_val.patch
 Patch2:		%{name}-charset.patch
+Patch3:		http://www.research.att.com/~leonb/objprelink/qt-configs.patch
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
 BuildRequires:	libjpeg-devel
@@ -22,6 +23,7 @@ BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	libstdc++-devel
 BuildRequires:	libungif-devel
 BuildRequires:	zlib-devel
+BuildRequires:	objprelink
 Requires:	OpenGL
 Requires:	XFree86-libs >= 4.0.2
 Requires:	libmng
@@ -84,10 +86,11 @@ Qt æwiczenia/przyk³ady.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p0
 
 %build
 QTDIR=`/bin/pwd`; export QTDIR
-%configure \
+./configure \
 	-gif \
 	-no-g++-exceptions \
 	-release \
