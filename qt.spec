@@ -2,7 +2,6 @@
 # Conditional build:
 # _with_nas		- enable nas audio support
 # _without_cups		- disable cups support
-# _without_examples	- don't build and include samples
 # _without_mysql	- without mysql support
 # _without_odbc		- without unixODBC support
 # _without_pgsql	- without PostgreSQL support
@@ -21,7 +20,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.2
-Release:	0.%{_snap}.2
+Release:	0.%{_snap}.3
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -272,7 +271,7 @@ perl -pi -e "
 
 DEFAULTOPT=" \
 	-datadir %{_datadir}/qt \
-	-docdir %{_docdir}/%{name}-doc-%{version} \
+	-docdir %{_docdir}/%{name}-doc \
 	-enable-opengl \
 	-fast \
 	-headerdir %{_includedir} \
@@ -332,8 +331,7 @@ OPTFLAGS="%{rpmcflags}" \
 yes
 _EOF_
 
-# Build libraries and everything needed to do this. Do not build examples
-# and such. They will be built with shared, sigle-thread libraries.
+# Do not build tutorial and examples. Provide them as sources.
 %{__make} symlinks src-qmake src-moc sub-src
 
 # This will not remove previously compiled libraries.
@@ -362,8 +360,7 @@ OPTFLAGS="%{rpmcflags}" \
 yes
 _EOF_
 
-# Build libraries and everything needed to do this. Do not build examples
-# and such. They will be built with shared, sigle-thread libraries.
+# Do not build tutorial and examples. Provide them as sources.
 %{__make} symlinks src-qmake src-moc sub-src
 
 # This will not remove previously compiled libraries.
@@ -405,8 +402,7 @@ OPTFLAGS="%{rpmcflags}" \
 yes
 _EOF_
 
-# Build libraries and everything needed to do this. Do not build examples
-# and such. They will be built with shared, multi-thread libraries.
+# Do not build tutorial and examples. Provide them as sources.
 %{__make} symlinks src-qmake src-moc sub-src
 
 # Dont make tools, only plugins.
@@ -461,12 +457,11 @@ install -d \
 	%{?_with_single:$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st/network}
 	
 install bin/{findtr,qt20fix,qtrename140} \
-	tools/msg2qm/msg2qm tools/mergetr/mergetr \
+	tools/{msg2qm/msg2qm,mergetr/mergetr} \
 	$RPM_BUILD_ROOT%{_bindir}
 
 %if %{?_with_static:1}0
-install lib/libqt.a		$RPM_BUILD_ROOT%{_libdir}
-install lib/libqt-mt.a		$RPM_BUILD_ROOT%{_libdir}
+install lib/libqt*.a		$RPM_BUILD_ROOT%{_libdir}
 %endif
 
 %if %{?_with_single:1}0
@@ -546,13 +541,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %files doc
 %defattr(644,root,root,755)
-%{_docdir}/%{name}-doc-%{version}
+%{_docdir}/%{name}-doc
 
-%if %{!?_without_examples:1}%{?_without_examples:0}
 %files examples
 %defattr(644,root,root,755)
 %{_examplesdir}/%{name}
-%endif
 
 %files man
 %defattr(644,root,root,755)
