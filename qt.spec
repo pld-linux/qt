@@ -25,7 +25,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.2
-Release:	0.%{_snap}.5
+Release:	0.%{_snap}.6
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -61,7 +61,7 @@ BuildRequires:	perl
 %{?_with_nas:BuildRequires:	nas-devel}
 BuildRequires:	zlib-devel
 %{?_with_prelink:BuildRequires:	objprelink}
-%{?_with_single:Provides:	qt-st}
+%{?_with_single:Provides:	%{name}-st = %{version}}
 Requires:	OpenGL
 Requires:	XFree86-libs >= 4.0.2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -70,7 +70,6 @@ Obsoletes:	qt-extensions
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1
 %define		_includedir	%{_prefix}/include/qt
 %define         _qt_sl		3.1.2
-
 
 %description
 Qt is a GUI software toolkit which simplifies the task of writing and
@@ -139,6 +138,7 @@ Summary:	Qt static libraries
 Summary(pl):	Biblioteki statyczne Qt
 Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{version}
+%{?_with_single:Provides:	%{name}-static-st = %{version}}
 
 %description static
 Static QT libraries.
@@ -186,55 +186,64 @@ Example programs made with Qt version %{version}.
 %description examples -l pt_BR
 Programas exemplo para o Qt versão %{version}.
 
-%package plugins-mysql
+%package plugin-mysql
 Summary:	Database plugin for mysql Qt support
 Summary(pl):	Wtyczka MySQL do Qt
 Summary(pt_BR):	Plugin de suporte a mysql para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{version}
-Provides:	qt-plugin-sql
+%{?_with_single:Requires:	%{name}-st = %{version}}
+Provides:	%{name}-plugin-sql
+%{?_with_single:Provides:	%{name}-plugin-sql-st = %{version}}
+Obsoletes:	%{name}-plugins-mysql
 
-%description plugins-mysql
+%description plugin-mysql
 Database plugin for mysql Qt support.
 
-%description plugins-mysql -l pl
+%description plugin-mysql -l pl
 Wtyczka MySQL do Qt.
 
-%description plugins-mysql -l pt_BR
+%description plugin-mysql -l pt_BR
 Plugin de suporte a mysql para Qt.
 
-%package plugins-psql
+%package plugin-psql
 Summary:	Database plugin for pgsql Qt support
 Summary(pl):	Wtyczka PostgreSQL do Qt
 Summary(pt_BR):	Plugin de suporte a pgsql para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{version}
-Provides:       qt-plugin-sql
+%{?_with_single:Requires:	%{name}-st = %{version}}
+Provides:	%{name}-plugin-sql
+%{?_with_single:Provides:	%{name}-plugin-sql-st = %{version}}
+Obsoletes:	%{name}-plugins-psql
 
-%description plugins-psql
+%description plugin-psql
 Database plugin for pgsql Qt support.
 
-%description plugins-psql -l pl
+%description plugin-psql -l pl
 Wtyczka PostgreSQL do Qt.
 
-%description plugins-psql -l es
+%description plugin-psql -l es
 Plugin de suporte a pgsql para Qt.
 
-%package plugins-odbc
+%package plugin-odbc
 Summary:	Database plugin for ODBC Qt support
 Summary(pl):	Wtyczka ODBC do Qt
 Summary(pt_BR):	Plugin de suporte a ODBC para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{version}
-Provides:       qt-plugin-sql
+%{?_with_single:Requires:	%{name}-st = %{version}}
+Provides:	%{name}-plugin-sql
+%{?_with_single:Provides:	%{name}-plugin-sql-st = %{version}}
+Obsoletes:	%{name}-plugins-odbc
 
-%description plugins-odbc
+%description plugin-odbc
 Database plugin for ODBC Qt support.
 
-%description plugins-odbc -l pl
+%description plugin-odbc -l pl
 Wtyczka ODBC do Qt.
 
-%description plugins-odbc -l pt_BR
+%description plugin-odbc -l pt_BR
 Plugin de suporte a ODBC para Qt.
 
 %package utils
@@ -556,19 +565,19 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/*
 
 %if %{!?_without_mysql:1}0
-%files plugins-mysql
+%files plugin-mysql
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}/plugins-?t/sqldrivers/lib*mysql.so
 %endif
 
 %if %{!?_without_pgsql:1}0
-%files plugins-psql
+%files plugin-psql
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}/plugins-?t/sqldrivers/lib*psql.so
 %endif
 
 %if %{!?_without_odbc:1}0
-%files plugins-odbc
+%files plugin-odbc
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}/plugins-?t/sqldrivers/lib*odbc.so
 %endif
