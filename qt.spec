@@ -40,6 +40,7 @@ Patch7:		%{name}-make_use_of_locale.patch
 Patch8:		%{name}-make_assistant_use_global_docs.patch
 Patch9:		%{name}-qmake-opt.patch
 Patch10:	%{name}-textedit_speedup.patch
+Patch11:	%{name}-gcc34.patch
 URL:		http://www.trolltech.com/products/qt/
 BuildRequires:	OpenGL-devel
 %{?with_nvidia:BuildRequires:	XFree86-driver-nvidia-devel}
@@ -358,6 +359,7 @@ Narzêdie do konfiguracji wygl±du i zachowania widgetów QT.
 %patch8 -p1
 %patch9 -p1
 %patch10 -p1
+%patch11 -p1
 
 ./apply_patches
 
