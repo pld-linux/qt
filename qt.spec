@@ -52,7 +52,7 @@ BuildRequires:	libstdc++-devel
 BuildRequires:	libungif-devel
 %{?with_mysql:BuildRequires:	mysql-devel}
 %{?with_nas:BuildRequires:	nas-devel}
-%{?with_nvidia:BuildRequires:	XFree86-driver-nvidia-devel =< 1.0.4496-1.1}
+%{?with_nvidia:BuildRequires:	XFree86-driver-nvidia-devel < 1.0.4620}
 BuildRequires:	perl-base
 %{?with_pgsql:BuildRequires:	postgresql-backend-devel}
 %{?with_pgsql:BuildRequires:	postgresql-devel}
