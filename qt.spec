@@ -22,7 +22,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.1.2
-Release:	1
+Release:	2
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -479,6 +479,22 @@ find $RPM_BUILD_ROOT%{_examplesdir}/%{name} -regex '.*/\(examples\|tutorial\).*/
 perl -pi -e "
 	s|(QMAKE_INCDIR_QT\\s*=\\s*\\\$\\(QTDIR\\)/include)|\$1/qt|
 	" $RPM_BUILD_ROOT/%{_datadir}/qt/kspecs/linux-g++/qmake.conf
+
+# We provide qt style classes as plugins,
+# so make corresponding changes to the qconfig.h.
+chmod 644 $RPM_BUILD_ROOT%{_includedir}/qconfig.h
+
+cat >> $RPM_BUILD_ROOT%{_includedir}/qconfig.h <<EOF
+
+/* All of these style classes we provide as plugins */
+#define QT_NO_STYLE_CDE
+#define QT_NO_STYLE_COMPACT
+#define QT_NO_STYLE_MOTIF
+#define QT_NO_STYLE_MOTIFPLUS
+#define QT_NO_STYLE_PLATINUM
+#define QT_NO_STYLE_SGI
+#define QT_NO_STYLE_WINDOWS
+EOF
 
 %clean
 rm -rf $RPM_BUILD_ROOT
