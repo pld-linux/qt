@@ -15,7 +15,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.0.5
-Release:	6
+Release:	7
 Epoch:		3
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -261,13 +261,13 @@ OPTFLAGS="%{rpmcflags}" \
 	-qt-imgfmt-png \
 	-qt-imgfmt-jpeg \
 	-qt-imgfmt-mng \
-%if %{!?_without_odbc:1}%{?_without_odbc:0}
+%if %{!?_without_mysql:1}%{?_without_mysql:0}
 	-qt-sql-mysql \
 %endif
 %if %{!?_without_odbc:1}%{?_without_odbc:0}
 	-qt-sql-odbc \
 %endif
-%if %{!?_without_odbc:1}%{?_without_odbc:0}
+%if %{!?_without_psql:1}%{?_without_psql:0}
 	-qt-sql-psql \
 %endif
 	$DEFAULTSTYLES \
@@ -295,13 +295,13 @@ OPTFLAGS="%{rpmcflags}" \
 	-qt-imgfmt-png \
 	-qt-imgfmt-jpeg \
 	-qt-imgfmt-mng \
-%if %{!?_without_odbc:1}%{?_without_odbc:0}
+%if %{!?_without_mysql:1}%{?_without_mysql:0}
 	-qt-sql-mysql \
 %endif
 %if %{!?_without_odbc:1}%{?_without_odbc:0}
 	-qt-sql-odbc \
 %endif
-%if %{!?_without_odbc:1}%{?_without_odbc:0}
+%if %{!?_without_psql:1}%{?_without_psql:0}
 	-qt-sql-psql \
 %endif
 	$DEFAULTSTYLES \
@@ -336,13 +336,13 @@ OPTFLAGS="%{rpmcflags}" \
 	-plugin-imgfmt-png \
 	-plugin-imgfmt-jpeg \
 	-plugin-imgfmt-mng \
-%if %{!?_without_odbc:1}%{?_without_odbc:0}
+%if %{!?_without_mysql:1}%{?_without_mysql:0}
 	-plugin-sql-mysql \
 %endif
 %if %{!?_without_odbc:1}%{?_without_odbc:0}
 	-plugin-sql-odbc \
 %endif
-%if %{!?_without_odbc:1}%{?_without_odbc:0}
+%if %{!?_without_psql:1}%{?_without_psql:0}
 	-plugin-sql-psql \
 %endif
 	$DEFAULTSTYLES \
