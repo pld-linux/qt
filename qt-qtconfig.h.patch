@@ -1,0 +1,12 @@
+--- qt-copy/include/qconfig.h~	2003-04-12 11:16:36.000000000 +0200
++++ qt-copy/include/qconfig.h	2003-04-16 01:42:40.000000000 +0200
+@@ -9,3 +9,9 @@
+ 
+ /* Compile time features */
+ #define QT_LARGEFILE_SUPPORT 64
++
++/* We implement all of the style classes as plugins */
++#define QT_NO_STYLE_CDE
++#define QT_NO_STYLE_MOTIF
++#define QT_NO_STYLE_SGI
++#define QT_NO_STYLE_WINDOWS
