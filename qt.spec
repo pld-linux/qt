@@ -21,7 +21,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.1.2
-Release:	6
+Release:	7
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -35,6 +35,7 @@ Patch4:		%{name}-qmake-opt.patch
 Patch5:		%{name}-cursors.patch
 Patch6:		%{name}-qmake-nostatic.patch
 Patch7:		%{name}-qmlined-fix.patch
+Patch8:		%{name}-locale.patch
 URL:		http://www.trolltech.com/
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
@@ -242,6 +243,7 @@ Narzedzia programistyczne QT.
 %patch5 -p1
 %patch6 -p1
 %patch7 -p1
+%patch8 -p1
 
 # mkspecs has wrong includes what makes it require patching every files that uses qmake
 # this is a fix
