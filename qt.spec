@@ -15,18 +15,19 @@
 %define 	_withsql	1
 %{?_without_mysql:%{?_without_pgsql:%{?_without_odbc:%define _withsql 0}}}
 
-
+%define 	_snap	20030315 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.1.2
-Release:	1
+Release:	0.%{_snap}.1
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
-Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
+#Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
+Source0:	%{name}-%{version}-%{_snap}.tar.bz2
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
@@ -236,7 +237,7 @@ QT Development Utilities.
 Narzedzia programistyczne QT.
 
 %prep
-%setup -q -n %{name}-x11-free-%{version}
+%setup -q -n %{name}-%{version}-%{_snap}
 %patch0 -p1
 #%ifarch %{ix86} ppc
 #%%{?_with_prelink:%patch1 -p1}
@@ -250,13 +251,17 @@ Narzedzia programistyczne QT.
 
 # mkspecs has wrong includes what makes it require patching every files that uses qmake
 # this is a fix
+rm -rf `find . -name CVS`
+
 cd mkspecs
 for katalog in * ; do
         if [ -d $katalog ]; then
 		cd $katalog
 		echo "$katalog"
+		if [ -r qmake.conf ]; then
 		sed -e "s/\$(QTDIR)\/include/\$(QTDIR)\/include\/qt/g"  qmake.conf >> qmake.conf.1
 		mv -f qmake.conf.1 qmake.conf
+		fi
 		cd ..
 	fi
 done
@@ -289,7 +294,7 @@ DEFAULTOPT="-prefix %{_prefix} -docdir %{_docdir}/%{name}-doc-html-%{version} \
 %{?_without_cups:DEFAULTOPT="$DEFAULTOPT -no-cups"}
 
 STYLESLIST="cde compact motif motifplus platinum sgi windows"
-
+%{__make} -f Makefile.cvs
 ########################################################################
 # STATIC SINGLE-THREAD
 ########################################################################
@@ -441,8 +446,6 @@ PATH="$QTDIR/bin:$PATH"
 
 rm -rf `find $RPM_BUILD_ROOT -name CVS`
 
-rm -rf `find . -name CVS`
-
 install -d $RPM_BUILD_ROOT{%{_mandir}/man{1,3},%{_examplesdir}/%{name}/lib} \
 	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-{m,s}t/network
 install bin/{findtr,qt20fix,qtrename140} \
@@ -466,6 +469,7 @@ cp -dpR .qmake.cache examples tutorial \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name}
 	
 mv $RPM_BUILD_ROOT{%{_libdir}/*.prl,%{_examplesdir}/%{name}/lib}
+mkdir $RPM_BUILD_ROOT%{_datadir}/qt/mkspecs/features
 
 # Fix Makefiles for tutorial and examples. How people who made so cool
 # library could screw build process so badly?
@@ -479,7 +483,7 @@ find $RPM_BUILD_ROOT%{_examplesdir}/%{name} -regex '.*/\(examples\|tutorial\).*/
 
 perl -pi -e "
 	s|(QMAKE_INCDIR_QT\\s*=\\s*\\\$\\(QTDIR\\)/include)|\$1/qt|
-	" $RPM_BUILD_ROOT/%{_datadir}/qt/kspecs/linux-g++/qmake.conf
+	" $RPM_BUILD_ROOT/%{_datadir}/qt/mkspecs/linux-g++/qmake.conf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
