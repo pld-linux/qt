@@ -12,8 +12,6 @@ Group(pl):	X11/Biblioteki
 Source0:	ftp://ftp.troll.no/qt/source/%{name}-x11-%{version}.tar.gz
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-huge_val.patch
-Patch2:		%{name}-uic.patch
-Patch3:		%{name}-embedded-gcc296.patch
 BuildRequires:	libungif-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	zlib-devel
@@ -76,8 +74,6 @@ Qt przyk³ady.
 %setup -q
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
-%patch3 -p1
 
 %build
 QTDIR=`/bin/pwd`; export QTDIR
