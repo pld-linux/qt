@@ -174,14 +174,14 @@ _EOF_
 	"INCLUDEPATH+=/usr/include/mysql" "LIBS+=-L/usr/lib -lmysqlclient" mysql.pro)
 (cd plugins/src/sqldrivers/odbc && $QTDIR/bin/qmake \
 	"INCLUDEPATH+=/usr/include" "LIBS+=-L/usr/lib -lodbc")            
-(cd plugins/src/sqldrivers/pgsql && $QTDIR/bin/gmake \
+(cd plugins/src/sqldrivers/psql && $QTDIR/bin/qmake \
 	"INCLUDEPATH+=/usr/include/postgresql" "LIBS+=-L/usr/lib -lpq")
 
 for dir in tools/mergetr tools/msg2qm tools/makeqpf tools/qembed tools/qvfb \
            extensions/xt/src plugins/src/accessible plugins/src/codecs \
 	   plugins/src/imageformats plugins/src/styles \
 	   plugins/src/sqldrivers/mysql plugins/src/sqldrivers/odbc \
-	   plugins/src/sqldrivers/pgsql ; do
+	   plugins/src/sqldrivers/psql ; do
   %{__make} -C $dir \
 	SYSCONF_CFLAGS="%{rpmcflags}" \
 	SYSCONF_CXXFLAGS="%{rpmcflags}"
