@@ -6,7 +6,7 @@ Name:		qt
 %define		libeditor_version 1.0.0
 Version:	3.0.2
 #Release:	0.%{_snapshot}.3
-Release:	0.1
+Release:	0.2
 Epoch:		1
 License:	GPL
 Group:		X11/Libraries
@@ -20,8 +20,8 @@ Patch3:		%{name}-qmake.patch
 Patch4:		%{name}-parse_error.patch
 Patch5:		%{name}-postgresql_7_2.patch
 Patch6:		%{name}-mysql_includes.patch
-Patch7:		%{name}-style_windowsxp_missing_include.patch
-Patch8:		%{name}-plugins_path.patch
+#Patch7:		%{name}-style_windowsxp_missing_include.patch
+#Patch8:		%{name}-plugins_path.patch
 # Can not use DESTDIR. It is used internally.
 Patch9:		%{name}-INSTALL_ROOT.patch
 Patch10:	%{name}-FHS.patch
