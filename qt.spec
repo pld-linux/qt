@@ -147,11 +147,3 @@ rm -rf $RPM_BUILD_ROOT
 %files extensions
 %defattr(755,root,root,755)
 %{_libdir}/libqimgio.so.*.*
-
-%changelog
-* Mon May 24 1999 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
-  [1.44-6]
-- spec writtren by me, modified by Wojciech "Sas" Ciêciwa
-  <cieciwa@alpha.zarz.agh.edu.pl> and Micha³ Kuratczyk
-  <kura@wroclaw.art.pl>.
-- pl translation by Jacek Konieczny <jajcus@zeus.polsl.gliwice.pl>.
