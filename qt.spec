@@ -20,26 +20,26 @@
 %define		_withsql	1
 %{!?with_sqlite:%{!?with_ibase:%{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}}}
 
-%define		_snap		040422
+%define		_snap		040531
 %define		_ver		3.3.2
-%define		_packager	djurban
+%define		_packager	adgor
 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
-#Version:	%{_ver}.%{_snap}
-Version:	%{_ver}
-Release:	5
+Version:	%{_ver}.%{_snap}
+#Version:	%{_ver}
+Release:	1
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
-#Source0:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-%{_snap}.tar.bz2
-Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
-# Source0-md5:	903cad618274ad84d7d13fd0027a6c3c
-Source1:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-patches-040531.tar.bz2
-# Source1-md5:	2e38e44b6ef26bfb8a7f3b6900ee53c0
+Source0:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-%{_snap}.tar.bz2
+# Source0-md5:	14b967ffb24f42b5ed9869c979cfabb6
+#Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
+#Source1:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-patches-040531.tar.bz2
+##%% Source1-md5:	2e38e44b6ef26bfb8a7f3b6900ee53c0
 Source2:	%{name}config.desktop
 Source3:	designer.desktop
 Source4:	assistant.desktop
@@ -53,7 +53,6 @@ Patch5:		%{name}-make_use_of_locale.patch
 Patch6:		%{name}-qmake-opt.patch
 Patch7:		%{name}-xcursor_version.patch
 Patch8:		%{name}-gcc34.patch
-# for troll only
 Patch9:		%{name}-autodetect-pch.patch
 Patch10:	%{name}-antialias.patch
 URL:		http://www.trolltech.com/products/qt/
@@ -157,13 +156,11 @@ compiler (moc) and the user interface compiler (uic); Qt include
 files, pkgconfig helpers and tools for preserving compatibility
 between versions of Qt.
 
-
 %description devel -l pl
 Ten pakiet zawiera narzêdzia programistyczne Qt: kompilator
 metaobiektów (moc), kompilator interfejsu u¿ytkownika (uic); pliki
 nag³ówkowe, wsparcie dla pkgconfig oraz narzêdzia u³atwiaj±ce
 zachowanie kompatybilno¶ci niezale¿nie od wersji Qt.
-
 
 %package static
 Summary:	Qt static library
@@ -186,7 +183,6 @@ LiveConnect plugin.
 
 This package contains the static, multi-threaded, linux version of the
 Qt library.
-
 
 %description static -l pl
 Qt oferuje kompletny system do tworzenia i rozwijania aplikacji w
@@ -322,7 +318,6 @@ Obsoletes:	qt-plugins-psql
 This package contains a multi-thread enabled plugin for accessing
 PostgreSQL database via the QSql classes.
 
-
 %description plugin-psql -l pl
 Ten pakiet zawiera wielow±tkow± wersjê wtyczki do Qt umo¿liwiaj±cej
 korzystanie z baz danych PostgreSQL poprzez klasy QSql.
@@ -349,7 +344,6 @@ korzystanie z baz danych PostgreSQL poprzez klasy QSql.
 
 %description plugin-sqlite -l pt_BR
 Plugin de suporte a SQLite para Qt. # <end multithreaded plugins desc>
-
 
 # <begin single threaded desc>
 
@@ -615,8 +609,8 @@ Biblioteki wykorzystywane przez narzêdzie projektowania interfejsu
 graficznego - Qt Designer.
 
 %prep
-#setup -q -n %{name}-copy-%{_snap}
-%setup -q -n %{name}-x11-free-%{version} -a1
+%setup -q -n %{name}-copy-%{_snap}
+#%setup -q -n %{name}-x11-free-%{version} -a1
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -629,13 +623,13 @@ graficznego - Qt Designer.
 %patch9 -p1
 %patch10 -p1
 
-cat >> patches/DISABLED <<EOF
-0005
-0039
-0042
-0043
-0047
-EOF
+#cat >> patches/DISABLED <<EOF
+#0005
+#0039
+#0042
+#0043
+#0047
+#EOF
 ./apply_patches
 
 # change QMAKE_CFLAGS_RELEASE to build
@@ -676,7 +670,7 @@ fi
 # pass OPTFLAGS to build qmake itself with optimization
 export OPTFLAGS="%{rpmcflags}"
 
-#%{__make} -f Makefile.cvs
+%{__make} -f Makefile.cvs
 
 ##################################
 # DEFAULT OPTIONS FOR ALL BUILDS #
@@ -952,7 +946,6 @@ install translations/qt_iw.qm $RPM_BUILD_ROOT%{_datadir}/locale/he/LC_MESSAGES/q
 install translations/qt_cs.qm $RPM_BUILD_ROOT%{_datadir}/locale/cs/LC_MESSAGES/qt.qm
 install translations/qt_sk.qm $RPM_BUILD_ROOT%{_datadir}/locale/sk/LC_MESSAGES/qt.qm
 
-
 %if %{with designer}
 install tools/designer/designer/designer_de.qm $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/designer.qm
 install tools/designer/designer/designer_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/designer.qm
@@ -986,7 +979,6 @@ do
 %{__sed} -i -e "s,examples,src/examples/qt/tutorial,g" $i
 
 done
-
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -1206,7 +1198,6 @@ EOF
 %{_datadir}/qt/phrasebooks
 %{_mandir}/man1/l*
 %{_mandir}/man1/*qm*
-
 
 %files -n qtconfig
 %defattr(644,root,root,755)
