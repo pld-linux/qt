@@ -85,7 +85,7 @@ LD_LIBRARY_PATH=%{_libdir} make
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_bindir},%{_includedir}/X11/qt,%{_libdir},%{_mandir}/man{1,3}} \
+install -d $RPM_BUILD_ROOT{%{_bindir},%{_includedir},%{_libdir},%{_mandir}/man{1,3}} \
 	$RPM_BUILD_ROOT/usr/src/examples/%{name}
 
 install -s bin/moc $RPM_BUILD_ROOT%{_bindir}/moc
@@ -93,23 +93,23 @@ install -s lib/libqt.so.*.* $RPM_BUILD_ROOT%{_libdir}
 ln -sf libqt.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libqt.so
 install man/man1/* $RPM_BUILD_ROOT%{_mandir}/man1
 install man/man3/* $RPM_BUILD_ROOT%{_mandir}/man3
-install include/* $RPM_BUILD_ROOT%{_includedir}/X11/qt
+install include/* $RPM_BUILD_ROOT%{_includedir}
 
 install -s lib/libqimgio.so.*.* $RPM_BUILD_ROOT%{_libdir}
 ln -sf libqimgio.so.0.1 $RPM_BUILD_ROOT%{_libdir}/libqimgio.so
-install extensions/imageio/src/*.h $RPM_BUILD_ROOT%{_includedir}/X11/qt
+install extensions/imageio/src/*.h $RPM_BUILD_ROOT%{_includedir}
 
 install lib/libqgl.a $RPM_BUILD_ROOT%{_libdir}
-install extensions/opengl/src/*.h $RPM_BUILD_ROOT%{_includedir}/X11/qt
+install extensions/opengl/src/*.h $RPM_BUILD_ROOT%{_includedir}
 
 if [ -f lib/libqxt.a ] ; then
 	install lib/libqxt.a $RPM_BUILD_ROOT%{_libdir}
 fi
-install extensions/xt/src/*.h $RPM_BUILD_ROOT%{_includedir}/X11/qt
+install extensions/xt/src/*.h $RPM_BUILD_ROOT%{_includedir}/
 
 for a in {tutorial,examples}/{Makefile,*/Makefile}; do
 	cat $a | sed 's-^SYSCONF_MOC.*-SYSCONF_MOC              = %{_bindir}/moc-' | \
-	sed 's-^SYSCONF_CXXFLAGS_QT     = \$(QTDIR)/include-SYSCONF_CXXFLAGS_QT = %{_includedir}/qt-' | \
+	sed 's-^SYSCONF_CXXFLAGS_QT     = \$(QTDIR)/include-SYSCONF_CXXFLAGS_QT = %{_includedir}-' | \
 	sed 's-^SYSCONF_LFLAGS_QT       = \$(QTDIR)/lib-SYSCONF_LFLAGS_QT = %{_libdir}-' > $a.
 	mv -vf $a. $a
 done
@@ -140,7 +140,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/lib*.so
 %{_libdir}/lib*.a
 %{_mandir}/man[13]/*
-%{_includedir}/X11/qt
+%{_includedir}/*
 /usr/src/examples/%{name}
 
 %files extensions
