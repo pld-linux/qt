@@ -22,7 +22,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.1.1
-Release:	3
+Release:	4
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -33,6 +33,7 @@ Patch2:		%{name}-mysql_includes.patch
 Patch3:		%{name}-FHS.patch
 Patch4:		%{name}-qmake-opt.patch
 Patch5:		%{name}-cursors.patch
+Patch6:         %{name}-qmake-nostatic.patch
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
 # incompatible with bison
@@ -245,7 +246,7 @@ Narzedzia programistyczne QT.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
-
+%patch6 -p1
 
 # mkspecs has wrong includes what makes it require patching every files that uses qmake
 # this is a fix
@@ -489,6 +490,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libqt.so.*
 %attr(755,root,root) %{_libdir}/libqui.so.*
 %attr(755,root,root) %{_libdir}/libqt-mt.so.*
+%attr(755,root,root) %{_libdir}/libdesigner.so.*
+%attr(755,root,root) %{_libdir}/libeditor.so.*
+%attr(755,root,root) %{_libdir}/libqassistantclient.so.*
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/plugins*
 %dir %{_libdir}/%{name}/plugins*/imageformats
@@ -504,9 +508,12 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/[!adl]*
 %attr(755,root,root) %{_bindir}/l[!i]*
-%{_libdir}/libqt.so
-%{_libdir}/libqt-mt.so
-%{_libdir}/libqui.so
+%attr(755,root,root) %{_libdir}/libqt.so
+%attr(755,root,root) %{_libdir}/libqt-mt.so
+%attr(755,root,root) %{_libdir}/libqui.so
+%attr(755,root,root) %{_libdir}/libdesigner.so
+%attr(755,root,root) %{_libdir}/libeditor.so
+%attr(755,root,root) %{_libdir}/libqassistantclient.so
 %{_includedir}
 %{_datadir}/qt/[!d]*
 %{_mandir}/man1/*
