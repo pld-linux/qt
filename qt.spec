@@ -864,6 +864,7 @@ EOF
 %attr(755,root,root) %{_bindir}/assistant
 %if %{with designer}
 %attr(755,root,root) %{_bindir}/designer
+%{_desktopdir}/designer.desktop
 %endif
 %attr(755,root,root) %{_bindir}/linguist
 %dir %{_libdir}/%{name}/plugins-?t/designer
@@ -877,7 +878,6 @@ EOF
 %endif
 %lang(de) %{_datadir}/locale/de/LC_MESSAGES/linguist.qm
 %lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/linguist.qm
-%{_desktopdir}/designer.desktop
 
 %files -n qtconfig
 %defattr(644,root,root,755)
