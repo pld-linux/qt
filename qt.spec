@@ -697,7 +697,7 @@ cat $plik \
 mv $plik.1 $plik
 echo >> $plik
 echo -e "QMAKE_CFLAGS_RELEASE\t=\t%{rpmcflags}" >> $plik
-echo -e "QMAKE_CXXFLAGS_RELEASE\t=\t%{rpmcflags}" >> $plik
+echo -e "QMAKE_CXXFLAGS_RELEASE\t=\t%{rpmcxxflags}" >> $plik
 echo -e "QMAKE_CFLAGS_DEBUG\t=\t%{debugcflags}" >> $plik
 echo -e "QMAKE_CXXFLAGS_DEBUG\t=\t%{debugcflags}" >> $plik
 %{?with_pch:echo -e "DEFINES\t+=\tUSING_PCH" >> $plik}
@@ -712,7 +712,7 @@ if [ "%{_lib}" != "lib" ] ; then
 fi
 
 # pass OPTFLAGS to build qmake itself with optimization
-export OPTFLAGS="%{rpmcflags}"
+export OPTFLAGS="%{rpmcxxflags}"
 
 #%{__make} -f Makefile.cvs
 
