@@ -13,7 +13,7 @@
 # _without_pgsql	- without PostgreSQL support
 #
 
-%define 	_snap	030405
+%define 	_snap	030428
 
 %define 	_withsql	1
 
@@ -25,7 +25,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.2
-Release:	0.%{_snap}.6
+Release:	0.%{_snap}.1
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -300,6 +300,7 @@ DEFAULTOPT=" \
 	-headerdir %{_includedir} \
 	%{?_without_cups:-no-cups} \
 	-no-exceptions \
+	-no-stl \
 	-no-style-windowsxp \
 	-prefix %{_prefix} \
 	-qt-gif \
