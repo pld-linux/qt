@@ -1,12 +1,13 @@
+%define		REV	20000330
 Summary:	The Qt2 GUI application framework
 Summary(pl):	Biblioteka Qt2 do tworzenia GUI
 Name:		qt
-Version:	2.1.0
-Release:	1
+Version:	2.1.0_%{REV}
+Release:	2
 Copyright:	QPL
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
-Source:		ftp://ftp.troll.no/qt/snapshots/%{name}-%{version}-snapshot-20000228.tar.gz
+Source:		ftp://ftp.troll.no/qt/snapshots/%{name}-2.1.0-snapshot-%{REV}.tar.gz
 BuildRequires:	libungif-devel
 BuildRequires:	zlib-devel
 BuildRequires:	libpng-devel
@@ -86,7 +87,7 @@ echo " Compiling Extensions ..."
 #not needed
 #(cd extensions/imageio/src;LD_LIBRARY_PATH=%{_libdir};make)
 (cd extensions/network/src;LD_LIBRARY_PATH=%{_libdir};make)
-(cd extensions/nsplugin/src;LD_LIBRARY_PATH=%{_libdir};make)
+#(cd extensions/nsplugin/src;LD_LIBRARY_PATH=%{_libdir};make)
 (cd extensions/opengl/src;LD_LIBRARY_PATH=%{_libdir};make)
 #not needned
 #(cd extensions/xembed/src;LD_LIBRARY_PATH=%{_libdir};make)
