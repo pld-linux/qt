@@ -10,12 +10,16 @@ License:	GPL
 Group:		X11/Libraries
 Group(de):	X11/Libraries
 Group(es):	X11/Bibliotecas
+Group(fr):	X11/Librairies
 Group(pl):	X11/Biblioteki
+Group(pt_BR):	X11/Bibliotecas
+Group(ru):	X11/âÉÂÌÉÏÔÅËÉ
+Group(uk):	X11/â¦ÂÌ¦ÏÔÅËÉ
 Source0:	ftp://ftp.troll.no/qt/source/%{name}-x11-free-%{version}.tar.gz
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-huge_val.patch
 Patch2:		%{name}-charset.patch
-Patch3:		http://www.research.att.com/~leonb/objprelink/qt-configs.patch
+Patch3:		http://www.research.att.com/~leonb/objprelink/%{name}-configs.patch
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
 BuildRequires:	libjpeg-devel
@@ -27,6 +31,7 @@ BuildRequires:	zlib-devel
 BuildRequires:	mysql-devel
 BuildRequires:	unixODBC-devel
 BuildRequires:	postgresql-devel
+BuildRequires:	postgresql-backend-devel
 BuildRequires:	freetype-devel
 #%ifnarch alpha
 #BuildRequires:	objprelink
@@ -55,7 +60,12 @@ Summary:	Include files and documentation needed to compile
 Summary(pl):	Pliki nag³ówkowe, przyk³ady i dokumentacja do biblioteki
 Group:		X11/Development/Libraries
 Group(de):	X11/Entwicklung/Libraries
+Group(es):	X11/Desarrollo/Bibliotecas
+Group(fr):	X11/Development/Librairies
 Group(pl):	X11/Programowanie/Biblioteki
+Group(pt_BR):	X11/Desenvolvimento/Bibliotecas
+Group(ru):	X11/òÁÚÒÁÂÏÔËÁ/âÉÂÌÉÏÔÅËÉ
+Group(uk):	X11/òÏÚÒÏÂËÁ/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name} = %{version}
 Requires:	XFree86-devel
 Requires:	libstdc++-devel
@@ -79,7 +89,12 @@ Summary:	Qt static libraries
 Summary(pl):	Biblioteki statyczne Qt.
 Group:		X11/Development/Libraries
 Group(de):	X11/Entwicklung/Libraries
+Group(es):	X11/Desarrollo/Bibliotecas
+Group(fr):	X11/Development/Librairies
 Group(pl):	X11/Programowanie/Biblioteki
+Group(pt_BR):	X11/Desenvolvimento/Bibliotecas
+Group(ru):	X11/òÁÚÒÁÂÏÔËÁ/âÉÂÌÉÏÔÅËÉ
+Group(uk):	X11/òÏÚÒÏÂËÁ/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name}-devel = %{version}
 
 %description static
@@ -93,7 +108,12 @@ Summary:	Qt tutorial/examples
 Summary(pl):	Qt æwiczenia/przyk³ady
 Group:		X11/Development/Libraries
 Group(de):	X11/Entwicklung/Libraries
+Group(es):	X11/Desarrollo/Bibliotecas
+Group(fr):	X11/Development/Librairies
 Group(pl):	X11/Programowanie/Biblioteki
+Group(pt_BR):	X11/Desenvolvimento/Bibliotecas
+Group(ru):	X11/òÁÚÒÁÂÏÔËÁ/âÉÂÌÉÏÔÅËÉ
+Group(uk):	X11/òÏÚÒÏÂËÁ/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name}-devel = %{version}
 
 %description examples
@@ -106,6 +126,13 @@ Qt æwiczenia/przyk³ady.
 Summary:	Qt MySQL plugin
 Summary(pl):	Plugin MySQL do Qt
 Group:		X11/Libraries
+Group(de):	X11/Libraries
+Group(es):	X11/Bibliotecas
+Group(fr):	X11/Librairies
+Group(pl):	X11/Biblioteki
+Group(pt_BR):	X11/Bibliotecas
+Group(ru):	X11/âÉÂÌÉÏÔÅËÉ
+Group(uk):	X11/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name} = %{version}
 
 %description plugins-mysql
@@ -118,6 +145,13 @@ Plugin MySQL do Qt.
 Summary:	Qt PostgreSQL plugin
 Summary(pl):	Plugin PostgreSQL do Qt
 Group:		X11/Libraries
+Group(de):	X11/Libraries
+Group(es):	X11/Bibliotecas
+Group(fr):	X11/Librairies
+Group(pl):	X11/Biblioteki
+Group(pt_BR):	X11/Bibliotecas
+Group(ru):	X11/âÉÂÌÉÏÔÅËÉ
+Group(uk):	X11/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name} = %{version}
 
 %description plugins-psql
@@ -130,6 +164,13 @@ Plugin PostgreSQL do Qt.
 Summary:	Qt ODBC plugin
 Summary(pl):	Plugin ODBC do Qt
 Group:		X11/Libraries
+Group(de):	X11/Libraries
+Group(es):	X11/Bibliotecas
+Group(fr):	X11/Librairies
+Group(pl):	X11/Biblioteki
+Group(pt_BR):	X11/Bibliotecas
+Group(ru):	X11/âÉÂÌÉÏÔÅËÉ
+Group(uk):	X11/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name} = %{version}
 
 %description plugins-odbc
@@ -140,7 +181,7 @@ Plugin ODBC do Qt.
 
 %prep
 %setup -q -n %{name}-x11-free-%{version}
-#%patch0 -p1
+%patch0 -p1
 #%patch1 -p1
 #%patch2 -p1
 #%ifnarch alpha
@@ -149,10 +190,11 @@ Plugin ODBC do Qt.
 
 %build
 QTDIR=`/bin/pwd`; export QTDIR
-LD_LIBRARY_PATH=%{_libdir}
-SYSCONF_CFLAGS="-pipe -DNO_DEBUG %{rpmcflags}"
-SYSCONF_CXXFLAGS="-pipe -DNO_DEBUG %{rpmcflags}"
-export LD_LIBRARY_PATH SYSCONF_CFLAGS SYSCONF_CXXFLAGS
+LD_LIBRARY_PATH=%{_libdir} ; export LD_LIBRARY_PATH
+
+# change QMAKE_CFLAGS_RELEASE
+sed 's/-O2/%{rpmcflags}/' mkspecs/linux-g++/qmake.conf > qmk.tmp
+mv -f qmk.tmp mkspecs/linux-g++/qmake.conf
 
 DEFAULTOPT="-prefix %{_prefix} -bindir %{_bindir} -libdir %{_libdir} -docdir %{_docdir} \
             -headerdir include/qt -release -qt-gif -system-zlib -no-g++-exceptions \
@@ -165,9 +207,7 @@ DEFAULTOPT="-prefix %{_prefix} -bindir %{_bindir} -libdir %{_libdir} -docdir %{_
 yes
 _EOF_
 
-%{__make} symlinks src-qmake src-moc sub-src sub-tools \
-	SYSCONF_CFLAGS="%{rpmcflags}" \
-	SYSCONF_CXXFLAGS="%{rpmcflags}"
+%{__make} symlinks src-qmake src-moc sub-src sub-tools
 
 # Build extra tools and plugins
 (cd plugins/src/sqldrivers/mysql && $QTDIR/bin/qmake -o Makefile \
@@ -182,9 +222,7 @@ for dir in tools/mergetr tools/msg2qm tools/makeqpf tools/qembed tools/qvfb \
 	   plugins/src/imageformats plugins/src/styles \
 	   plugins/src/sqldrivers/mysql plugins/src/sqldrivers/odbc \
 	   plugins/src/sqldrivers/psql ; do
-  %{__make} -C $dir \
-	SYSCONF_CFLAGS="%{rpmcflags}" \
-	SYSCONF_CXXFLAGS="%{rpmcflags}"
+  %{__make} -C $dir
 done
 
 ./configure \
@@ -193,9 +231,7 @@ done
 yes
 _EOF_
 
-%{__make} symlinks src-qmake src-moc sub-src \
-	SYSCONF_CFLAGS="%{rpmcflags}" \
-	SYSCONF_CXXFLAGS="%{rpmcflags}"
+%{__make} symlinks src-qmake src-moc sub-src
 
 ./configure \
 	$DEFAULTOPT \
@@ -203,9 +239,7 @@ _EOF_
 yes
 _EOF_
 
-%{__make} symlinks src-qmake src-moc sub-src \
-	SYSCONF_CFLAGS="%{rpmcflags}" \
-	SYSCONF_CXXFLAGS="%{rpmcflags}"
+%{__make} symlinks src-qmake src-moc sub-src
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -230,16 +264,16 @@ install plugins/designer/*.so		$RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/designe
 #install plugins/styles/*.so		$RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/styles
 
 install lib/libqt.so.%{version}	$RPM_BUILD_ROOT%{_libdir}
-ln -s -f libqt.so.%{version}	$RPM_BUILD_ROOT%{_libdir}/libqt.so
+ln -sf	libqt.so.%{version}	$RPM_BUILD_ROOT%{_libdir}/libqt.so
 
 install lib/libqui.so.%{libqui_version}	$RPM_BUILD_ROOT%{_libdir}
-ln -s -f libqui.so.%{libqui_version}	$RPM_BUILD_ROOT%{_libdir}/libqui.so
+ln -sf	libqui.so.%{libqui_version}	$RPM_BUILD_ROOT%{_libdir}/libqui.so
 
 install lib/libqt-mt.so.%{version}	$RPM_BUILD_ROOT%{_libdir}
-ln -s -f libqt-mt.so.%{version}		$RPM_BUILD_ROOT%{_libdir}/libqt-mt.so
+ln -sf	libqt-mt.so.%{version}		$RPM_BUILD_ROOT%{_libdir}/libqt-mt.so
 
 install lib/libeditor.so.%{libeditor_version}	$RPM_BUILD_ROOT%{_libdir}
-ln -s -f libeditor.so.%{libeditor_version}	$RPM_BUILD_ROOT%{_libdir}/libeditor.so
+ln -sf	libeditor.so.%{libeditor_version}	$RPM_BUILD_ROOT%{_libdir}/libeditor.so
 
 install lib/*.a		$RPM_BUILD_ROOT%{_libdir}
 
@@ -248,10 +282,10 @@ cp -pRL include/*	$RPM_BUILD_ROOT%{_includedir}
 install doc/man/man1/*	$RPM_BUILD_ROOT%{_mandir}/man1
 install doc/man/man3/*	$RPM_BUILD_ROOT%{_mandir}/man3
 
+# $(QTDIR)/{bin,lib,include} is used - change to /usr/X11R6/{bin,lib,include}
+# also remove -I referring to qt build directory
 for a in {tutorial,examples}/{Makefile,*/Makefile}; do
-	cat $a | sed 's-^SYSCONF_MOC.*-SYSCONF_MOC = %{_bindir}/moc -' | \
-	sed 's-^SYSCONF_CXXFLAGS_QT	= \$(QTDIR)/include-SYSCONF_CXXFLAGS_QT = %{_includedir}-' | \
-	sed 's-^SYSCONF_LFLAGS_QT	= \$(QTDIR)/lib-SYSCONF_LFLAGS_QT = %{_libdir}-' > $a.
+	sed 's@\$(QTDIR)@%{_prefix}@g;s@-I[^ ]linux-g++@@g' $a > $a.
 	mv -f $a. $a
 done
 
@@ -260,11 +294,11 @@ cp -dpr tutorial $RPM_BUILD_ROOT%{_datadir}/tutorial/%{name}
 
 gzip -9nf LICENSE.QPL
 
-%post -p /sbin/ldconfig
-%postun -p /sbin/ldconfig
-
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%post	-p /sbin/ldconfig
+%postun	-p /sbin/ldconfig
 
 %files
 %defattr(644,root,root,755)
