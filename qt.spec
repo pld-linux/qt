@@ -477,10 +477,10 @@ cat $plik \
 	|grep -v QMAKE_CXXFLAGS_DEBUG \
 	> $plik.1
 
-echo -e "QMAKE_CFLAGS_RELEASE\t=\t%%{rpmcflags}" > $plik
-echo -e "QMAKE_CXXFLAGS_RELEASE\t=\t%%{rpmcflags}" >> $plik
-echo -e "QMAKE_CFLAGS_DEBUG\t=\t%%{debugcflags}" >> $plik
-echo -e "QMAKE_CXXFLAGS_DEBUG\t=\t%%{debugcflags}" >> $plik
+echo -e "QMAKE_CFLAGS_RELEASE\t=\t%{rpmcflags}" > $plik
+echo -e "QMAKE_CXXFLAGS_RELEASE\t=\t%{rpmcflags}" >> $plik
+echo -e "QMAKE_CFLAGS_DEBUG\t=\t%{debugcflags}" >> $plik
+echo -e "QMAKE_CXXFLAGS_DEBUG\t=\t%{debugcflags}" >> $plik
 cat $plik.1 >> $plik
 rm $plik.1
 
