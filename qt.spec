@@ -2,7 +2,7 @@ Summary:	The Qt2 GUI application framework
 Summary(pl):	Biblioteka Qt2 do tworzenia GUI
 Name:		qt
 Version:	2.0.1
-Release:	3
+Release:	3.1
 Copyright:	QPL
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
@@ -49,18 +49,18 @@ dokumentacjê. Zobacz http://www.troll.no/ aby dowiedzieæ siê wiêcej o Qt.
 Dokumentacjê do biblioteki znajdziesz tak¿e pod:
 /usr/share/doc/%{name}-devel-%{version}/index.html  
 
-%package ext
+%package extensions
 Summary:        Qt extensions, library
 Summary(pl):    Qt extensions, rozrze¿enia dla QT biblioteki 
 Group:          X11/Libraries
 Group(pl):      X11/Biblioteki
 Requires:       %{name} = %{version}
 
-%description ext
+%description extensions
 Contains the Qt extension files with library.
 Contains extension for Motif/Lesstif, OpenGL, image manipulation.
 
-%description -l pl ext
+%description -l pl extensions
 Pakiet zawiera zestaw rozsze¿eñ dla biblioteki Qt. Biblioteki dla 
 nastêpuj±cych pakietów: Motif/Lestif, OpenGL, Netscape oraz
 operacji na obrazach.
@@ -164,7 +164,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/src/examples/%{name}
 /usr/share/tutorial/%{name}
 
-%files ext
+%files extensions
 %defattr(755,root,root,755)
 %{_libdir}/libqimgio.so*
 %{_libdir}/libqgl.a*
