@@ -35,6 +35,7 @@ Patch3:		%{name}-FHS.patch
 Patch4:		%{name}-qmake-opt.patch
 Patch5:		%{name}-cursors.patch
 Patch6:         %{name}-qmake-nostatic.patch
+Patch7:		%{name}-qmlined-fix.patch
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
 # incompatible with bison
@@ -238,6 +239,7 @@ Narzedzia programistyczne QT.
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
+%patch7 -p1
 
 # mkspecs has wrong includes what makes it require patching every files that uses qmake
 # this is a fix
@@ -497,12 +499,12 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc FAQ LICENSE.* README* changes*
-%attr(755,root,root) %{_libdir}/libdesigner.so.*
-%attr(755,root,root) %{_libdir}/libeditor.so.*
-%attr(755,root,root) %{_libdir}/libqassistantclient.so.*
-%attr(755,root,root) %{_libdir}/libqt.so.*
-%attr(755,root,root) %{_libdir}/libqt-mt.so.*
-%attr(755,root,root) %{_libdir}/libqui.so.*
+%attr(755,root,root) %{_libdir}/libdesigner.so.*.*.*
+%attr(755,root,root) %{_libdir}/libeditor.so.*.*.*
+%attr(755,root,root) %{_libdir}/libqassistantclient.so.*.*.*
+%attr(755,root,root) %{_libdir}/libqt.so.*.*.*
+%attr(755,root,root) %{_libdir}/libqt-mt.so.*.*.*
+%attr(755,root,root) %{_libdir}/libqui.so.*.*.*
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/plugins*
 %dir %{_libdir}/%{name}/plugins*/imageformats
