@@ -32,6 +32,8 @@ Group:		X11/Libraries
 #Source0:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-%{_snap}.tar.bz2
 Source0:	ftp://ftp.trolltech.com/qt/source/qt-x11-free-%{version}.tar.bz2
 # Source0-md5:	903cad618274ad84d7d13fd0027a6c3c
+Source1:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-patches-040427.tar.bz2
+# Source1-md5:	ec9cfcbeee331483184bed6807cd8394
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
@@ -44,6 +46,8 @@ Patch8:		%{name}-make_assistant_use_global_docs.patch
 Patch9:		%{name}-qmake-opt.patch
 Patch10:	%{name}-xcursor_version.patch
 Patch11:	%{name}-gcc34.patch
+# for troll only
+Patch12:	%{name}-autodetect-pch.patch
 URL:		http://www.trolltech.com/products/qt/
 BuildRequires:	OpenGL-devel
 %{?with_nvidia:BuildRequires:	XFree86-driver-nvidia-devel < 1.0.4620}
@@ -399,7 +403,7 @@ Biblioteki do IDE s³u¿±cego do projektowania GUI za pomoc± biblioteki QT.
 
 %prep
 #setup -q -n %{name}-copy-%{_snap}
-%setup -q -n %{name}-x11-free-%{version}
+%setup -q -n %{name}-x11-free-%{version} -a1
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -412,8 +416,16 @@ Biblioteki do IDE s³u¿±cego do projektowania GUI za pomoc± biblioteki QT.
 %patch9 -p1
 %patch10 -p1
 %patch11 -p1
+%{?with_pch:%patch12 -p1}
 
-#./apply_patches
+cat >> patches/DISABLED <<EOF
+0005
+0039
+0042
+0043
+0047
+EOF
+./apply_patches
 
 # change QMAKE_CFLAGS_RELEASE to build
 # properly optimized libs
@@ -438,9 +450,7 @@ echo -e "QMAKE_CFLAGS_RELEASE\t=\t%{rpmcflags}" >> $plik
 echo -e "QMAKE_CXXFLAGS_RELEASE\t=\t%{rpmcflags}" >> $plik
 echo -e "QMAKE_CFLAGS_DEBUG\t=\t%{debugcflags}" >> $plik
 echo -e "QMAKE_CXXFLAGS_DEBUG\t=\t%{debugcflags}" >> $plik
-%if %{with pch}
-echo -e "DEFINES\t+=\tUSING_PCH" >> $plik
-%endif
+%{?with_pch:echo -e "DEFINES\t+=\tUSING_PCH" >> $plik}
 
 %build
 export QTDIR=`/bin/pwd`
