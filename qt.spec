@@ -20,6 +20,7 @@ BuildPrereq:	lesstif-devel
 Buildroot:	/tmp/%{name}-%{version}-root
 
 %define _prefix /usr/X11R6
+%define	_mandir %{_prefix}/man
 
 %description
 Contains the shared library needed to run Qt applications, as well as
