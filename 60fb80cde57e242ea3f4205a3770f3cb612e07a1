@@ -1,0 +1,6 @@
+- removed compilation of examples, (with errors),
+- removed not included extensions [imageio, xembed],
+- change %%{version} in install to %%{_lib_version}.
+
+Compile - OK
+Install - OK
