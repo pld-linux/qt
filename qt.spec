@@ -12,7 +12,6 @@
 %bcond_without	sqlite		# don't build SQLite plugin
 %bcond_without	ibase		# build ibase (InterBase/Firebird) plugin
 %bcond_with	pch		# enable pch in qmake
-%bcond_with	pch_devel	# enable experimental boost (for developers only!)
 #
 %ifnarch %{ix86} amd64 sparc sparcv9 ppc
 %undefine	with_ibase
@@ -954,16 +953,6 @@ cat >> $RPM_BUILD_ROOT%{_includedir}/qt/qconfig.h << EOF
 #define QT_NO_STYLE_WINDOWS
 
 EOF
-
-%if %{with pch_devel}
-cd $RPM_BUILD_ROOT%{_includedir}/qt
-for h in qevent.h qglist.h qmap.h qobject.h qpixmap.h \
-	qptrlist.h qstring.h qstrlist.h qstringlist.h \
-	qvaluelist.h qwidget.h; do
-	%{__cxx} -s $h
-done
-cd -
-%endif
 
 install -d $RPM_BUILD_ROOT%{_datadir}/locale/{ar,de,fr,ru,he,cs,sk}/LC_MESSAGES
 install translations/qt_ar.qm $RPM_BUILD_ROOT%{_datadir}/locale/ar/LC_MESSAGES/qt.qm
