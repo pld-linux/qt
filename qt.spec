@@ -2,7 +2,7 @@ Summary:	The Qt2 GUI application framework
 Summary(pl):	Biblioteka Qt2 do tworzenia GUI
 Name:		qt
 Version:	2.0.1
-Release:	1
+Release:	2
 Copyright:	QPL
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
@@ -30,7 +30,6 @@ Summary(pl):    Pliki nag³ówkowe, przyk³ady i dokumentacja do biblioteki
 Group:          X11/Development/Libraries
 Group(pl):      X11/Programowanie/Biblioteki
 Requires:       %{name} = %{version}
-Requires:       %{name}-ext = %{version}
 
 %description devel
 Contains the files necessary to develop applications using Qt: header
@@ -47,19 +46,19 @@ Dokumentacjê do biblioteki znajdziesz tak¿e pod:
 /usr/share/doc/%{name}-devel-%{version}/index.html  
 
 %package ext
-Summary:        Qt extensions, library and headers file
-Summary(pl):    Qt extensions, rozrze¿enia dla QT biblioteki i pliki nag³ówkowe 
+Summary:        Qt extensions, library
+Summary(pl):    Qt extensions, rozrze¿enia dla QT biblioteki 
 Group:          X11/Libraries
 Group(pl):      X11/Biblioteki
 Requires:       %{name} = %{version}
 
 %description ext
-Contains the Qt extension files with library and include files.
+Contains the Qt extension files with library.
 Contains extension for Motif/Lesstif, OpenGL, image manipulation.
 
 %description -l pl ext
-Pakiet zawiera zestaw rozsze¿eñ dla biblioteki Qt. Biblioteki oraz pliki
-nag³ówkowe dla nastêpuj±cych pakietów: Motif/Lestif, OpenGL, Netscape oraz
+Pakiet zawiera zestaw rozsze¿eñ dla biblioteki Qt. Biblioteki dla 
+nastêpuj±cych pakietów: Motif/Lestif, OpenGL, Netscape oraz
 operacji na obrazach.
 
 %prep
@@ -78,10 +77,14 @@ QTDIR=`/bin/pwd`; export QTDIR
 
 LD_LIBRARY_PAYH=%{_libdir} make
 
+echo " Compiling Extensions ..."
 (cd extensions/opengl/src;LD_LIBRARY_PATH=%{_libdir};make)
 (cd extensions/imageio/src;LD_LIBRARY_PATH=%{_libdir};make)
-(cd extensions/xt/src;LD_LIBRARY_PATH=%{_libdir};make \
-	INCPATH="-I%{_includepatch} -I../../../include")
+# If You need Motif/Lesstif support for Qt
+# uncoment line below and line in %files ext section
+# and rebuild package.
+#(cd extensions/xt/src;LD_LIBRARY_PATH=%{_libdir};make \
+#	INCPATH="-I%{_includepatch} -I../../../include")
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -137,15 +140,22 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644, root, root, 755)
 %doc doc/*
 %attr(755,root,root) %{_bindir}/*
+%{_libdir}/libqt.so
 %{_libdir}/*.a
 %{_mandir}/man[13]/*
 %{_includedir}/*
 
 %files ext
 %defattr(755,root,root,755)
-%{_libdir}/libqimgio.so.*.*
+%{_libdir}/libqimgio.so*
+%{_libdir}/libqgl.a*
+#%{_libdir}/libqxt.a*
 
 %changelog
+* Tue Aug 10 1999 Wojciech "Sas" Ciêciwa <cieciwa@alpha.zarz.agh.edu.pl>
+  [2.0.1-2]
+- fixes problem with Lesstif.
+
 * Mon Aug  9 1999 Wojciech "Sas" Ciêciwa <cieciwa@alpha.zarz.agh.edu.pl>
   [2.0.1-1]
 - update to last version.
