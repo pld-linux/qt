@@ -58,6 +58,7 @@ Requires:	XFree86-libs >= 4.0.2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	qt-extensions
 
+%define		_docdir		/usr/share/doc/%{name}-%{version}
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1
 %define		_prefix		/usr/X11R6
 %define		_includedir	%{_prefix}/include/qt
@@ -102,7 +103,7 @@ Conflicts:	qt2-devel
 Contains the files necessary to develop applications using Qt: header
 files, the Qt meta object compiler, man pages, HTML documentation and
 example programs. See http://www.troll.no/ for more information about
-Qt, or file:/usr/share/doc/%{name}-devel-%{version}/index.html for Qt
+Qt, or file:/usr/share/doc/%{name}-%{version}/html/index.html for Qt
 documentation in HTML.
 
 %description devel -l es
@@ -110,15 +111,15 @@ Contiene los archivos necesarios para desarrollar aplicaciones
 usando Qt: archivos de inclusión, compilador de metaobjetos Qt,
 páginas de manual, documentación HTML y programas ejemplo. Mira
 http://www.troll.no para más información sobre el Qt, o el
-archivo file:/usr/lib/qt/html/index.html en la documentación
-en HTML.
+archivo file:/usr/share/doc/%{name}-%{version}/html/index.html en la
+documentación en HTML.
 
 %description devel -l pl
 Pakiet tem zawiera pliki potrzebne do tworzenia i kompilacji aplikacji
 korzystaj±cych z biblioteki Qt, jak pliki nag³ówkowe, meta kompiler
 (moc), dokumentacjê. Zobacz http://www.troll.no/ aby dowiedzieæ siê
 wiêcej o Qt. Dokumentacjê do biblioteki znajdziesz tak¿e pod:
-/usr/share/doc/%{name}-devel-%{version}/index.html
+/usr/share/doc/%{name}-%{version}/html/index.html
 
 %description devel -l pt_BR
 Contém os arquivos necessários para desenvolver aplicações usando Qt: arquivos
@@ -415,7 +416,7 @@ rm -rf `find $RPM_BUILD_ROOT -name CVS`
 rm -rf `find . -name CVS`
 
 install -d $RPM_BUILD_ROOT{%{_mandir}/man{1,3},%{_examplesdir}/%{name}/lib} \
-	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st
+	$RPM_BUILD_ROOT{%{_libdir}/qt/plugins-st,%{_docdir}/html}
 
 install bin/findtr tools/msg2qm/msg2qm tools/mergetr/mergetr \
 	$RPM_BUILD_ROOT%{_bindir}
@@ -434,6 +435,13 @@ cp -R plugins-st/* $RPM_BUILD_ROOT%{_libdir}/qt/plugins-st/
 
 cp -dpR .qmake.cache examples tutorial \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name}
+	
+cp LICENSE.QPL $RPM_BUILD_ROOT%{_docdir}
+
+mv $RPM_BUILD_ROOT%{_docdir}/{*.html,html}	
+mv $RPM_BUILD_ROOT%{_docdir}/{*.{jpg,png,xml},html}
+mv $RPM_BUILD_ROOT%{_docdir}/{{headerfilesynonyms,index,propertydocs},html}
+mv $RPM_BUILD_ROOT%{_docdir}/{{propertyindex,titleindex,whatsthis},html}
 
 mv $RPM_BUILD_ROOT{%{_libdir}/*.prl,%{_examplesdir}/%{name}/lib}
 
@@ -459,7 +467,7 @@ perl -pi -e "
 
 %files
 %defattr(644,root,root,755)
-%doc LICENSE.QPL
+%{_docdir}/LICENSE.QPL
 %attr(755,root,root) %{_libdir}/libqt.so.*
 %attr(755,root,root) %{_libdir}/libqui.so.*
 %attr(755,root,root) %{_libdir}/libeditor.so.*
@@ -476,7 +484,7 @@ perl -pi -e "
 
 %files devel
 %defattr(644,root,root,755)
-%doc doc/[!Mm]*
+%{_docdir}/html
 %attr(755,root,root) %{_bindir}/*
 %{_libdir}/libqt.so
 %{_libdir}/libqt-mt.so
