@@ -21,8 +21,8 @@ Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
-Version:	3.1.1
-Release:	4
+Version:	3.1.2
+Release:	1
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -279,7 +279,7 @@ perl -pi -e "
 #find examples -name '*.pro' -exec \
 #	perl -pi -e 's|(DEPENDPATH=)../../include|$1%{_includedir}|' {} \;
 
-DEFAULTOPT="-prefix %{_prefix} -docdir %{_docdir}/%{name}-%{version} \
+DEFAULTOPT="-prefix %{_prefix} -docdir %{_docdir}/%{name}-doc-html-%{version} \
 	    -datadir %{_datadir}/qt -headerdir %{_includedir}\
 	    -release -qt-gif -system-zlib -no-g++-exceptions -stl \
 	    -no-exceptions \
@@ -487,12 +487,12 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc FAQ LICENSE.* README* changes*
-%attr(755,root,root) %{_libdir}/libqt.so.*
-%attr(755,root,root) %{_libdir}/libqui.so.*
-%attr(755,root,root) %{_libdir}/libqt-mt.so.*
 %attr(755,root,root) %{_libdir}/libdesigner.so.*
 %attr(755,root,root) %{_libdir}/libeditor.so.*
 %attr(755,root,root) %{_libdir}/libqassistantclient.so.*
+%attr(755,root,root) %{_libdir}/libqt.so.*
+%attr(755,root,root) %{_libdir}/libqt-mt.so.*
+%attr(755,root,root) %{_libdir}/libqui.so.*
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/plugins*
 %dir %{_libdir}/%{name}/plugins*/imageformats
@@ -508,12 +508,12 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/[!adl]*
 %attr(755,root,root) %{_bindir}/l[!i]*
-%attr(755,root,root) %{_libdir}/libqt.so
-%attr(755,root,root) %{_libdir}/libqt-mt.so
-%attr(755,root,root) %{_libdir}/libqui.so
-%attr(755,root,root) %{_libdir}/libdesigner.so
-%attr(755,root,root) %{_libdir}/libeditor.so
-%attr(755,root,root) %{_libdir}/libqassistantclient.so
+%{_libdir}/libdesigner.so
+%{_libdir}/libeditor.so
+%{_libdir}/libqassistantclient.so
+%{_libdir}/libqt.so
+%{_libdir}/libqt-mt.so
+%{_libdir}/libqui.so
 %{_includedir}
 %{_datadir}/qt/[!d]*
 %{_mandir}/man1/*
@@ -526,7 +526,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files doc-html
 %defattr(644,root,root,755)
-%doc doc/html/*
+%{_docdir}/%{name}-doc-html-%{version}
 
 %files doc-man
 %defattr(644,root,root,755)
