@@ -1,8 +1,8 @@
 Summary:	The Qt2 GUI application framework
 Summary(pl):	Biblioteka Qt2 do tworzenia GUI
 Name:		qt
-Version:	2.1.0
-Release:	4
+Version:	2.1.1
+Release:	1
 License:	QPL
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
