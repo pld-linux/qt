@@ -2,11 +2,12 @@ Summary:     The Qt GUI application framework: Shared library
 Summary(pl): Biblioteka Qt do tworzenia GUI
 Name:        qt
 Version:     1.42
-Release:     2
+Release:     3
 Source0:     ftp://ftp.troll.no/qt/source/%{name}-%{version}.tar.gz
 Patch0:      qt.patch
 Copyright:   distributable
 Group:       X11/Libraries
+Group(pl):   x11/Biblioteki
 URL:         http://www.troll.no/
 Buildroot:   /tmp/%{name}-%{version}-root
 
@@ -21,6 +22,7 @@ Zawiera bibliotekê Qt wymagan± przez aplikacje, które z niej korzystaj±.
 Summary:     Include files and documentation needed to compile
 Summary(pl): Pliki nag³ówkowe, przyk³ady i dokumentacja do biblioteki 
 Group:       X11/Libraries
+Group(pl):   X11/Biblioteki
 Requires:    %{name} = %{version}
 
 %description devel
@@ -36,6 +38,22 @@ korzystaj±cych z biblioteki Qt jak pliki nag³ówkowe, meta kompiler (moc),
 dokumentacjê. Zobacz http://www.troll.no/ aby dowiedzieæ siê wiêcej o Qt.
 Dokumentacjê do biblioteki znajdziesz tak¿e pod:
 /usr/doc/%{name}-%{version}/html/index.html  
+
+%package extensions
+Summary:     Qt extensions, library and headers file
+Summary(pl): Qt extensions, rozrze¿enia dla QT biblioteki i pliki nag³ówkowe 
+Group:       X11/Libraries
+Group(pl):   X11/Biblioteki
+Requires:    %{name} = %{version}
+
+%description extensions
+Contains the Qt extension files with library and include files.
+Contains extension for Motif/Lesstif, OpenGL, image manipulation.
+
+%description -l pl extensions
+Pakiet zawiera zestaw rozsze¿eñ dla biblioteki Qt.
+Biblioteki oraz pliki nag³ówkowe dla nastêpuj±cych pakietów:
+Motif/Lestif, OpenGL, Netscape oraz operacji na obrazach.
 
 %prep
 %setup -q
@@ -75,9 +93,10 @@ make	SYSCONF_CFLAGS="$RPM_OPT_FLAGS" \
 if [ "`locate "Xm/Xm.h"`" != "" ]; then
 cd ../../xt/src
 LD_LIBRARY_PATH=/usr/X11R6/lib \
-make	SYSCONF_CFLAGS="$RPM_OPT_FLAGS" \
+make	SYSCONF_CFLAGS="$RPM_OPT_FLAGS -I/usr/X11R6/include" \
 	SYSCONF_CFLAGS_LIB="$RPM_OPT_FLAGS -fPIC" \
-	SYSCONF_CFLAGS_SHOBJ="$RPM_OPT_FLAGS -fPIC"
+	SYSCONF_CFLAGS_SHOBJ="$RPM_OPT_FLAGS -fPIC"\
+	
 else
   echo "Hmm, You don't have Motif/Lesstif Library"
   echo "Or locate can't find this header. "
@@ -104,8 +123,8 @@ install extensions/opengl/src/*.h $RPM_BUILD_ROOT/usr/X11R6/include/X11/qt
 
 if [ -f lib/libqxt.a ] ; then
 install lib/libqxt.a $RPM_BUILD_ROOT/usr/X11R6/lib
-install extensions/xt/src/*.h $RPM_BUILD_ROOT/usr/X11R6/include/X11/qt
 fi
+install extensions/xt/src/*.h $RPM_BUILD_ROOT/usr/X11R6/include/X11/qt
 
 for a in {tutorial,examples}/{Makefile,*/Makefile}; do
   sed 's-^SYSCONF_MOC.*-SYSCONF_MOC		= /usr/X11R6/bin/moc-' < $a > ${a}.2
@@ -126,6 +145,16 @@ rm -rf $RPM_BUILD_DIR/%name-%version
 %doc LICENSE README* FAQ
 /usr/X11R6/lib/lib*.so.*.*
 
+%files extensions
+%defattr(644, root, root, 755)
+%attr(644, root, root) /usr/X11R6/include/X11/qt/qimageio.h
+%attr(644, root, root) /usr/X11R6/include/X11/qt/qjpegio.h
+%attr(644, root, root) /usr/X11R6/include/X11/qt/qpngio.h
+%attr(644, root, root) /usr/X11R6/include/X11/qt/qgl.h
+%attr(644, root, root) /usr/X11R6/include/X11/qt/qxt.h
+%attr(  -, root, root) /usr/X11R6/lib/libqgl.a
+%attr(  -, root, root) /usr/X11R6/lib/libqxt.a
+
 %files devel
 %defattr(644, root, root, 755)
 %doc html tutorial examples doc changes-* ANNOUNCE
@@ -133,10 +162,13 @@ rm -rf $RPM_BUILD_DIR/%name-%version
 %attr(644, root,  man) /usr/X11R6/man/man[13]/*
 /usr/X11R6/include/X11/qt
 %attr(  -, root, root) /usr/X11R6/lib/lib*.so
-%attr(  -, root, root) /usr/X11R6/lib/libqgl.a
-%attr(  -, root, root) /usr/X11R6/lib/libqxt.a
+
 
 %changelog
+* Fri Feb  5 1999 Wojciech "Sas" Ciêciwa <cieciwa@alpha.zarz.agh.edu.pl>
+  [1.42-3]
+- separate extensions.
+
 * Tue Jan  7 1999 Wojciech "Sas" Ciêciwa <cieciwa@alpha.zarz.agh.edu.pl>
 - added extensions.
 
