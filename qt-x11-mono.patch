@@ -1,5 +1,5 @@
---- qt-x11-free-3.3.1/src/kernel/qfontdatabase_x11.cpp.fontdatabase	2004-02-18 14:22:49.000000000 +0100
-+++ qt-x11-free-3.3.1/src/kernel/qfontdatabase_x11.cpp	2004-03-05 00:10:57.126934173 +0100
+--- qt-x11-free-3.3.4/src/kernel/qfontdatabase_x11.cpp.orig	2005-01-26 15:14:23.058046680 +0100
++++ qt-x11-free-3.3.4/src/kernel/qfontdatabase_x11.cpp	2005-01-26 15:53:23.699215136 +0100
 @@ -711,6 +711,12 @@
  
  static void loadXlfds( const char *reqFamily, int encoding_id )
@@ -13,7 +13,7 @@
      QtFontFamily *fontFamily = reqFamily ? db->family( reqFamily ) : 0;
  
      // make sure we don't load twice
-@@ -943,7 +949,7 @@
+@@ -975,7 +981,7 @@
      };
      const XftDefaultFont defaults[] = {
  	{ "Serif", "serif", FALSE },
@@ -22,12 +22,12 @@
          { "Monospace", "monospace", TRUE },
  	{ 0, 0, FALSE }
      };
-@@ -967,6 +973,8 @@
+@@ -1003,6 +1009,8 @@
  	    style->smoothScalable = TRUE;
  	    QtFontSize *size = style->pixelSize( SMOOTH_SCALABLE, TRUE );
  	    QtFontEncoding *enc = size->encodingID( -1, 0, 0, 0, 0, TRUE );
 +	    if (f->qtname == "Monospace")
 +		family->fixedPitch = TRUE;
- 	    enc->pitch = ( spacing_value >= XFT_CHARCELL ? 'c' :
- 			   ( spacing_value >= XFT_MONO ? 'm' : 'p' ) );
+ 	    enc->pitch = (f->fixed ? 'm' : 'p');
  	}
+ 	++f;

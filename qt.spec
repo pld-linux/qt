@@ -19,7 +19,7 @@
 %define		_withsql	1
 %{!?with_sqlite:%{!?with_ibase:%{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}}}
 
-%define		_ver		3.3.3
+%define		_ver		3.3.4
 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
@@ -28,13 +28,13 @@ Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 #Version:	%{_ver}.%{_snap}
 Version:	%{_ver}
-Release:	7
+Release:	1
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
 #Source0:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-%{_snap}.tar.bz2
 Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
-# Source0-md5:	3e0a0c8429b0a974b39b5f535ddff01c
+# Source0-md5:	027f4e82fbe592b39d2f160bfb3a73af
 Source1:	http://ftp.pld-linux.org/software/kde/%{name}-copy-patches-040819.tar.bz2
 # Source1-md5:	f35f461463d89f7b035530d8d1f02ad6
 Source2:	%{name}config.desktop
@@ -675,6 +675,8 @@ graficznego - Qt Designer.
 
 install %{SOURCE6} ./apply_patches
 chmod +x ./apply_patches
+# patch 0021 currently applied in 3.3.4 release
+rm patches/0021-qiconview-dragalittle.patch
 ./apply_patches
 
 # change QMAKE_CFLAGS_RELEASE to build
@@ -985,15 +987,15 @@ cat >> $RPM_BUILD_ROOT%{_includedir}/qt/qconfig.h << EOF
 
 EOF
 
-install -d $RPM_BUILD_ROOT%{_datadir}/locale/{ar,de,fr,ru,he,cs,sk}/LC_MESSAGES
+install -d $RPM_BUILD_ROOT%{_datadir}/locale/{ar,cs,de,es,fr,he,ru,sk}/LC_MESSAGES
 install translations/qt_ar.qm $RPM_BUILD_ROOT%{_datadir}/locale/ar/LC_MESSAGES/qt.qm
-install translations/qt_de.qm $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/qt.qm
-install translations/qt_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/qt.qm
-install translations/qt_ru.qm $RPM_BUILD_ROOT%{_datadir}/locale/ru/LC_MESSAGES/qt.qm
-install translations/qt_iw.qm $RPM_BUILD_ROOT%{_datadir}/locale/he/LC_MESSAGES/qt.qm
 install translations/qt_cs.qm $RPM_BUILD_ROOT%{_datadir}/locale/cs/LC_MESSAGES/qt.qm
+install translations/qt_de.qm $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/qt.qm
+install translations/qt_es.qm $RPM_BUILD_ROOT%{_datadir}/locale/es/LC_MESSAGES/qt.qm
+install translations/qt_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/qt.qm
+install translations/qt_he.qm $RPM_BUILD_ROOT%{_datadir}/locale/he/LC_MESSAGES/qt.qm
+install translations/qt_ru.qm $RPM_BUILD_ROOT%{_datadir}/locale/ru/LC_MESSAGES/qt.qm
 install translations/qt_sk.qm $RPM_BUILD_ROOT%{_datadir}/locale/sk/LC_MESSAGES/qt.qm
-
 
 %if %{with designer}
 install tools/designer/designer/designer_de.qm $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/designer.qm
@@ -1059,12 +1061,13 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/%{name}/plugins-mt/styles/*.so
 %dir %{_datadir}/qt
 %lang(ar) %{_datadir}/locale/ar/LC_MESSAGES/qt.qm
+%lang(cs) %{_datadir}/locale/cs/LC_MESSAGES/qt.qm
 %lang(de) %{_datadir}/locale/de/LC_MESSAGES/qt.qm
+%lang(es) %{_datadir}/locale/es/LC_MESSAGES/qt.qm
 %lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/qt.qm
 %lang(he) %{_datadir}/locale/he/LC_MESSAGES/qt.qm
 %lang(ru) %{_datadir}/locale/ru/LC_MESSAGES/qt.qm
 %lang(sk) %{_datadir}/locale/sk/LC_MESSAGES/qt.qm
-%lang(cs) %{_datadir}/locale/cs/LC_MESSAGES/qt.qm
 
 %files devel
 %defattr(644,root,root,755)
