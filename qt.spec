@@ -1,15 +1,17 @@
-Summary:     The Qt GUI application framework: Shared library
-Summary(pl): Biblioteka Qt do tworzenia GUI
-Name:        qt
-Version:     1.42
-Release:     4
-Copyright:   distributable
-Group:       X11/Libraries
-Group(pl):   x11/Biblioteki
-Source:	     ftp://ftp.troll.no/qt/source/%{name}-%{version}.tar.gz
-Patch:       qt.patch
-URL:         http://www.troll.no/
-Buildroot:   /tmp/%{name}-%{version}-root
+Summary:	The Qt GUI application framework: Shared library
+Summary(pl):	Biblioteka Qt do tworzenia GUI
+Name:		qt
+Version:	1.43
+Release:	1
+Copyright:	distributable
+Group:		X11/Libraries
+Group(pl):	X11/Biblioteki
+Source:		ftp://ftp.troll.no/qt/source/%{name}-%{version}.tar.bz2
+Patch0:		qt.patch
+Patch1:		qt-opt.patch
+URL:		http://www.troll.no/
+Buildroot:	/tmp/%{name}-%{version}-root
+Conflicts:	glibc <= 2.0.7
 
 %description
 Contains the shared library needed to run Qt applications, as well as
@@ -19,16 +21,17 @@ the README files for Qt.
 Zawiera bibliotekê Qt wymagan± przez aplikacje, które z niej korzystaj±.
 
 %package devel
-Summary:     Include files and documentation needed to compile
-Summary(pl): Pliki nag³ówkowe, przyk³ady i dokumentacja do biblioteki 
-Group:       X11/Libraries
-Group(pl):   X11/Biblioteki
-Requires:    %{name} = %{version}
+Summary:	Include files and documentation needed to compile
+Summary(pl):	Pliki nag³ówkowe, przyk³ady i dokumentacja do biblioteki 
+Group:		X11/Libraries
+Group(pl):	X11/Biblioteki
+Requires:	%{name} = %{version}
+Requires:	%{name}-extensions = %{version}
 
 %description devel
 Contains the files necessary to develop applications using Qt: header
 files, the Qt meta object compiler, man pages, HTML documentation and
-example programs.  See http://www.troll.no for more information about
+example programs. See http://www.troll.no/ for more information about
 Qt, or file:/usr/doc/%{name}-devel-%{version}/html/index.html for Qt
 documentation in HTML.
 
@@ -40,67 +43,37 @@ Dokumentacjê do biblioteki znajdziesz tak¿e pod:
 /usr/doc/%{name}-%{version}/html/index.html  
 
 %package extensions
-Summary:     Qt extensions, library and headers file
-Summary(pl): Qt extensions, rozrze¿enia dla QT biblioteki i pliki nag³ówkowe 
-Group:       X11/Libraries
-Group(pl):   X11/Biblioteki
-Requires:    %{name} = %{version}
+Summary:	Qt extensions, library and headers file
+Summary(pl):	Qt extensions, rozrze¿enia dla QT biblioteki i pliki nag³ówkowe 
+Group:		X11/Libraries
+Group(pl):	X11/Biblioteki
+Requires:	%{name} = %{version}
+Conflicts:	glibc <= 2.0.7
 
 %description extensions
 Contains the Qt extension files with library and include files.
 Contains extension for Motif/Lesstif, OpenGL, image manipulation.
 
 %description -l pl extensions
-Pakiet zawiera zestaw rozsze¿eñ dla biblioteki Qt.
-Biblioteki oraz pliki nag³ówkowe dla nastêpuj±cych pakietów:
-Motif/Lestif, OpenGL, Netscape oraz operacji na obrazach.
+Pakiet zawiera zestaw rozsze¿eñ dla biblioteki Qt. Biblioteki oraz pliki
+nag³ówkowe dla nastêpuj±cych pakietów: Motif/Lestif, OpenGL, Netscape oraz
+operacji na obrazach.
 
 %prep
 %setup -q
-%patch -p1
+%patch0 -p1
+%patch1 -p1
 
 %build
 QTDIR=`/bin/pwd`; export QTDIR
 make linux-g++-shared
-LD_LIBRARY_PATH=/usr/X11R6/lib \
-make	SYSCONF_CFLAGS="$RPM_OPT_FLAGS" \
-	SYSCONF_CFLAGS_LIB="$RPM_OPT_FLAGS -fPIC" \
-	SYSCONF_CFLAGS_SHOBJ="$RPM_OPT_FLAGS -fPIC"
 
-cd extensions/imageio/src
-LD_LIBRARY_PATH=/usr/X11R6/lib \
-make	SYSCONF_CFLAGS="$RPM_OPT_FLAGS" \
-	SYSCONF_CFLAGS_LIB="$RPM_OPT_FLAGS -fPIC" \
-	SYSCONF_CFLAGS_SHOBJ="$RPM_OPT_FLAGS -fPIC"
+LD_LIBRARY_PATH=/usr/X11R6/lib make
 
-if [ "`locate "common/npunix.c"`" != "" ]; then
-cd ../../nsplugin/src
-LD_LIBRARY_PATH=/usr/X11R6/lib \
-make	SYSCONF_CFLAGS="$RPM_OPT_FLAGS" \
-	SYSCONF_CFLAGS_LIB="$RPM_OPT_FLAGS -fPIC" \
-	SYSCONF_CFLAGS_SHOBJ="$RPM_OPT_FLAGS -fPIC"
-else
-  echo "Hmm, You don't have Plugin SDK for Netscape"
-  echo "Or locate can't find this file"
-fi
-
-cd ../../opengl/src
-LD_LIBRARY_PATH=/usr/X11R6/lib \
-make	SYSCONF_CFLAGS="$RPM_OPT_FLAGS" \
-	SYSCONF_CFLAGS_LIB="$RPM_OPT_FLAGS -fPIC" \
-	SYSCONF_CFLAGS_SHOBJ="$RPM_OPT_FLAGS -fPIC"
-
-if [ "`locate "Xm/Xm.h"`" != "" ]; then
-cd ../../xt/src
-LD_LIBRARY_PATH=/usr/X11R6/lib \
-make	SYSCONF_CFLAGS="$RPM_OPT_FLAGS -I/usr/X11R6/include" \
-	SYSCONF_CFLAGS_LIB="$RPM_OPT_FLAGS -fPIC" \
-	SYSCONF_CFLAGS_SHOBJ="$RPM_OPT_FLAGS -fPIC"\
-	
-else
-  echo "Hmm, You don't have Motif/Lesstif Library"
-  echo "Or locate can't find this header. "
-fi
+(cd extensions/imageio/src; LD_LIBRARY_PATH=/usr/X11R6/lib make)
+(cd extensions/opengl/src; LD_LIBRARY_PATH=/usr/X11R6/lib make)
+(cd extensions/xt/src; LD_LIBRARY_PATH=/usr/X11R6/lib \
+ make INCPATH="-I/usr/X11R6/include -I../../../include")
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -114,7 +87,6 @@ install man/man3/* $RPM_BUILD_ROOT/usr/X11R6/man/man3
 install include/* $RPM_BUILD_ROOT/usr/X11R6/include/X11/qt
 
 install -s lib/libqimgio.so.*.* $RPM_BUILD_ROOT/usr/X11R6/lib
-ln -sf libqimgio.so.0.1 $RPM_BUILD_ROOT/usr/X11R6/lib/libqimgio.so.0
 ln -sf libqimgio.so.0.1 $RPM_BUILD_ROOT/usr/X11R6/lib/libqimgio.so
 install extensions/imageio/src/*.h $RPM_BUILD_ROOT/usr/X11R6/include/X11/qt
 
@@ -122,53 +94,61 @@ install lib/libqgl.a $RPM_BUILD_ROOT/usr/X11R6/lib
 install extensions/opengl/src/*.h $RPM_BUILD_ROOT/usr/X11R6/include/X11/qt
 
 if [ -f lib/libqxt.a ] ; then
-install lib/libqxt.a $RPM_BUILD_ROOT/usr/X11R6/lib
+	install lib/libqxt.a $RPM_BUILD_ROOT/usr/X11R6/lib
 fi
 install extensions/xt/src/*.h $RPM_BUILD_ROOT/usr/X11R6/include/X11/qt
 
 for a in {tutorial,examples}/{Makefile,*/Makefile}; do
-  sed 's-^SYSCONF_MOC.*-SYSCONF_MOC		= /usr/X11R6/bin/moc-' < $a > ${a}.2
-  mv -v ${a}.2 $a
+	cat $a | sed 's-^SYSCONF_MOC.*-SYSCONF_MOC		= /usr/X11R6/bin/moc-' | \
+	sed 's-^SYSCONF_CXXFLAGS_QT	= \$(QTDIR)/include-SYSCONF_CXXFLAGS_QT	= /usr/X11R6/include/qt-' | \
+	sed 's-^SYSCONF_LFLAGS_QT	= \$(QTDIR)/lib-SYSCONF_LFLAGS_QT	= /usr/X11R6/lib-' > $a
 done
 
 gzip -9nf $RPM_BUILD_ROOT/usr/X11R6/man/man[13]/*
-gzip -9nf README* LICENSE FAQ ANNOUNCE changes-* doc html
+gzip -9nf README* LICENSE FAQ ANNOUNCE changes-* doc/*
 
 %post   -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
 
+%post   -p /sbin/ldconfig extensions
+%postun -p /sbin/ldconfig extensions
+
 %clean
 rm -rf $RPM_BUILD_ROOT
-rm -rf $RPM_BUILD_DIR/%name-%version
 
 %files
-%defattr(644, root, root, 755)
+%defattr(644,root,root,755)
 %doc LICENSE.gz README*.gz FAQ.gz
-/usr/X11R6/lib/lib*.so.*.*
-
-%files extensions
-%defattr(644, root, root, 755)
-%attr(644, root, root) /usr/X11R6/include/X11/qt/qimageio.h
-%attr(644, root, root) /usr/X11R6/include/X11/qt/qjpegio.h
-%attr(644, root, root) /usr/X11R6/include/X11/qt/qpngio.h
-%attr(644, root, root) /usr/X11R6/include/X11/qt/qgl.h
-%attr(644, root, root) /usr/X11R6/include/X11/qt/qxt.h
-%attr(  -, root, root) /usr/X11R6/lib/libqgl.a
-%attr(  -, root, root) /usr/X11R6/lib/libqxt.a
+%attr(755,root,root) /usr/X11R6/lib/libqt.so.*.*
 
 %files devel
-%defattr(644, root, root, 755)
+%defattr(644,root,root,755)
 %doc html tutorial examples doc changes-*.gz ANNOUNCE.gz
-%attr(755, root, root) /usr/X11R6/bin/*
-%attr(644, root,  man) /usr/X11R6/man/man[13]/*
+%attr(755,root,root) /usr/X11R6/bin/*
+%attr(755,root,root) /usr/X11R6/lib/libqt.so
+/usr/X11R6/lib/lib*.a
+/usr/X11R6/man/man[13]/*
 /usr/X11R6/include/X11/qt
-%attr(  -, root, root) /usr/X11R6/lib/lib*.so
 
+%files extensions
+%attr(755,root,root) /usr/X11R6/lib/libqimgio.so.*.*
 
 %changelog
+* Fri Mar  5 1999 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
+  [1.43-1]
+- removed compressing html doc,
+- fixed passing $RPM_OPT_FLAGS,
+- added "Conflicts: glibc <= 2.0.7" for prevent installing packages
+  in proper enviroment,
+- now devel subpackage is depends on main and extensions,
+- fixed SYSCONF_LFLAGS_QT and SYSCONF_CXXFLAGS_QT in all Makefiles in
+  tutorial and examples sources (not use $QTDIR),
+- removed man group from man pages.
+
 * Wed Feb 17 1999 Micha³ Kuratczyk <kura@wroclaw.art.pl>
   [1.42-4]
 - added gzipping documentation
+- removed man group from man pages.
 
 * Fri Feb  5 1999 Wojciech "Sas" Ciêciwa <cieciwa@alpha.zarz.agh.edu.pl>
   [1.42-3]
@@ -210,4 +190,4 @@ rm -rf $RPM_BUILD_DIR/%name-%version
 - added using $RPM_OPT_FLAGS during compile,
 - /sbin/ldconfig is now -p parameter in %post[un],
 - added %defattr and %attr macros in %files (allows building package from
-  non-root account).
+  non-root account).jri.h
