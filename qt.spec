@@ -14,8 +14,8 @@ Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
-Version:	3.0.4
-Release:	5
+Version:	3.0.5
+Release:	1
 Epoch:		3
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -237,7 +237,7 @@ find examples -name '*.pro' -exec \
 DEFAULTOPT="-prefix %{_prefix} -bindir %{_bindir} -libdir %{_libdir} \
 	    -docdir %{_docdir}/%{name}-%{version} -headerdir %{_includedir} \
 	    -datadir %{_datadir}/qt
-	    -release -qt-gif -system-zlib -no-g++-exceptions -stl -remote -system-libpng \
+	    -release -qt-gif -system-zlib -no-g++-exceptions -stl -system-libpng \
 	    -system-libjpeg -system-libmng -sm -xinerama -xrender -xft -xkb"
 STYLESLIST="cde compact motif motifplus platinum sgi windows"
 
@@ -395,6 +395,8 @@ QTDIR=`/bin/pwd`; export QTDIR
 LD_LIBRARY_PATH="$QTDIR/lib" ; export LD_LIBRARY_PATH
 PATH="$QTDIR/bin:$PATH"
 
+# Trolltech sucks and swallows.
+perl -pi -e "s/^	strip/	-strip/;" src/Makefile
 %{__make} install INSTALL_ROOT=$RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT%{_mandir}/man{1,3} \
