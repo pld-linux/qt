@@ -9,6 +9,7 @@
 %bcond_without	odbc		# disable unixODBC support
 %bcond_without	pgsql		# disable PostgreSQL support
 %bcond_without	designer	# don't build designer (it takes long)
+%bcond_with	pch		# enable pch in qmake
 #
 %define		_withsql	1
 %{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}
@@ -68,7 +69,9 @@ Requires:	OpenGL
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Conflicts:	kdelibs <= 8:3.2-0.030602.1
 Obsoletes:	qt-extensions
-
+%if %{with pch}
+BuildRequires:	gcc >= 5:3.4.0
+%endif
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1
 %define		_includedir	%{_prefix}/include/qt
 
@@ -435,6 +438,9 @@ echo -e "QMAKE_CFLAGS_RELEASE\t=\t%{rpmcflags}" >> $plik
 echo -e "QMAKE_CXXFLAGS_RELEASE\t=\t%{rpmcflags}" >> $plik
 echo -e "QMAKE_CFLAGS_DEBUG\t=\t%{debugcflags}" >> $plik
 echo -e "QMAKE_CXXFLAGS_DEBUG\t=\t%{debugcflags}" >> $plik
+%if %{with pch}
+echo -e "DEFINES\t+=\tUSING_PCH" >> $plik
+%endif
 
 %build
 export QTDIR=`/bin/pwd`
