@@ -14,7 +14,7 @@
 %define		_withsql	1
 %{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}
 
-%define		_snap	040304
+%define		_snap	040305
 %define		_ver	3.3.1
 
 Summary:	The Qt3 GUI application framework
@@ -28,7 +28,7 @@ Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
 Source0:	http://ep09.pld-linux.org/~adgor/kde/%{name}-copy-%{_snap}.tar.bz2
-# Source0-md5:	562da1d1933c6ca8e2d6f6702f9441c3
+# Source0-md5:	0b23f677e05f364bfabfa418a11a2f30
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
@@ -106,7 +106,7 @@ Summary(pl):	Pliki nag³ówkowe, przyk³ady i dokumentacja do biblioteki
 Summary(pt_BR):	Arquivos de inclusão e documentação necessária para compilar aplicações Qt
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
-Requires:	XFree86-devel
+#Requires:	XFree86-devel
 Requires:	freetype-devel
 Requires:	libjpeg-devel
 Requires:	libmng-devel
