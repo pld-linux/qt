@@ -90,14 +90,14 @@ yes
 _EOF_
 
 LD_LIBRARY_PATH=%{_libdir}
-SYSCONF_CFLAGS="-pipe -DNO_DEBUG %{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}"
-SYSCONF_CXXFLAGS="-pipe -DNO_DEBUG %{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}"
+SYSCONF_CFLAGS="-pipe -DNO_DEBUG %{?debug:-O -g}%{!?debug:$RPM_OPT_FLAGS}"
+SYSCONF_CXXFLAGS="-pipe -DNO_DEBUG %{?debug:-O -g}%{!?debug:$RPM_OPT_FLAGS}"
 export LD_LIBRARY_PATH SYSCONF_CFLAGS SYSCONF_CXXFLAGS
 
 %{__make} symlinks  src-moc src-mt sub-src sub-tools\
 %ifnarch alpha
-        SYSCONF_CFLAGS="%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}" \
-	SYSCONF_CXXFLAGS="%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}"
+        SYSCONF_CFLAGS="%{?debug:-O -g}%{!?debug:$RPM_OPT_FLAGS}" \
+	SYSCONF_CXXFLAGS="%{?debug:-O -g}%{!?debug:$RPM_OPT_FLAGS}"
 %else
         SYSCONF_CFLAGS="%{!?debug:-0O}%{?debug:-O -g}" \
 	SYSCONF_CXXFLAGS="%{!?debug:-O0}%{?debug:-O -g}"
