@@ -1,8 +1,7 @@
 #
 # Conditional build:
 %bcond_with	nas		# enable NAS audio support
-%bcond_with	nvidia		# prelink Qt/KDE and depend on NVIDIA binaries
-				  (broken at this moment)
+%bcond_with	nvidia		# prelink Qt/KDE and depend on NVIDIA binaries (broken at this moment)
 %bcond_without	single		# don't build single-threaded libraries
 %bcond_without	static_libs	# don't build static libraries
 %bcond_without	cups		# disable CUPS support
@@ -13,7 +12,7 @@
 %define		_withsql	1
 %{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}
 
-%define		_snap	031221
+%define		_snap	040103
 %define		_ver	3.3.0
 
 Summary:	The Qt3 GUI application framework
@@ -26,8 +25,8 @@ Release:	0.%{_snap}.0.1
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
-Source0:	http://www.kernel.pl/~adgor/kde/%{name}-copy-%{_snap}.tar.bz2
-# Source0-md5:	2fc89bff7e4bfe8fe26a3e365450b0f9
+Source0:	http://ep09.pld-linux.org/~djurban/kde/%{name}-copy-%{_snap}.tar.bz2
+# Source0-md5:	b68d75187d4bf35fb2d4ee9f87cc268c
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
@@ -39,6 +38,7 @@ Patch7:		%{name}-make_use_of_locale.patch
 Patch8:		%{name}-make_assistant_use_global_docs.patch
 Patch9:		%{name}-qmake-opt.patch
 Patch10:	%{name}-qmake-la-and-pc-fix.patch
+Patch11:	%{name}-fix_nptl.patch
 URL:		http://www.trolltech.com/products/qt/
 BuildRequires:	OpenGL-devel
 # incompatible with bison
@@ -354,26 +354,8 @@ Narzêdie do konfiguracji wygl±du i zachowania widgetów QT.
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
-#%patch10 -p1
-
-cat >> patches/DISABLED << EOF
-0003
-0004
-0005
-0006
-0007
-0009
-0011
-0014
-0018
-0019
-0022
-0024
-0025
-0026
-0027
-0029
-EOF
+%patch10 -p1
+%patch11 -p0
 
 ./apply_patches
 
@@ -413,6 +395,7 @@ DEFAULTOPT=" \
 	-system-libpng \
 	-system-zlib \
 	-no-exceptions \
+	-ipv6 \
 	%{!?with_cups:-no-cups} \
 	%{?with_nas:-system-nas-sound} \
 	%{?with_nvidia:-dlopen-opengl} \
