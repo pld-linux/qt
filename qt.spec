@@ -677,6 +677,7 @@ chmod +x ./apply_patches
 # patch 0021 currently applied in 3.3.4 release
 rm patches/0021-qiconview-dragalittle.patch
 ./apply_patches
+rm ../.qt-x11-free-%{version}.applied
 
 # change QMAKE_CFLAGS_RELEASE to build
 # properly optimized libs
