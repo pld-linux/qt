@@ -15,19 +15,19 @@
 %define 	_withsql	1
 %{?_without_mysql:%{?_without_pgsql:%{?_without_odbc:%define _withsql 0}}}
 
-%define 	_snap	20030315 
+%define 	_snap	030329 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
-Version:	3.1.2
-Release:	1.%{_snap}.1
+Version:	3.2
+Release:	0.%{_snap}.1
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
 #Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
-Source0:	%{name}-%{version}-%{_snap}.tar.bz2
+Source0:	%{name}-copy-%{_snap}.tar.bz2
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
@@ -237,7 +237,7 @@ QT Development Utilities.
 Narzedzia programistyczne QT.
 
 %prep
-%setup -q -n %{name}-%{version}-%{_snap}
+%setup -q -n %{name}-copy
 %patch0 -p1
 #%ifarch %{ix86} ppc
 #%%{?_with_prelink:%patch1 -p1}
@@ -249,23 +249,7 @@ Narzedzia programistyczne QT.
 %patch5 -p1
 %patch6 -p1
 
-# mkspecs has wrong includes what makes it require patching every files that uses qmake
-# this is a fix
 rm -rf `find . -name CVS`
-
-cd mkspecs
-for katalog in * ; do
-        if [ -d $katalog ]; then
-		cd $katalog
-		echo "$katalog"
-		if [ -r qmake.conf ]; then
-		sed -e "s/\$(QTDIR)\/include/\$(QTDIR)\/include\/qt/g"  qmake.conf >> qmake.conf.1
-		mv -f qmake.conf.1 qmake.conf
-		fi
-		cd ..
-	fi
-done
-cd ..
 
 # There is no file pointed by this sym-link and there is cp -L in %%install
 rm -f include/qt_windows.h
