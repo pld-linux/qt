@@ -121,7 +121,7 @@ install include/* $RPM_BUILD_ROOT/%{_includedir}
 # Extensions
 #install extensions/imageio/src/*.h $RPM_BUILD_ROOT%{_includedir}
 install extensions/network/src/*.h $RPM_BUILD_ROOT%{_includedir}
-install extensions/nsplugin/src/*.h $RPM_BUILD_ROOT%{_includedir}
+#install extensions/nsplugin/src/*.h $RPM_BUILD_ROOT%{_includedir}
 install extensions/opengl/src/*.h $RPM_BUILD_ROOT%{_includedir}
 #install extensions/xembed/src/*.h $RPM_BUILD_ROOT%{_includedir}
 install extensions/xt/src/*.h $RPM_BUILD_ROOT%{_includedir}
@@ -167,6 +167,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libqgl.a
 #%{_libdir}/libqimgio.a
 %{_libdir}/libqnetwork.a
-%{_libdir}/libqnp.a
+#%{_libdir}/libqnp.a
 #%{_libdir}/libqxembed.a
 %{_libdir}/libqxt.a
