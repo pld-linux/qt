@@ -56,8 +56,8 @@ BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	libstdc++-devel
 BuildRequires:	libungif-devel
 %{?with_mysql:BuildRequires:	mysql-devel}
-%{?with_nas:BuildRequires:		nas-devel}
-BuildRequires:	perl
+%{?with_nas:BuildRequires:	nas-devel}
+BuildRequires:	perl-base
 %{?with_pgsql:BuildRequires:	postgresql-backend-devel}
 %{?with_pgsql:BuildRequires:	postgresql-devel}
 %{?with_nas:BuildRequires:	nas-devel}
@@ -65,11 +65,10 @@ BuildRequires:	perl
 BuildRequires:	xcursor-devel
 BuildRequires:	xft-devel
 BuildRequires:	zlib-devel
-%{?with_single:Provides:	%{name}-st = %{epoch}:%{version}-%{release}}
 Requires:	OpenGL
 Requires:	XFree86-libs >= 4.0.2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-Conflicts:	kdelibs =< 8:3.2-0.030602.1
+Conflicts:	kdelibs <= 8:3.2-0.030602.1
 Obsoletes:	qt-extensions
 
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1
@@ -138,17 +137,16 @@ arquivos de inclusão, compilador de meta-objetos Qt, veja
 http://www.trolltech.com/ para mais informações sobre ele.
 
 %package static
-Summary:	Qt static libraries
-Summary(pl):	Biblioteki statyczne Qt
+Summary:	Qt static library
+Summary(pl):	Biblioteka statyczna Qt
 Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
-%{?with_single:Provides:	%{name}-static-st = %{epoch}:%{version}-%{release}}
 
 %description static
-Static QT libraries.
+Static Qt library.
 
 %description static -l pl
-Statyczne biblioteki Qt.
+Statyczna biblioteka Qt.
 
 %package doc
 Summary:	QT Documentation in HTML format
@@ -191,27 +189,25 @@ Example programs made with Qt version %{version}.
 Programas exemplo para o Qt versão %{version}.
 
 %package plugin-mysql
-Summary:	Database plugin for mysql Qt support
+Summary:	Database plugin for MySQL Qt support
 Summary(pl):	Wtyczka MySQL do Qt
-Summary(pt_BR):	Plugin de suporte a mysql para Qt
+Summary(pt_BR):	Plugin de suporte a MySQL para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
-%{?with_single:Requires:	%{name}-st = %{epoch}:%{version}-%{release}}
 Provides:	%{name}-plugin-sql
-%{?with_single:Provides:	%{name}-plugin-sql-st = %{epoch}:%{version}-%{release}}
 Obsoletes:	%{name}-plugins-mysql
 
 %description plugin-mysql
-Database plugin for mysql Qt support.
+Database plugin for MySQL Qt support.
 
 %description plugin-mysql -l pl
 Wtyczka MySQL do Qt.
 
 %description plugin-mysql -l pt_BR
-Plugin de suporte a mysql para Qt.
+Plugin de suporte a MySQL para Qt.
 
 %package plugin-psql
-Summary:	Database plugin for pgsql Qt support
+Summary:	Database plugin for PostgreSQL Qt support
 Summary(pl):	Wtyczka PostgreSQL do Qt
 Summary(pt_BR):	Plugin de suporte a pgsql para Qt
 Group:		X11/Libraries
@@ -236,9 +232,7 @@ Summary(pl):	Wtyczka ODBC do Qt
 Summary(pt_BR):	Plugin de suporte a ODBC para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
-%{?with_single:Requires:	%{name}-st = %{epoch}:%{version}-%{release}}
 Provides:	%{name}-plugin-sql
-%{?with_single:Provides:	%{name}-plugin-sql-st = %{epoch}:%{version}-%{release}}
 Obsoletes:	%{name}-plugins-odbc
 
 %description plugin-odbc
@@ -249,6 +243,84 @@ Wtyczka ODBC do Qt.
 
 %description plugin-odbc -l pt_BR
 Plugin de suporte a ODBC para Qt.
+
+%package st
+Summary:	Single-threaded Qt library
+Summary(pl):	Jednow±tkowa wersja biblioteki Qt
+Group:		X11/Libraries
+Requires:	%{name} = %{epoch}:%{version}-%{release}
+
+%description st
+Single-threaded Qt library (deprecated, for foreign applications only).
+
+%description st -l pl
+Jednow±tkowa wersja biblioteki Qt (nie zalecana, instniej±ca na potrzeby
+obcych aplikacji).
+
+%package st-devel
+Summary:	Development files for single-threaded Qt library
+Summary(pl):	Pliki programistyczne dla jednow±tkowej biblioteki Qt
+Group:		X11/Development/Libraries
+Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
+Requires:	%{name}-st = %{epoch}:%{version}-%{release}
+
+%description st-devel
+Development files for single-threaded Qt library.
+
+%description st-devel -l pl
+Pliki programistyczne dla jednow±tkowej biblioteki Qt.
+
+%package st-static
+Summary:	Single-threaded Qt static libraries
+Summary(pl):	Jednow±tkowa statyczna biblioteka Qt
+Group:		X11/Development/Libraries
+Requires:	%{name}-st-devel = %{epoch}:%{version}-%{release}
+
+%description st-static
+Single-threaded Qt static libraries.
+
+%description st-static -l pl
+Jednow±tkowa statyczna biblioteka Qt.
+
+%package st-plugin-mysql
+Summary:	Database plugin for MySQL support in single-threaded Qt
+Summary(pl):	Wtyczka MySQL do jednow±tkowej wersji Qt
+Group:		X11/Libraries
+Requires:	%{name}-st = %{epoch}:%{version}-%{release}
+Provides:	%{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
+
+%description st-plugin-mysql
+Database plugin for MySQL support in single-threaded Qt.
+
+%description st-plugin-mysql -l pl
+Wtyczka MySQL do jednow±tkowej wersji Qt.
+
+%package st-plugin-psql
+Summary:	Database plugin for PostgreSQL support in single-threaded Qt
+Summary(pl):	Wtyczka PostgreSQL do jednow±tkowej wersji Qt
+Summary(pt_BR):	Plugin de suporte a pgsql para Qt
+Group:		X11/Libraries
+Requires:	%{name}-st = %{epoch}:%{version}-%{release}
+Provides:	%{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
+
+%description st-plugin-psql
+Database plugin for PostgreSQL support in single-threaded Qt.
+
+%description st-plugin-psql -l pl
+Wtyczka PostgreSQL do jednow±tkowej wersji Qt.
+
+%package st-plugin-odbc
+Summary:	Database plugin for ODBC support in single-threaded Qt
+Summary(pl):	Wtyczka ODBC do jednow±tkowej wersji Qt
+Group:		X11/Libraries
+Requires:	%{name}-st = %{epoch}:%{version}-%{release}
+Provides:	%{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
+
+%description st-plugin-odbc
+Database plugin for ODBC support in single-threaded Qt.
+
+%description st-plugin-odbc -l pl
+Wtyczka ODBC do jednow±tkowej wersji Qt.
 
 %package utils
 Summary:	QT Utils
@@ -282,7 +354,7 @@ Narzêdzia programistyczne QT.
 rm -rf `find $RPM_BUILD_ROOT -name CVS`
 rm -rf `find . -name CVS`
 
-mv patches/apply_patches ./
+mv patches/apply_patches .
 
 #%{__make} -f Makefile.cvs
 
@@ -451,7 +523,7 @@ export Z=`/bin/pwd`
 %{__make} sub-tools \
 	UIC="LD_PRELOAD=$Z/lib/libqt-mt.so.3 $Z/bin/uic -L $Z/plugins"
 
-cd tools/designer/designer/
+cd tools/designer/designer
 lrelease designer_de.ts
 lrelease designer_fr.ts
 cd $Z/tools/assistant
@@ -489,6 +561,7 @@ install lib/libqt*.a		$RPM_BUILD_ROOT%{_libdir}
 %if %{with single}
 install lib/libqt.so.*.*.*	$RPM_BUILD_ROOT%{_libdir}
 ln -sf libqt.so.%{version}	$RPM_BUILD_ROOT%{_libdir}/libqt.so
+install lib/qt.pc		$RPM_BUILD_ROOT%{_pkgconfigdir}
 cp -R plugins-st/*		$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st
 %endif
 
@@ -570,19 +643,18 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libdesignercore.so.*.*.*
 %attr(755,root,root) %{_libdir}/libeditor.so.*.*.*
 %attr(755,root,root) %{_libdir}/libqui.so.*.*.*
-%attr(755,root,root) %{_libdir}/libqt*.so.*.*.*
+%attr(755,root,root) %{_libdir}/libqt-mt.so.*.*.*
 %dir %{_sysconfdir}/qt
 %ghost %{_sysconfdir}/qt/doclist
 %dir %{_libdir}/%{name}
-%dir %{_libdir}/%{name}/plugins-?t
-%dir %{_libdir}/%{name}/plugins-?t/imageformats
-%dir %{_libdir}/%{name}/plugins-?t/network
-# There wont be any qsa linked with st.
+%dir %{_libdir}/%{name}/plugins-mt
+%dir %{_libdir}/%{name}/plugins-mt/network
 %dir %{_libdir}/%{name}/plugins-mt/qsa
-%{?_withsql:%dir %{_libdir}/%{name}/plugins-?t/sqldrivers}
-%dir %{_libdir}/%{name}/plugins-?t/styles
-%attr(755,root,root) %{_libdir}/%{name}/plugins-?t/imageformats/*.so
-%attr(755,root,root) %{_libdir}/%{name}/plugins-?t/styles/*.so
+%{?_withsql:%dir %{_libdir}/%{name}/plugins-mt/sqldrivers}
+%dir %{_libdir}/%{name}/plugins-mt/imageformats
+%attr(755,root,root) %{_libdir}/%{name}/plugins-mt/imageformats/*.so
+%dir %{_libdir}/%{name}/plugins-mt/styles
+%attr(755,root,root) %{_libdir}/%{name}/plugins-mt/styles/*.so
 %dir %{_datadir}/qt
 %lang(ar) %{_datadir}/locale/ar/LC_MESSAGES/qt.qm
 %lang(de) %{_datadir}/locale/de/LC_MESSAGES/qt.qm
@@ -598,16 +670,16 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libdesignercore.so
 %{_libdir}/libeditor.so
 %{_libdir}/libqui.so
-%{_libdir}/libqt*.so
+%{_libdir}/libqt-mt.so
 %{_includedir}
 %{_datadir}/qt/[!d]*
 %{_mandir}/man1/*
-%{_libdir}/pkgconfig/qt-mt.pc
+%{_pkgconfigdir}/qt-mt.pc
 
 %if %{with static}
 %files static
 %defattr(644,root,root,755)
-%{_libdir}/*.a
+%{_libdir}/libqt-mt.a
 %endif
 
 %files doc
@@ -625,19 +697,61 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with mysql}
 %files plugin-mysql
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/plugins-?t/sqldrivers/lib*mysql.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins-mt/sqldrivers/lib*mysql.so
 %endif
 
 %if %{with pgsql}
 %files plugin-psql
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/plugins-?t/sqldrivers/lib*psql.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins-mt/sqldrivers/lib*psql.so
 %endif
 
 %if %{with odbc}
 %files plugin-odbc
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/plugins-?t/sqldrivers/lib*odbc.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins-mt/sqldrivers/lib*odbc.so
+%endif
+
+%if %{with single}
+%files st
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libqt.so.*.*.*
+%dir %{_libdir}/%{name}/plugins-st
+%dir %{_libdir}/%{name}/plugins-st/network
+%{?_withsql:%dir %{_libdir}/%{name}/plugins-st/sqldrivers}
+%dir %{_libdir}/%{name}/plugins-st/imageformats
+%attr(755,root,root) %{_libdir}/%{name}/plugins-st/imageformats/*.so
+%dir %{_libdir}/%{name}/plugins-st/styles
+%attr(755,root,root) %{_libdir}/%{name}/plugins-st/styles/*.so
+
+%files st-devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libqt.so
+%{_pkgconfigdir}/qt.pc
+
+%if %{with static}
+%files st-static
+%defattr(644,root,root,755)
+%{_libdir}/libqt.a
+%endif
+
+%if %{with mysql}
+%files st-plugin-mysql
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/plugins-st/sqldrivers/lib*mysql.so
+%endif
+
+%if %{with pgsql}
+%files st-plugin-psql
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/plugins-st/sqldrivers/lib*psql.so
+%endif
+
+%if %{with odbc}
+%files st-plugin-odbc
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/plugins-st/sqldrivers/lib*odbc.so
+%endif
 %endif
 
 %files utils
