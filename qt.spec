@@ -341,13 +341,12 @@ _EOF_
 ########################################################################
 # SHARED SINGLE-THREAD
 ########################################################################
-%if %{?_with_single:1}0
 DEFAULTSTYLES=""
 for i in $STYLESLIST; do
 	DEFAULTSTYLES="$DEFAULTSTYLES -plugin-style-$i"
 done
 
-
+%if %{?_with_single:1}0
 # This will not remove previously compiled libraries.
 %{?_with_static:%{__make} clean}
 
@@ -440,16 +439,18 @@ install lib/libqt.a		$RPM_BUILD_ROOT%{_libdir}
 install lib/libqt-mt.a		$RPM_BUILD_ROOT%{_libdir}
 %endif
 
+%if %{?_with_single:1}0
 install lib/libqt.so.*.*.*	$RPM_BUILD_ROOT%{_libdir}
 ln -sf libqt.so.%{_qt_sl} $RPM_BUILD_ROOT%{_libdir}/libqt.so
 
 cp -R plugins-st/* $RPM_BUILD_ROOT%{_libdir}/qt/plugins-st/
+%endif
 
 cp -dpR .qmake.cache examples tutorial \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name}
 	
 mv $RPM_BUILD_ROOT{%{_libdir}/*.prl,%{_examplesdir}/%{name}/lib}
-mkdir $RPM_BUILD_ROOT%{_datadir}/qt/mkspecs/features
+mkdir $RPM_BUILD_ROOT%{_datadir}/qt/mkspecs/default/features
 
 # Fix Makefiles for tutorial and examples. How people who made so cool
 # library could screw build process so badly?
@@ -517,7 +518,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/qt/[!d]*
 %{_mandir}/man1/*
 
-%if %{!?_without_static:1}%{?_without_static:0}
+%if %{?_with_static:1}0
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/*.a
