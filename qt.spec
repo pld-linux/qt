@@ -254,7 +254,7 @@ Narzedzia programistyczne QT.
 %patch2 -p1
 %patch3 -p1
 %patch6 -p1
-%patch7 -p1
+#%patch7 -p1
 
 %build
 export QTDIR=`/bin/pwd`
