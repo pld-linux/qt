@@ -185,8 +185,8 @@ install qmake/qmake		$RPM_BUILD_ROOT%{_bindir}/
 
 install plugins/*/*.so		$RPM_BUILD_ROOT%{_libdir}/%{name}
 
-#install lib/libqt.so.%{version}	$RPM_BUILD_ROOT%{_libdir}
-#ln -s -f libqt.so.%{version}	$RPM_BUILD_ROOT%{_libdir}/libqt.so
+install lib/libqt.so.%{version}	$RPM_BUILD_ROOT%{_libdir}
+ln -s -f libqt.so.%{version}	$RPM_BUILD_ROOT%{_libdir}/libqt.so
 
 install lib/libqui.so.%{libqui_version}	$RPM_BUILD_ROOT%{_libdir}
 ln -s -f libqui.so.%{libqui_version}	$RPM_BUILD_ROOT%{_libdir}/libqui.so
