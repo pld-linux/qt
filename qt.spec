@@ -15,7 +15,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.0.5
-Release:	4
+Release:	5
 Epoch:		3
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -464,7 +464,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
-%doc %{_docdir}
 %attr(755,root,root) %{_bindir}/*
 %{_libdir}/libqt.so
 %{_libdir}/libqt-mt.so
