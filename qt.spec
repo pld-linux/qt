@@ -9,7 +9,7 @@
 %bcond_without	odbc		# disable unixODBC support
 %bcond_without	pgsql		# disable PostgreSQL support
 %bcond_without	designer	# don't build designer (it takes long)
-%bcond_with	pch		# enable pch in qmake
+%bcond_without	pch		# without precompiled headers support
 #
 %define		_withsql	1
 %{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}
@@ -57,6 +57,7 @@ BuildRequires:	byacc
 %{?with_cups:BuildRequires:	cups-devel}
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
+%{?with_pch:BuildRequires:	gcc >= 5:3.4.0}
 BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel >= 1.0.0
 BuildRequires:	libpng-devel >= 1.0.8
@@ -74,9 +75,7 @@ Requires:	OpenGL
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Conflicts:	kdelibs <= 8:3.2-0.030602.1
 Obsoletes:	qt-extensions
-%if %{with pch}
-BuildRequires:	gcc >= 5:3.4.0
-%endif
+
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1
 %define		_includedir	%{_prefix}/include/qt
 
