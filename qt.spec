@@ -282,9 +282,6 @@ DEFAULTOPT=" \
 	-no-style-windowsxp \
 	-prefix %{_prefix} \
 	-qt-gif \
-	%{!?_without_mysql:-qt-sql-mysql} \
-	%{!?_without_odbc:-qt-sql-odbc} \
-	%{!?_without_pgsql:-qt-sql-psql} \
 	-sm \
 	-stl \
 	-system-libjpeg \
@@ -328,6 +325,9 @@ OPTFLAGS="%{rpmcflags}" \
 	-qt-imgfmt-jpeg \
 	-qt-imgfmt-mng \
 	-qt-imgfmt-png \
+	%{!?_without_mysql:-qt-sql-mysql} \
+	%{!?_without_odbc:-qt-sql-odbc} \
+	%{!?_without_pgsql:-qt-sql-psql} \
 	<<_EOF_
 yes
 _EOF_
@@ -355,6 +355,9 @@ OPTFLAGS="%{rpmcflags}" \
 	-qt-imgfmt-jpeg \
 	-qt-imgfmt-mng \
 	-qt-imgfmt-png \
+	%{!?_without_mysql:-qt-sql-mysql} \
+	%{!?_without_odbc:-qt-sql-odbc} \
+	%{!?_without_pgsql:-qt-sql-psql} \
 	<<_EOF_
 yes
 _EOF_
@@ -395,6 +398,9 @@ OPTFLAGS="%{rpmcflags}" \
 	-plugin-imgfmt-jpeg \
 	-plugin-imgfmt-mng \
 	-plugin-imgfmt-png \
+	%{!?_without_mysql:-plugin-sql-mysql} \
+	%{!?_without_odbc:-plugin-sql-odbc} \
+	%{!?_without_pgsql:-plugin-sql-psql} \
 	<<_EOF_
 yes
 _EOF_
@@ -430,6 +436,9 @@ OPTFLAGS="%{rpmcflags}" \
 	-plugin-imgfmt-png \
 	-plugin-imgfmt-jpeg \
 	-plugin-imgfmt-mng \
+	%{!?_without_mysql:-plugin-sql-mysql} \
+	%{!?_without_odbc:-plugin-sql-odbc} \
+	%{!?_without_pgsql:-plugin-sql-psql} \
 	<<_EOF_
 yes
 _EOF_
@@ -439,6 +448,10 @@ _EOF_
 
 %install
 rm -rf $RPM_BUILD_ROOT
+
+QTDIR=`/bin/pwd`; export QTDIR
+LD_LIBRARY_PATH="$QTDIR/lib" ; export LD_LIBRARY_PATH
+PATH="$QTDIR/bin:$PATH"
 
 %{__make} install INSTALL_ROOT=$RPM_BUILD_ROOT
 
@@ -472,7 +485,7 @@ mkdir $RPM_BUILD_ROOT%{_datadir}/qt/mkspecs/default/features
 # Fix Makefiles for tutorial and examples. How people who made
 # so cool library could screw build process so badly?
 find $RPM_BUILD_ROOT%{_examplesdir}/%{name} \
-	-regex '.*/\(examples\|tutorial\).*/Makefile$' 
+	-regex '.*/\(examples\|tutorial\).*/Makefile$' \
 	-exec perl -pi -e '
 		print "QTDIR    = %{_prefix}\n" if $. == 1;
 		s|(-I\$\(QTDIR\)/include)|$1/qt|g;
