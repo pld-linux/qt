@@ -23,13 +23,13 @@ Release:	2
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
-#Source0:	http://www.kernel.pl/~adgor/kde/%{name}-copy-%{_snap}.tar.bz2
+#Source0:	http://ep09.pld-linux.org/~adgor/kde/%{name}-copy-%{_snap}.tar.bz2
 Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
 # Source0-md5:	cd6df28c81ac00d97d62bd9942b8da03
 #Source1:	ftp://ftp.netscape.com/pub/sdk/plugin/unix/unix-sdk-3.0b5.tar.Z
-##Source1:	http://www.kernel.pl/~djurban/pld/unix-sdk-3.0b5.tar.Z
+##Source1:	http://ep09.pld-linux.org/~djurban/pld/unix-sdk-3.0b5.tar.Z
 ## Source1-md5:	1e43785d5697c60937e8d6236e7d7d7e
-Source2:	http://www.kernel.pl/~djurban/snap/%{name}-patches-031115.tar.bz2	
+Source2:	http://ep09.pld-linux.org/~djurban/snap/%{name}-patches-031115.tar.bz2	
 # Source2-md5:	2ad72a8bcb6dddd1c597ed883faa9efb
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
