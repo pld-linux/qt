@@ -13,7 +13,7 @@
 # _without_pgsql	- without PostgreSQL support
 #
 
-%define 	_snap	030428
+%define 	_snap	030606
 
 %define 	_withsql	1
 
@@ -25,21 +25,21 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.2
-Release:	0.%{_snap}.4
+Release:	0.%{_snap}.1
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
 #Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
 Source0:	%{name}-copy-%{_snap}.tar.bz2
-# Source0-md5:	fbbbd2b549f9492f8313f15807ec55e2
-Source1:	ftp://ftp.trolltech.com/qsa/%{name}-designer-changes-qsa-beta3.tar.gz
-# Source1-md5:	61dbb6efe50e04fcaa5a592e9bf58664
+# Source0-md5:	1e89a731d421c18b11ed3214b840fb7b
+#Source1:	ftp://ftp.trolltech.com/qsa/%{name}-designer-changes-qsa-beta3.tar.gz
+#%% Source1-md5:	61dbb6efe50e04fcaa5a592e9bf58664
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
 Patch3:		%{name}-FHS.patch
 #Patch4:	%{name}-qmake-opt.patch
-Patch5:		%{name}-cursors.patch
+#Patch5:	%{name}-cursors.patch
 Patch6:         %{name}-qmake-nostatic.patch
 Patch7:		%{name}-disable_tutorials.patch
 BuildRequires:	OpenGL-devel
@@ -261,13 +261,13 @@ QT Development Utilities.
 Narzedzia programistyczne QT.
 
 %prep
-%setup -q -n %{name}-copy -a1
+%setup -q -n %{name}-copy
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
 #%patch4 -p1
-%patch5 -p1
+#%patch5 -p1
 %patch6 -p1
 %patch7 -p1
 
@@ -463,12 +463,16 @@ ln -sf libqt.so.%{_qt_sl}	$RPM_BUILD_ROOT%{_libdir}/libqt.so
 cp -R plugins-st/*		$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st/
 %endif
 
-install doc/man/man1/*.1		$RPM_BUILD_ROOT%{_mandir}/man1
-install doc/man/man3/*.3qt		$RPM_BUILD_ROOT%{_mandir}/man3
+install doc/man/man1/*.1	$RPM_BUILD_ROOT%{_mandir}/man1
+install doc/man/man3/*.3qt	$RPM_BUILD_ROOT%{_mandir}/man3
 
 cp -dpR examples tutorial $RPM_BUILD_ROOT%{_examplesdir}/%{name}
 	
 mv $RPM_BUILD_ROOT{%{_libdir}/*.prl,%{_examplesdir}/%{name}/lib}
+
+cd $RPM_BUILD_ROOT
+rm -rf `find . -name CVS`
+cd -
 
 perl -pi -e "
 	s|(QMAKE_INCDIR_QT\\s*=\\s*\\\$\\(QTDIR\\)/include)|\$1/qt|
