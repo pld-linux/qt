@@ -42,6 +42,7 @@ Patch9:		%{name}-qmake-opt.patch
 Patch10:	%{name}-textedit_speedup.patch
 URL:		http://www.trolltech.com/products/qt/
 BuildRequires:	OpenGL-devel
+%{?with_nvidia:BuildRequires:	XFree86-driver-nvidia-devel < 1.0.4620}
 # incompatible with bison
 BuildRequires:	byacc
 %{?with_cups:BuildRequires:	cups-devel}
@@ -54,16 +55,15 @@ BuildRequires:	libstdc++-devel
 BuildRequires:	libungif-devel
 %{?with_mysql:BuildRequires:	mysql-devel}
 %{?with_nas:BuildRequires:	nas-devel}
-%{?with_nvidia:BuildRequires:	XFree86-driver-nvidia-devel < 1.0.4620}
 BuildRequires:	perl-base
 %{?with_pgsql:BuildRequires:	postgresql-backend-devel}
 %{?with_pgsql:BuildRequires:	postgresql-devel}
-%{?with_nas:BuildRequires:	nas-devel}
+BuildRequires:	sed >= 4.0
 %{?with_odbc:BuildRequires:	unixODBC-devel}
 BuildRequires:	xcursor-devel
+BuildRequires:	xrender-devel
 BuildRequires:	xft-devel
 BuildRequires:	zlib-devel
-BuildRequires:	xrender-devel
 Requires:	OpenGL
 Requires:	XFree86-libs >= 4.0.2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
