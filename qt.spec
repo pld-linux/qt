@@ -33,7 +33,6 @@ Patch3:		%{name}-FHS.patch
 Patch4:		%{name}-qmake-opt.patch
 Patch5:		%{name}-cursors.patch
 Patch6:         %{name}-qmake-nostatic.patch
-Patch7:         %{name}-qtconfig.h.patch
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.3.0
 BuildRequires:	XFree86-xft-devel
