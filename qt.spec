@@ -25,8 +25,8 @@ Zawiera bibliotekê Qt wymagan± przez aplikacje, które z niej korzystaj±.
 %package devel
 Summary:	Include files and documentation needed to compile
 Summary(pl):	Pliki nag³ówkowe, przyk³ady i dokumentacja do biblioteki 
-Group:		X11/Libraries
-Group(pl):	X11/Biblioteki
+Group:		X11/Development/Libraries
+Group(pl):	X11/Programowanie/Biblioteki
 Requires:	%{name} = %{version}
 Requires:	%{name}-extensions = %{version}
 
