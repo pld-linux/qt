@@ -41,6 +41,7 @@ BuildRequires:	libungif-devel
 %if %{!?_without_mysql:1}%{?_without_mysql:0}
 BuildRequires:	mysql-devel
 %endif
+BuildRequires:	nas-devel
 BuildRequires:	perl
 %if %{!?_without_psql:1}%{?_without_psql:0}
 BuildRequires:	postgresql-backend-devel
@@ -92,6 +93,7 @@ Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}
 Requires:	XFree86-devel
 Requires:	libstdc++-devel
+Conflicts:	qt2-devel
 
 %description devel
 Contains the files necessary to develop applications using Qt: header
@@ -236,7 +238,7 @@ DEFAULTOPT="-prefix %{_prefix} -bindir %{_bindir} -libdir %{_libdir} \
 	    -docdir %{_docdir}/%{name}-%{version} -headerdir %{_includedir} \
 	    -datadir %{_datadir}/qt
 	    -release -qt-gif -system-zlib -no-g++-exceptions -stl -remote -system-libpng \
-	    -system-libjpeg -system-libmng -sm -xinerama -xrender -xft -xkb"
+	    -system-libjpeg -system-libmng -system-nas-sound -sm -xinerama -xrender -xft -xkb"
 
 ########################################################################
 # STATIC SINGLE-THREAD
