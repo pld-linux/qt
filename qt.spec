@@ -1,6 +1,8 @@
 #
 # Conditional build:
 %bcond_with	nas		# enable NAS audio support
+%bcond_with	nvidia		# prelink Qt/KDE and depend on NVIDIA binaries
+				  (broken at this moment)
 %bcond_without	single		# don't build single-threaded libraries
 %bcond_without	static_libs	# don't build static libraries
 %bcond_without	cups		# disable CUPS support
@@ -11,21 +13,21 @@
 %define		_withsql	1
 %{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}
 
-%define		_snap	031122
-%define		_ver	3.2.3
+%define		_snap	031221
+%define		_ver	3.3.0
 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
-Version:	%{_ver}.%{_snap}
-Release:	3
+Version:	%{_ver}
+Release:	0.%{_snap}.0.1
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
 Source0:	http://www.kernel.pl/~adgor/kde/%{name}-copy-%{_snap}.tar.bz2
-# Source0-md5:	d61437cdcc5d33dc7cbd5f4005df36d9
+# Source0-md5:	2fc89bff7e4bfe8fe26a3e365450b0f9
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
@@ -352,10 +354,24 @@ Narzêdie do konfiguracji wygl±du i zachowania widgetów QT.
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
-%patch10 -p1
+#%patch10 -p1
 
-# qboosh, which is better?!
 cat >> patches/DISABLED << EOF
+0003
+0004
+0005
+0006
+0007
+0009
+0011
+0014
+0018
+0019
+0022
+0024
+0025
+0026
+0027
 0029
 EOF
 
@@ -399,6 +415,7 @@ DEFAULTOPT=" \
 	-no-exceptions \
 	%{!?with_cups:-no-cups} \
 	%{?with_nas:-system-nas-sound} \
+	%{?with_nvidia:-dlopen-opengl} \
 	%{?debug:-debug}"
 
 ##################################
@@ -556,7 +573,7 @@ install -d \
 	$RPM_BUILD_ROOT%{_mandir}/man{1,3} \
 	$RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir}}
 
-install bin/{findtr,qt20fix,qtrename140,qt32castcompat} \
+install bin/{findtr,qt20fix,qtrename140} \
 	tools/{msg2qm/msg2qm,mergetr/mergetr} \
 	$RPM_BUILD_ROOT%{_bindir}
 
@@ -704,7 +721,7 @@ EOF
 %attr(755,root,root) %{_bindir}/qm2ts
 %attr(755,root,root) %{_bindir}/qmake
 %attr(755,root,root) %{_bindir}/qt20fix
-%attr(755,root,root) %{_bindir}/qt32castcompat
+#%attr(755,root,root) %{_bindir}/qt32castcompat
 %attr(755,root,root) %{_bindir}/qtrename140
 %attr(755,root,root) %{_bindir}/uic
 %{_includedir}
