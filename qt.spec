@@ -15,6 +15,7 @@ BuildPrereq:	libstdc++-devel
 BuildPrereq:	XFree86-devel
 BuildPrereq:	Mesa-devel
 BuildPrereq:	libjpeg-devel
+BuildPrereq:	libpng-devel
 Buildroot:	/tmp/%{name}-%{version}-root
 
 %define _prefix /usr/X11R6
