@@ -28,7 +28,7 @@ Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 #Version:	%{_ver}.%{_snap}
 Version:	%{_ver}
-Release:	6
+Release:	7
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
