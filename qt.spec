@@ -7,7 +7,6 @@ Copyright:	QPL
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
 Source:		ftp://ftp.troll.no/qt/snapshots/%{name}-%{version}-snapshot-20000228.tar.gz
-#Patch0:		qt-copy-against-20000114.patch
 BuildRequires:	libungif-devel
 BuildRequires:	zlib-devel
 BuildRequires:	libpng-devel
@@ -18,6 +17,7 @@ BuildRequires:	lesstif-devel
 Buildroot:	/tmp/%{name}-%{version}-root
 
 %define		_prefix		/usr/X11R6
+%define _lib_version	2.2
 
 %description
 Contains the shared library needed to run Qt applications, as well as
@@ -65,7 +65,6 @@ operacji na obrazach.
 
 %prep 
 %setup -q -n qt-public-cvs
-#%patch0 -p1
 
 %build
 QTDIR=`/bin/pwd`; export QTDIR
@@ -79,14 +78,18 @@ QTDIR=`/bin/pwd`; export QTDIR
 LD_LIBRARY_PATH=%{_libdir} ;	export LD_LIBRARY_PATH
 SYSCONF_CFLAGS="-pipe -DNO_DEBUG $RPM_OPT_FLAGS" ;	export SYSCONF_CFLAGS
 SYSCONF_CXXFLAGS="-pipe -DNO_DEBUG $RPM_OPT_FLAGS" ;	export SYSCONF_CXXFLAGS
-make
+make moc
+make src
+make util
 
 echo " Compiling Extensions ..."
-(cd extensions/imageio/src;LD_LIBRARY_PATH=%{_libdir};make)
+#not needed
+#(cd extensions/imageio/src;LD_LIBRARY_PATH=%{_libdir};make)
 (cd extensions/network/src;LD_LIBRARY_PATH=%{_libdir};make)
 (cd extensions/nsplugin/src;LD_LIBRARY_PATH=%{_libdir};make)
 (cd extensions/opengl/src;LD_LIBRARY_PATH=%{_libdir};make)
-(cd extensions/xembed/src;LD_LIBRARY_PATH=%{_libdir};make)
+#not needned
+#(cd extensions/xembed/src;LD_LIBRARY_PATH=%{_libdir};make)
 (cd extensions/xt/src;LD_LIBRARY_PATH=%{_libdir};make \
 	INCPATH="-I%{_includepatch} -I../../../include")
 
@@ -94,7 +97,8 @@ echo " Compiling Extensions ..."
 (cd tutorial;LD_LIBRARY_PATH=%{_libdir};make)
 
 #examples
-(cd examples;LD_LIBRARY_PATH=%{_libdir};make)
+# remover due to many errors in sources
+#(cd examples;LD_LIBRARY_PATH=%{_libdir};make)
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -102,10 +106,10 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir},%{_includedir}}
 install -d $RPM_BUILD_ROOT/usr/src/examples/%{name}
 install -d $RPM_BUILD_ROOT/usr/share/tutorial/%{name}
 
-install bin/* $RPM_BUILD_ROOT/%{_bindir}/
+install bin/* $RPM_BUILD_ROOT%{_bindir}/
 
-install -s lib/libqt.so.%{version} $RPM_BUILD_ROOT/%{_libdir}
-ln -sf libqt.so.%{version} $RPM_BUILD_ROOT/%{_libdir}/libqt.so
+install -s lib/libqt.so.%{_lib_version} $RPM_BUILD_ROOT%{_libdir}
+ln -sf libqt.so.%{_lib_version} $RPM_BUILD_ROOT%{_libdir}/libqt.so
 
 install lib/lib*.a $RPM_BUILD_ROOT%{_libdir}
 
@@ -114,11 +118,11 @@ rm -f include/qpropertyinfo.h
 install include/* $RPM_BUILD_ROOT/%{_includedir}
 
 # Extensions
-install extensions/imageio/src/*.h $RPM_BUILD_ROOT%{_includedir}
+#install extensions/imageio/src/*.h $RPM_BUILD_ROOT%{_includedir}
 install extensions/network/src/*.h $RPM_BUILD_ROOT%{_includedir}
 install extensions/nsplugin/src/*.h $RPM_BUILD_ROOT%{_includedir}
 install extensions/opengl/src/*.h $RPM_BUILD_ROOT%{_includedir}
-install extensions/xembed/src/*.h $RPM_BUILD_ROOT%{_includedir}
+#install extensions/xembed/src/*.h $RPM_BUILD_ROOT%{_includedir}
 install extensions/xt/src/*.h $RPM_BUILD_ROOT%{_includedir}
 
 
@@ -146,7 +150,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644, root, root, 755)
 %doc LICENSE.QPL.gz
-%attr(755,root,root) %{_libdir}/libqt.so.%{version}
+%attr(755,root,root) %{_libdir}/libqt.so.%{_lib_version}
 
 %files devel
 %defattr(644,root,root,755)
@@ -160,8 +164,8 @@ rm -rf $RPM_BUILD_ROOT
 %files extensions
 %defattr(644,root,root,755)
 %{_libdir}/libqgl.a
-%{_libdir}/libqimgio.a
+#%{_libdir}/libqimgio.a
 %{_libdir}/libqnetwork.a
 %{_libdir}/libqnp.a
-%{_libdir}/libqxembed.a
+#%{_libdir}/libqxembed.a
 %{_libdir}/libqxt.a
