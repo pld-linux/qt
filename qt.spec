@@ -272,13 +272,15 @@ perl -pi -e "
 
 DEFAULTOPT="-prefix %{_prefix} -docdir %{_docdir}/%{name}-doc-%{version} \
 	    -datadir %{_datadir}/qt -headerdir %{_includedir}\
-	    -release -qt-gif -system-zlib -no-g++-exceptions -stl \
+	    -qt-gif -system-zlib -no-g++-exceptions -stl \
 	    -no-exceptions \
 	    -system-libpng -system-libjpeg -system-libmng -sm -xinerama \
 	    -xrender -xft -xkb -enable-opengl"
 %{?_with_nas:DEFAULTOPT="$DEFAULTOPT -system-nas-sound"}
 %{?_without_cups:DEFAULTOPT="$DEFAULTOPT -no-cups"}
-
+%{?debug:DEFAULTOPT="$DEFAULTOPT -debug"}
+%{!?debug:DEFAULTOPT="$DEFAULTOPT -release"}
+	
 STYLESLIST="cde compact motif motifplus platinum sgi windows"
 %{__make} -f Makefile.cvs
 ########################################################################
