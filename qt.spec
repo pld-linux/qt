@@ -640,11 +640,12 @@ cat << EOF
  *******************************************************
  *                                                     *
  *  NOTE:                                              *
- *  After qt 3.2.0 the single version was separated.   *
- *  Please install qt-st if you really require it.     *
- *  If you do not use qt-st explicitly, please ignore  *
- *  this, as you will not notice any changes. In most  *
- *  cases do not install qt-st, as it is obsoleted.    *
+ *  After qt 3.2.0 the single threaded version was     *
+ *  separated. Please install qt-st if you really need *
+ *  it. If you do not use qt-st explicitly, please     *
+ *  ignore this, as you will not notice any changes.   *
+ *  In most cases do not install qt-st, as it is       *
+ *  obsoleted.                                         *
  *                                                     *
  *******************************************************
 
