@@ -202,12 +202,12 @@ Example programs made with Qt version %{version}.
 Programas exemplo para o Qt versão %{version}.
 
 %package plugin-ibase
-Summary:        Database plugin for InterBase/Firebird Qt support
-Summary(pl):    Wtyczka InterBase/Firebird do Qt
+Summary:	Database plugin for InterBase/Firebird Qt support
+Summary(pl):	Wtyczka InterBase/Firebird do Qt
 Summary(pt_BR): Plugin de suporte a InterBase/Firebird para Qt
-Group:          X11/Libraries
-Requires:       %{name} = %{epoch}:%{version}-%{release}
-Provides:       %{name}-plugin-sql
+Group:		X11/Libraries
+Requires:	%{name} = %{epoch}:%{version}-%{release}
+Provides:	%{name}-plugin-sql
 Requires:	Firebird-lib
 
 %description plugin-ibase
@@ -276,12 +276,12 @@ Wtyczka PostgreSQL do Qt.
 Plugin de suporte a pgsql para Qt.
 
 %package plugin-sqlite
-Summary:        Database plugin for SQLite Qt support
-Summary(pl):    Wtyczka SQLite do Qt
+Summary:	Database plugin for SQLite Qt support
+Summary(pl):	Wtyczka SQLite do Qt
 Summary(pt_BR): Plugin de suporte a SQLite para Qt
-Group:          X11/Libraries
-Requires:       %{name} = %{epoch}:%{version}-%{release}
-Provides:       %{name}-plugin-sql
+Group:		X11/Libraries
+Requires:	%{name} = %{epoch}:%{version}-%{release}
+Provides:	%{name}-plugin-sql
 
 %description plugin-sqlite
 Database plugin for SQLite Qt support.
@@ -331,11 +331,11 @@ Single-threaded Qt static libraries.
 Jednow±tkowa statyczna biblioteka Qt.
 
 %package st-plugin-ibase
-Summary:        Database plugin for InterBase/Firebird support in single-threaded Qt
-Summary(pl):    Wtyczka InterBase/Firebird do jednow±tkowej wersji Qt
-Group:          X11/Libraries
-Requires:       %{name}-st = %{epoch}:%{version}-%{release}
-Provides:       %{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
+Summary:	Database plugin for InterBase/Firebird support in single-threaded Qt
+Summary(pl):	Wtyczka InterBase/Firebird do jednow±tkowej wersji Qt
+Group:		X11/Libraries
+Requires:	%{name}-st = %{epoch}:%{version}-%{release}
+Provides:	%{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
 
 %description st-plugin-ibase
 Database plugin for InterBase/Firebird support in single-threaded Qt.
@@ -384,11 +384,11 @@ Database plugin for PostgreSQL support in single-threaded Qt.
 Wtyczka PostgreSQL do jednow±tkowej wersji Qt.
 
 %package st-plugin-sqlite
-Summary:        Database plugin for SQLite support in single-threaded Qt
-Summary(pl):    Wtyczka SQLite do jednow±tkowej wersji Qt
-Group:          X11/Libraries
-Requires:       %{name}-st = %{epoch}:%{version}-%{release}
-Provides:       %{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
+Summary:	Database plugin for SQLite support in single-threaded Qt
+Summary(pl):	Wtyczka SQLite do jednow±tkowej wersji Qt
+Group:		X11/Libraries
+Requires:	%{name}-st = %{epoch}:%{version}-%{release}
+Provides:	%{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
 
 %description st-plugin-sqlite
 Database plugin for SQLite support in single-threaded Qt.
@@ -447,10 +447,10 @@ A tool for configuring look and behavior of QT widgets.
 Narzêdie do konfiguracji wygl±du i zachowania widgetów QT.
 
 %package designer
-Summary:        IDE used for GUI designing with QT library
-Summary(pl):    IDE s³u¿±ce do projektowania GUI za pomoc± biblioteki QT
-Group:          X11/Applications
-Requires:       %{name}-designer-libs = %{epoch}:%{version}-%{release}
+Summary:	IDE used for GUI designing with QT library
+Summary(pl):	IDE s³u¿±ce do projektowania GUI za pomoc± biblioteki QT
+Group:		X11/Applications
+Requires:	%{name}-designer-libs = %{epoch}:%{version}-%{release}
 
 %description designer
 IDE used for GUI designing with QT library.
@@ -459,10 +459,10 @@ IDE used for GUI designing with QT library.
 IDE s³u¿±ce do projektowania GUI za pomoc± biblioteki QT.
 
 %package designer-libs
-Summary:        Libraries IDE used for GUI designing with QT library
-Summary(pl):    Biblioteki do IDE s³u¿±cego do projektowania GUI za pomoc± biblioteki QT
-Group:          X11/Applications
-Requires:       %{name} = %{epoch}:%{version}-%{release}
+Summary:	Libraries IDE used for GUI designing with QT library
+Summary(pl):	Biblioteki do IDE s³u¿±cego do projektowania GUI za pomoc± biblioteki QT
+Group:		X11/Applications
+Requires:	%{name} = %{epoch}:%{version}-%{release}
 
 %description designer-libs
 Libraries IDE used for GUI designing with QT library.
@@ -511,7 +511,7 @@ cat $plik \
 	|grep -v QMAKE_CXXFLAGS_DEBUG \
 	> $plik.1
 
-mv $plik.1  $plik
+mv $plik.1 $plik
 echo >> $plik
 echo -e "QMAKE_CFLAGS_RELEASE\t=\t%{rpmcflags}" >> $plik
 echo -e "QMAKE_CXXFLAGS_RELEASE\t=\t%{rpmcflags}" >> $plik
@@ -750,7 +750,7 @@ install %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}
 install %{SOURCE3} $RPM_BUILD_ROOT%{_desktopdir}/designer.desktop
 
 sed -i 's/Exec=designer-qt3/Exec=designer/' \
-    $RPM_BUILD_ROOT%{_desktopdir}/designer.desktop	
+	$RPM_BUILD_ROOT%{_desktopdir}/designer.desktop	
 %endif
 
 %if %{without designer}
@@ -792,9 +792,9 @@ EOF
 %if %{with pch_devel}
 cd $RPM_BUILD_ROOT%{_includedir}/qt
 for h in qevent.h qglist.h qmap.h qobject.h qpixmap.h \
-    qptrlist.h qstring.h qstrlist.h qstringlist.h \
-    qvaluelist.h qwidget.h; do
-    %{__cxx} -s $h
+	qptrlist.h qstring.h qstrlist.h qstringlist.h \
+	qvaluelist.h qwidget.h; do
+	%{__cxx} -s $h
 done
 cd -
 %endif
