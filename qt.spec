@@ -6,7 +6,7 @@ Summary:	The Qt3 GUI application framework
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Name:		qt
 Version:	3.0.4
-Release:	0.9.1
+Release:	0.9.2
 Epoch:		1
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -18,6 +18,7 @@ Patch2:		%{name}-parse_error.patch
 Patch3:		%{name}-postgresql_7_2.patch
 Patch4:		%{name}-mysql_includes.patch
 Patch5:		%{name}-FHS.patch
+Patch6:		%{name}-configure.patch
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
 BuildRequires:	freetype-devel
@@ -148,6 +149,7 @@ Wtyczka ODBC do Qt.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
 
 # There is no file pointed by this sym-link and there is cp -L in %%install
 rm -f include/qt_windows.h
