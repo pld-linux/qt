@@ -576,7 +576,7 @@ export Z=`/bin/pwd`
 %if %{without designer}
 grep -v designer tools/tools.pro > tools/tools.pro.1
 mv tools/tools.pro{.1,}
-make -C tools/designer/uic
+%{__make} -C tools/designer/uic
 %endif
 
 # Do not build tutorial and examples. Provide them as sources.
