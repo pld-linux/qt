@@ -13,7 +13,7 @@
 # _without_pgsql	- without PostgreSQL support
 #
 
-%define 	_snap	030718
+#%%define 	_snap	030723
 
 %define 	_withsql	1
 
@@ -25,12 +25,12 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.2.0
-Release:	0.%{_snap}.1
+Release:	1
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
-#Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
-Source0:	http://www.kernel.pl/~adgor/kde/%{name}-copy-%{_snap}.tar.bz2
+Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
+#Source0:	http://www.kernel.pl/~adgor/kde/%{name}-copy-%{_snap}.tar.bz2
 # Source0-md5:	303ae2142c2c182302cd739cbc63725b
 #Source1:	ftp://ftp.trolltech.com/qsa/%{name}-designer-changes-qsa-beta3.tar.gz
 #%% Source1-md5:	61dbb6efe50e04fcaa5a592e9bf58664
@@ -261,7 +261,8 @@ QT Development Utilities.
 Narzedzia programistyczne QT.
 
 %prep
-%setup -q -n %{name}-copy
+#%%setup -q -n %{name}-copy
+%setup -q -n %{name}-x11-free-%{version}
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -282,9 +283,9 @@ perl -pi -e "
 	s|-O2|%{rpmcflags}|;
 	" mkspecs/linux-g++/qmake.conf
 
-%{__make} -f Makefile.cvs
+#%{__make} -f Makefile.cvs
 
-./apply_patches
+#./apply_patches
 
 ##################################
 # DEFAULT OPTIONS FOR ALL BUILDS #
@@ -303,7 +304,6 @@ DEFAULTOPT=" \
 	-system-libpng \
 	-system-zlib \
 	-no-exceptions \
-	-no-style-windowsxp \
 	%{?_without_cups:-no-cups} \
 	%{?_with_nas:-system-nas-sound} \
 	%{?debug:-debug}"
