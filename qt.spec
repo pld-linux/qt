@@ -7,6 +7,8 @@
 # _without_psql		- without PostgreSQL support
 # _without_odbc		- without unixODBC support
 #
+# _without_static	- don't build static library
+# _without_examples	- don't build and include samples
 
 %define		_snapshot	20020930
 
@@ -40,17 +42,11 @@ BuildRequires:	libmng-devel >= 1.0.0
 BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	libstdc++-devel
 BuildRequires:	libungif-devel
-%if %{!?_without_mysql:1}%{?_without_mysql:0}
-BuildRequires:	mysql-devel
-%endif
+%{!?_without_mysql:BuildRequires:	mysql-devel}
 BuildRequires:	perl
-%if %{!?_without_psql:1}%{?_without_psql:0}
-BuildRequires:	postgresql-backend-devel
-BuildRequires:	postgresql-devel
-%endif
-%if %{!?_without_odbc:1}%{?_without_odbc:0}
-BuildRequires:	unixODBC-devel
-%endif
+%{!?_without_psql:BuildRequires:	postgresql-backend-devel}
+%{!?_without_psql:BuildRequires:	postgresql-devel}
+%{!?_without_odbc:BuildRequires:	unixODBC-devel}
 BuildRequires:	zlib-devel
 %{?_with_prelink:BuildRequires:	objprelink}
 Requires:	OpenGL
@@ -250,7 +246,7 @@ STYLESLIST="cde compact motif motifplus platinum sgi windows"
 ########################################################################
 # STATIC SINGLE-THREAD
 ########################################################################
-
+%if %{!?_without_static:1}%{?_without_static:0}
 DEFAULTSTYLES=""
 for i in $STYLESLIST; do
 	DEFAULTSTYLES="$DEFAULTSTYLES -qt-style-$i"
@@ -264,15 +260,9 @@ OPTFLAGS="%{rpmcflags}" \
 	-qt-imgfmt-png \
 	-qt-imgfmt-jpeg \
 	-qt-imgfmt-mng \
-%if %{!?_without_odbc:1}%{?_without_odbc:0}
-	-qt-sql-mysql \
-%endif
-%if %{!?_without_odbc:1}%{?_without_odbc:0}
-	-qt-sql-odbc \
-%endif
-%if %{!?_without_odbc:1}%{?_without_odbc:0}
-	-qt-sql-psql \
-%endif
+	%{!?_without_mysql:-qt-sql-mysql} \
+	%{!?_without_odbc:-qt-sql-odbc} \
+	%{!?_without_psql:-qt-sql-psql} \
 	$DEFAULTSTYLES \
 	-no-style-windowsxp \
 	<<_EOF_
@@ -298,15 +288,9 @@ OPTFLAGS="%{rpmcflags}" \
 	-qt-imgfmt-png \
 	-qt-imgfmt-jpeg \
 	-qt-imgfmt-mng \
-%if %{!?_without_odbc:1}%{?_without_odbc:0}
-	-qt-sql-mysql \
-%endif
-%if %{!?_without_odbc:1}%{?_without_odbc:0}
-	-qt-sql-odbc \
-%endif
-%if %{!?_without_odbc:1}%{?_without_odbc:0}
-	-qt-sql-psql \
-%endif
+	%{!?_without_mysql:-qt-sql-mysql} \
+	%{!?_without_odbc:-qt-sql-odbc} \
+	%{!?_without_psql:-qt-sql-psql} \
 	$DEFAULTSTYLES \
 	-no-style-windowsxp \
 	<<_EOF_
@@ -316,6 +300,7 @@ _EOF_
 # Build libraries and everything needed to do this. Do not build examples and 
 # such. They will be built with shared, sigle-thread libraries.
 %{__make} symlinks src-qmake src-moc sub-src
+%endif #_without_static
 
 ########################################################################
 # SHARED SINGLE-THREAD
@@ -339,15 +324,9 @@ OPTFLAGS="%{rpmcflags}" \
 	-plugin-imgfmt-png \
 	-plugin-imgfmt-jpeg \
 	-plugin-imgfmt-mng \
-%if %{!?_without_odbc:1}%{?_without_odbc:0}
-	-plugin-sql-mysql \
-%endif
-%if %{!?_without_odbc:1}%{?_without_odbc:0}
-	-plugin-sql-odbc \
-%endif
-%if %{!?_without_odbc:1}%{?_without_odbc:0}
-	-plugin-sql-psql \
-%endif
+	%{!?_without_mysql:-plugin-sql-mysql} \
+	%{!?_without_odbc:-plugin-sql-odbc} \
+	%{!?_without_psql:-plugin-sql-psql} \
 	$DEFAULTSTYLES \
 	-no-style-windowsxp \
 	<<_EOF_
@@ -381,15 +360,9 @@ OPTFLAGS="%{rpmcflags}" \
 	-plugin-imgfmt-png \
 	-plugin-imgfmt-jpeg \
 	-plugin-imgfmt-mng \
-%if %{!?_without_mysql:1}%{?_without_mysql:0}
-	-plugin-sql-mysql \
-%endif
-%if %{!?_without_odbc:1}%{?_without_odbc:0}
-	-plugin-sql-odbc \
-%endif
-%if %{!?_without_psql:1}%{?_without_psql:0}
-	-plugin-sql-psql \
-%endif
+	%{!?_without_mysql:-plugin-sql-mysql} \
+	%{!?_without_odbc:-plugin-sql-odbc} \
+	%{!?_without_psql:-plugin-sql-psql} \
 	$DEFAULTSTYLES \
 	-no-style-windowsxp \
 	<<_EOF_
@@ -499,13 +472,17 @@ perl -pi -e "
 %{_datadir}/qt/mkspecs
 %{_datadir}/qt/designer
 
+%if %{!?_without_static:1}%{?_without_static:0}
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/*.a
+%endif
 
+%if %{!?_without_examples:1}%{?_without_examples:0}
 %files examples
 %defattr(644,root,root,755)
 /usr/src/examples/%{name}
+%endif
 
 %if %{!?_without_mysql:1}%{?_without_mysql:0}
 %files plugins-mysql
