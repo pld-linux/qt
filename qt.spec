@@ -344,7 +344,7 @@ done
 
 
 # This will not remove previously compiled libraries.
-%{__make} clean
+%{!?_without_static:%{__make} clean}
 
 OPTFLAGS="%{rpmcflags}" \
 ./configure \
@@ -426,8 +426,10 @@ install bin/{findtr,qt20fix,qtrename140} \
 install doc/man/man1/*		$RPM_BUILD_ROOT%{_mandir}/man1
 install doc/man/man3/*		$RPM_BUILD_ROOT%{_mandir}/man3
 
+%if %{!?_without_static:1}%{?_without_static:0}
 install lib/libqt.a		$RPM_BUILD_ROOT%{_libdir}
 install lib/libqt-mt.a		$RPM_BUILD_ROOT%{_libdir}
+%endif
 
 install lib/libqt.so.*.*.*	$RPM_BUILD_ROOT%{_libdir}
 ln -sf libqt.so.%{_qt_sl} $RPM_BUILD_ROOT%{_libdir}/libqt.so
