@@ -20,28 +20,29 @@
 %{!?with_sqlite:%{!?with_ibase:%{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}}}
 
 %define		_ver		3.3.3
+%define		_snap		041113
 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
-#Version:	%{_ver}.%{_snap}
-Version:	%{_ver}
-Release:	6
+Version:	%{_ver}.%{_snap}
+#Version:	%{_ver}
+Release:	1
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
-#Source0:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-%{_snap}.tar.bz2
-Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
-# Source0-md5:	3e0a0c8429b0a974b39b5f535ddff01c
-Source1:	http://ftp.pld-linux.org/software/kde/%{name}-copy-patches-040819.tar.bz2
-# Source1-md5:	f35f461463d89f7b035530d8d1f02ad6
+Source0:	http://ftp.pld-linux.org/software/kde/%{name}-copy-%{_snap}.tar.bz2
+# Source0-md5:	089276eced1c0f570f441d26b1be9dc7
+#Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
+#Source1:	http://ftp.pld-linux.org/software/kde/%{name}-copy-patches-040819.tar.bz2
+#%% Source1-md5:	f35f461463d89f7b035530d8d1f02ad6
 Source2:	%{name}config.desktop
 Source3:	designer.desktop
 Source4:	assistant.desktop
 Source5:	linguist.desktop
-Source6:	%{name}-apply_patches.sh
+#Source6:	%{name}-apply_patches.sh
 Source7:	designer.png
 Source8:	assistant.png
 Source9:	linguist.png
@@ -62,7 +63,8 @@ Patch13:	%{name}-x11-mono.patch
 Patch14:	%{name}-x11-qfontdatabase_x11.patch
 URL:		http://www.trolltech.com/products/qt/
 Icon:		qt.xpm
-%{?with_ibase:BuildRequires:	Firebird-devel >= 1.5.0}
+#%{?with_ibase:BuildRequires:	Firebird-devel >= 1.5.0}
+%{?with_ibase:BuildRequires:	Firebird-devel}
 BuildRequires:	OpenGL-devel
 %{?with_nvidia:BuildRequires:	X11-driver-nvidia-devel >= 1.0.6111-2}
 %{?with_cups:BuildRequires:	cups-devel}
@@ -656,7 +658,8 @@ Biblioteki wykorzystywane przez narzêdzie projektowania interfejsu
 graficznego - Qt Designer.
 
 %prep
-%setup -q -n %{name}-x11-free-%{version} -a1
+#%setup -q -n %{name}-x11-free-%{version} -a1
+%setup -q -n %{name}-copy-%{_snap}
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -668,11 +671,11 @@ graficznego - Qt Designer.
 %patch8 -p1
 %patch10 -p1
 %patch12 -p1
-%patch13 -p1
-%patch14 -p1
+#%patch13 -p1
+#%patch14 -p1
 
-install %{SOURCE6} ./apply_patches
-chmod +x ./apply_patches
+#install %{SOURCE6} ./apply_patches
+#chmod +x ./apply_patches
 ./apply_patches
 
 # change QMAKE_CFLAGS_RELEASE to build
@@ -714,7 +717,7 @@ fi
 # pass OPTFLAGS to build qmake itself with optimization
 export OPTFLAGS="%{rpmcflags}"
 
-#%{__make} -f Makefile.cvs
+%{__make} -f Makefile.cvs
 
 ##################################
 # DEFAULT OPTIONS FOR ALL BUILDS #
