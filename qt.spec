@@ -633,7 +633,7 @@ Biblioteki wykorzystywane przez narzêdzie projektowania interfejsu
 graficznego - Qt Designer.
 
 %prep
-%setup -q -n %{name} 
+%setup -q -n %{name}-copy
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
