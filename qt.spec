@@ -478,20 +478,9 @@ cp -R plugins-st/*		$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st/
 install doc/man/man1/*		$RPM_BUILD_ROOT%{_mandir}/man1
 install doc/man/man3/*		$RPM_BUILD_ROOT%{_mandir}/man3
 
-cp -dpR .qmake.cache examples tutorial $RPM_BUILD_ROOT%{_examplesdir}/%{name}
+cp -dpR examples tutorial $RPM_BUILD_ROOT%{_examplesdir}/%{name}
 	
 mv $RPM_BUILD_ROOT{%{_libdir}/*.prl,%{_examplesdir}/%{name}/lib}
-
-# Fix Makefiles for tutorial and examples. How people who made
-# so cool library could screw build process so badly?
-find $RPM_BUILD_ROOT%{_examplesdir}/%{name} \
-	-regex '.*/\(examples\|tutorial\).*/Makefile$' \
-	-exec perl -pi -e '
-		print "QTDIR    = %{_prefix}\n" if $. == 1;
-		s|(-I\$\(QTDIR\)/include)|$1/qt|g;
-		s|(\$\(QTDIR\))(/mkspecs)|$1/share/qt$2|g;
-		s|'$QTDIR'|%{_prefix}|g;
-	' {} \;
 
 perl -pi -e "
 	s|(QMAKE_INCDIR_QT\\s*=\\s*\\\$\\(QTDIR\\)/include)|\$1/qt|
