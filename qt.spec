@@ -7,6 +7,26 @@
 # _without_static	- don't build static library
 # _without_examples	- don't build and include samples
 #
+# _with_nas		- enable nas audio support
+#
+# _without_cups		- disable cups support
+#
+
+%define 	_nosql	0
+
+%if %{!?_without_mysql:1}%{?_without_mysql:0}
+%define		_nosql	%{_nosql}+1
+%endif
+
+%if %{!?_without_psql:1}%{?_without_psql:0}
+%define         _nosql  %{_nosql}+1
+%endif
+
+%if %{!?_without_odbc:1}%{?_without_odbc:0}
+%define         _nosql  %{_nosql}+1
+%endif
+
+
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
@@ -39,6 +59,8 @@ BuildRequires:	perl
 %{!?_without_psql:BuildRequires:	postgresql-backend-devel}
 %{!?_without_psql:BuildRequires:	postgresql-devel}
 %{!?_without_odbc:BuildRequires:	unixODBC-devel}
+%{!?_without_cups:BuildRequires:        cups-devel}
+%{?_with_nas:BuildRequires:	nas-devel}
 BuildRequires:	zlib-devel
 %{?_with_prelink:BuildRequires:	objprelink}
 Requires:	OpenGL
@@ -233,7 +255,7 @@ Narzedzia programistyczne QT.
 %patch3 -p1
 #%patch4 -p1
 
-# mkspecs has wrong includes which makes it require patching every files that uses qmake
+# mkspecs has wrong includes what makes it require patching every files that uses qmake
 # this is a fix
 cd mkspecs
 for katalog in * ; do
@@ -259,19 +281,23 @@ if [ -f %{_pkgconfigdir}/libpng12.pc ] ; then
 fi
 
 # change QMAKE_CFLAGS_RELEASE
-perl -pi -e "
-	s|-O2|%{rpmcflags}${PNGCFLAGS}|;
-	" mkspecs/linux-g++/qmake.conf
+#perl -pi -e "
+#	s|-O2|%{rpmcflags}${PNGCFLAGS}|;
+#	" mkspecs/linux-g++/qmake.conf
 
 # Fix examples (second part in install section).
-find examples -name '*.pro' -exec \
-	perl -pi -e 's|(DEPENDPATH=)../../include|$1%{_includedir}|' {} \;
+#find examples -name '*.pro' -exec \
+#	perl -pi -e 's|(DEPENDPATH=)../../include|$1%{_includedir}|' {} \;
 
 DEFAULTOPT="-prefix %{_prefix} -docdir %{_docdir}/%{name}-%{version} \
 	    -datadir %{_datadir}/qt -headerdir %{_includedir}\
 	    -release -qt-gif -system-zlib -no-g++-exceptions -stl \
+	    -no-exceptions \
 	    -system-libpng -system-libjpeg -system-libmng -sm -xinerama \
 	    -xrender -xft -xkb -enable-opengl"
+%{?_with_nas:DEFAULTOPT="$DEFAULTOPT -system-nas-sound"}
+%{?_without_cups:DEFAULTOPT="$DEFAULTOPT -no-cups"}
+
 STYLESLIST="cde compact motif motifplus platinum sgi windows"
 
 ########################################################################
@@ -287,6 +313,7 @@ OPTFLAGS="%{rpmcflags}" \
 ./configure \
 	$DEFAULTOPT \
 	-no-thread \
+	-fast \
 	-static \
 	-qt-imgfmt-png \
 	-qt-imgfmt-jpeg \
@@ -316,6 +343,7 @@ OPTFLAGS="%{rpmcflags}" \
 	$DEFAULTOPT \
 	-thread \
 	-static \
+	-fast\
 	-qt-imgfmt-png \
 	-qt-imgfmt-jpeg \
 	-qt-imgfmt-mng \
@@ -349,6 +377,7 @@ done
 OPTFLAGS="%{rpmcflags}" \
 ./configure \
 	$DEFAULTOPT \
+	-fast \
 	-no-thread \
 	-shared \
 	-plugindir %{_libdir}/qt/plugins-st \
@@ -380,7 +409,11 @@ _EOF_
 # by next compilation. So they must be backed up.
 rm -rf plugins-st
 mkdir plugins-st
-cp -R plugins/{imageformats,sqldrivers,styles} plugins-st
+cp -R plugins/{imageformats,styles} plugins-st
+%if %{_nosql < 3}
+cp -R plugins/sqldrivers plugins-st
+%endif
+
 %{__make} clean
 
 OPTFLAGS="%{rpmcflags}" \
@@ -471,7 +504,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/%{name}/plugins*
 %dir %{_libdir}/%{name}/plugins*/imageformats
 %dir %{_libdir}/%{name}/plugins*/styles
+%if %{_nosql < 3}
 %dir %{_libdir}/%{name}/plugins*/sqldrivers
+%endif
 %attr(755,root,root) %{_libdir}/%{name}/plugins*/imageformats/*.so
 %attr(755,root,root) %{_libdir}/%{name}/plugins*/styles/*.so
 %dir %{_datadir}/qt
