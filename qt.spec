@@ -248,6 +248,7 @@ Narzedzia programistyczne QT.
 %patch5 -p1
 %patch6 -p1
 
+# Remove CVS stuff
 rm -rf `find . -name CVS`
 
 # There is no file pointed by this sym-link and there is cp -L in %%install
@@ -263,6 +264,12 @@ perl -pi -e "
 	s|-O2|%{rpmcflags}|;
 	" mkspecs/linux-g++/qmake.conf
 
+%{__make} -f Makefile.cvs
+
+##################################
+# DEFAULT OPTIONS FOR ALL BUILDS #
+##################################
+
 DEFAULTOPT=" \
 	-datadir %{_datadir}/qt \
 	-docdir %{_docdir}/%{name}-doc-%{version} \
@@ -274,10 +281,10 @@ DEFAULTOPT=" \
 	-no-g++-exceptions \
 	-no-style-windowsxp \
 	-prefix %{_prefix} \
+	-qt-gif \
 	%{!?_without_mysql:-qt-sql-mysql} \
 	%{!?_without_odbc:-qt-sql-odbc} \
 	%{!?_without_pgsql:-qt-sql-psql} \
-	-qt-gif \
 	-sm \
 	-stl \
 	-system-libjpeg \
@@ -293,101 +300,111 @@ DEFAULTOPT=" \
 
 STYLESLIST="cde compact motif motifplus platinum sgi windows"
 
-%{__make} -f Makefile.cvs
+####################################
+# STYLES FOR SINGLE & MULTI STATIC #
+####################################
 
-########################################################################
-# STATIC SINGLE-THREAD
-########################################################################
-%if %{?_with_static:%{?_with_single:1}}0
+%if %{?_with_static:1}0
 DEFAULTSTYLES=""
 for i in $STYLESLIST; do
 	DEFAULTSTYLES="$DEFAULTSTYLES -qt-style-$i"
+done
+%endif
+
+########################
+# STATIC SINGLE-THREAD #
+########################
+
+%if %{?_with_static:%{?_with_single:1}}0
 done
 
 OPTFLAGS="%{rpmcflags}" \
 ./configure \
 	$DEFAULTOPT \
+	$DEFAULTSTYLES \
 	-no-thread \
 	-static \
 	-plugindir %{_libdir}/qt/plugins-st \
-	-qt-imgfmt-png \
 	-qt-imgfmt-jpeg \
 	-qt-imgfmt-mng \
-	$DEFAULTSTYLES \
+	-qt-imgfmt-png \
 	<<_EOF_
 yes
 _EOF_
 
-# Build libraries and everything needed to do this. Do not build examples and
-# such. They will be built with shared, sigle-thread libraries.
+# Build libraries and everything needed to do this. Do not build examples
+# and such. They will be built with shared, sigle-thread libraries.
 %{__make} symlinks src-qmake src-moc sub-src
-%{__make} clean
-%endif # _with_single_static
-########################################################################
-# STATIC MULTI-THREAD
-########################################################################
-%if %{?_with_static:1}0
 
 # This will not remove previously compiled libraries.
+%{__make} clean
+%endif
 
+#######################
+# STATIC MULTI-THREAD #
+#######################
+
+%if %{?_with_static:1}0
 OPTFLAGS="%{rpmcflags}" \
 ./configure \
 	$DEFAULTOPT \
+	$DEFAULTSTYLES \
 	-thread \
 	-static \
 	-plugindir %{_libdir}/qt/plugins-mt \
-	-qt-imgfmt-png \
 	-qt-imgfmt-jpeg \
 	-qt-imgfmt-mng \
-	$DEFAULTSTYLES \
+	-qt-imgfmt-png \
 	<<_EOF_
 yes
 _EOF_
 
-# Build libraries and everything needed to do this. Do not build examples and
-# such. They will be built with shared, sigle-thread libraries.
+# Build libraries and everything needed to do this. Do not build examples
+# and such. They will be built with shared, sigle-thread libraries.
 %{__make} symlinks src-qmake src-moc sub-src
-%endif #_with_static
 
-########################################################################
-# SHARED SINGLE-THREAD
-########################################################################
+# This will not remove previously compiled libraries.
+%{__make} clean
+%endif
+
+####################################
+# STYLES FOR SINGLE & MULTI SHARED #
+####################################
+
 DEFAULTSTYLES=""
 for i in $STYLESLIST; do
 	DEFAULTSTYLES="$DEFAULTSTYLES -plugin-style-$i"
 done
 
-%if %{?_with_single:1}0
-# This will not remove previously compiled libraries.
-%{?_with_static:%{__make} clean}
+########################
+# SHARED SINGLE-THREAD #
+########################
 
-# workaround for some nasty bug to avoid linking plugins statically with -lqt-mt
+%if %{?_with_single:1}0
+# workaround for some nasty bug to avoid linking plugins statically
+# with -lqt-mt
 rm -f lib/libqt-mt.prl
 
 OPTFLAGS="%{rpmcflags}" \
 ./configure \
 	$DEFAULTOPT \
+	$DEFAULTSTYLES \
 	-no-thread \
 	-shared \
 	-plugindir %{_libdir}/qt/plugins-st \
-	-plugin-imgfmt-png \
 	-plugin-imgfmt-jpeg \
 	-plugin-imgfmt-mng \
-	$DEFAULTSTYLES \
+	-plugin-imgfmt-png \
 	<<_EOF_
 yes
 _EOF_
 
-# Build libraries and everything needed to do this. Do not build examples and
-# such. They will be built with shared, multi-thread libraries.
+# Build libraries and everything needed to do this. Do not build examples
+# and such. They will be built with shared, multi-thread libraries.
 %{__make} symlinks src-qmake src-moc sub-src
 
 # Dont make tools, only plugins.
 %{__make} -C plugins/src/ sub-imageformats sub-sqldrivers sub-styles
-
-########################################################################
-# SHARED MULTI-THREAD
-########################################################################
 
 # This will not remove previously compiled libraries. But WILL remove
 # plugins. And even if they weren't removed, they would be overwritten
@@ -396,19 +413,23 @@ rm -rf plugins-st
 mkdir plugins-st
 cp -R plugins/{imageformats,styles} plugins-st
 %{?_withsql:cp -R plugins/sqldrivers plugins-st}
-
 %{__make} clean
-%endif # without single
+%endif
+
+#######################
+# SHARED MULTI-THREAD #
+#######################
+
 OPTFLAGS="%{rpmcflags}" \
 ./configure \
 	$DEFAULTOPT \
+	$DEFAULTSTYLES \
 	-thread \
 	-shared \
 	-plugindir %{_libdir}/qt/plugins-mt \
 	-plugin-imgfmt-png \
 	-plugin-imgfmt-jpeg \
 	-plugin-imgfmt-mng \
-	$DEFAULTSTYLES \
 	<<_EOF_
 yes
 _EOF_
@@ -418,16 +439,11 @@ _EOF_
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_mandir}/man{1,3},%{_examplesdir}/%{name}/lib} \
-	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-{m,s}t/network
-
-QTDIR=`/bin/pwd`; export QTDIR
-LD_LIBRARY_PATH="$QTDIR/lib" ; export LD_LIBRARY_PATH
-PATH="$QTDIR/bin:$PATH"
 
 %{__make} install INSTALL_ROOT=$RPM_BUILD_ROOT
 
-rm -rf `find $RPM_BUILD_ROOT -name CVS`
+install -d $RPM_BUILD_ROOT{%{_mandir}/man{1,3},%{_examplesdir}/%{name}/lib} \
+	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-{m,s}t/network
 
 install bin/{findtr,qt20fix,qtrename140} \
 	tools/msg2qm/msg2qm tools/mergetr/mergetr \
@@ -444,7 +460,6 @@ install lib/libqt-mt.a		$RPM_BUILD_ROOT%{_libdir}
 %if %{?_with_single:1}0
 install lib/libqt.so.*.*.*	$RPM_BUILD_ROOT%{_libdir}
 ln -sf libqt.so.%{_qt_sl} $RPM_BUILD_ROOT%{_libdir}/libqt.so
-
 cp -R plugins-st/* $RPM_BUILD_ROOT%{_libdir}/qt/plugins-st/
 %endif
 
@@ -454,10 +469,11 @@ cp -dpR .qmake.cache examples tutorial \
 mv $RPM_BUILD_ROOT{%{_libdir}/*.prl,%{_examplesdir}/%{name}/lib}
 mkdir $RPM_BUILD_ROOT%{_datadir}/qt/mkspecs/default/features
 
-# Fix Makefiles for tutorial and examples. How people who made so cool
-# library could screw build process so badly?
-find $RPM_BUILD_ROOT%{_examplesdir}/%{name} -regex '.*/\(examples\|tutorial\).*/Makefile$' -exec \
-	perl -pi -e '
+# Fix Makefiles for tutorial and examples. How people who made
+# so cool library could screw build process so badly?
+find $RPM_BUILD_ROOT%{_examplesdir}/%{name} \
+	-regex '.*/\(examples\|tutorial\).*/Makefile$' 
+	-exec perl -pi -e '
 		print "QTDIR    = %{_prefix}\n" if $. == 1;
 		s|(-I\$\(QTDIR\)/include)|$1/qt|g;
 		s|(\$\(QTDIR\))(/mkspecs)|$1/share/qt$2|g;
