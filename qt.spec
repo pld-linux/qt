@@ -12,7 +12,9 @@
 # _without_odbc		- without unixODBC support
 #
 Summary:	The Qt3 GUI application framework
+Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
+Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.0.4
 Release:	1
@@ -62,16 +64,30 @@ Obsoletes:	qt-extensions
 %define		_mandir		%{_prefix}/man
 
 %description
+Qt is a GUI software toolkit which simplifies the task of writing and
+maintaining GUI (Graphical User Interface) applications for the X
+Window System. Qt is written in C++ and is fully object-oriented.
+
 This package contains the shared library needed to run Qt
 applications, as well as the README files for Qt.
+
+%description -l es
+Contiene las bibliotecas compartidas necesarias para ejecutar
+aplicaciones Qt, bien como los archivos README.
 
 %description -l pl
 Pakiet ten zawiera bibliotekê niezbêdn± do uruchamiania aplikacji Qt,
 jak równie¿ pliki README z Qt.
 
+%description -l pt_BR
+Contém as bibliotecas compartilhadas necessárias para rodar aplicações Qt, bem
+como os arquivos README.
+
 %package devel
-Summary:	Include files and documentation needed to compile
+Summary:	Development files and documentation for the Qt GUI toolkit
+Summary(es):	Archivos de inclusión y documentación necesaria para compilar aplicaciones Qt
 Summary(pl):	Pliki nag³ówkowe, przyk³ady i dokumentacja do biblioteki
+Summary(pt_BR):	Arquivos de inclusão e documentação necessária para compilar aplicações Qt
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}
 Requires:	XFree86-devel
@@ -84,12 +100,25 @@ example programs. See http://www.troll.no/ for more information about
 Qt, or file:/usr/share/doc/%{name}-devel-%{version}/index.html for Qt
 documentation in HTML.
 
+%description devel -l es
+Contiene los archivos necesarios para desarrollar aplicaciones
+usando Qt: archivos de inclusión, compilador de metaobjetos Qt,
+páginas de manual, documentación HTML y programas ejemplo. Mira
+http://www.troll.no para más información sobre el Qt, o el
+archivo file:/usr/lib/qt/html/index.html en la documentación
+en HTML.
+
 %description devel -l pl
 Pakiet tem zawiera pliki potrzebne do tworzenia i kompilacji aplikacji
 korzystaj±cych z biblioteki Qt, jak pliki nag³ówkowe, meta kompiler
 (moc), dokumentacjê. Zobacz http://www.troll.no/ aby dowiedzieæ siê
 wiêcej o Qt. Dokumentacjê do biblioteki znajdziesz tak¿e pod:
 /usr/share/doc/%{name}-devel-%{version}/index.html
+
+%description devel -l pt_BR
+Contém os arquivos necessários para desenvolver aplicações usando Qt: arquivos
+de inclusão, compilador de meta-objetos Qt, veja http://www.trolltech.com para
+mais informações sobre ele.
 
 %package static
 Summary:	Qt static libraries
@@ -104,57 +133,73 @@ Static QT libraries.
 Statyczne biblioteki Qt.
 
 %package examples
-Summary:	Qt tutorial/examples
+Summary:	Example programs made with Qt version %{version}
 Summary(pl):	Æwiczenia i przyk³ady do Qt
+Summary(pt_BR):	Programas exemplo desenvolvidos com o Qt 
 Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{version}
 
 %description examples
-Qt tutorial/examples.
+Example programs made with Qt version %{version}.
 
 %description examples -l pl
 Æwiczenia/przyk³ady do Qt.
 
+%description examples -l pt_BR
+Programas exemplo para o Qt versão %{version}.
+
 %if %{!?_without_mysql:1}%{?_without_mysql:0}
 %package plugins-mysql
-Summary:	Qt MySQL plugin
+Summary:	Database plugin for mysql Qt support
 Summary(pl):	Wtyczka MySQL do Qt
+Summary(pt_BR):	Plugin de suporte a mysql para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{version}
 
 %description plugins-mysql
-Qt MySQL plugin.
+Database plugin for mysql Qt support.
 
 %description plugins-mysql -l pl
 Wtyczka MySQL do Qt.
+
+%description plugins-mysql -l pt_BR
+Plugin de suporte a mysql para Qt.
 %endif
 
 %if %{!?_without_psql:1}%{?_without_psql:0}
 %package plugins-psql
-Summary:	Qt PostgreSQL plugin
+Summary:	Database plugin for pgsql Qt support
 Summary(pl):	Wtyczka PostgreSQL do Qt
+Summary(pt_BR):	Plugin de suporte a pgsql para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{version}
 
 %description plugins-psql
-Qt PostgreSQL plugin.
+Database plugin for pgsql Qt support.
 
 %description plugins-psql -l pl
 Wtyczka PostgreSQL do Qt.
+
+%description plugins-psql -l es
+Plugin de suporte a pgsql para Qt.
 %endif
 
 %if %{!?_without_odbc:1}%{?_without_odbc:0}
 %package plugins-odbc
-Summary:	Qt ODBC plugin
+Summary:	Database plugin for ODBC Qt support
 Summary(pl):	Wtyczka ODBC do Qt
+Summary(pt_BR):	Plugin de suporte a ODBC para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{version}
 
 %description plugins-odbc
-Qt ODBC plugin.
+Database plugin for ODBC Qt support.
 
 %description plugins-odbc -l pl
 Wtyczka ODBC do Qt.
+
+%description plugins-odbc -l pt_BR
+Plugin de suporte a ODBC para Qt.
 %endif
 
 %prep
