@@ -1,15 +1,13 @@
 Summary:	The Qt2 GUI application framework
 Summary(pl):	Biblioteka Qt2 do tworzenia GUI
 Name:		qt
-%define		alt_version 2.2.0-beta2
-%define		libqt_version 2.2.0
 %define		libqutil_version 1.0.0
 Version:	2.2.0
-Release:	0.beta2.2
-License:	QPL
+Release:	1
+License:	GPL
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
-Source0:	ftp://ftp.troll.no/qt/source/%{name}-x11-%{alt_version}.tar.gz
+Source0:	ftp://ftp.troll.no/qt/source/%{name}-x11-%{version}.tar.gz
 BuildRequires:	libungif-devel
 BuildRequires:	zlib-devel
 BuildRequires:	libpng-devel >= 1.0.8
@@ -65,7 +63,7 @@ Qt tutorial/examples.
 Qt przyk³ady.
 
 %prep 
-%setup -q -n %{name}-%{alt_version}
+%setup -q
 
 %build
 QTDIR=`/bin/pwd`; export QTDIR
@@ -84,7 +82,7 @@ SYSCONF_CXXFLAGS="-pipe -DNO_DEBUG $RPM_OPT_FLAGS"
 export LD_LIBRARY_PATH SYSCONF_CFLAGS SYSCONF_CXXFLAGS
 
 %{__make} SYSCONF_CFLAGS="$RPM_OPT_FLAGS" SYSCONF_CXXFLAGS="$RPM_OPT_FLAGS" \
-	symlinks  moc src-mt src tools
+	symlinks  src-moc src-mt sub-src sub-tools
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -94,8 +92,8 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir},%{_includedir},%{_mandir}/man3}
 
 install bin/* $RPM_BUILD_ROOT%{_bindir}/
 
-install -s lib/libqt.so.%{libqt_version} $RPM_BUILD_ROOT%{_libdir}
-ln -sf libqt.so.%{libqt_version} $RPM_BUILD_ROOT%{_libdir}/libqt.so
+install -s lib/libqt.so.%{version} $RPM_BUILD_ROOT%{_libdir}
+ln -sf libqt.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libqt.so
 
 install -s lib/libqutil.so.%{libqutil_version} $RPM_BUILD_ROOT%{_libdir}
 ln -sf libqutil.so.%{libqutil_version} $RPM_BUILD_ROOT%{_libdir}/libqutil.so
