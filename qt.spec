@@ -2,7 +2,7 @@ Summary:     The Qt GUI application framework: Shared library
 Summary(pl): Biblioteka Qt do tworzenia GUI
 Name:        qt
 Version:     1.42
-Release:     2
+Release:     3
 Source0:     ftp://ftp.troll.no/qt/source/%{name}-%{version}.tar.gz
 Patch0:      qt.patch
 Copyright:   distributable
@@ -49,6 +49,24 @@ make	SYSCONF_CFLAGS="$RPM_OPT_FLAGS" \
 	SYSCONF_CFLAGS_LIB="$RPM_OPT_FLAGS -fPIC" \
 	SYSCONF_CFLAGS_SHOBJ="$RPM_OPT_FLAGS -fPIC"
 
+cd extensions/imageio/src
+LD_LIBRARY_PATH=/usr/X11R6/lib \
+make	SYSCONF_CFLAGS="$RPM_OPT_FLAGS" \
+	SYSCONF_CFLAGS_LIB="$RPM_OPT_FLAGS -fPIC" \
+	SYSCONF_CFLAGS_SHOBJ="$RPM_OPT_FLAGS -fPIC"
+
+cd ../../opengl/src
+LD_LIBRARY_PATH=/usr/X11R6/lib \
+make	SYSCONF_CFLAGS="$RPM_OPT_FLAGS" \
+	SYSCONF_CFLAGS_LIB="$RPM_OPT_FLAGS -fPIC" \
+	SYSCONF_CFLAGS_SHOBJ="$RPM_OPT_FLAGS -fPIC"
+
+cd ../../xt/src
+LD_LIBRARY_PATH=/usr/X11R6/lib \
+make	SYSCONF_CFLAGS="$RPM_OPT_FLAGS" \
+	SYSCONF_CFLAGS_LIB="$RPM_OPT_FLAGS -fPIC" \
+	SYSCONF_CFLAGS_SHOBJ="$RPM_OPT_FLAGS -fPIC"
+
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/usr/X11R6/{bin,include/X11/qt,lib,man/{man1,man3}}
@@ -59,6 +77,15 @@ ln -sf libqt.so.%{version} $RPM_BUILD_ROOT/usr/X11R6/lib/libqt.so
 install man/man1/* $RPM_BUILD_ROOT/usr/X11R6/man/man1
 install man/man3/* $RPM_BUILD_ROOT/usr/X11R6/man/man3
 install include/* $RPM_BUILD_ROOT/usr/X11R6/include/X11/qt
+
+install -s lib/libqimgio.so.*.* $RPM_BUILD_ROOT/usr/X11R6/lib
+install extensions/imageio/src/*.h $RPM_BUILD_ROOT/usr/X11R6/include/X11/qt
+
+install -s lib/libqgl.a $RPM_BUILD_ROOT/usr/X11R6/lib
+install extensions/opengl/src/*.h $RPM_BUILD_ROOT/usr/X11R6/include/X11/qt
+
+install lib/libqxt.a $RPM_BUILD_ROOT/usr/X11R6/lib
+install extensions/xt/src/*.h $RPM_BUILD_ROOT/usr/X11R6/include/X11/qt
 
 for a in {tutorial,examples}/{Makefile,*/Makefile}; do
   sed 's-^SYSCONF_MOC.*-SYSCONF_MOC		= /usr/X11R6/bin/moc-' < $a > ${a}.2
@@ -84,9 +111,14 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755, root, root) /usr/X11R6/bin/*
 %attr(644, root,  man) /usr/X11R6/man/man[13]/*
 /usr/X11R6/include/X11/qt
-%attr(  -, root, root) /usr/X11R6/lib/lib*.so
+%attr(755, root, root) /usr/X11R6/lib/lib*.so
+/usr/X11R6/lib/lib*.a
 
 %changelog
+* Tue Jan  7 1999 Wojciech "Sas" Ciêciwa <cieciwa@alpha.zarz.agh.edu.pl>
+  [1.42-3]
+- added qt extensions.
+
 * Mon Dec  9 1998 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
   [1.42-2]
 - added gzipping man pages,
