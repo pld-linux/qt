@@ -42,7 +42,7 @@ Patch9:		%{name}-qmake-opt.patch
 Patch10:	%{name}-textedit_speedup.patch
 URL:		http://www.trolltech.com/products/qt/
 BuildRequires:	OpenGL-devel
-%{?with_nvidia:BuildRequires:	XFree86-driver-nvidia-devel < 1.0.4620}
+%{?with_nvidia:BuildRequires:	XFree86-driver-nvidia-devel}
 # incompatible with bison
 BuildRequires:	byacc
 %{?with_cups:BuildRequires:	cups-devel}
