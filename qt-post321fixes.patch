@@ -1,0 +1,48 @@
+===================================================================
+RCS file: /home2/webcvs/mirror/qt-copy/src/kernel/qdnd_x11.cpp,v
+retrieving revision 1.56
+retrieving revision 1.57
+diff -u -p -r1.56 -r1.57
+--- qt-copy/src/kernel/qdnd_x11.cpp	2003/05/16 13:02:39	1.56
++++ qt-copy/src/kernel/qdnd_x11.cpp	2003/09/23 16:01:19	1.57
+@@ -1,5 +1,5 @@
+ /****************************************************************************
+-** 
++**
+ **
+ ** XDND implementation for Qt.  See http://www.cco.caltech.edu/~jafl/xdnd/
+ **
+@@ -1437,7 +1437,7 @@ static QByteArray qt_xdnd_obtain_data( c
+ 	    return result; // should never happen?
+ 
+ 	QWidget* tw = qt_xdnd_current_widget;
+-	if ( qt_xdnd_current_widget->isDesktop() ) {
++	if ( qt_xdnd_current_widget && qt_xdnd_current_widget->isDesktop() ) {
+ 	    tw = new QWidget;
+ 	}
+ 	XConvertSelection( QPaintDevice::x11AppDisplay(),
+@@ -1475,7 +1475,7 @@ static QByteArray qt_xdnd_obtain_data( c
+ #endif
+ 	    }
+ 	}
+-	if ( qt_xdnd_current_widget->isDesktop() ) {
++	if ( qt_xdnd_current_widget && qt_xdnd_current_widget->isDesktop() ) {
+ 	    delete tw;
+ 	}
+     }
+===================================================================
+RCS file: /home2/webcvs/mirror/qt-copy/src/kernel/qpsprinter.cpp,v
+retrieving revision 1.73
+retrieving revision 1.74
+diff -u -p -r1.73 -r1.74
+--- qt-copy/src/kernel/qpsprinter.cpp	2003/08/27 14:31:46	1.73
++++ qt-copy/src/kernel/qpsprinter.cpp	2003/09/09 09:54:18	1.74
+@@ -2376,7 +2376,7 @@ QPSPrinterFontTTF::QPSPrinterFontTTF(con
+       Trademark.setLatin1(strings+offset,length);
+ 
+   }
+-
++	psname = psname.replace(' ','-');
+   //read_cmap(font);
+ 
+   /* We need to have the PostScript table around. */
