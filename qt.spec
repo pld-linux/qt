@@ -213,7 +213,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_bindir},%{_includedir},%{_mandir}/man{1,3}} \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name} \
 	$RPM_BUILD_ROOT%{_datadir}/tutorial/%{name} \
-	$RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/{sqldrivers,imageformats,designer}
+	$RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/{sqldrivers,imageformats,designer,styles}
 
 rm -f   bin/*.bat
 install bin/*			$RPM_BUILD_ROOT%{_bindir}/
@@ -291,7 +291,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libqt-mt.so
 %{_includedir}
 %{_mandir}/man?/*
-%dir %{_libdir}/%{name}/plguins/designer
+%dir %{_libdir}/%{name}/plugins/designer
 %attr(755,root,root) %{_libdir}/%{name}/plugins/designer/*.so
 
 %files static
