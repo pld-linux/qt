@@ -30,8 +30,8 @@ Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
 Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
+# Source0-md5:	9a639588000d0274666bcbb19e3d0af6
 #Source0:	http://www.kernel.pl/~adgor/kde/%{name}-copy-%{_snap}.tar.bz2
-# Source0-md5:	303ae2142c2c182302cd739cbc63725b
 #Source1:	ftp://ftp.trolltech.com/qsa/%{name}-designer-changes-qsa-beta3.tar.gz
 #%% Source1-md5:	61dbb6efe50e04fcaa5a592e9bf58664
 Patch0:		%{name}-tools.patch
