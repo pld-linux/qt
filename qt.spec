@@ -3,7 +3,8 @@ Summary(pl):	Biblioteka Qt2 do tworzenia GUI
 Name:		qt
 %define		libqutil_version 1.0.0
 Version:	2.2.3
-Release:	1
+Release:	4
+Epoch:		1
 License:	GPL
 Group:		X11/Libraries
 Group(de):	X11/Libraries
@@ -98,8 +99,8 @@ export LD_LIBRARY_PATH SYSCONF_CFLAGS SYSCONF_CXXFLAGS
         SYSCONF_CFLAGS="%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}" \
 	SYSCONF_CXXFLAGS="%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}"
 %else
-        SYSCONF_CFLAGS="%{!?debug: -0O}%{?debug:-O -g}" \
-	SYSCONF_CXXFLAGS="%{!?debug: -O0}%{?debug:-O -g}"
+        SYSCONF_CFLAGS="%{!?debug:-0O}%{?debug:-O -g}" \
+	SYSCONF_CXXFLAGS="%{!?debug:-O0}%{?debug:-O -g}"
 %endif
 	
 %install
