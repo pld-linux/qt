@@ -79,9 +79,10 @@ BuildRequires:	libungif-devel
 BuildRequires:	perl-base
 %{?with_pgsql:BuildRequires:	postgresql-backend-devel}
 %{?with_pgsql:BuildRequires:	postgresql-devel}
+BuildRequires:	rpmbuild(macros) >= 1.167
 BuildRequires:	sed >= 4.0
-%{?with_odbc:BuildRequires:	unixODBC-devel}
 %{?with_sqlite:BuildRequires:	sqlite-devel}
+%{?with_odbc:BuildRequires:	unixODBC-devel}
 BuildRequires:	xcursor-devel
 BuildRequires:	xft-devel
 BuildRequires:	xrender-devel
