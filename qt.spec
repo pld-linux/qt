@@ -30,6 +30,7 @@ Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
 #Source1:	ftp://ftp.trolltech.com/qsa/%{name}-designer-changes-qsa-beta3.tar.gz
 Source1:	http://www.kernel.pl/~djurban/snap/%{name}-patches-030831.tar.bz2
 # Source1-md5:	3fe3df6eb64289333839bc4373353082
+Source2:	ftp://gee.cs.oswego.edu/pub/misc/malloc.c
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
@@ -44,6 +45,7 @@ Patch10:	%{name}-qmake_la_generation_fix.patch
 Patch11:	%{name}-qmlined-fix.patch
 Patch12:	%{name}-qmake-opt.patch
 Patch13:	%{name}-qmake-la-and-pc-fix.patch
+Patch14:	%{name}-use_own_malloc.patch
 URL:		http://www.trolltech.com/products/qt/
 BuildRequires:	OpenGL-devel
 # incompatible with bison
@@ -352,6 +354,7 @@ Narzêdzia programistyczne QT.
 %patch11 -p1
 %patch12 -p1
 %patch13 -p1
+%patch14 -p1 
 
 rm -rf `find $RPM_BUILD_ROOT -name CVS`
 rm -rf `find . -name CVS`
@@ -367,7 +370,7 @@ mv patches/apply_patches .
 perl -pi -e "
 	s|-O2|%{rpmcflags}|;
 	" mkspecs/linux-g++/qmake.conf
-
+install %{SOURCE2} src/kernel/
 %build
 export QTDIR=`/bin/pwd`
 export YACC='byacc -d'
@@ -526,14 +529,14 @@ export Z=`/bin/pwd`
 	UIC="LD_PRELOAD=$Z/lib/libqt-mt.so.3 $Z/bin/uic -L $Z/plugins"
 
 cd tools/designer/designer
-lrelease designer_de.ts
-lrelease designer_fr.ts
+LD_PRELOAD=$Z/lib/libqt-mt.so.3 lrelease designer_de.ts
+LD_PRELOAD=$Z/lib/libqt-mt.so.3 lrelease designer_fr.ts
 cd $Z/tools/assistant
-lrelease assistant_de.ts
-lrelease assistant_fr.ts
+LD_PRELOAD=$Z/lib/libqt-mt.so.3 lrelease assistant_de.ts
+LD_PRELOAD=$Z/lib/libqt-mt.so.3 lrelease assistant_fr.ts
 cd $Z/tools/linguist/linguist
-lrelease linguist_de.ts
-lrelease linguist_fr.ts
+LD_PRELOAD=$Z/lib/libqt-mt.so.3 lrelease linguist_de.ts
+LD_PRELOAD=$Z/lib/libqt-mt.so.3 lrelease linguist_fr.ts
 cd $Z
 
 %install
@@ -637,13 +640,13 @@ rm -rf $RPM_BUILD_ROOT
 
 %post	
 /sbin/ldconfig
-echo "####################################################"
-echo "# After qt 3.2.0 the single version was separated. #"
-echo "# Please install qt-st if you really require it.   #"
-echo "# If you do not use qt-st explicitly, please       #"
-echo "# ignore this, as you will not notice any changes. #"
-echo "####################################################"
-
+echo "#####################################################"
+echo "# After qt 3.2.0 the single version was separated.  #"
+echo "# Please install qt-st if you really require it.    #"
+echo "# If you do not use qt-st explicitly, please ignore #"
+echo "# this, as you will not notice any changes. In most #"
+echo "# cases do not install qt-st, as it is obsolete.    #"
+echo "#####################################################"
 
 %postun -p /sbin/ldconfig
 %post st -p /sbin/ldconfig
