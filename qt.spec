@@ -20,7 +20,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	%{_ver}.%{_snap}
-Release:	2
+Release:	3
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -332,7 +332,7 @@ Narzêdzia programistyczne QT.
 Summary:	QT widgets configuration tool
 Summary(pl):	Narzêdzie do konfigurowania widgetów QT
 Group:		X11/Applications
-Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
+Requires:	%{name} = %{epoch}:%{version}-%{release}
 
 %description -n qtconfig
 A tool for configuring look and behavior of QT widgets.
