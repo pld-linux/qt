@@ -14,13 +14,14 @@ Patch0:		%{name}-tools.patch
 Patch1:		%{name}-huge_val.patch
 Patch2:		%{name}-printdialog.patch
 Patch3:		%{name}-AA.patch.bz2
-BuildRequires:	libungif-devel
-BuildRequires:	libjpeg-devel
-BuildRequires:	zlib-devel
-BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
+BuildRequires:	libungif-devel
+BuildRequires:	libjpeg-devel
+BuildRequires:	libmng-devel
+BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	libstdc++-devel
+BuildRequires:	zlib-devel
 Requires:	XFree86-libs >= 4.0.2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	qt-extensions
