@@ -1,8 +1,8 @@
 Summary:     The Qt GUI application framework: Shared library
 Summary(pl): Biblioteka Qt do tworzenia GUI
 Name:        qt
-Version:     1.40
-Release:     3
+Version:     1.41
+Release:     1
 Source0:     ftp://ftp.troll.no/qt/source/%{name}-%{version}.tar.gz
 Patch0:      qt.patch
 Copyright:   distributable
