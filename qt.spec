@@ -210,7 +210,7 @@ Plugin de suporte a ODBC para Qt.
 %setup -q -n %{name}-x11-free-%{version}
 %patch0 -p1
 %ifnarch %{ix86} ppc
-%{!?_with_prelink:%patch1 -p1}
+%{?_with_prelink:%patch1 -p1}
 %endif
 %patch2 -p1
 %patch3 -p1
