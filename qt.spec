@@ -15,11 +15,12 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.0.5
-Release:	5
+Release:	6
 Epoch:		3
 License:	GPL / QPL
 Group:		X11/Libraries
 Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
+Source1:	%{name}-designer.desktop
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-qmake.patch
 Patch2:		%{name}-parse_error.patch
@@ -408,7 +409,10 @@ perl -pi -e "s/^	strip/	-strip/;" src/Makefile
 install -d $RPM_BUILD_ROOT%{_mandir}/man{1,3} \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name} \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name}/lib \
-	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st
+	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st \
+	$RPM_BUILD_ROOT%{_applnkdir}/Development
+
+install %{SOURCE1} $RPM_BUILD_ROOT%{_applnkdir}/Development
 
 install bin/findtr tools/msg2qm/msg2qm tools/mergetr/mergetr $RPM_BUILD_ROOT%{_bindir}
 
@@ -476,6 +480,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_datadir}/qt
 %{_datadir}/qt/mkspecs
 %{_datadir}/qt/designer
+%{_applnkdir}/Development/*
 
 %files static
 %defattr(644,root,root,755)
