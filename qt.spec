@@ -2,7 +2,7 @@ Summary:     The Qt GUI application framework: Shared library
 Summary(pl): Biblioteka Qt do tworzenia GUI
 Name:        qt
 Version:     1.42
-Release:     3
+Release:     2
 Source0:     ftp://ftp.troll.no/qt/source/%{name}-%{version}.tar.gz
 Patch0:      qt.patch
 Copyright:   distributable
@@ -55,17 +55,33 @@ make	SYSCONF_CFLAGS="$RPM_OPT_FLAGS" \
 	SYSCONF_CFLAGS_LIB="$RPM_OPT_FLAGS -fPIC" \
 	SYSCONF_CFLAGS_SHOBJ="$RPM_OPT_FLAGS -fPIC"
 
+if [ "`locate "common/npunix.c"`" != "" ]; then
+cd ../../nsplugin/src
+LD_LIBRARY_PATH=/usr/X11R6/lib \
+make	SYSCONF_CFLAGS="$RPM_OPT_FLAGS" \
+	SYSCONF_CFLAGS_LIB="$RPM_OPT_FLAGS -fPIC" \
+	SYSCONF_CFLAGS_SHOBJ="$RPM_OPT_FLAGS -fPIC"
+else
+  echo "Hmm, You don't have Plugin SDK for Netscape"
+  echo "Or locate can't find this file"
+fi
+
 cd ../../opengl/src
 LD_LIBRARY_PATH=/usr/X11R6/lib \
 make	SYSCONF_CFLAGS="$RPM_OPT_FLAGS" \
 	SYSCONF_CFLAGS_LIB="$RPM_OPT_FLAGS -fPIC" \
 	SYSCONF_CFLAGS_SHOBJ="$RPM_OPT_FLAGS -fPIC"
 
+if [ "`locate "Xm/Xm.h"`" != "" ]; then
 cd ../../xt/src
 LD_LIBRARY_PATH=/usr/X11R6/lib \
 make	SYSCONF_CFLAGS="$RPM_OPT_FLAGS" \
 	SYSCONF_CFLAGS_LIB="$RPM_OPT_FLAGS -fPIC" \
 	SYSCONF_CFLAGS_SHOBJ="$RPM_OPT_FLAGS -fPIC"
+else
+  echo "Hmm, You don't have Motif/Lesstif Library"
+  echo "Or locate can't find this header. "
+fi
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -79,13 +95,17 @@ install man/man3/* $RPM_BUILD_ROOT/usr/X11R6/man/man3
 install include/* $RPM_BUILD_ROOT/usr/X11R6/include/X11/qt
 
 install -s lib/libqimgio.so.*.* $RPM_BUILD_ROOT/usr/X11R6/lib
+ln -sf libqimgio.so.0.1 $RPM_BUILD_ROOT/usr/X11R6/lib/libqimgio.so.0
+ln -sf libqimgio.so.0.1 $RPM_BUILD_ROOT/usr/X11R6/lib/libqimgio.so
 install extensions/imageio/src/*.h $RPM_BUILD_ROOT/usr/X11R6/include/X11/qt
 
-install -s lib/libqgl.a $RPM_BUILD_ROOT/usr/X11R6/lib
+install lib/libqgl.a $RPM_BUILD_ROOT/usr/X11R6/lib
 install extensions/opengl/src/*.h $RPM_BUILD_ROOT/usr/X11R6/include/X11/qt
 
+if [ -f lib/libqxt.a ] ; then
 install lib/libqxt.a $RPM_BUILD_ROOT/usr/X11R6/lib
 install extensions/xt/src/*.h $RPM_BUILD_ROOT/usr/X11R6/include/X11/qt
+fi
 
 for a in {tutorial,examples}/{Makefile,*/Makefile}; do
   sed 's-^SYSCONF_MOC.*-SYSCONF_MOC		= /usr/X11R6/bin/moc-' < $a > ${a}.2
@@ -99,6 +119,7 @@ gzip -9nf $RPM_BUILD_ROOT/usr/X11R6/man/man{1,3}/*
 
 %clean
 rm -rf $RPM_BUILD_ROOT
+rm -rf $RPM_BUILD_DIR/%name-%version
 
 %files
 %defattr(644, root, root, 755)
@@ -111,13 +132,13 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755, root, root) /usr/X11R6/bin/*
 %attr(644, root,  man) /usr/X11R6/man/man[13]/*
 /usr/X11R6/include/X11/qt
-%attr(755, root, root) /usr/X11R6/lib/lib*.so
-/usr/X11R6/lib/lib*.a
+%attr(  -, root, root) /usr/X11R6/lib/lib*.so
+%attr(  -, root, root) /usr/X11R6/lib/libqgl.a
+%attr(  -, root, root) /usr/X11R6/lib/libqxt.a
 
 %changelog
 * Tue Jan  7 1999 Wojciech "Sas" Ciêciwa <cieciwa@alpha.zarz.agh.edu.pl>
-  [1.42-3]
-- added qt extensions.
+- added extensions.
 
 * Mon Dec  9 1998 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
   [1.42-2]
@@ -146,7 +167,7 @@ rm -rf $RPM_BUILD_ROOT
 - html, tutorial, examples and doc are marked as %doc in devel subpackage,
 - header files moved to /usr/include/qt (to be consistent with FSSTND),
 - replaced "mkdir -p" with "install -d" in %install,
-- added stripping binaries,
+- added striping binaries,
 - /usr/lib/lib*.so moved to devel,
 - fiew simplification in %files and %install,
 - added using $RPM_OPT_FLAGS during compile,
