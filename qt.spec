@@ -139,7 +139,7 @@ Wtyczka ODBC do Qt.
 %patch0 -p1
 #%patch1 -p1
 #%patch2 -p1
-%ifnarch alpha
+%ifnarch alpha sparc
 %patch3 -p1
 %endif
 %patch4 -p1
