@@ -3,13 +3,14 @@ Summary(pl):	Biblioteka Qt2 do tworzenia GUI
 Name:		qt
 %define		libqutil_version 1.0.0
 Version:	2.2.1
-Release:	1
+Release:	6
 License:	GPL
 Group:		X11/Libraries
 Group(de):	X11/Libraries
 Group(pl):	X11/Biblioteki
 Source0:	ftp://ftp.troll.no/qt/source/%{name}-x11-%{version}.tar.gz
 Patch0:		%{name}-tools.patch
+Patch1:		%{name}-huge_val.patch
 BuildRequires:	libungif-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	zlib-devel
@@ -70,6 +71,7 @@ Qt przyk³ady.
 %prep 
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
 QTDIR=`/bin/pwd`; export QTDIR
@@ -86,12 +88,13 @@ yes
 _EOF_
 
 LD_LIBRARY_PATH=%{_libdir}
-SYSCONF_CFLAGS="-pipe -DNO_DEBUG $RPM_OPT_FLAGS"
-SYSCONF_CXXFLAGS="-pipe -DNO_DEBUG $RPM_OPT_FLAGS"
+SYSCONF_CFLAGS="-pipe -DNO_DEBUG %{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}"
+SYSCONF_CXXFLAGS="-pipe -DNO_DEBUG %{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}"
 export LD_LIBRARY_PATH SYSCONF_CFLAGS SYSCONF_CXXFLAGS
 
-%{__make} SYSCONF_CFLAGS="$RPM_OPT_FLAGS" SYSCONF_CXXFLAGS="$RPM_OPT_FLAGS" \
-	symlinks  src-moc src-mt sub-src sub-tools
+%{__make} symlinks  src-moc src-mt sub-src sub-tools\
+	SYSCONF_CFLAGS="%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}" \
+	SYSCONF_CXXFLAGS="%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -103,24 +106,19 @@ install bin/* $RPM_BUILD_ROOT%{_bindir}/
 install tools/msg2qm/msg2qm $RPM_BUILD_ROOT%{_bindir}/
 install tools/mergetr/mergetr $RPM_BUILD_ROOT%{_bindir}/
 
-install -s lib/libqt.so.%{version} $RPM_BUILD_ROOT%{_libdir}
+install lib/libqt.so.%{version} $RPM_BUILD_ROOT%{_libdir}
 ln -sf libqt.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libqt.so
 
-install -s lib/libqutil.so.%{libqutil_version} $RPM_BUILD_ROOT%{_libdir}
+install lib/libqutil.so.%{libqutil_version} $RPM_BUILD_ROOT%{_libdir}
 ln -sf libqutil.so.%{libqutil_version} $RPM_BUILD_ROOT%{_libdir}/libqutil.so
 
-install -s lib/libqt-mt.so.%{version} $RPM_BUILD_ROOT%{_libdir}
+install lib/libqt-mt.so.%{version} $RPM_BUILD_ROOT%{_libdir}
 ln -sf libqt-mt.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libqt-mt.so
 
 # empty symlinks
 rm -f include/qt_mac.h include/qt_windows.h include/jri.h \
 	include/jritypes.h include/npapi.h include/npupp.h
 install include/* $RPM_BUILD_ROOT/%{_includedir}
-
-strip --strip-unneeded $RPM_BUILD_ROOT/%{_bindir}/* || :
-strip --strip-unneeded $RPM_BUILD_ROOT/%{_libdir}/*.so*
-
-gzip -9nf LICENSE.QPL doc/man/man*/*
 
 install doc/man/man3/* $RPM_BUILD_ROOT%{_mandir}/man3
 
@@ -134,6 +132,8 @@ done
 cp -dpr examples $RPM_BUILD_ROOT/usr/src/examples/%{name}
 cp -dpr tutorial $RPM_BUILD_ROOT%{_datadir}/tutorial/%{name}
 				
+gzip -9nf LICENSE.QPL
+
 %post   -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
 
