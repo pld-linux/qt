@@ -1,0 +1,75 @@
+--- qt-x11-free-3.2.0/tools/assistant/profile.cpp.orig	2003-07-10 14:42:45.000000000 +0200
++++ qt-x11-free-3.2.0/tools/assistant/profile.cpp	2003-08-16 23:34:17.156546472 +0200
+@@ -29,6 +29,7 @@
+ #include <qfileinfo.h>
+ #include <qregexp.h>
+ #include <qdir.h>
++#include <qstringlist.h>
+ 
+ #define QT_TITLE "Qt Reference Documentation"
+ #define DESIGNER_TITLE "Qt Designer Manual"
+@@ -73,6 +74,24 @@
+     profile->addDCFImageDir( LINGUIST_TITLE, "../../gif/" );
+     profile->addDCFImageDir( QMAKE_TITLE, "../../gif/" );
+ 
++
++    QFile file( "/etc/qt/doclist" );
++    if ( file.open( IO_ReadOnly ) ) 
++    {
++	QTextStream stream( &file );
++	QString line;
++	while ( !stream.atEnd() ) 
++	{
++		line = stream.readLine(); // line of text excluding '\n'
++		if (!line.isEmpty() && !line.contains(QString("|R|")))
++		{
++			QStringList pola = QStringList::split(QString(";"), line, 0 );
++			profile->addDCFIndexPage( pola[0], pola[1] );
++		}
++	}
++	file.close();
++    }
++ 
+     return profile;
+ }
+ 
+@@ -83,6 +102,28 @@
+ }
+ 
+ 
++Profile::~Profile()
++{
++    QFile file( "/etc/qt/doclist" );
++    if ( file.open( IO_ReadOnly ) ) 
++    {
++	QTextStream stream( &file );
++	QString line;
++	while ( !stream.atEnd() ) 
++	{
++		line = stream.readLine(); // line of text excluding '\n'
++		if (!line.isEmpty() && line.contains(QString("|R|")))
++		{
++			line.replace("|R|","");
++			QStringList pola = QStringList::split(QString(";"), line, 0 );
++			if (docs.contains(pola[1])) { removeDocFileEntry( pola[1] );}
++		}
++	}
++	file.close();
++    }
++
++}
++
+ void Profile::removeDocFileEntry( const QString &docfile )
+ {
+     docs.remove( docfile );
+--- qt-x11-free-3.2.1/tools/assistant/profile.h.orig	2003-08-01 12:46:13.000000000 +0200
++++ qt-x11-free-3.2.1/tools/assistant/profile.h	2003-08-31 15:56:52.000000000 +0200
+@@ -39,7 +39,7 @@
+ public:
+     enum ProfileType { DefaultProfile, UserProfile };
+     Profile();
+-
++    ~Profile();
+     inline bool isValid() const;
+ 
+     inline void addDCF( const QString &docfile );
