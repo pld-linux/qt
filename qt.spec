@@ -7,7 +7,7 @@ Name:		qt
 #%define		libqui_version 1.0.0
 #%define		libeditor_version 1.0.0
 Version:	3.0.2
-Release:	0.%{_snapshot}.5
+Release:	0.%{_snapshot}.6
 #Release:	0.2
 Epoch:		1
 License:	GPL
@@ -183,7 +183,12 @@ mv -f qmk.tmp mkspecs/linux-g++/qmake.conf
 #-#		> "$name"
 #-#	rm -f "${name}_"
 #-#done
-
+# TODO: remove
+DEFAULTOPT="-prefix /usr/X11R6 -bindir /usr/X11R6/bin -libdir /usr/X11R6/lib \
+	    -docdir /usr/share/doc/qt-3.0.2 -headerdir /usr/X11R6/include/qt \
+	    -plugindir /usr/X11R6/lib/qt/plugins -datadir /usr/X11R6/share/qt \
+	    -release -qt-gif -system-zlib -no-g++-exceptions -stl -remote -system-libpng \
+	    -system-libjpeg -system-libmng -sm -xinerama -xrender -xft -xkb"
 DEFAULTOPT="-prefix %{_prefix} -bindir %{_bindir} -libdir %{_libdir} \
 	    -docdir %{_docdir}/%{name}-%{version} -headerdir %{_includedir} \
 	    -plugindir %{_libdir}/qt/plugins -datadir %{_datadir}/qt
