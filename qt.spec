@@ -110,15 +110,33 @@ Unix/Linux, Mac OS X, embedded Linux).
 Qt has a rich set of standard widgets, and lets you write custom
 controls. It encapsulates four different platform-specific APIs, and
 the APIs for file-handling, networking, process-handling, threading,
-database access, etc. Qt now also has Motif migration oraz Netscape
-LiveConnect plugin.
+database access, etc. Qt now also has Motif migration support and
+Netscape LiveConnect plugin.
 
-This package contains the shared, multi-threaded, linux version of the
-Qt library, the style plugins and translation files for Qt.
+This package contains the shared, multi-threaded, Linux version of the
+Qt library, the style plugins and translation files for Qt. Please
+install qt-st if you need the single-threaded version of this library
+(which isn't usually necessary).
 
 %description -l es
-Contiene las bibliotecas compartidas necesarias para ejecutar
-aplicaciones Qt, bien como los archivos README.
+Qt es un completo framework de desarrollo de aplicaciones en C++, el
+que incluye una biblioteca de clases y unas herramientas para el
+desarrollo multiplataforma e internacionalizado. Usando Qt, un
+genérico árbol de código fuente se puede usar para construir
+aplicaciones que puedan ejecutarse nativamente en varias plataformas
+(Windows, Unix/Linux, Mac OS X, Linux embebido).
+
+Qt provee un rico conjunto de componentes estándares y le permite
+escribir unos propios. Encapsula cuatro APIs diferentes dependientes
+de la plataforma y también APIs para el manejo de ficheros, la red, el
+manejo de los procesos e hilos, acceso a bases de datos, etc. También
+está incluido soporte de migración de Motif y un plugin para Netscape
+LiveConnect.
+
+Este paquete contiene la versión compartida multi-hilvanada de la
+biblioteca Qt, los plugin de estilo y ficheros de traducción para Qt.
+Instálese qt-st si necesita la versión mono-hilvanada de esta
+biblioteca (lo cual normalmente no es necesario).
 
 %description -l pl
 Qt oferuje kompletny system do tworzenia i rozwijania aplikacji w
@@ -136,7 +154,9 @@ na Qt aplikacji korzystaj±cych z Motif oraz pisanie wtyczek z
 wykorzystaniem Netscape LiveConnect.
 
 Ten pakiet zawiera wspó³dzielon±, wielow±tkow±, linuksow± wersjê
-biblioteki Qt, wtyczki ze stylami oraz pliki t³umaczeñ Qt.
+biblioteki Qt, wtyczki ze stylami oraz pliki t³umaczeñ Qt. Zainstaluj
+qt-st je¶li portrzebujesz wersji jednow±tkowej tej biblioteki (co
+zwykle nie jest konieczne).
 
 %description -l pt_BR
 Contém as bibliotecas compartilhadas necessárias para rodar aplicações
@@ -1004,25 +1024,7 @@ done
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post
-/sbin/ldconfig
-
-cat << EOF
-
- *******************************************************
- *                                                     *
- *  NOTE:                                              *
- *  After qt 3.2.0 the single threaded version was     *
- *  separated. Please install qt-st if You really need *
- *  it. If You do not use qt-st explicitly, please     *
- *  ignore this, as You will not notice any changes.   *
- *  In most cases do not install qt-st, as it is       *
- *  obsoleted.                                         *
- *                                                     *
- *******************************************************
-
-EOF
-
+%post		-p /sbin/ldconfig
 %postun 	-p /sbin/ldconfig
 
 %post 	st 	-p /sbin/ldconfig
