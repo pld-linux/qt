@@ -474,6 +474,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/%{name}/plugins*/sqldrivers
 %attr(755,root,root) %{_libdir}/%{name}/plugins*/imageformats/*.so
 %attr(755,root,root) %{_libdir}/%{name}/plugins*/styles/*.so
+%dir %{_datadir}/qt
 
 %files devel
 %defattr(644,root,root,755)
