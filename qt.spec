@@ -2,7 +2,7 @@ Summary:	The Qt2 GUI application framework
 Summary(pl):	Biblioteka Qt2 do tworzenia GUI
 Name:		qt
 Version:	2.0.1
-Release:	2
+Release:	3
 Copyright:	QPL
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
@@ -91,9 +91,17 @@ echo " Compiling Extensions ..."
 #(cd extensions/xt/src;LD_LIBRARY_PATH=%{_libdir};make \
 #	INCPATH="-I%{_includepatch} -I../../../include")
 
+# tutorial
+(cd tutorial;LD_LIBRARY_PATH=%{_libdir};make)
+
+#examples
+(cd examples;LD_LIBRARY_PATH=%{_libdir};make)
+
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/{%{_bindir},%{_libdir},%{_includedir},%{_mandir}/man{1,3}}
+install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir},%{_includedir},%{_mandir}/man{1,3}}
+install -d $RPM_BUILD_ROOT/usr/src/examples/%{name}
+install -d $RPM_BUILD_ROOT/usr/share/tutorial/%{name}
 
 install -s bin/* $RPM_BUILD_ROOT/%{_bindir}/
 
@@ -121,6 +129,16 @@ install extensions/xt/src/*.h $RPM_BUILD_ROOT%{_includedir}/
 bzip2 -9 $RPM_BUILD_ROOT%{_mandir}/man[13]/* \
 	ANNOUNCE FAQ README* MANIFEST PLATFORMS changes* LICENSE.QPL
 
+for a in {tutorial,examples}/{Makefile,*/Makefile}; do
+        cat $a | sed 's-^SYSCONF_MOC.*-SYSCONF_MOC = %{_bindir}/moc -' | \
+	sed 's-^SYSCONF_CXXFLAGS_QT     = \$(QTDIR)/include-SYSCONF_CXXFLAGS_QT = %{_includedir}-' | \
+	sed 's-^SYSCONF_LFLAGS_QT       = \$(QTDIR)/lib-SYSCONF_LFLAGS_QT = %{_libdir}-' > $a.
+        mv -vf $a. $a
+done
+
+cp -dpr examples $RPM_BUILD_ROOT/usr/src/examples/%{name}
+cp -drp tutorial $RPM_BUILD_ROOT/usr/share/tutorial/%{name}
+				
 %post   
 /sbin/ldconfig
 
@@ -149,6 +167,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/*.a
 %{_mandir}/man[13]/*
 %{_includedir}/*
+/usr/src/examples/%{name}
+/usr/share/tutorial/%{name}
 
 %files ext
 %defattr(755,root,root,755)
@@ -157,6 +177,10 @@ rm -rf $RPM_BUILD_ROOT
 #%{_libdir}/libqxt.a*
 
 %changelog
+* Thr Aug 12 1999 Wojciech "Sas" Ciêciwa <cieciwa@alpha.zarz.agh.edu.pl>
+  [2.0.1-3]
+- fixes problem with tutorial and examples.
+
 * Wed Aug 11 1999 Wojciech "Sas" Ciêciwa <cieciwa@alpha.zarz.agh.edu.pl>
 - fixes BuildRequires problem.
 
