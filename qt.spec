@@ -239,7 +239,7 @@ DEFAULTOPT="-prefix %{_prefix} -bindir %{_bindir} -libdir %{_libdir} \
 	    -datadir %{_datadir}/qt
 	    -release -qt-gif -system-zlib -no-g++-exceptions -stl -remote -system-libpng \
 	    -system-libjpeg -system-libmng -sm -xinerama -xrender -xft -xkb"
-STYLESLIST="aqua cde common compact interlace mac motif motifplus platinum sgi windows"
+STYLESLIST="cde compact motif motifplus platinum sgi windows"
 
 ########################################################################
 # STATIC SINGLE-THREAD
