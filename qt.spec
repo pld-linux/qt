@@ -366,6 +366,9 @@ done
 # This will not remove previously compiled libraries.
 %{!?_without_static:%{__make} clean}
 
+# workaround for some nasty bug to avoid linking plugins statically with -lqt-mt
+rm -f lib/libqt-mt.prl
+
 OPTFLAGS="%{rpmcflags}" \
 ./configure \
 	$DEFAULTOPT \
