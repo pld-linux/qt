@@ -19,8 +19,9 @@ BuildRequires:	libjpeg-devel
 BuildRequires:	zlib-devel
 BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	OpenGL-devel
-BuildRequires:	XFree86-devel
+BuildRequires:	XFree86-devel >= 4.0.2
 BuildRequires:	libstdc++-devel
+Requires:	XFree86-libs >= 4.0.2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	qt-extensions
 
