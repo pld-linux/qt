@@ -21,7 +21,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.1.2
-Release:	6.1
+Release:	6.2
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -35,7 +35,7 @@ Patch4:		%{name}-qmake-opt.patch
 Patch5:		%{name}-cursors.patch
 Patch6:		%{name}-qmake-nostatic.patch
 Patch7:		%{name}-qmlined-fix.patch
-Patch8:		%{name}-charset.patch
+Patch8:		%{name}-locale.patch
 
 URL:		http://www.trolltech.com/
 BuildRequires:	OpenGL-devel
