@@ -3,16 +3,18 @@
 %bcond_with	nas		# enable NAS audio support
 %bcond_with	nvidia		# prelink Qt/KDE and depend on NVIDIA binaries
 %bcond_without	single		# don't build single-threaded libraries
-%bcond_without	static_libs	# don't build static libraries
+%bcond_without	static		# don't build static libraries
 %bcond_without	cups		# disable CUPS support
 %bcond_without	mysql		# disable MySQL support
 %bcond_without	odbc		# disable unixODBC support
 %bcond_without	pgsql		# disable PostgreSQL support
-
+%bcond_without	designer	# disable designer, it builds longer than
+				# libqt and doesnt really change in snaps.
+				
 %define		_withsql	1
 %{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}
 
-%define		_snap	040103
+%define		_snap	040122
 %define		_ver	3.3.0
 
 Summary:	The Qt3 GUI application framework
@@ -26,7 +28,7 @@ Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
 Source0:	http://ep09.pld-linux.org/~djurban/kde/%{name}-copy-%{_snap}.tar.bz2
-# Source0-md5:	b68d75187d4bf35fb2d4ee9f87cc268c
+# Source0-md5:	f3a44775c9a2105fb7ee5a452da706b5	
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
@@ -37,7 +39,6 @@ Patch6:		%{name}-locale.patch
 Patch7:		%{name}-make_use_of_locale.patch
 Patch8:		%{name}-make_assistant_use_global_docs.patch
 Patch9:		%{name}-qmake-opt.patch
-Patch10:	%{name}-fix_nptl.patch
 URL:		http://www.trolltech.com/products/qt/
 BuildRequires:	OpenGL-devel
 # incompatible with bison
@@ -354,7 +355,6 @@ Narzêdie do konfiguracji wygl±du i zachowania widgetów QT.
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
-%patch10 -p0
 
 ./apply_patches
 
@@ -404,7 +404,7 @@ DEFAULTOPT=" \
 #   OPTIONS FOR STATIC-{ST,MT}   #
 ##################################
 
-%if %{with static_libs}
+%if %{with static}
 STATICOPT=" \
 	-qt-imgfmt-jpeg \
 	-qt-imgfmt-mng \
@@ -419,7 +419,7 @@ STATICOPT=" \
 #      STATIC SINGLE-THREAD      #
 ##################################
 
-%if %{with static_libs} && %{with single}
+%if %{with static} && %{with single}
 ./configure \
 	$DEFAULTOPT \
 	$STATICOPT \
@@ -438,7 +438,7 @@ _EOF_
 #      STATIC MULTI-THREAD       #
 ##################################
 
-%if %{with static_libs}
+%if %{with static}
 ./configure \
 	$DEFAULTOPT \
 	$STATICOPT \
@@ -521,14 +521,20 @@ _EOF_
 
 export Z=`/bin/pwd`
 
+%if %{without designer}
+grep -v designer tools/tools.pro > tools/tools.pro.1
+mv tools/tools.pro{.1,}
+%endif
+
 # Do not build tutorial and examples. Provide them as sources.
 #%%{__make} symlinks src-qmake src-moc sub-src sub-tools
 %{__make} sub-tools \
 	UIC="LD_PRELOAD=$Z/lib/libqt-mt.so.3 $Z/bin/uic -L $Z/plugins"
-
+%if %{with designer}
 cd tools/designer/designer
 LD_PRELOAD=$Z/lib/libqt-mt.so.3 lrelease designer_de.ts
 LD_PRELOAD=$Z/lib/libqt-mt.so.3 lrelease designer_fr.ts
+%endif
 cd $Z/tools/assistant
 LD_PRELOAD=$Z/lib/libqt-mt.so.3 lrelease assistant_de.ts
 LD_PRELOAD=$Z/lib/libqt-mt.so.3 lrelease assistant_fr.ts
@@ -559,7 +565,7 @@ install bin/{findtr,qt20fix,qtrename140} \
 	tools/{msg2qm/msg2qm,mergetr/mergetr} \
 	$RPM_BUILD_ROOT%{_bindir}
 
-%if %{with static_libs}
+%if %{with static}
 install lib/libqt*.a		$RPM_BUILD_ROOT%{_libdir}
 %endif
 
@@ -572,13 +578,13 @@ cp -R plugins-st/*		$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st
 
 install debian/maintain/qtconfig.desktop \
 	$RPM_BUILD_ROOT%{_desktopdir}
-
+%if %{with designer}
 install debian/maintain/designer-qt3.desktop \
 	$RPM_BUILD_ROOT%{_desktopdir}/designer.desktop
 
 sed -i 's/Exec=designer-qt3/Exec=designer/' \
     $RPM_BUILD_ROOT%{_desktopdir}/designer.desktop	
-
+%endif
 install tools/qtconfig/images/appicon.png \
 	$RPM_BUILD_ROOT%{_pixmapsdir}/qtconfig.png
 
@@ -626,15 +632,20 @@ cat >> $RPM_BUILD_ROOT%{_includedir}/qconfig.h << EOF
 
 EOF
 
-install -d $RPM_BUILD_ROOT%{_datadir}/locale/{ar,de,fr,ru,he}/LC_MESSAGES
+install -d $RPM_BUILD_ROOT%{_datadir}/locale/{ar,de,fr,ru,he,cs,sk}/LC_MESSAGES
 install translations/qt_ar.qm $RPM_BUILD_ROOT%{_datadir}/locale/ar/LC_MESSAGES/qt.qm
 install translations/qt_de.qm $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/qt.qm
 install translations/qt_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/qt.qm
 install translations/qt_ru.qm $RPM_BUILD_ROOT%{_datadir}/locale/ru/LC_MESSAGES/qt.qm
 install translations/qt_iw.qm $RPM_BUILD_ROOT%{_datadir}/locale/he/LC_MESSAGES/qt.qm
+install translations/qt_cs.qm $RPM_BUILD_ROOT%{_datadir}/locale/cs/LC_MESSAGES/cs.qm
+install translations/qt_sk.qm $RPM_BUILD_ROOT%{_datadir}/locale/sk/LC_MESSAGES/sk.qm
 
+
+%if %{with designer}
 install tools/designer/designer/designer_de.qm $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/designer.qm
 install tools/designer/designer/designer_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/designer.qm
+%endif
 
 install tools/assistant/assistant_de.qm $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/assistant.qm
 install tools/assistant/assistant_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/assistant.qm
@@ -678,8 +689,10 @@ EOF
 %doc FAQ LICENSE.* README* changes*
 %dir %{_sysconfdir}/qt
 %attr(755,root,root) %{_libdir}/libqassistantclient.so.*.*.*
+%if %{with designer}
 %attr(755,root,root) %{_libdir}/libdesignercore.so.*.*.*
 %attr(755,root,root) %{_libdir}/libeditor.so.*.*.*
+%endif
 %attr(755,root,root) %{_libdir}/libqui.so.*.*.*
 %attr(755,root,root) %{_libdir}/libqt-mt.so.*.*.*
 %dir %{_libdir}/%{name}
@@ -697,6 +710,8 @@ EOF
 %lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/qt.qm
 %lang(he) %{_datadir}/locale/he/LC_MESSAGES/qt.qm
 %lang(ru) %{_datadir}/locale/ru/LC_MESSAGES/qt.qm
+%lang(sk) %{_datadir}/locale/sk/LC_MESSAGES/qt.qm
+%lang(cs) %{_datadir}/locale/cs/LC_MESSAGES/qt.qm
 
 %files devel
 %defattr(644,root,root,755)
@@ -714,15 +729,17 @@ EOF
 %attr(755,root,root) %{_bindir}/uic
 %{_includedir}
 %{_libdir}/libqassistantclient.so
+%if %{with designer}
 %{_libdir}/libdesignercore.so
 %{_libdir}/libeditor.so
+%endif
 %{_libdir}/libqui.so
 %{_libdir}/libqt-mt.so
 %{_datadir}/qt/[!d]*
 %{_mandir}/man1/*
 %{_pkgconfigdir}/qt-mt.pc
 
-%if %{with static_libs}
+%if %{with static}
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libqt-mt.a
@@ -775,7 +792,7 @@ EOF
 %attr(755,root,root) %{_libdir}/libqt.so
 %{_pkgconfigdir}/qt.pc
 
-%if %{with static_libs}
+%if %{with static}
 %files st-static
 %defattr(644,root,root,755)
 %{_libdir}/libqt.a
@@ -803,15 +820,19 @@ EOF
 %files utils
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/assistant
+%if %{with designer}
 %attr(755,root,root) %{_bindir}/designer
+%endif
 %attr(755,root,root) %{_bindir}/linguist
 %dir %{_libdir}/%{name}/plugins-?t/designer
 %attr(755,root,root) %{_libdir}/%{name}/plugins-?t/designer/*.so
 %{_datadir}/qt/designer
 %lang(de) %{_datadir}/locale/de/LC_MESSAGES/assistant.qm
 %lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/assistant.qm
+%if %{with designer}
 %lang(de) %{_datadir}/locale/de/LC_MESSAGES/designer.qm
 %lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/designer.qm
+%endif
 %lang(de) %{_datadir}/locale/de/LC_MESSAGES/linguist.qm
 %lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/linguist.qm
 %{_desktopdir}/designer.desktop
