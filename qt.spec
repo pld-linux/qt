@@ -15,7 +15,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.0.5
-Release:	3
+Release:	4
 Epoch:		3
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -240,7 +240,7 @@ DEFAULTOPT="-prefix %{_prefix} -docdir %{_docdir}/%{name}-%{version} \
 	    -datadir %{_datadir}/qt -headerdir %{_includedir}\
 	    -release -qt-gif -system-zlib -no-g++-exceptions -stl \
 	    -system-libpng -system-libjpeg -system-libmng -sm -xinerama \
-	    -xrender -xft -xkb"
+	    -xrender -xft -xkb -enable-opengl"
 STYLESLIST="cde compact motif motifplus platinum sgi windows"
 
 ########################################################################
