@@ -1,6 +1,6 @@
---- qt-copy/src/kernel/qfont_x11.cpp.orig	Mon Sep 23 19:34:56 2002
-+++ qt-copy/src/kernel/qfont_x11.cpp	Mon Oct 14 23:29:31 2002
-@@ -2368,12 +2368,12 @@
+--- qt-copy/src/kernel/qfont_x11.cpp.orig	Thu Oct 24 19:13:26 2002
++++ qt-copy/src/kernel/qfont_x11.cpp	Thu Oct 24 20:31:54 2002
+@@ -2404,9 +2404,9 @@
      case QFont::CanadianAboriginal:        ch = 0x1410; break;
      case QFont::Mongolian:                 ch = 0x1800; break;
  
@@ -12,8 +12,4 @@
 +    case QFont::NumberForms:               ch = 0x2160; break;
      case QFont::MathematicalOperators:     ch = 0x222b; break;
      case QFont::TechnicalSymbols:          ch = 0x2440; break;
--    case QFont::GeometricSymbols:          ch = 0x25a1; break;
-+    case QFont::GeometricSymbols:          ch = 0x2500; break;
-     case QFont::MiscellaneousSymbols:      ch = 0x2600; break;
-     case QFont::EnclosedAndSquare:         ch = 0x2460; break;
-     case QFont::Braille:                   ch = 0x2800; break;
+     case QFont::GeometricSymbols:          ch = 0x2500; break;

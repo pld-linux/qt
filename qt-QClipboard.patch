@@ -1,0 +1,58 @@
+--- qt-copy/src/kernel/qclipboard_x11.cpp.sav	Tue Oct 22 13:08:49 2002
++++ qt-copy/src/kernel/qclipboard_x11.cpp	Thu Oct 24 16:52:24 2002
+@@ -627,12 +627,9 @@ bool QClipboard::event( QEvent *e )
+ 	break;
+ 
+     case SelectionNotify:
+-	// some has delivered data to us
+-	if (xevent->xselection.selection == XA_PRIMARY)
+-	    selectionData()->clear();
+-	else
+-	    clipboardData()->clear();
+-
++	// this can come only(?) after we time out
++        // in QClipboardWatcher::getDataInFormat(),
++        // so let's ignore it
+ 	break;
+ 
+     case SelectionRequest:
+@@ -907,7 +904,7 @@ QClipboardWatcher::QClipboardWatcher( QC
+ 
+ #ifdef QT_CHECK_RANGE
+     default:
+-	qWarning( "QClipboardWatcher::empty: internal error!" );
++	qWarning( "QClipboardWatcher::QClipboardWatcher: internal error!" );
+ 	break;
+ #endif // QT_CHECK_RANGE
+     }
+@@ -927,6 +924,12 @@ bool QClipboardWatcher::empty() const
+ {
+     Display *dpy = owner->x11Display();
+     Window win = XGetSelectionOwner( dpy, atom );
++#ifdef QT_CHECK_RANGE
++    if( win == owner->winId()) {
++        qWarning( "QClipboardWatcher::empty: app owns the selection!" );
++        return true;
++    }
++#endif
+     return win == None;
+ }
+ 
+@@ -1065,7 +1068,8 @@ QByteArray QClipboardWatcher::getDataInF
+     XFlush( dpy );
+ 
+     XEvent xevent;
+-    if ( !qt_xclb_wait_for_event(dpy,win,SelectionNotify,&xevent,1000) )
++    if ( !qt_xclb_wait_for_event(dpy,win,SelectionNotify,&xevent,1000)
++        || xevent.xselection.property == None )
+ 	return buf;
+ 
+     Atom   type;
+@@ -1162,7 +1166,6 @@ void QClipboard::setData( QMimeSource* s
+     else
+ 	emit dataChanged();
+ 
+-    // ### perhaps this should be QT_CHECK_RANGE ?
+     if ( XGetSelectionOwner(dpy, atom) != win ) {
+ #if defined(QCLIPBOARD_DEBUG)
+ 	qDebug( "QClipboard::setData: Cannot set X11 selection owner for %s",
