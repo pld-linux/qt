@@ -22,17 +22,17 @@ Patch2:		%{name}-charset.patch
 Patch3:		http://www.research.att.com/~leonb/objprelink/%{name}-configs.patch
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
+BuildRequires:	freetype-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel >= 1.0.0
 BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	libstdc++-devel
 BuildRequires:	libungif-devel
-BuildRequires:	zlib-devel
 BuildRequires:	mysql-devel
-BuildRequires:	unixODBC-devel
-BuildRequires:	postgresql-devel
 BuildRequires:	postgresql-backend-devel
-BuildRequires:	freetype-devel
+BuildRequires:	postgresql-devel
+BuildRequires:	unixODBC-devel
+BuildRequires:	zlib-devel
 #%ifnarch alpha
 #BuildRequires:	objprelink
 #%endif
@@ -48,12 +48,12 @@ Obsoletes:	qt-extensions
 %define		_mandir		%{_prefix}/man
 
 %description
-Contains the shared library needed to run Qt applications, as well as
-the README files for Qt.
+This package contains the shared library needed to run Qt
+applications, as well as the README files for Qt.
 
 %description -l pl
-Zawiera bibliotekê Qt wymagan± przez aplikacje, które z niej
-korzystaj±.
+Pakiet ten zawiera bibliotekê niezbêdn± do uruchamiania aplikacji Qt,
+jak równie¿ pliki README z Qt.
 
 %package devel
 Summary:	Include files and documentation needed to compile
@@ -124,7 +124,7 @@ Qt æwiczenia/przyk³ady.
 
 %package plugins-mysql
 Summary:	Qt MySQL plugin
-Summary(pl):	Plugin MySQL do Qt
+Summary(pl):	Wtyczka MySQL do Qt
 Group:		X11/Libraries
 Group(de):	X11/Libraries
 Group(es):	X11/Bibliotecas
@@ -139,11 +139,11 @@ Requires:	%{name} = %{version}
 Qt MySQL plugin.
 
 %description plugins-mysql -l pl
-Plugin MySQL do Qt.
+Wtyczka MySQL do Qt.
 
 %package plugins-psql
 Summary:	Qt PostgreSQL plugin
-Summary(pl):	Plugin PostgreSQL do Qt
+Summary(pl):	Wtyczka PostgreSQL do Qt
 Group:		X11/Libraries
 Group(de):	X11/Libraries
 Group(es):	X11/Bibliotecas
@@ -158,11 +158,11 @@ Requires:	%{name} = %{version}
 Qt PostgreSQL plugin.
 
 %description plugins-psql -l pl
-Plugin PostgreSQL do Qt.
+Wtyczka PostgreSQL do Qt.
 
 %package plugins-odbc
 Summary:	Qt ODBC plugin
-Summary(pl):	Plugin ODBC do Qt
+Summary(pl):	Wtyczka ODBC do Qt
 Group:		X11/Libraries
 Group(de):	X11/Libraries
 Group(es):	X11/Bibliotecas
@@ -177,7 +177,7 @@ Requires:	%{name} = %{version}
 Qt ODBC plugin.
 
 %description plugins-odbc -l pl
-Plugin ODBC do Qt.
+Wtyczka ODBC do Qt.
 
 %prep
 %setup -q -n %{name}-x11-free-%{version}
