@@ -451,7 +451,7 @@ fi
 #export OPTFLAGS="%{rpmcflags} -DQT_CLEAN_NAMESPACE"
 #export OPTFLAGS="$OPTFLAGS -DQT_CLEAN_NAMESPACE"
 
-%{__make} -f Makefile.cvs
+#%{__make} -f Makefile.cvs
 
 ##################################
 # DEFAULT OPTIONS FOR ALL BUILDS #
