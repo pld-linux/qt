@@ -2,7 +2,7 @@ Summary:	The Qt GUI application framework: Shared library
 Summary(pl):	Biblioteka Qt do tworzenia GUI
 Name:		qt
 Version:	1.44
-Release:	7
+Release:	8
 Copyright:	distributable
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
