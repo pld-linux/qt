@@ -14,7 +14,7 @@
 %{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}
 
 %define		_snap		040422
-%define		_ver		3.3.1
+%define		_ver		3.3.2
 %define		_packager	adgor
 
 Summary:	The Qt3 GUI application framework
@@ -22,13 +22,15 @@ Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
-Version:	%{_ver}.%{_snap}
+#Version:	%{_ver}.%{_snap}
+Version:	%{_ver}
 Release:	1
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
-Source0:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-%{_snap}.tar.bz2
-# Source0-md5:	fce4471315853e53e192123a26439277
+#Source0:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-%{_snap}.tar.bz2
+Source0:	ftp://ftp.trolltech.com/qt/source/qt-x11-free-%{version}.tar.bz2
+# Source0-md5:	903cad618274ad84d7d13fd0027a6c3c
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
@@ -393,7 +395,8 @@ Libraries IDE used for GUI designing with QT library.
 Biblioteki do IDE s³u¿±cego do projektowania GUI za pomoc± biblioteki QT.
 
 %prep
-%setup -q -n %{name}-copy-%{_snap}
+#setup -q -n %{name}-copy-%{_snap}
+%setup -q -n %{name}-x11-free-%{version}
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -407,7 +410,7 @@ Biblioteki do IDE s³u¿±cego do projektowania GUI za pomoc± biblioteki QT.
 %patch10 -p1
 %patch11 -p1
 
-./apply_patches
+#./apply_patches
 
 # change QMAKE_CFLAGS_RELEASE to build
 # properly optimized libs
