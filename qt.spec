@@ -22,7 +22,6 @@
 
 %define		_snap		040628
 %define		_ver		3.3.2
-%define		_packager	adgor
 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
@@ -35,10 +34,9 @@ Release:	1
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
-Source0:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-%{_snap}.tar.bz2
-# Source0-md5:	d6b9eb8ba3f308cc9e2f7d67a47e034c
+Source0:	ftp://ftp.pld-linux.org/software/kde/%{name}-copy-%{_snap}.tar.bz2
 #Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
-#Source1:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-patches-040531.tar.bz2
+#Source1:	ftp://ftp.pld-linux.org/software/kde/%{name}-copy-patches-040531.tar.bz2
 ##%% Source1-md5:	2e38e44b6ef26bfb8a7f3b6900ee53c0
 Source2:	%{name}config.desktop
 Source3:	designer.desktop
