@@ -1,36 +1,34 @@
 #
 # Conditional build:
 %bcond_with	nas		# enable NAS audio support
+%bcond_with	nvidia		# prelink Qt/KDE and depend on NVIDIA binaries
 %bcond_without	single		# don't build single-threaded libraries
 %bcond_without	static_libs	# don't build static libraries
 %bcond_without	cups		# disable CUPS support
 %bcond_without	mysql		# disable MySQL support
 %bcond_without	odbc		# disable unixODBC support
 %bcond_without	pgsql		# disable PostgreSQL support
-
+%bcond_without	designer	# disable designer, it builds longer than
+				# libqt and doesnt really change in snaps.
+				
 %define		_withsql	1
 %{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}
 
-#%define		_snap	031108
+%define		_snap	040205
+%define		_ver	3.3.0
 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
-Version:	3.2.3
-Release:	4
+Version:	%{_ver}.%{_snap}
+Release:	2
 Epoch:		6
-License:	GPL / QPL
+License:	GPL/QPL
 Group:		X11/Libraries
-#Source0:	http://ep09.pld-linux.org/~adgor/kde/%{name}-copy-%{_snap}.tar.bz2
-Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
-# Source0-md5:	cd6df28c81ac00d97d62bd9942b8da03
-#Source1:	ftp://ftp.netscape.com/pub/sdk/plugin/unix/unix-sdk-3.0b5.tar.Z
-##Source1:	http://ep09.pld-linux.org/~djurban/pld/unix-sdk-3.0b5.tar.Z
-## Source1-md5:	1e43785d5697c60937e8d6236e7d7d7e
-Source2:	http://ep09.pld-linux.org/~djurban/snap/%{name}-patches-031115.tar.bz2	
-# Source2-md5:	2ad72a8bcb6dddd1c597ed883faa9efb
+Source0:	http://ep09.pld-linux.org/~adgor/kde/%{name}-copy-%{_snap}.tar.bz2
+# Source0-md5:	62618279e47b3c7c8da65b113f9eae86
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
@@ -41,8 +39,7 @@ Patch6:		%{name}-locale.patch
 Patch7:		%{name}-make_use_of_locale.patch
 Patch8:		%{name}-make_assistant_use_global_docs.patch
 Patch9:		%{name}-qmake-opt.patch
-Patch10:	%{name}-qmake-la-and-pc-fix.patch
-Patch11:	%{name}-0034-qclipboard_recursion_fix.patch
+Patch10:	%{name}-textedit_speedup.patch
 URL:		http://www.trolltech.com/products/qt/
 BuildRequires:	OpenGL-devel
 # incompatible with bison
@@ -57,6 +54,7 @@ BuildRequires:	libstdc++-devel
 BuildRequires:	libungif-devel
 %{?with_mysql:BuildRequires:	mysql-devel}
 %{?with_nas:BuildRequires:	nas-devel}
+%{?with_nvidia:BuildRequires:	XFree86-driver-nvidia-devel < 1.0.4620}
 BuildRequires:	perl-base
 %{?with_pgsql:BuildRequires:	postgresql-backend-devel}
 %{?with_pgsql:BuildRequires:	postgresql-devel}
@@ -335,9 +333,20 @@ QT Development Utilities.
 %description utils -l pl
 Narzêdzia programistyczne QT.
 
+%package -n qtconfig
+Summary:	QT widgets configuration tool
+Summary(pl):	Narzêdzie do konfigurowania widgetów QT
+Group:		X11/Applications
+Requires:	%{name} = %{epoch}:%{version}-%{release}
+
+%description -n qtconfig
+A tool for configuring look and behavior of QT widgets.
+
+%description -n qtconfig -l pl
+Narzêdie do konfiguracji wygl±du i zachowania widgetów QT.
+
 %prep
-#%%setup -q -n %{name}-copy-%{_snap}
-%setup -q -a2 -n %{name}-x11-free-%{version}
+%setup -q -n %{name}-copy-%{_snap}
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -349,9 +358,7 @@ Narzêdzia programistyczne QT.
 %patch8 -p1
 %patch9 -p1
 %patch10 -p1
-%patch11 -p0
 
-mv patches/apply_patches ./
 ./apply_patches
 
 # change QMAKE_CFLAGS_RELEASE to build
@@ -369,16 +376,15 @@ export YACC='byacc -d'
 export PATH=$QTDIR/bin:$PATH
 export LD_LIBRARY_PATH=$QTDIR/%{_lib}:$LD_LIBRARY_PATH
 
+
 if [ "%{_lib}" != "lib" ] ; then
 	ln -s lib "%{_lib}"
 fi
 
-##cp PluginSDK30b5/include/* extensions/nsplugin/src
-##cp PluginSDK30b5/common/npunix.c extensions/nsplugin/src
 # pass OPTFLAGS for qmake itself
 export OPTFLAGS="%{rpmcflags}"
 
-#%%{__make} -f Makefile.cvs
+%{__make} -f Makefile.cvs
 
 ##################################
 # DEFAULT OPTIONS FOR ALL BUILDS #
@@ -400,8 +406,10 @@ DEFAULTOPT=" \
 	-system-libpng \
 	-system-zlib \
 	-no-exceptions \
+	-ipv6 \
 	%{!?with_cups:-no-cups} \
 	%{?with_nas:-system-nas-sound} \
+	%{?with_nvidia:-dlopen-opengl} \
 	%{?debug:-debug}"
 
 ##################################
@@ -525,14 +533,21 @@ _EOF_
 
 export Z=`/bin/pwd`
 
+%if %{without designer}
+grep -v designer tools/tools.pro > tools/tools.pro.1
+mv tools/tools.pro{.1,}
+%endif
+
 # Do not build tutorial and examples. Provide them as sources.
 #%%{__make} symlinks src-qmake src-moc sub-src sub-tools
 %{__make} sub-tools \
 	UIC="LD_PRELOAD=$Z/%{_lib}/libqt-mt.so.3 $Z/bin/uic -L $Z/plugins"
 
+%if %{with designer}
 cd tools/designer/designer
 LD_PRELOAD=$Z/%{_lib}/libqt-mt.so.3 lrelease designer_de.ts
 LD_PRELOAD=$Z/%{_lib}/libqt-mt.so.3 lrelease designer_fr.ts
+%endif
 cd $Z/tools/assistant
 LD_PRELOAD=$Z/%{_lib}/libqt-mt.so.3 lrelease assistant_de.ts
 LD_PRELOAD=$Z/%{_lib}/libqt-mt.so.3 lrelease assistant_fr.ts
@@ -557,8 +572,9 @@ install -d \
 	%{?with_single:$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st/network} \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name}/lib \
 	$RPM_BUILD_ROOT%{_mandir}/man{1,3} \
+	$RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir}}
 
-install bin/{findtr,qt20fix,qtrename140,qt32castcompat} \
+install bin/{findtr,qt20fix,qtrename140} \
 	tools/{msg2qm/msg2qm,mergetr/mergetr} \
 	$RPM_BUILD_ROOT%{_bindir}
 
@@ -568,10 +584,22 @@ install %{_lib}/libqt*.a		$RPM_BUILD_ROOT%{_libdir}
 
 %if %{with single}
 install %{_lib}/libqt.so.*.*.*	$RPM_BUILD_ROOT%{_libdir}
-ln -sf libqt.so.%{version}	$RPM_BUILD_ROOT%{_libdir}/libqt.so
+ln -sf libqt.so.%{_ver}		$RPM_BUILD_ROOT%{_libdir}/libqt.so
 install %{_lib}/qt.pc		$RPM_BUILD_ROOT%{_pkgconfigdir}
 cp -R plugins-st/*		$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st
 %endif
+
+install debian/maintain/qtconfig.desktop \
+	$RPM_BUILD_ROOT%{_desktopdir}
+%if %{with designer}
+install debian/maintain/designer-qt3.desktop \
+	$RPM_BUILD_ROOT%{_desktopdir}/designer.desktop
+
+sed -i 's/Exec=designer-qt3/Exec=designer/' \
+    $RPM_BUILD_ROOT%{_desktopdir}/designer.desktop	
+%endif
+install tools/qtconfig/images/appicon.png \
+	$RPM_BUILD_ROOT%{_pixmapsdir}/qtconfig.png
 
 install doc/man/man1/*.1	$RPM_BUILD_ROOT%{_mandir}/man1
 install doc/man/man3/*.3qt	$RPM_BUILD_ROOT%{_mandir}/man3
@@ -617,15 +645,20 @@ cat >> $RPM_BUILD_ROOT%{_includedir}/qconfig.h << EOF
 
 EOF
 
-install -d $RPM_BUILD_ROOT%{_datadir}/locale/{ar,de,fr,ru,he}/LC_MESSAGES
+install -d $RPM_BUILD_ROOT%{_datadir}/locale/{ar,de,fr,ru,he,cs,sk}/LC_MESSAGES
 install translations/qt_ar.qm $RPM_BUILD_ROOT%{_datadir}/locale/ar/LC_MESSAGES/qt.qm
 install translations/qt_de.qm $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/qt.qm
 install translations/qt_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/qt.qm
 install translations/qt_ru.qm $RPM_BUILD_ROOT%{_datadir}/locale/ru/LC_MESSAGES/qt.qm
 install translations/qt_iw.qm $RPM_BUILD_ROOT%{_datadir}/locale/he/LC_MESSAGES/qt.qm
+install translations/qt_cs.qm $RPM_BUILD_ROOT%{_datadir}/locale/cs/LC_MESSAGES/qt.qm
+install translations/qt_sk.qm $RPM_BUILD_ROOT%{_datadir}/locale/sk/LC_MESSAGES/qt.qm
 
+
+%if %{with designer}
 install tools/designer/designer/designer_de.qm $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/designer.qm
 install tools/designer/designer/designer_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/designer.qm
+%endif
 
 install tools/assistant/assistant_de.qm $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/assistant.qm
 install tools/assistant/assistant_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/assistant.qm
@@ -650,7 +683,7 @@ cat << EOF
  *  NOTE:                                              *
  *  After qt 3.2.0 the single threaded version was     *
  *  separated. Please install qt-st if You really need *
- *  it. If you do not use qt-st explicitly, please     *
+ *  it. If You do not use qt-st explicitly, please     *
  *  ignore this, as You will not notice any changes.   *
  *  In most cases do not install qt-st, as it is       *
  *  obsoleted.                                         *
@@ -669,8 +702,10 @@ EOF
 %doc FAQ LICENSE.* README* changes*
 %dir %{_sysconfdir}/qt
 %attr(755,root,root) %{_libdir}/libqassistantclient.so.*.*.*
+%if %{with designer}
 %attr(755,root,root) %{_libdir}/libdesignercore.so.*.*.*
 %attr(755,root,root) %{_libdir}/libeditor.so.*.*.*
+%endif
 %attr(755,root,root) %{_libdir}/libqui.so.*.*.*
 %attr(755,root,root) %{_libdir}/libqt-mt.so.*.*.*
 %dir %{_libdir}/%{name}
@@ -688,15 +723,29 @@ EOF
 %lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/qt.qm
 %lang(he) %{_datadir}/locale/he/LC_MESSAGES/qt.qm
 %lang(ru) %{_datadir}/locale/ru/LC_MESSAGES/qt.qm
+%lang(sk) %{_datadir}/locale/sk/LC_MESSAGES/qt.qm
+%lang(cs) %{_datadir}/locale/cs/LC_MESSAGES/qt.qm
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/[!adl]*
-%attr(755,root,root) %{_bindir}/l[!i]*
+%attr(755,root,root) %{_bindir}/findtr
+%attr(755,root,root) %{_bindir}/lrelease
+%attr(755,root,root) %{_bindir}/lupdate
+%attr(755,root,root) %{_bindir}/mergetr
+%attr(755,root,root) %{_bindir}/moc
+%attr(755,root,root) %{_bindir}/msg2qm
+%attr(755,root,root) %{_bindir}/qm2ts
+%attr(755,root,root) %{_bindir}/qmake
+%attr(755,root,root) %{_bindir}/qt20fix
+#%attr(755,root,root) %{_bindir}/qt32castcompat
+%attr(755,root,root) %{_bindir}/qtrename140
+%attr(755,root,root) %{_bindir}/uic
 %{_includedir}
 %{_libdir}/libqassistantclient.so
+%if %{with designer}
 %{_libdir}/libdesignercore.so
 %{_libdir}/libeditor.so
+%endif
 %{_libdir}/libqui.so
 %{_libdir}/libqt-mt.so
 %{_datadir}/qt/[!d]*
@@ -783,14 +832,26 @@ EOF
 
 %files utils
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/[ad]*
-%attr(755,root,root) %{_bindir}/li*
+%attr(755,root,root) %{_bindir}/assistant
+%if %{with designer}
+%attr(755,root,root) %{_bindir}/designer
+%endif
+%attr(755,root,root) %{_bindir}/linguist
 %dir %{_libdir}/%{name}/plugins-?t/designer
 %attr(755,root,root) %{_libdir}/%{name}/plugins-?t/designer/*.so
 %{_datadir}/qt/designer
 %lang(de) %{_datadir}/locale/de/LC_MESSAGES/assistant.qm
 %lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/assistant.qm
+%if %{with designer}
 %lang(de) %{_datadir}/locale/de/LC_MESSAGES/designer.qm
 %lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/designer.qm
+%endif
 %lang(de) %{_datadir}/locale/de/LC_MESSAGES/linguist.qm
 %lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/linguist.qm
+%{_desktopdir}/designer.desktop
+
+%files -n qtconfig
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/qtconfig
+%{_desktopdir}/qtconfig.desktop
+%{_pixmapsdir}/qtconfig.png
