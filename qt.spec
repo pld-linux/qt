@@ -6,9 +6,10 @@ Version:	2.2.0
 Release:	1
 License:	GPL
 Group:		X11/Libraries
+Group(de):	X11/Libraries
 Group(pl):	X11/Biblioteki
 Source0:	ftp://ftp.troll.no/qt/source/%{name}-x11-%{version}.tar.gz
-Patch0:		qt-tools.patch
+Patch0:		%{name}-tools.patch
 BuildRequires:	libungif-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	zlib-devel
@@ -34,6 +35,7 @@ korzystaj±.
 Summary:	Include files and documentation needed to compile
 Summary(pl):	Pliki nag³ówkowe, przyk³ady i dokumentacja do biblioteki 
 Group:		X11/Development/Libraries
+Group(de):	X11/Entwicklung/Libraries
 Group(pl):	X11/Programowanie/Biblioteki
 Requires:	%{name} = %{version}
 
@@ -55,6 +57,7 @@ wiêcej o Qt. Dokumentacjê do biblioteki znajdziesz tak¿e pod:
 Summary:	Qt tutorial/examples
 Summary(pl):	Qt przyk³ady
 Group:		X11/Development/Libraries
+Group(de):	X11/Entwicklung/Libraries
 Group(pl):	X11/Programowanie/Biblioteki
 Requires:	%{name}-devel = %{version}
 
