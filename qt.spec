@@ -751,9 +751,6 @@ install %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}
 
 %if %{with designer}
 install %{SOURCE3} $RPM_BUILD_ROOT%{_desktopdir}/designer.desktop
-
-sed -i 's/Exec=designer-qt3/Exec=designer/' \
-    $RPM_BUILD_ROOT%{_desktopdir}/designer.desktop	
 %endif
 
 %if %{without designer}
