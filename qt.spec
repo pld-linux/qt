@@ -1,21 +1,20 @@
 #
 # Conditional build:
-# _without_mysql	- without mysql support
-# _without_pgsql		- without PostgreSQL support
-# _without_odbc		- without unixODBC support
-#
-# _without_static	- don't build static library
-# _without_examples	- don't build and include samples
-#
 # _with_nas		- enable nas audio support
-#
 # _without_cups		- disable cups support
+# _without_examples	- don't build and include samples
+# _without_mysql	- without mysql support
+# _without_odbc		- without unixODBC support
+# _without_pgsql	- without PostgreSQL support
+# _without_static	- don't build static library
 #
+
+%define 	_snap	030405
 
 %define 	_withsql	1
+
 %{?_without_mysql:%{?_without_pgsql:%{?_without_odbc:%define _withsql 0}}}
 
-%define 	_snap	030329 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
@@ -36,7 +35,8 @@ Patch4:		%{name}-qmake-opt.patch
 Patch5:		%{name}-cursors.patch
 Patch6:         %{name}-qmake-nostatic.patch
 BuildRequires:	OpenGL-devel
-BuildRequires:	XFree86-devel >= 4.0.2
+BuildRequires:	XFree86-devel >= 4.3.0
+BuildRequires:	XFree86-xft-devel
 # incompatible with bison
 BuildRequires:	byacc
 BuildRequires:	flex
@@ -138,26 +138,28 @@ Static QT libraries.
 %description static -l pl
 Statyczne biblioteki Qt.
 
-%package doc-html
+%package doc
 Summary:	QT Documentation in HTML format
 Summary(pl):	Dokumentacja QT w formacie HTML
 Group:		X11/Development/Libraries
+Obsoletes:	%{name}-doc-html
 
-%description doc-html
+%description doc
 Qt documentation in HTML format.
 
-%description doc-html -l pl
+%description doc -l pl
 Dokumentacja qt w formacie HTML.
 
-%package doc-man
+%package man
 Summary:	QT man pages
 Summary(pl):	QT - strony man
 Group:		X11/Development/Libraries
+Obsoletes:	%{name}-doc-man
 
-%description doc-man
+%description man
 Qt documentation in man pages format.
 
-%description doc-man -l pl
+%description man -l pl
 Dokumentacja qt w formacie stron man.
 
 %package examples
@@ -268,7 +270,7 @@ perl -pi -e "
 #find examples -name '*.pro' -exec \
 #	perl -pi -e 's|(DEPENDPATH=)../../include|$1%{_includedir}|' {} \;
 
-DEFAULTOPT="-prefix %{_prefix} -docdir %{_docdir}/%{name}-doc-html-%{version} \
+DEFAULTOPT="-prefix %{_prefix} -docdir %{_docdir}/%{name}-doc-%{version} \
 	    -datadir %{_datadir}/qt -headerdir %{_includedir}\
 	    -release -qt-gif -system-zlib -no-g++-exceptions -stl \
 	    -no-exceptions \
@@ -516,11 +518,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/*.a
 %endif
 
-%files doc-html
+%files doc
 %defattr(644,root,root,755)
-%{_docdir}/%{name}-doc-html-%{version}
+%{_docdir}/%{name}-doc-%{version}
 
-%files doc-man
+%files man
 %defattr(644,root,root,755)
 %{_mandir}/man3/*
 
