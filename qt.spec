@@ -8,7 +8,7 @@ Name:		qt
 #%define		libeditor_version 1.0.0
 Version:	3.0.3
 #Release:	0.%{_snapshot}.7
-Release:	0.2
+Release:	0.3
 Epoch:		1
 License:	GPL
 Group:		X11/Libraries
@@ -170,9 +170,12 @@ rm include/qt_windows.h
 QTDIR=`/bin/pwd`; export QTDIR
 LD_LIBRARY_PATH="$QTDIR/lib" ; export LD_LIBRARY_PATH
 PATH="$QTDIR/bin:$PATH"
+if [ -f %{_pkgconfigdir}/libpng12.pc ] ; then
+	PNGCFLAGS=" `pkg-config libpng12 --cflags`"
+fi
 
 # change QMAKE_CFLAGS_RELEASE
-sed 's/-O2/%{rpmcflags}/' mkspecs/linux-g++/qmake.conf > qmk.tmp
+sed "s|-O2|%{rpmcflags}${PNGCFLAGS}|" mkspecs/linux-g++/qmake.conf > qmk.tmp
 mv -f qmk.tmp mkspecs/linux-g++/qmake.conf
 
 #-## Change path of plugins %{_prefix}/plugins -> %{_prefix}/lib/qt/plugins
