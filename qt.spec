@@ -15,7 +15,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.0.5
-Release:	1
+Release:	2
 Epoch:		3
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -230,11 +230,11 @@ perl -pi -e "
 find examples -name '*.pro' -exec \
 	perl -pi -e 's|(DEPENDPATH=)../../include|$1%{_includedir}|' {} \;
 
-DEFAULTOPT="-prefix %{_prefix} -bindir %{_bindir} -libdir %{_libdir} \
-	    -docdir %{_docdir}/%{name}-%{version} -headerdir %{_includedir} \
-	    -datadir %{_datadir}/qt
-	    -release -qt-gif -system-zlib -no-g++-exceptions -stl -system-libpng \
-	    -system-libjpeg -system-libmng -sm -xinerama -xrender -xft -xkb"
+DEFAULTOPT="-prefix %{_prefix} -docdir %{_docdir}/%{name}-%{version} \
+	    -datadir %{_datadir}/qt -headerdir %{_includedir}\
+	    -release -qt-gif -system-zlib -no-g++-exceptions -stl \
+	    -system-libpng -system-libjpeg -system-libmng -sm -xinerama \
+	    -xrender -xft -xkb"
 STYLESLIST="cde compact motif motifplus platinum sgi windows"
 
 ########################################################################
@@ -433,7 +433,7 @@ find $RPM_BUILD_ROOT%{_examplesdir}/%{name} -regex '.*/\(examples\|tutorial\).*/
 
 perl -pi -e "
 	s|(QMAKE_INCDIR_QT\\s*=\\s*\\\$\\(QTDIR\\)/include)|\$1/qt|
-	" $RPM_BUILD_ROOT/%{_datadir}/qt/mkspecs/mkspecs/linux-g++/qmake.conf
+	" $RPM_BUILD_ROOT/%{_datadir}/qt/kspecs/linux-g++/qmake.conf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
