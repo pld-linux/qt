@@ -11,22 +11,20 @@
 %define		_withsql	1
 %{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}
 
-%define		_pset 031029
+%define		_snap	031108
 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
-Version:	3.2.2
-Release:	4
+Version:	3.2.3
+Release:	0.%{_snap}.0.1
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
-Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
-# Source0-md5:	77d6e71e603fa54b9898d3364ef42aef
-Source1:	http://www.kernel.pl/~adgor/kde/%{name}-copy-patches-%{_pset}.tar.bz2
-# Source1-md5:	d76fc8b81687dcf89c6b215d7e4048bf
+Source0:	http://www.kernel.pl/~adgor/kde/%{name}-copy-%{_snap}.tar.bz2
+#%% Source0-md5:	d76fc8b81687dcf89c6b215d7e4048bf
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
@@ -36,7 +34,7 @@ Patch5:		%{name}-disable_tutorials.patch
 Patch6:		%{name}-locale.patch
 Patch7:		%{name}-make_use_of_locale.patch
 Patch8:		%{name}-make_assistant_use_global_docs.patch
-Patch9:		%{name}-qlineedit_khtml_fix.patch
+#Patch9:		%{name}-qlineedit_khtml_fix.patch
 Patch10:	%{name}-qmake-opt.patch
 Patch11:	%{name}-qmake-la-and-pc-fix.patch
 #Patch12:	%{name}-post321fixes.patch
@@ -332,7 +330,7 @@ QT Development Utilities.
 Narzêdzia programistyczne QT.
 
 %prep
-%setup -q -n %{name}-x11-free-%{version} -a1
+%setup -q -n %{name}-copy-%{_snap}
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -342,7 +340,7 @@ Narzêdzia programistyczne QT.
 %patch6 -p1
 %patch7 -p1
 %patch8 -p1
-%patch9 -p1
+#%patch9 -p1
 %patch10 -p1
 %patch11 -p1
 #%patch12 -p1
@@ -351,10 +349,8 @@ rm -rf `find . -name CVS`
 
 # They currently don't apply
 cat >> patches/DISABLED << EOF
-0005
-0006
-0007
 0010
+0028
 0029
 EOF
 
@@ -374,6 +370,8 @@ export LD_LIBRARY_PATH=$QTDIR/lib:$LD_LIBRARY_PATH
 
 # pass OPTFLAGS for qmake itself
 export OPTFLAGS="%{rpmcflags}"
+
+%{__make} -f Makefile.cvs
 
 ##################################
 # DEFAULT OPTIONS FOR ALL BUILDS #
@@ -578,6 +576,7 @@ perl -pi -e "
 	" $RPM_BUILD_ROOT/%{_datadir}/qt/mkspecs/linux-g++/qmake.conf
 
 plik="$RPM_BUILD_ROOT/%{_datadir}/qt/mkspecs/linux-g++/qmake.conf"
+
 cat $plik \
 	|grep -v QMAKE_CFLAGS_RELEASE \
 	|grep -v QMAKE_CXXFLAGS_RELEASE \
