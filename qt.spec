@@ -19,7 +19,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.2.2
-Release:	3
+Release:	4
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -384,7 +384,7 @@ DEFAULTOPT=" \
 	-headerdir %{_includedir} \
 	-datadir %{_datadir}/qt \
 	-docdir %{_docdir}/%{name}-doc \
-	-sysconfdir %{_sysconfdir} \
+	-sysconfdir %{_sysconfdir}/qt \
 	-translationdir %{_datadir}/locale/ \
 	-fast \
 	-qt-gif \
@@ -545,6 +545,7 @@ export QTDIR=`/bin/pwd`
 	INSTALL_ROOT=$RPM_BUILD_ROOT
 
 install -d \
+	$RPM_BUILD_ROOT%{_sysconfdir}/qt \
 	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-mt/{network,qsa} \
 	%{?with_single:$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st/network} \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name}/lib \
@@ -626,9 +627,6 @@ install tools/linguist/linguist/linguist_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale
 
 install tools/linguist/qm2ts/qm2ts.1 $RPM_BUILD_ROOT%{_mandir}/man1
 
-install -d $RPM_BUILD_ROOT%{_sysconfdir}/qt
-echo -e "\n" > $RPM_BUILD_ROOT%{_sysconfdir}/qt/doclist
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -641,9 +639,9 @@ cat << EOF
  *                                                     *
  *  NOTE:                                              *
  *  After qt 3.2.0 the single threaded version was     *
- *  separated. Please install qt-st if you really need *
+ *  separated. Please install qt-st if You really need *
  *  it. If you do not use qt-st explicitly, please     *
- *  ignore this, as you will not notice any changes.   *
+ *  ignore this, as You will not notice any changes.   *
  *  In most cases do not install qt-st, as it is       *
  *  obsoleted.                                         *
  *                                                     *
@@ -664,7 +662,6 @@ EOF
 %attr(755,root,root) %{_libdir}/libqui.so.*.*.*
 %attr(755,root,root) %{_libdir}/libqt-mt.so.*.*.*
 %dir %{_sysconfdir}/qt
-%ghost %{_sysconfdir}/qt/doclist
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/plugins-mt
 %dir %{_libdir}/%{name}/plugins-mt/network
