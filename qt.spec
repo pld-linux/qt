@@ -6,8 +6,8 @@
 # _without_mysql	- without mysql support
 # _without_odbc		- without unixODBC support
 # _without_pgsql	- without PostgreSQL support
-# _without_static	- don't build static library
-# _without_single	- don't build single threaded library
+# _with_static		- build static library
+# _with_single		- build single threaded library
 
 %define 	_snap	030405
 
@@ -241,9 +241,6 @@ Narzedzia programistyczne QT.
 %prep
 %setup -q -n %{name}-copy
 %patch0 -p1
-#%ifarch %{ix86} ppc
-#%%{?_with_prelink:%patch1 -p1}
-#%endif
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
@@ -266,10 +263,6 @@ perl -pi -e "
 	s|-O2|%{rpmcflags}|;
 	" mkspecs/linux-g++/qmake.conf
 
-# Fix examples (second part in install section).
-#find examples -name '*.pro' -exec \
-#	perl -pi -e 's|(DEPENDPATH=)../../include|$1%{_includedir}|' {} \;
-
 DEFAULTOPT="-prefix %{_prefix} -docdir %{_docdir}/%{name}-doc-%{version} \
 	    -datadir %{_datadir}/qt -headerdir %{_includedir}\
 	    -qt-gif -system-zlib -no-g++-exceptions -stl \
@@ -286,8 +279,8 @@ STYLESLIST="cde compact motif motifplus platinum sgi windows"
 ########################################################################
 # STATIC SINGLE-THREAD
 ########################################################################
-%if %{!?_without_static:1}%{?_without_static:0}
-%if %{!?_without_single:1}%{?_without_single:0}
+%if %{?_with_static:1}0
+%if %{?_with_single:1}0
 DEFAULTSTYLES=""
 for i in $STYLESLIST; do
 	DEFAULTSTYLES="$DEFAULTSTYLES -qt-style-$i"
@@ -314,7 +307,7 @@ _EOF_
 # Build libraries and everything needed to do this. Do not build examples and
 # such. They will be built with shared, sigle-thread libraries.
 %{__make} symlinks src-qmake src-moc sub-src
-%endif # without single
+%endif # with single
 ########################################################################
 # STATIC MULTI-THREAD
 ########################################################################
@@ -343,12 +336,12 @@ _EOF_
 # Build libraries and everything needed to do this. Do not build examples and
 # such. They will be built with shared, sigle-thread libraries.
 %{__make} symlinks src-qmake src-moc sub-src
-%endif #_without_static
+%endif #_with_static
 
 ########################################################################
 # SHARED SINGLE-THREAD
 ########################################################################
-%if %{!?_without_single:1}%{?_without_single:0}
+%if %{?_with_single:1}0
 DEFAULTSTYLES=""
 for i in $STYLESLIST; do
 	DEFAULTSTYLES="$DEFAULTSTYLES -plugin-style-$i"
@@ -356,7 +349,7 @@ done
 
 
 # This will not remove previously compiled libraries.
-%{!?_without_static:%{__make} clean}
+%{?_with_static:%{__make} clean}
 
 # workaround for some nasty bug to avoid linking plugins statically with -lqt-mt
 rm -f lib/libqt-mt.prl
@@ -444,7 +437,7 @@ install bin/{findtr,qt20fix,qtrename140} \
 install doc/man/man1/*		$RPM_BUILD_ROOT%{_mandir}/man1
 install doc/man/man3/*		$RPM_BUILD_ROOT%{_mandir}/man3
 
-%if %{!?_without_static:1}%{?_without_static:0}
+%if %{?_with_static:1}0
 install lib/libqt.a		$RPM_BUILD_ROOT%{_libdir}
 install lib/libqt-mt.a		$RPM_BUILD_ROOT%{_libdir}
 %endif
@@ -486,7 +479,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libdesigner.so.*
 %attr(755,root,root) %{_libdir}/libeditor.so.*
 %attr(755,root,root) %{_libdir}/libqassistantclient.so.*
-%if %{!?_without_single:1}%{?_without_single:0}
+%if %{?_with_single:1}0
 %attr(755,root,root) %{_libdir}/libqt.so.*
 %dir %{_libdir}/%{name}/plugins-st
 %dir %{_libdir}/%{name}/plugins-st/imageformats
@@ -519,7 +512,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libdesigner.so
 %{_libdir}/libeditor.so
 %{_libdir}/libqassistantclient.so
-%if %{!?_without_single:1}%{?_without_single:0}
+%if %{?_with_single:1}0
 %{_libdir}/libqt.so
 %endif
 %{_libdir}/libqt-mt.so
@@ -551,7 +544,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{!?_without_mysql:1}%{?_without_mysql:0}
 %files plugins-mysql
 %defattr(644,root,root,755)
-%if %{!?_without_single:1}%{?_without_single:0}
+%if %{?_with_single:1}0
 %attr(755,root,root) %{_libdir}/%{name}/plugins-st/sqldrivers/lib*mysql.so
 %endif
 %attr(755,root,root) %{_libdir}/%{name}/plugins-mt/sqldrivers/lib*mysql.so
@@ -560,7 +553,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{!?_without_pgsql:1}%{?_without_pgsql:0}
 %files plugins-psql
 %defattr(644,root,root,755)
-%if %{!?_without_single:1}%{?_without_single:0}
+%if %{?_with_single:1}0
 %attr(755,root,root) %{_libdir}/%{name}/plugins-st/sqldrivers/lib*psql.so
 %endif
 %attr(755,root,root) %{_libdir}/%{name}/plugins-mt/sqldrivers/lib*psql.so
@@ -569,7 +562,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{!?_without_odbc:1}%{?_without_odbc:0}
 %files plugins-odbc
 %defattr(644,root,root,755)
-%if %{!?_without_single:1}%{?_without_single:0}
+%if %{?_with_single:1}0
 %attr(755,root,root) %{_libdir}/%{name}/plugins-st/sqldrivers/lib*odbc.so
 %endif
 %attr(755,root,root) %{_libdir}/%{name}/plugins-mt/sqldrivers/lib*odbc.so
