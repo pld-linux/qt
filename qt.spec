@@ -540,7 +540,7 @@ install tools/linguist/linguist/linguist_de.qm  $RPM_BUILD_ROOT%{_datadir}/local
 install tools/linguist/linguist/linguist_fr.qm  $RPM_BUILD_ROOT%{_datadir}/locale/LC_MESSAGES/fr/linguist.qm
 
 
-install tools/qm2ts/qm2ts.1 $RPM_BUILD_ROOT%{_mandir}/man1
+install tools/linguist/qm2ts/qm2ts.1 $RPM_BUILD_ROOT%{_mandir}/man1
 
 %clean
 rm -rf $RPM_BUILD_ROOT
