@@ -48,7 +48,6 @@ Obsoletes:	qt-extensions
 
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1
 %define		_includedir	%{_prefix}/include/qt
-%define		_mandir		%{_prefix}/man
 %define         _qt_sl		%{version}
 
 %description
