@@ -6,7 +6,7 @@ Summary:	The Qt3 GUI application framework
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Name:		qt
 Version:	3.0.3
-Release:	0.9.4
+Release:	0.9.5
 Epoch:		3
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -324,6 +324,8 @@ install -d $RPM_BUILD_ROOT%{_mandir}/man{1,3} \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name} \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name}/lib \
 	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st
+
+install bin/findtr tools/msg2qm/msg2qm $RPM_BUILD_ROOT%{_bindir}
 
 install doc/man/man1/*		$RPM_BUILD_ROOT%{_mandir}/man1
 install doc/man/man3/*		$RPM_BUILD_ROOT%{_mandir}/man3
