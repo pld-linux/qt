@@ -114,7 +114,7 @@ rm -rf $RPM_BUILD_ROOT
 - html, tutorial, examples and doc are marked as %doc in devel subpackage,
 - header files moved to /usr/include/qt (to be consistent with FSSTND),
 - replaced "mkdir -p" with "install -d" in %install,
-- added striping binaries,
+- added stripping binaries,
 - /usr/lib/lib*.so moved to devel,
 - fiew simplification in %files and %install,
 - added using $RPM_OPT_FLAGS during compile,
