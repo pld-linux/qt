@@ -65,9 +65,9 @@ BuildRequires:	libmng-devel >= 1.0.0
 BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	libstdc++-devel
 BuildRequires:	libungif-devel
-BuildRequires:	xcursor
-BuildRequires:	xrender
-BuildRequires:	xft
+BuildRequires:	xcursor-devel
+BuildRequires:	xrender-devel
+BuildRequires:	xft-devel
 %{?with_mysql:BuildRequires:	mysql-devel}
 %ifarch %{ix86}
 %{?with_ibase:BuildRequires:Firebird-devel}
