@@ -37,7 +37,6 @@ Patch5:		%{name}-cursors.patch
 Patch6:         %{name}-qmake-nostatic.patch
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
-BuildRequires:	XFree86-xrender-devel
 # incompatible with bison
 BuildRequires:	byacc
 BuildRequires:	flex
