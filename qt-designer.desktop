@@ -5,4 +5,5 @@ Comment[pl]=Narzędzie RAD dla QT
 Exec=designer
 Terminal=0
 Type=Application
+Encoding=UTF-8
 # vi: encoding=utf-8
