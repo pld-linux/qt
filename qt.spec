@@ -14,7 +14,7 @@
 %define		_withsql	1
 %{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}
 
-%define		_snap		040422
+%define		_snap		040430
 %define		_ver		3.3.2
 %define		_packager	adgor
 
@@ -23,17 +23,17 @@ Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
-#Version:	%{_ver}.%{_snap}
-Version:	%{_ver}
+Version:	%{_ver}.%{_snap}
+#Version:	%{_ver}
 Release:	1
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
-#Source0:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-%{_snap}.tar.bz2
-Source0:	ftp://ftp.trolltech.com/qt/source/qt-x11-free-%{version}.tar.bz2
-# Source0-md5:	903cad618274ad84d7d13fd0027a6c3c
-Source1:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-patches-040427.tar.bz2
-# Source1-md5:	ec9cfcbeee331483184bed6807cd8394
+Source0:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-%{_snap}.tar.bz2
+# Source0-md5:	125ceb493ca10e827a79eb04eee02a1e
+#Source0:	ftp://ftp.trolltech.com/qt/source/qt-x11-free-%{version}.tar.bz2
+#Source1:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-patches-040427.tar.bz2
+##%% Source1-md5:	ec9cfcbeee331483184bed6807cd8394
 Source2:	%{name}config.desktop
 Source3:	designer.desktop
 Patch0:		%{name}-tools.patch
@@ -48,7 +48,6 @@ Patch8:		%{name}-make_assistant_use_global_docs.patch
 Patch9:		%{name}-qmake-opt.patch
 Patch10:	%{name}-xcursor_version.patch
 Patch11:	%{name}-gcc34.patch
-# for troll only
 Patch12:	%{name}-autodetect-pch.patch
 URL:		http://www.trolltech.com/products/qt/
 BuildRequires:	OpenGL-devel
@@ -404,8 +403,8 @@ Libraries IDE used for GUI designing with QT library.
 Biblioteki do IDE s³u¿±cego do projektowania GUI za pomoc± biblioteki QT.
 
 %prep
-#setup -q -n %{name}-copy-%{_snap}
-%setup -q -n %{name}-x11-free-%{version} -a1
+%setup -q -n %{name}-copy-%{_snap}
+#%setup -q -n %{name}-x11-free-%{version} -a1
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -420,13 +419,13 @@ Biblioteki do IDE s³u¿±cego do projektowania GUI za pomoc± biblioteki QT.
 %patch11 -p1
 %{?with_pch:%patch12 -p1}
 
-cat >> patches/DISABLED <<EOF
-0005
-0039
-0042
-0043
-0047
-EOF
+#cat >> patches/DISABLED <<EOF
+#0005
+#0039
+#0042
+#0043
+#0047
+#EOF
 ./apply_patches
 
 # change QMAKE_CFLAGS_RELEASE to build
@@ -466,9 +465,8 @@ fi
 
 # pass OPTFLAGS to build qmake itself with optimization
 export OPTFLAGS="%{rpmcflags}"
-#export OPTFLAGS="%{rpmcflags} -DQT_CLEAN_NAMESPACE"
 
-#%{__make} -f Makefile.cvs
+%{__make} -f Makefile.cvs
 
 ##################################
 # DEFAULT OPTIONS FOR ALL BUILDS #
