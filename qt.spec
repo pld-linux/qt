@@ -20,7 +20,7 @@
 %define		_withsql	1
 %{!?with_sqlite:%{!?with_ibase:%{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}}}
 
-%define		_snap		040531
+%define		_snap		040628
 %define		_ver		3.3.2
 %define		_packager	adgor
 
@@ -36,7 +36,7 @@ Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
 Source0:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-%{_snap}.tar.bz2
-# Source0-md5:	14b967ffb24f42b5ed9869c979cfabb6
+# Source0-md5:	d6b9eb8ba3f308cc9e2f7d67a47e034c
 #Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
 #Source1:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-patches-040531.tar.bz2
 ##%% Source1-md5:	2e38e44b6ef26bfb8a7f3b6900ee53c0
