@@ -10,7 +10,7 @@ Source:		ftp://ftp.troll.no/qt/source/%{name}-x11-%{version}.tar.gz
 BuildRequires:	libungif-devel
 BuildRequires:	zlib-devel
 BuildRequires:	libpng-devel
-BuildRequires:	Mesa-devel
+#BuildRequires:	Mesa-devel
 BuildRequires:	XFree86-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	lesstif-devel
