@@ -28,7 +28,7 @@ Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 #Version:	%{_ver}.%{_snap}
 Version:	%{_ver}
-Release:	2
+Release:	3
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
@@ -41,6 +41,7 @@ Source2:	%{name}config.desktop
 Source3:	designer.desktop
 Source4:	assistant.desktop
 Source5:	linguist.desktop
+Source6:	%{name}-apply_patches.sh
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-FHS.patch
 Patch2:		%{name}-qmake-nostatic.patch
@@ -645,6 +646,8 @@ graficznego - Qt Designer.
 %patch13 -p1
 %patch14 -p1
 
+install %{SOURCE6} ./apply_patches
+chmod +x ./apply_patches
 ./apply_patches
 
 # change QMAKE_CFLAGS_RELEASE to build
