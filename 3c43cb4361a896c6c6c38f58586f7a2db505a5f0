@@ -1,0 +1,2 @@
+- changed OpenGL to XFree86-OpenGL,
+- added using %{__*} macros.
