@@ -10,8 +10,8 @@
 # _without_static	- don't build static library
 # _without_examples	- don't build and include samples
 
-%define		_kdever		kde-3.1-rc1
-%define		_snapshot	20021024
+%define		_kdever		kde-3.1-rc2
+%define		_snapshot	20021104
 %define		_state		unstable
 
 Summary:	The Qt3 GUI application framework
@@ -20,7 +20,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.1
-Release:	0.%{_snapshot}.4
+Release:	0.%{_snapshot}.1
 Epoch:		5
 License:	GPL / QPL
 Group:		X11/Libraries
