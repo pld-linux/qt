@@ -20,7 +20,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.2.1
-Release:	2
+Release:	3
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -30,7 +30,7 @@ Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
 #Source1:	ftp://ftp.trolltech.com/qsa/%{name}-designer-changes-qsa-beta3.tar.gz
 Source1:	http://www.kernel.pl/~djurban/snap/%{name}-patches-030831.tar.bz2
 # Source1-md5:	3fe3df6eb64289333839bc4373353082
-Source2:	ftp://gee.cs.oswego.edu/pub/misc/malloc.c
+Source2:	%{name}-malloc.c
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
@@ -370,7 +370,9 @@ mv patches/apply_patches .
 perl -pi -e "
 	s|-O2|%{rpmcflags}|;
 	" mkspecs/linux-g++/qmake.conf
-install %{SOURCE2} src/kernel/
+
+install %{SOURCE2} src/kernel/malloc.c
+
 %build
 export QTDIR=`/bin/pwd`
 export YACC='byacc -d'
