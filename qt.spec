@@ -633,8 +633,19 @@ echo -e "\n" > $RPM_BUILD_ROOT%{_sysconfdir}/qt/doclist
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post	-p /sbin/ldconfig
-%postun	-p /sbin/ldconfig
+%post	
+/sbin/ldconfig
+echo "####################################################"
+echo "# After qt 3.2.0 the single version was separated. #"
+echo "# Please install qt-st if you really require it.   #"
+echo "# If you do not use qt-st explicitly, please       #"
+echo "# ignore this, as you will not notice any changes. #"
+echo "####################################################"
+
+
+%postun -p /sbin/ldconfig
+%post st -p /sbin/ldconfig
+%postun	st -p /sbin/ldconfig
 
 %files
 %defattr(644,root,root,755)
