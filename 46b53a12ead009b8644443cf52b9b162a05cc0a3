@@ -1,0 +1,4 @@
+- Updated to 030623 snap (qt-3.2.0beta2) but with old qmake (1.05a).
+  New qmake (1.06b) "improvements" break compilation.
+- Fixed R/BR; %%files
+- Release 0.1
