@@ -1,22 +1,22 @@
-%define		_snapshot	ss20020126
+%define		_snapshot	20020222
 Summary:	The Qt3 GUI application framework
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Name:		qt
 %define		libqui_version 1.0.0
 %define		libeditor_version 1.0.0
 Version:	3.0.2
-Release:	0.0.%{_snapshot}.1
+Release:	0.%{_snapshot}.1
 Epoch:		1
 License:	GPL
 Group:		X11/Libraries
-Source0:	ftp://ftp.troll.no/qt/source/%{name}-x11-free-%{version}%{_snapshot}.tar.gz
+Source0:	ftp://ftp.trolltech.com/qt/snapshots/%{name}-x11-free-%{version}-snapshot-%{_snapshot}.tar.bz2
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-huge_val.patch
 Patch2:		%{name}-charset.patch
 # prelinking
 Patch3:		%{name}-qmake.patch
-Patch4:		%{name}-no_bashisms.patch
-Patch5:		%{name}-parse_error.patch
+Patch4:		%{name}-parse_error.patch
+Patch5:		%{name}-postgresql_7_2.patch
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
 BuildRequires:	freetype-devel
@@ -135,7 +135,7 @@ Qt ODBC plugin.
 Wtyczka ODBC do Qt.
 
 %prep
-%setup -q -n %{name}-x11-free-%{version}
+%setup -q -n %{name}-x11-free-%{version}-snapshot-%{_snapshot}
 %patch0 -p1
 #%patch1 -p1
 #%patch2 -p1
