@@ -13,7 +13,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.1.1
-Release:	1
+Release:	2
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -47,10 +47,9 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	qt-extensions
 
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1
-%define		_prefix		/usr/X11R6
 %define		_includedir	%{_prefix}/include/qt
 %define		_mandir		%{_prefix}/man
-%define         _qt_sl		3.1.0
+%define         _qt_sl		%{version}
 
 %description
 Qt is a GUI software toolkit which simplifies the task of writing and
@@ -126,6 +125,29 @@ Static QT libraries.
 %description static -l pl
 Statyczne biblioteki Qt.
 
+%package doc-html
+Summary:	QT Documentation in HTML format
+Summary(pl):	Dokumentacja QT w formacie HTML
+Group:		X11/Development/Libraries
+
+%description doc-html
+Qt documentation in HTML format.
+
+%description doc-html -l pl
+Dokumentacja qt w formacie HTML.
+
+%package doc-man
+Summary:	QT man pages
+Summary(pl):	QT - strony man
+Group:		X11/Development/Libraries
+
+%description doc-man
+Qt documentation in man pages format.
+
+%description doc-man -l pl
+Dokumentacja qt w formacie stron man.
+
+
 %package examples
 Summary:	Example programs made with Qt version %{version}
 Summary(pl):	Æwiczenia i przyk³ady do Qt
@@ -189,6 +211,18 @@ Wtyczka ODBC do Qt.
 
 %description plugins-odbc -l pt_BR
 Plugin de suporte a ODBC para Qt.
+
+%package utils
+Summary:	QT Utils
+Summary(pl):	Narzêdzia QT
+Group:		X11/Development/Tools
+Requires:	%{name}-devel = %{version}
+
+%description utils
+QT Development Utilities.
+
+%description utils -l pl
+Narzedzia programistyczne QT.
 
 %prep
 %setup -q -n %{name}-x11-free-%{version}
@@ -386,9 +420,7 @@ rm -rf `find $RPM_BUILD_ROOT -name CVS`
 rm -rf `find . -name CVS`
 
 install -d $RPM_BUILD_ROOT{%{_mandir}/man{1,3},%{_examplesdir}/%{name}/lib} \
-	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st \
-	$RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}/html
-
+	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st
 install bin/{findtr,qt20fix,qtrename140} \
 	tools/msg2qm/msg2qm tools/mergetr/mergetr \
 	$RPM_BUILD_ROOT%{_bindir}
@@ -407,12 +439,6 @@ cp -R plugins-st/* $RPM_BUILD_ROOT%{_libdir}/qt/plugins-st/
 cp -dpR .qmake.cache examples tutorial \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name}
 	
-#cd $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}
-#mv [!h]* html
-#mv h?[!m]* html
-#cd -
-#cp LICENSE.QPL $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}
-
 mv $RPM_BUILD_ROOT{%{_libdir}/*.prl,%{_examplesdir}/%{name}/lib}
 
 # Fix Makefiles for tutorial and examples. How people who made so cool
@@ -437,13 +463,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-#%{_docdir}/%{name}-%{version}/LICENSE.QPL
 %doc FAQ LICENSE.* README* changes*
 %attr(755,root,root) %{_libdir}/libqt.so.*
 %attr(755,root,root) %{_libdir}/libqui.so.*
-#%attr(755,root,root) %{_libdir}/libeditor.so.*
-#%attr(755,root,root) %{_libdir}/libqassistantclient.so.*
-#%attr(755,root,root) %{_libdir}/libdesigner.so.* 
 %attr(755,root,root) %{_libdir}/libqt-mt.so.*
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/plugins*
@@ -455,27 +477,28 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
-#%{_docdir}/%{name}-%{version}/html
-%doc doc/html
-%attr(755,root,root) %{_bindir}/*
+%attr(755,root,root) %{_bindir}/[!adl]*
+%attr(755,root,root) %{_bindir}/l[!i]*
 %{_libdir}/libqt.so
 %{_libdir}/libqt-mt.so
 %{_libdir}/libqui.so
-#%{_libdir}/libeditor.so
 %{_includedir}
-%{_mandir}/man?/*
-%dir %{_libdir}/%{name}/plugins*/designer
-%attr(755,root,root) %{_libdir}/%{name}/plugins*/designer/*.so
-%dir %{_datadir}/qt
-%{_datadir}/qt/phrasebooks
-%{_datadir}/qt/mkspecs
-%{_datadir}/qt/designer
+%{_datadir}/qt/[!d]*
+%{_mandir}/man1/*
 
 %if %{!?_without_static:1}%{?_without_static:0}
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/*.a
 %endif
+
+%files doc-html
+%defattr(644,root,root,755)
+%doc doc/html/*
+
+%files doc-man
+%defattr(644,root,root,755)
+%{_mandir}/man3/*
 
 %if %{!?_without_examples:1}%{?_without_examples:0}
 %files examples
@@ -500,3 +523,11 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}/plugins*/sqldrivers/lib*odbc.so
 %endif
+
+%files utils
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/[ad]*
+%attr(755,root,root) %{_bindir}/li*
+%dir %{_libdir}/%{name}/plugins*/designer
+%attr(755,root,root) %{_libdir}/%{name}/plugins*/designer/*.so
+%{_datadir}/qt/designer
