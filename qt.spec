@@ -11,12 +11,12 @@ Patch0:		qt.patch
 Patch1:		qt-opt.patch
 Patch2:		qt-enablegif.patch
 URL:		http://www.troll.no/
-BuildPrereq:	libstdc++-devel
-BuildPrereq:	XFree86-devel
-BuildPrereq:	Mesa-devel
-BuildPrereq:	libjpeg-devel
-BuildPrereq:	libpng-devel
-BuildPrereq:	lesstif-devel
+BuildRequires:	libstdc++-devel
+BuildRequires:	XFree86-devel
+BuildRequires:	Mesa-devel
+BuildRequires:	libjpeg-devel
+BuildRequires:	libpng-devel
+BuildRequires:	lesstif-devel
 Buildroot:	/tmp/%{name}-%{version}-root
 
 %define _prefix /usr/X11R6
