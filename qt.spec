@@ -25,7 +25,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.2.0
-Release:	0.%{_snap}.1
+Release:	0.%{_snap}.2
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -63,7 +63,7 @@ BuildRequires:	perl
 BuildRequires:	zlib-devel
 %{?_with_prelink:BuildRequires:	objprelink}
 BuildRequires:	xft-devel
-%{?_with_single:Provides:	%{name}-st = %{version}}
+%{?_with_single:Provides:	%{name}-st = %{epoch}:%{version}}
 Requires:	OpenGL
 Requires:	XFree86-libs >= 4.0.2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -99,7 +99,7 @@ Summary(es):	Archivos de inclusión y documentación necesaria para compilar aplic
 Summary(pl):	Pliki nag³ówkowe, przyk³ady i dokumentacja do biblioteki
 Summary(pt_BR):	Arquivos de inclusão e documentação necessária para compilar aplicações Qt
 Group:		X11/Development/Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{epoch}:%{version}
 Requires:	XFree86-devel
 Requires:	freetype-devel
 Requires:	libjpeg-devel
@@ -139,8 +139,8 @@ mais informações sobre ele.
 Summary:	Qt static libraries
 Summary(pl):	Biblioteki statyczne Qt
 Group:		X11/Development/Libraries
-Requires:	%{name}-devel = %{version}
-%{?_with_single:Provides:	%{name}-static-st = %{version}}
+Requires:	%{name}-devel = %{epoch}:%{version}
+%{?_with_single:Provides:	%{name}-static-st = %{epoch}:%{version}}
 
 %description static
 Static QT libraries.
@@ -177,7 +177,7 @@ Summary:	Example programs made with Qt version %{version}
 Summary(pl):	Æwiczenia i przyk³ady do Qt
 Summary(pt_BR):	Programas exemplo desenvolvidos com o Qt
 Group:		X11/Development/Libraries
-Requires:	%{name}-devel = %{version}
+Requires:	%{name}-devel = %{epoch}:%{version}
 
 %description examples
 Example programs made with Qt version %{version}.
@@ -193,10 +193,10 @@ Summary:	Database plugin for mysql Qt support
 Summary(pl):	Wtyczka MySQL do Qt
 Summary(pt_BR):	Plugin de suporte a mysql para Qt
 Group:		X11/Libraries
-Requires:	%{name} = %{version}
-%{?_with_single:Requires:	%{name}-st = %{version}}
+Requires:	%{name} = %{epoch}:%{version}
+%{?_with_single:Requires:	%{name}-st = %{epoch}:%{version}}
 Provides:	%{name}-plugin-sql
-%{?_with_single:Provides:	%{name}-plugin-sql-st = %{version}}
+%{?_with_single:Provides:	%{name}-plugin-sql-st = %{epoch}:%{version}}
 Obsoletes:	%{name}-plugins-mysql
 
 %description plugin-mysql
@@ -213,10 +213,10 @@ Summary:	Database plugin for pgsql Qt support
 Summary(pl):	Wtyczka PostgreSQL do Qt
 Summary(pt_BR):	Plugin de suporte a pgsql para Qt
 Group:		X11/Libraries
-Requires:	%{name} = %{version}
-%{?_with_single:Requires:	%{name}-st = %{version}}
+Requires:	%{name} = %{epoch}:%{version}
+%{?_with_single:Requires:	%{name}-st = %{epoch}:%{version}}
 Provides:	%{name}-plugin-sql
-%{?_with_single:Provides:	%{name}-plugin-sql-st = %{version}}
+%{?_with_single:Provides:	%{name}-plugin-sql-st = %{epoch}:%{version}}
 Obsoletes:	%{name}-plugins-psql
 
 %description plugin-psql
@@ -233,10 +233,10 @@ Summary:	Database plugin for ODBC Qt support
 Summary(pl):	Wtyczka ODBC do Qt
 Summary(pt_BR):	Plugin de suporte a ODBC para Qt
 Group:		X11/Libraries
-Requires:	%{name} = %{version}
-%{?_with_single:Requires:	%{name}-st = %{version}}
+Requires:	%{name} = %{epoch}:%{version}
+%{?_with_single:Requires:	%{name}-st = %{epoch}:%{version}}
 Provides:	%{name}-plugin-sql
-%{?_with_single:Provides:	%{name}-plugin-sql-st = %{version}}
+%{?_with_single:Provides:	%{name}-plugin-sql-st = %{epoch}:%{version}}
 Obsoletes:	%{name}-plugins-odbc
 
 %description plugin-odbc
@@ -252,7 +252,7 @@ Plugin de suporte a ODBC para Qt.
 Summary:	QT Utils
 Summary(pl):	Narzêdzia QT
 Group:		X11/Development/Tools
-Requires:	%{name}-devel = %{version}
+Requires:	%{name}-devel = %{epoch}:%{version}
 
 %description utils
 QT Development Utilities.
