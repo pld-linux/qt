@@ -55,6 +55,7 @@ BuildRequires:	perl
 %{?_with_nas:BuildRequires:	nas-devel}
 BuildRequires:	zlib-devel
 %{?_with_prelink:BuildRequires:	objprelink}
+%{?_with_single:Provides:	qt-st}
 Requires:	OpenGL
 Requires:	XFree86-libs >= 4.0.2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
