@@ -1,0 +1,88 @@
+--- qt-x11-free-3.2.1/qmake/generators/unix/unixmake2.cpp.orig	2003-09-07 00:06:56.761045136 +0200
++++ qt-x11-free-3.2.1/qmake/generators/unix/unixmake2.cpp	2003-09-07 00:06:17.088076344 +0200
+@@ -1319,28 +1319,36 @@
+ }
+ 
+ QString
+-UnixMakefileGenerator::libtoolFileName()
++UnixMakefileGenerator::libShortName(int withlib /* = 0 */)
+ {
+     QString ret = var("TARGET");
+     int slsh = ret.findRev(Option::dir_sep);
+     if(slsh != -1)
+-	ret = ret.right(ret.length() - slsh);
++	ret = ret.mid(slsh + 1);
++    if(!withlib && ret.startsWith("lib"))
++	ret = ret.mid(3);
+     int dot = ret.find('.');
+     if(dot != -1)
+ 	ret = ret.left(dot);
++    return ret;
++}
++
++QString
++UnixMakefileGenerator::libtoolFileName()
++{
++    QString ret = libShortName(1);
+     ret += Option::libtool_ext;
+-    if(!project->isEmpty("DESTDIR"))
++    if(!project->isEmpty("DESTDIR")) {
++	ret.prepend(Option::dir_sep);
+ 	ret.prepend(var("DESTDIR"));
++    }
+     return ret;
+ }
+ 
+ void
+ UnixMakefileGenerator::writeLibtoolFile()
+ {
+-    QString fname = libtoolFileName(), lname = fname;
+-    int slsh = lname.findRev(Option::dir_sep);
+-    if(slsh != -1)
+-	lname = lname.right(lname.length() - slsh);
++    QString fname = libtoolFileName(), lname = libShortName(1);
+     QFile ft(fname);
+     if(!ft.open(IO_WriteOnly))
+ 	return;
+@@ -1406,17 +1414,10 @@
+ QString
+ UnixMakefileGenerator::pkgConfigFileName()
+ {
+-    QString ret = var("TARGET");
+-    int slsh = ret.findRev(Option::dir_sep);
+-    if(slsh != -1)
+-	ret = ret.right(ret.length() - slsh);
+-    if(ret.startsWith("lib"))
+-	ret = ret.mid(3);
+-    int dot = ret.find('.');
+-    if(dot != -1)
+-	ret = ret.left(dot);
++    QString ret = libShortName(0);
+     ret += Option::pkgcfg_ext;
+     if(!project->isEmpty("DESTDIR")) {
++	ret.prepend(Option::dir_sep);
+ 	ret.prepend(var("DESTDIR"));
+ 	ret = Option::fixPathToLocalOS(fileFixify(ret,QDir::currentDirPath(), Option::output_dir));
+     }
+@@ -1426,10 +1427,7 @@
+ void
+ UnixMakefileGenerator::writePkgConfigFile()     // ### does make sense only for libqt so far
+ {
+-    QString fname = pkgConfigFileName(), lname = fname;
+-    int slsh = lname.findRev(Option::dir_sep);
+-    if(slsh != -1)
+-	lname = lname.right(lname.length() - slsh);
++    QString fname = pkgConfigFileName(), lname = libShortName(0);
+     QFile ft(fname);
+     if(!ft.open(IO_WriteOnly))
+ 	return;
+--- qt-x11-free-3.2.1/qmake/generators/unix/unixmake.h.orig	2003-08-20 15:08:14.000000000 +0200
++++ qt-x11-free-3.2.1/qmake/generators/unix/unixmake.h	2003-09-07 00:19:11.653324528 +0200
+@@ -43,6 +43,7 @@
+     bool init_flag, include_deps;
+     bool writeMakefile(QTextStream &);
+     void writeExtraVariables(QTextStream &);
++    QString libShortName(int withlib = 0);
+     QString libtoolFileName();
+     void writeLibtoolFile();     // for libtool
+     QString pkgConfigFileName();

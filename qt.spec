@@ -43,6 +43,7 @@ Patch9:		%{name}-qlineedit_khtml_fix.patch
 Patch10:	%{name}-qmake_la_generation_fix.patch
 Patch11:	%{name}-qmlined-fix.patch
 Patch12:	%{name}-qmake-opt.patch
+Patch13:	%{name}-qmake-la-and-pc-fix.patch
 URL:		http://www.trolltech.com/products/qt/
 BuildRequires:	OpenGL-devel
 # incompatible with bison
@@ -347,9 +348,10 @@ Narzêdzia programistyczne QT.
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
-# patch10 was not applied, but it's still not right --q
+%patch10 -p1
 %patch11 -p1
 %patch12 -p1
+%patch13 -p1
 
 rm -rf `find $RPM_BUILD_ROOT -name CVS`
 rm -rf `find . -name CVS`
