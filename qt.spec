@@ -79,7 +79,7 @@ QTDIR=`/bin/pwd`; export QTDIR
 
 #make  RPM_OPT_FLAGS="$RPM_OPT_FLAGS"
 
-LD_LIBRARY_PAYH=%{_libdir} make \
+LD_LIBRARY_PATH=%{_libdir} make \
 SYSCONF_CFLAGS="-pipe -DNO_DEBUG $RPM_OPT_FLAGS" \
 SYSCONF_CXXFLAGS="-pipe -DNO_DEBUG $RPM_OPT_FLAGS" \
 
