@@ -23,7 +23,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.2.0
-Release:	4
+Release:	5
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -38,14 +38,12 @@ Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
 Patch3:		%{name}-FHS.patch
-#Patch4:	%{name}-qmake-opt.patch
-#Patch5:	%{name}-cursors.patch
-Patch6:         %{name}-qmake-nostatic.patch
-Patch7:		%{name}-disable_tutorials.patch
-Patch8:         %{name}-locale.patch
-Patch9:         %{name}-make_use_of_locale.patch
-Patch10:        %{name}-make_assistant_use_global_docs.patch
-Patch11:        %{name}-fix_bug_59914.patch
+Patch4:         %{name}-qmake-nostatic.patch
+Patch5:		%{name}-disable_tutorials.patch
+Patch6:         %{name}-locale.patch
+Patch7:         %{name}-make_use_of_locale.patch
+Patch8:        %{name}-make_assistant_use_global_docs.patch
+Patch9:        %{name}-fix_bug_59914.patch
 URL:		http://www.trolltech.com/products/qt/
 BuildRequires:	OpenGL-devel
 # incompatible with bison
@@ -271,14 +269,12 @@ Narzedzia programistyczne QT.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-#%patch4 -p1
-#%patch5 -p1
+%patch4 -p1
+%patch5 -p1
 %patch6 -p1
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
-%patch10 -p1
-%patch11 -p1
 
 %build
 export QTDIR=`/bin/pwd`
