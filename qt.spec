@@ -14,17 +14,17 @@ Source0:	ftp://ftp.troll.no/qt/source/%{name}-x11-%{version}.tar.gz
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-huge_val.patch
 Patch2:		%{name}-charset.patch
-BuildRequires:	OpenGL-devel
+BuildRequires:	XFree86-OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
-BuildRequires:	libungif-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel >= 1.0.0
 BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	libstdc++-devel
+BuildRequires:	libungif-devel
 BuildRequires:	zlib-devel
+Requires:	XFree86-OpenGL-libs
 Requires:	XFree86-libs >= 4.0.2
 Requires:	libmng
-Requires:	OpenGL
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	qt-extensions
 
@@ -43,7 +43,7 @@ korzystaj±.
 
 %package devel
 Summary:	Include files and documentation needed to compile
-Summary(pl):	Pliki nag³ówkowe, przyk³ady i dokumentacja do biblioteki 
+Summary(pl):	Pliki nag³ówkowe, przyk³ady i dokumentacja do biblioteki
 Group:		X11/Development/Libraries
 Group(de):	X11/Entwicklung/Libraries
 Group(pl):	X11/Programowanie/Biblioteki
@@ -58,7 +58,7 @@ example programs. See http://www.troll.no/ for more information about
 Qt, or file:/usr/share/doc/%{name}-devel-%{version}/index.html for Qt
 documentation in HTML.
 
-%description -l pl devel
+%description devel -l pl
 Pakiet tem zawiera pliki potrzebne do tworzenia i kompilacji aplikacji
 korzystaj±cych z biblioteki Qt, jak pliki nag³ówkowe, meta kompiler
 (moc), dokumentacjê. Zobacz http://www.troll.no/ aby dowiedzieæ siê
@@ -76,10 +76,10 @@ Requires:	%{name}-devel = %{version}
 %description examples
 Qt tutorial/examples.
 
-%description -l pl examples
+%description examples -l pl
 Qt przyk³ady.
 
-%prep 
+%prep
 %setup -q
 %patch0 -p1
 %patch1 -p1
@@ -87,17 +87,16 @@ Qt przyk³ady.
 
 %build
 QTDIR=`/bin/pwd`; export QTDIR
-./configure \
+%configure \
 	-gif \
 	-no-g++-exceptions \
 	-release \
 	-shared \
 	-sm \
-	-system-zlib \
+	-system-jpeg \
 	-system-libmng \
 	-system-libpng \
 	-system-zlib \
-	-system-jpeg \
 	-thread <<_EOF_
 yes
 _EOF_
@@ -107,58 +106,58 @@ SYSCONF_CFLAGS="-pipe -DNO_DEBUG %{rpmcflags}"
 SYSCONF_CXXFLAGS="-pipe -DNO_DEBUG %{rpmcflags}"
 export LD_LIBRARY_PATH SYSCONF_CFLAGS SYSCONF_CXXFLAGS
 
-%{__make} symlinks  src-moc src-mt sub-src sub-tools\
+%{__make} symlinks src-moc src-mt sub-src sub-tools\
 %ifnarch alpha
-        SYSCONF_CFLAGS="%{rpmcflags}" \
+	SYSCONF_CFLAGS="%{rpmcflags}" \
 	SYSCONF_CXXFLAGS="%{rpmcflags}"
 %else
-        SYSCONF_CFLAGS="%{!?debug:-0O}%{?debug:-O0 -g}" \
+	SYSCONF_CFLAGS="%{!?debug:-0O}%{?debug:-O0 -g}" \
 	SYSCONF_CXXFLAGS="%{!?debug:-O0}%{?debug:-O0 -g}"
 %endif
 	
 %install
-rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir},%{_includedir},%{_mandir}/man3} \
+%{__rm} -rf $RPM_BUILD_ROOT
+%{__install} -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir},%{_includedir},%{_mandir}/man3} \
 	$RPM_BUILD_ROOT/usr/src/examples/%{name} \
 	$RPM_BUILD_ROOT%{_datadir}/tutorial/%{name} \
 
-install bin/* $RPM_BUILD_ROOT%{_bindir}/
-install tools/msg2qm/msg2qm $RPM_BUILD_ROOT%{_bindir}/
-install tools/mergetr/mergetr $RPM_BUILD_ROOT%{_bindir}/
+%{__install} bin/* $RPM_BUILD_ROOT%{_bindir}/
+%{__install} tools/msg2qm/msg2qm $RPM_BUILD_ROOT%{_bindir}/
+%{__install} tools/mergetr/mergetr $RPM_BUILD_ROOT%{_bindir}/
 
-install lib/libqt.so.%{version} $RPM_BUILD_ROOT%{_libdir}
-ln -sf libqt.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libqt.so
+%{__install} lib/libqt.so.%{version} $RPM_BUILD_ROOT%{_libdir}
+%{__ln_s} -f libqt.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libqt.so
 
-install lib/libqutil.so.%{libqutil_version} $RPM_BUILD_ROOT%{_libdir}
-ln -sf libqutil.so.%{libqutil_version} $RPM_BUILD_ROOT%{_libdir}/libqutil.so
+%{__install} lib/libqutil.so.%{libqutil_version} $RPM_BUILD_ROOT%{_libdir}
+%{__ln_s} -f libqutil.so.%{libqutil_version} $RPM_BUILD_ROOT%{_libdir}/libqutil.so
 
-install lib/libqt-mt.so.%{version} $RPM_BUILD_ROOT%{_libdir}
-ln -sf libqt-mt.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libqt-mt.so
+%{__install} lib/libqt-mt.so.%{version} $RPM_BUILD_ROOT%{_libdir}
+%{__ln_s} -f libqt-mt.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libqt-mt.so
 
 # empty symlinks
-rm -f include/qt_mac.h include/qt_windows.h include/jri.h \
+%{__rm} -f include/qt_mac.h include/qt_windows.h include/jri.h \
 	include/jritypes.h include/npapi.h include/npupp.h
-install include/* $RPM_BUILD_ROOT/%{_includedir}
+%{__install} include/* $RPM_BUILD_ROOT/%{_includedir}
 
-install doc/man/man3/* $RPM_BUILD_ROOT%{_mandir}/man3
+%{__install} doc/man/man3/* $RPM_BUILD_ROOT%{_mandir}/man3
 
 for a in {tutorial,examples}/{Makefile,*/Makefile}; do
-        cat $a | sed 's-^SYSCONF_MOC.*-SYSCONF_MOC = %{_bindir}/moc -' | \
-	sed 's-^SYSCONF_CXXFLAGS_QT     = \$(QTDIR)/include-SYSCONF_CXXFLAGS_QT = %{_includedir}-' | \
-	sed 's-^SYSCONF_LFLAGS_QT       = \$(QTDIR)/lib-SYSCONF_LFLAGS_QT = %{_libdir}-' > $a.
-        mv -f $a. $a
+	%{__cat} $a | sed 's-^SYSCONF_MOC.*-SYSCONF_MOC = %{_bindir}/moc -' | \
+	%{__sed} 's-^SYSCONF_CXXFLAGS_QT	= \$(QTDIR)/include-SYSCONF_CXXFLAGS_QT = %{_includedir}-' | \
+	%{__sed} 's-^SYSCONF_LFLAGS_QT	= \$(QTDIR)/lib-SYSCONF_LFLAGS_QT = %{_libdir}-' > $a.
+	%{__mv} -f $a. $a
 done
 
-cp -dpr examples $RPM_BUILD_ROOT/usr/src/examples/%{name}
-cp -dpr tutorial $RPM_BUILD_ROOT%{_datadir}/tutorial/%{name}
+%{__cp} -dpr examples $RPM_BUILD_ROOT/usr/src/examples/%{name}
+%{__cp} -dpr tutorial $RPM_BUILD_ROOT%{_datadir}/tutorial/%{name}
 				
-gzip -9nf LICENSE.QPL
+%{__gzip} -9nf LICENSE.QPL
 
-%post   -p /sbin/ldconfig
+%post -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+%{__rm} -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
