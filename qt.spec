@@ -53,7 +53,7 @@ Dokumentacjê do biblioteki znajdziesz tak¿e pod:
 
 %package extensions
 Summary:	Qt extensions, library and headers file
-Summary(pl):	Qt extensions, rozrze¿enia dla QT biblioteki i pliki nag³ówkowe 
+Summary(pl):	Rozszerzenia biblioteki QT
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
 Requires:	%{name} = %{version}
@@ -63,7 +63,7 @@ Contains the Qt extension files with library and include files.
 Contains extension for Motif/Lesstif, OpenGL, image manipulation.
 
 %description -l pl extensions
-Pakiet zawiera zestaw rozsze¿eñ dla biblioteki Qt. Biblioteki oraz pliki
+Pakiet zawiera zestaw rozszerzeñ dla biblioteki Qt. Biblioteki oraz pliki
 nag³ówkowe dla nastêpuj±cych pakietów: Motif/Lestif, OpenGL, Netscape oraz
 operacji na obrazach.
 
