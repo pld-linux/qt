@@ -1,7 +1,7 @@
 #
 # Conditional build:
 # _without_mysql	- without mysql support
-# _without_psql		- without PostgreSQL support
+# _without_pgsql		- without PostgreSQL support
 # _without_odbc		- without unixODBC support
 #
 # _without_static	- don't build static library
@@ -13,7 +13,8 @@
 #
 
 %define 	_withsql	1
-%{?_without_mysql:%{?_without_psql:%{?_without_odbc:%define _withsql 0}}}
+%{?_without_mysql:%{?_without_pgsql:%{?_without_odbc:%define _withsql 0}}}
+
 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
@@ -21,7 +22,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.1.1
-Release:	2
+Release:	3
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -31,7 +32,7 @@ Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
 Patch3:		%{name}-FHS.patch
 Patch4:		%{name}-qmake-opt.patch
-Patch5:		%{name}-QFont.patch
+Patch5:		%{name}-cursors.patch
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
 # incompatible with bison
@@ -45,8 +46,8 @@ BuildRequires:	libstdc++-devel
 BuildRequires:	libungif-devel
 %{!?_without_mysql:BuildRequires:	mysql-devel}
 BuildRequires:	perl
-%{!?_without_psql:BuildRequires:	postgresql-backend-devel}
-%{!?_without_psql:BuildRequires:	postgresql-devel}
+%{!?_without_pgsql:BuildRequires:	postgresql-backend-devel}
+%{!?_without_pgsql:BuildRequires:	postgresql-devel}
 %{!?_without_odbc:BuildRequires:	unixODBC-devel}
 %{!?_without_cups:BuildRequires:        cups-devel}
 %{?_with_nas:BuildRequires:	nas-devel}
@@ -243,7 +244,8 @@ Narzedzia programistyczne QT.
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
-#%patch5 -p1
+%patch5 -p1
+
 
 # mkspecs has wrong includes what makes it require patching every files that uses qmake
 # this is a fix
@@ -307,7 +309,7 @@ OPTFLAGS="%{rpmcflags}" \
 	-qt-imgfmt-mng \
 	%{!?_without_mysql:-qt-sql-mysql} \
 	%{!?_without_odbc:-qt-sql-odbc} \
-	%{!?_without_psql:-qt-sql-psql} \
+	%{!?_without_pgsql:-qt-sql-psql} \
 	$DEFAULTSTYLES \
 	-no-style-windowsxp \
 	<<_EOF_
@@ -336,7 +338,7 @@ OPTFLAGS="%{rpmcflags}" \
 	-qt-imgfmt-mng \
 	%{!?_without_mysql:-qt-sql-mysql} \
 	%{!?_without_odbc:-qt-sql-odbc} \
-	%{!?_without_psql:-qt-sql-psql} \
+	%{!?_without_pgsql:-qt-sql-psql} \
 	$DEFAULTSTYLES \
 	-no-style-windowsxp \
 	<<_EOF_
@@ -373,7 +375,7 @@ OPTFLAGS="%{rpmcflags}" \
 	-plugin-imgfmt-mng \
 	%{!?_without_mysql:-plugin-sql-mysql} \
 	%{!?_without_odbc:-plugin-sql-odbc} \
-	%{!?_without_psql:-plugin-sql-psql} \
+	%{!?_without_pgsql:-plugin-sql-psql} \
 	$DEFAULTSTYLES \
 	-no-style-windowsxp \
 	<<_EOF_
@@ -414,7 +416,7 @@ OPTFLAGS="%{rpmcflags}" \
 	-plugin-imgfmt-mng \
 	%{!?_without_mysql:-plugin-sql-mysql} \
 	%{!?_without_odbc:-plugin-sql-odbc} \
-	%{!?_without_psql:-plugin-sql-psql} \
+	%{!?_without_pgsql:-plugin-sql-psql} \
 	$DEFAULTSTYLES \
 	-no-style-windowsxp \
 	<<_EOF_
@@ -535,7 +537,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/%{name}/plugins*/sqldrivers/lib*mysql.so
 %endif
 
-%if %{!?_without_psql:1}%{?_without_psql:0}
+%if %{!?_without_pgsql:1}%{?_without_pgsql:0}
 %files plugins-psql
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}/plugins*/sqldrivers/lib*psql.so
