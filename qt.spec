@@ -25,24 +25,25 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.2
-Release:	0.%{_snap}.2
+Release:	0.%{_snap}.4
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
 #Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
 Source0:	%{name}-copy-%{_snap}.tar.bz2
+# Source0-md5:	fbbbd2b549f9492f8313f15807ec55e2
 Source1:	ftp://ftp.trolltech.com/qsa/%{name}-designer-changes-qsa-beta3.tar.gz
+# Source1-md5:	61dbb6efe50e04fcaa5a592e9bf58664
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
 Patch3:		%{name}-FHS.patch
-Patch4:		%{name}-qmake-opt.patch
+#Patch4:	%{name}-qmake-opt.patch
 Patch5:		%{name}-cursors.patch
 Patch6:         %{name}-qmake-nostatic.patch
 Patch7:		%{name}-disable_tutorials.patch
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.3.0
-BuildRequires:	XFree86-xft-devel
 # incompatible with bison
 BuildRequires:	byacc
 BuildRequires:	flex
@@ -61,6 +62,7 @@ BuildRequires:	perl
 %{?_with_nas:BuildRequires:	nas-devel}
 BuildRequires:	zlib-devel
 %{?_with_prelink:BuildRequires:	objprelink}
+BuildRequires:	xft-devel
 %{?_with_single:Provides:	%{name}-st = %{version}}
 Requires:	OpenGL
 Requires:	XFree86-libs >= 4.0.2
@@ -264,22 +266,23 @@ Narzedzia programistyczne QT.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
+#%patch4 -p1
 %patch5 -p1
 %patch6 -p1
 %patch7 -p1
 
 # Remove CVS stuff
-rm -rf `find . -name CVS`
+#rm -rf `find . -name CVS`
 
 # There is no file pointed by this sym-link
 # and there is cp -L in %%install
-rm -f include/qt_windows.h
+#rm -f include/qt_windows.h
 
 %build
 export QTDIR=`/bin/pwd`
-export LD_LIBRARY_PATH="$QTDIR/lib"
-PATH="$QTDIR/bin:$PATH"
+export YACC='byacc -d'
+#export LD_LIBRARY_PATH="$QTDIR/lib"
+#PATH="$QTDIR/bin:$PATH"
 
 # change QMAKE_CFLAGS_RELEASE to build
 # properly optimized libs
@@ -330,9 +333,6 @@ STATICOPT=" \
 ########################
 
 %if %{?_with_static:%{?_with_single:1}}0
-done
-
-OPTFLAGS="%{rpmcflags}" \
 ./configure \
 	$DEFAULTOPT \
 	$STATICOPT \
@@ -352,7 +352,6 @@ _EOF_
 #######################
 
 %if %{?_with_static:1}0
-OPTFLAGS="%{rpmcflags}" \
 ./configure \
 	$DEFAULTOPT \
 	$STATICOPT \
@@ -396,7 +395,6 @@ SHAREDOPT=" \
 # linking plugins statically with -lqt-mt
 rm -f lib/libqt-mt.prl
 
-OPTFLAGS="%{rpmcflags}" \
 ./configure \
 	$DEFAULTOPT \
 	$SHAREDOPT \
@@ -425,7 +423,6 @@ cp -R plugins/{imageformats,styles} plugins-st
 # SHARED MULTI-THREAD #
 #######################
 
-OPTFLAGS="%{rpmcflags}" \
 ./configure \
 	$DEFAULTOPT \
 	$SHAREDOPT \
@@ -436,7 +433,8 @@ yes
 _EOF_
 
 # Do not build tutorial and examples. Provide them as sources.
-%{__make} symlinks src-qmake src-moc sub-src sub-tools
+#%%{__make} symlinks src-qmake src-moc sub-src sub-tools
+%{__make} sub-tools
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -465,8 +463,8 @@ ln -sf libqt.so.%{_qt_sl}	$RPM_BUILD_ROOT%{_libdir}/libqt.so
 cp -R plugins-st/*		$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st/
 %endif
 
-install doc/man/man1/*		$RPM_BUILD_ROOT%{_mandir}/man1
-install doc/man/man3/*		$RPM_BUILD_ROOT%{_mandir}/man3
+install doc/man/man1/*.1		$RPM_BUILD_ROOT%{_mandir}/man1
+install doc/man/man3/*.3qt		$RPM_BUILD_ROOT%{_mandir}/man3
 
 cp -dpR examples tutorial $RPM_BUILD_ROOT%{_examplesdir}/%{name}
 	
@@ -516,11 +514,11 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc FAQ LICENSE.* README* changes*
-%attr(755,root,root) %{_libdir}/libqassistantclient.so.*
-%attr(755,root,root) %{_libdir}/libdesigner.so.*
-%attr(755,root,root) %{_libdir}/libeditor.so.*
-%attr(755,root,root) %{_libdir}/libqui.so.*
-%attr(755,root,root) %{_libdir}/libqt*.so.*
+%attr(755,root,root) %{_libdir}/libqassistantclient.so.*.*.*
+%attr(755,root,root) %{_libdir}/libdesigner.so.*.*.*
+%attr(755,root,root) %{_libdir}/libeditor.so.*.*.*
+%attr(755,root,root) %{_libdir}/libqui.so.*.*.*
+%attr(755,root,root) %{_libdir}/libqt*.so.*.*.*
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/plugins-?t
 %dir %{_libdir}/%{name}/plugins-?t/imageformats
