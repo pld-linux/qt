@@ -83,18 +83,18 @@ make SYCONF_CFLAGS="$RPM_OPT_FLAGS" SYSCONF_CXXFLAGS="$RPM_OPT_FLAGS" moc
 #printenv SYSCONF_CXXFLAGS
 #printenv SYSCONF_CFLAGS
 make SYSCONF_CXXFLAGS="$RPM_OPT_FLAGS" SYCONF_CFLAGS="$RPM_OPT_FLAGS" src
-#make util
+make util
 
 echo " Compiling Extensions ..."
 #not needed
 #(cd extensions/imageio/src;LD_LIBRARY_PATH=%{_libdir};make)
-#(cd extensions/network/src;LD_LIBRARY_PATH=%{_libdir};make)
+(cd extensions/network/src;LD_LIBRARY_PATH=%{_libdir};make)
 #(cd extensions/nsplugin/src;LD_LIBRARY_PATH=%{_libdir};make)
-#(cd extensions/opengl/src;LD_LIBRARY_PATH=%{_libdir};make)
+(cd extensions/opengl/src;LD_LIBRARY_PATH=%{_libdir};make)
 #not needned
 #(cd extensions/xembed/src;LD_LIBRARY_PATH=%{_libdir};make)
-#(cd extensions/xt/src;LD_LIBRARY_PATH=%{_libdir};make \
-#	INCPATH="-I%{_includepatch} -I../../../include")
+(cd extensions/xt/src;LD_LIBRARY_PATH=%{_libdir};make \
+	INCPATH="-I%{_includepatch} -I../../../include")
 
 # tutorial
 #(cd tutorial;LD_LIBRARY_PATH=%{_libdir};make)
