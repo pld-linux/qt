@@ -395,9 +395,9 @@ DEFAULTOPT=" \
 	%{?with_nas:-system-nas-sound} \
 	%{?debug:-debug}"
 
-##############################
-# OPTIONS FOR STATIC-{ST,MT} #
-##############################
+##################################
+#   OPTIONS FOR STATIC-{ST,MT}   #
+##################################
 
 %if %{with static}
 STATICOPT=" \
@@ -410,9 +410,9 @@ STATICOPT=" \
 	-static"
 %endif
 
-########################
-# STATIC SINGLE-THREAD #
-########################
+##################################
+#      STATIC SINGLE-THREAD      #
+##################################
 
 %if %{with static} && %{with single}
 ./configure \
@@ -429,9 +429,9 @@ _EOF_
 %{__make} clean
 %endif
 
-#######################
-# STATIC MULTI-THREAD #
-#######################
+##################################
+#      STATIC MULTI-THREAD       #
+##################################
 
 %if %{with static}
 ./configure \
@@ -449,9 +449,9 @@ _EOF_
 %{__make} clean
 %endif
 
-##############################
-# OPTIONS FOR SHARED-{ST,MT} #
-##############################
+##################################
+#   OPTIONS FOR SHARED-{ST,MT}   #
+##################################
 
 SHAREDOPT=" \
 	-plugin-imgfmt-jpeg \
@@ -468,9 +468,9 @@ SHAREDOPT=" \
 	-plugin-style-sgi \
 	-plugin-style-windows"
 
-########################
-# SHARED SINGLE-THREAD #
-########################
+##################################
+#      SHARED SINGLE-THREAD      #
+##################################
 
 %if %{with single}
 # workaround for some nasty bug to avoid
@@ -501,9 +501,9 @@ cp -R plugins/{imageformats,styles} plugins-st
 %{__make} clean
 %endif
 
-#######################
-# SHARED MULTI-THREAD #
-#######################
+##################################
+#      SHARED MULTI-THREAD       #
+##################################
 
 ./configure \
 	$DEFAULTOPT \
@@ -534,8 +534,6 @@ cd $Z
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_mandir}/man{1,3},%{_examplesdir}/%{name}/lib} \
-	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-{m,s}t/network
 
 export QTDIR=`/bin/pwd`
 
@@ -648,19 +646,20 @@ cat << EOF
 
 EOF
 
-%postun -p /sbin/ldconfig
-%post st -p /sbin/ldconfig
-%postun	st -p /sbin/ldconfig
+%postun 	-p /sbin/ldconfig
+
+%post 	st 	-p /sbin/ldconfig
+%postun	st 	-p /sbin/ldconfig
 
 %files
 %defattr(644,root,root,755)
 %doc FAQ LICENSE.* README* changes*
+%dir %{_sysconfdir}/qt
 %attr(755,root,root) %{_libdir}/libqassistantclient.so.*.*.*
 %attr(755,root,root) %{_libdir}/libdesignercore.so.*.*.*
 %attr(755,root,root) %{_libdir}/libeditor.so.*.*.*
 %attr(755,root,root) %{_libdir}/libqui.so.*.*.*
 %attr(755,root,root) %{_libdir}/libqt-mt.so.*.*.*
-%dir %{_sysconfdir}/qt
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/plugins-mt
 %dir %{_libdir}/%{name}/plugins-mt/network
@@ -681,12 +680,12 @@ EOF
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/[!adl]*
 %attr(755,root,root) %{_bindir}/l[!i]*
+%{_includedir}
 %{_libdir}/libqassistantclient.so
 %{_libdir}/libdesignercore.so
 %{_libdir}/libeditor.so
 %{_libdir}/libqui.so
 %{_libdir}/libqt-mt.so
-%{_includedir}
 %{_datadir}/qt/[!d]*
 %{_mandir}/man1/*
 %{_pkgconfigdir}/qt-mt.pc
@@ -773,7 +772,7 @@ EOF
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/[ad]*
 %attr(755,root,root) %{_bindir}/li*
-%dir %{_libdir}/%{name}/plugins*/designer
+%dir %{_libdir}/%{name}/plugins-?t/designer
 %attr(755,root,root) %{_libdir}/%{name}/plugins-?t/designer/*.so
 %{_datadir}/qt/designer
 %lang(de) %{_datadir}/locale/de/LC_MESSAGES/assistant.qm
