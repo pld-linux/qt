@@ -77,7 +77,7 @@ Qt przyk³ady.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
+%patch3 -p0
 
 %build
 QTDIR=`/bin/pwd`; export QTDIR
