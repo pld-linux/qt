@@ -1,4 +1,8 @@
 #
+# TODO:
+#   qmake generates Makefile with INCPATH containing -I$(QTDIR)/include/. It
+#   should be -I$(QTDIR)/include/qt
+#
 # Conditional build:
 # _without_prelink	- without objprelink (problems with new binutils?)
 #
