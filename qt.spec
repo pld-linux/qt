@@ -182,6 +182,7 @@ Requires:	libstdc++-devel
 Requires:	xcursor-devel
 Requires:	xft-devel
 Requires:	xrender-devel
+Requires:	zlib-devel
 Conflicts:	qt2-devel
 
 %description devel
