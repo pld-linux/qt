@@ -3,7 +3,7 @@ Summary(pl):	Biblioteka Qt2 do tworzenia GUI
 Name:		qt
 %define		libqutil_version 1.0.0
 Version:	2.3.1
-Release:	2
+Release:	3
 Epoch:		1
 License:	GPL
 Group:		X11/Libraries
@@ -23,7 +23,9 @@ BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	libstdc++-devel
 BuildRequires:	libungif-devel
 BuildRequires:	zlib-devel
+%ifnarch alpha
 BuildRequires:	objprelink
+%endif
 Requires:	OpenGL
 Requires:	XFree86-libs >= 4.0.2
 Requires:	libmng
@@ -86,7 +88,9 @@ Qt æwiczenia/przyk³ady.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%ifnarch alpha
 %patch3 -p0
+%endif
 
 %build
 QTDIR=`/bin/pwd`; export QTDIR
