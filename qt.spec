@@ -267,13 +267,21 @@ DEFAULTOPT="-prefix %{_prefix} \
 	-datadir %{_datadir}/qt \
 	-docdir %{_docdir}/%{name}-doc-%{version} \
 	-enable-opengl \
+	-fast \
 	-headerdir %{_includedir} \
 	%{?_without_cups:-no-cups"} \
 	-no-exceptions \
 	-no-g++-exceptions \
+	%{!?_without_mysql:-qt-sql-mysql} \
+	%{!?_without_odbc:-qt-sql-odbc} \
+	%{!?_without_pgsql:-qt-sql-psql} \
 	-qt-gif \
+	-qt-imgfmt-jpeg \
+	-qt-imgfmt-mng \
+	-qt-imgfmt-png \
 	-sm \
 	-stl \
+	-no-style-windowsxp \
 	-system-libjpeg \
 	-system-libmng \
 	-system-libpng \
@@ -301,16 +309,8 @@ OPTFLAGS="%{rpmcflags}" \
 ./configure \
 	$DEFAULTOPT \
 	-no-thread \
-	-fast \
 	-static \
-	-qt-imgfmt-png \
-	-qt-imgfmt-jpeg \
-	-qt-imgfmt-mng \
-	%{!?_without_mysql:-qt-sql-mysql} \
-	%{!?_without_odbc:-qt-sql-odbc} \
-	%{!?_without_pgsql:-qt-sql-psql} \
 	$DEFAULTSTYLES \
-	-no-style-windowsxp \
 	<<_EOF_
 yes
 _EOF_
@@ -332,15 +332,8 @@ OPTFLAGS="%{rpmcflags}" \
 	$DEFAULTOPT \
 	-thread \
 	-static \
-	-fast\
-	-qt-imgfmt-png \
-	-qt-imgfmt-jpeg \
-	-qt-imgfmt-mng \
-	%{!?_without_mysql:-qt-sql-mysql} \
-	%{!?_without_odbc:-qt-sql-odbc} \
-	%{!?_without_pgsql:-qt-sql-psql} \
+	-plugindir %{_libdir}/qt/plugins-mt \
 	$DEFAULTSTYLES \
-	-no-style-windowsxp \
 	<<_EOF_
 yes
 _EOF_
@@ -368,18 +361,10 @@ rm -f lib/libqt-mt.prl
 OPTFLAGS="%{rpmcflags}" \
 ./configure \
 	$DEFAULTOPT \
-	-fast \
 	-no-thread \
 	-shared \
 	-plugindir %{_libdir}/qt/plugins-st \
-	-plugin-imgfmt-png \
-	-plugin-imgfmt-jpeg \
-	-plugin-imgfmt-mng \
-	%{!?_without_mysql:-plugin-sql-mysql} \
-	%{!?_without_odbc:-plugin-sql-odbc} \
-	%{!?_without_pgsql:-plugin-sql-psql} \
 	$DEFAULTSTYLES \
-	-no-style-windowsxp \
 	<<_EOF_
 yes
 _EOF_
@@ -411,14 +396,7 @@ OPTFLAGS="%{rpmcflags}" \
 	-thread \
 	-shared \
 	-plugindir %{_libdir}/qt/plugins-mt \
-	-plugin-imgfmt-png \
-	-plugin-imgfmt-jpeg \
-	-plugin-imgfmt-mng \
-	%{!?_without_mysql:-plugin-sql-mysql} \
-	%{!?_without_odbc:-plugin-sql-odbc} \
-	%{!?_without_pgsql:-plugin-sql-psql} \
 	$DEFAULTSTYLES \
-	-no-style-windowsxp \
 	<<_EOF_
 yes
 _EOF_
@@ -428,6 +406,8 @@ _EOF_
 
 %install
 rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT{%{_mandir}/man{1,3},%{_examplesdir}/%{name}/lib} \
+	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-{m,s}t/network
 
 QTDIR=`/bin/pwd`; export QTDIR
 LD_LIBRARY_PATH="$QTDIR/lib" ; export LD_LIBRARY_PATH
@@ -437,8 +417,6 @@ PATH="$QTDIR/bin:$PATH"
 
 rm -rf `find $RPM_BUILD_ROOT -name CVS`
 
-install -d $RPM_BUILD_ROOT{%{_mandir}/man{1,3},%{_examplesdir}/%{name}/lib} \
-	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-{m,s}t/network
 install bin/{findtr,qt20fix,qtrename140} \
 	tools/msg2qm/msg2qm tools/mergetr/mergetr \
 	$RPM_BUILD_ROOT%{_bindir}
