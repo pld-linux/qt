@@ -6,7 +6,7 @@
 #   *.png files aren't installed.
 #
 # Conditional build:
-# _with_prelink		- witht objprelink (problems with new binutils?)
+# _with_prelink		- with objprelink (problems with new binutils?)
 # _without_mysql	- without mysql support
 # _without_psql		- without PostgreSQL support
 # _without_odbc		- without unixODBC support
@@ -53,7 +53,7 @@ BuildRequires:	postgresql-devel
 BuildRequires:	unixODBC-devel
 %endif
 BuildRequires:	zlib-devel
-%{?_witht_prelink:BuildRequires:	objprelink}
+%{?_with_prelink:BuildRequires:	objprelink}
 Requires:	OpenGL
 Requires:	XFree86-libs >= 4.0.2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -212,7 +212,7 @@ Plugin de suporte a ODBC para Qt.
 %setup -q -n %{name}-x11-free-%{version}
 %patch0 -p1
 %ifnarch %{ix86} ppc
-%{!?_witht_prelink:%patch1 -p1}
+%{!?_with_prelink:%patch1 -p1}
 %endif
 %patch2 -p1
 %patch3 -p1
@@ -433,8 +433,6 @@ find $RPM_BUILD_ROOT%{_examplesdir}/%{name} -regex '.*/\(examples\|tutorial\).*/
 		s|'$QTDIR'|%{_prefix}|g;
 	' {} \;
 
-gzip -9nf LICENSE.QPL
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -443,7 +441,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc LICENSE.QPL.gz
+%doc LICENSE.QPL
 %attr(755,root,root) %{_libdir}/libqt.so.*
 %attr(755,root,root) %{_libdir}/libqui.so.*
 %attr(755,root,root) %{_libdir}/libeditor.so.*
