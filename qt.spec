@@ -155,7 +155,7 @@ wykorzystaniem Netscape LiveConnect.
 
 Ten pakiet zawiera wspó³dzielon±, wielow±tkow±, linuksow± wersjê
 biblioteki Qt, wtyczki ze stylami oraz pliki t³umaczeñ Qt. Zainstaluj
-qt-st je¶li portrzebujesz wersji jednow±tkowej tej biblioteki (co
+qt-st je¶li potrzebujesz wersji jednow±tkowej tej biblioteki (co
 zwykle nie jest konieczne).
 
 %description -l pt_BR
