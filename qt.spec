@@ -540,27 +540,21 @@ rm -rf $RPM_BUILD_ROOT
 %if %{!?_without_mysql:1}%{?_without_mysql:0}
 %files plugins-mysql
 %defattr(644,root,root,755)
-%if %{?_with_single:1}0
-%attr(755,root,root) %{_libdir}/%{name}/plugins-st/sqldrivers/lib*mysql.so
-%endif
+%{?_with_single:%attr(755,root,root) %{_libdir}/%{name}/plugins-st/sqldrivers/lib*mysql.so}
 %attr(755,root,root) %{_libdir}/%{name}/plugins-mt/sqldrivers/lib*mysql.so
 %endif
 
 %if %{!?_without_pgsql:1}%{?_without_pgsql:0}
 %files plugins-psql
 %defattr(644,root,root,755)
-%if %{?_with_single:1}0
-%attr(755,root,root) %{_libdir}/%{name}/plugins-st/sqldrivers/lib*psql.so
-%endif
+%{?_with_single:%attr(755,root,root) %{_libdir}/%{name}/plugins-st/sqldrivers/lib*psql.so}
 %attr(755,root,root) %{_libdir}/%{name}/plugins-mt/sqldrivers/lib*psql.so
 %endif
 
 %if %{!?_without_odbc:1}%{?_without_odbc:0}
 %files plugins-odbc
 %defattr(644,root,root,755)
-%if %{?_with_single:1}0
-%attr(755,root,root) %{_libdir}/%{name}/plugins-st/sqldrivers/lib*odbc.so
-%endif
+%{?_with_single:%attr(755,root,root) %{_libdir}/%{name}/plugins-st/sqldrivers/lib*odbc.so}
 %attr(755,root,root) %{_libdir}/%{name}/plugins-mt/sqldrivers/lib*odbc.so
 %endif
 
