@@ -12,6 +12,11 @@ Source:		qt-%version.tar.gz
 BuildRequires:	libungif-devel
 BuildRequires:	zlib-devel
 BuildRequires:	libpng-devel
+BuildRequires:	Mesa-devel
+BuildRequires:	XFree86-devel
+BuildRequires:	libstdc++-devel
+#uncoment this line if You need Motif support for Qt 
+#BuildRequires: lesstif-devel
 Buildroot: /tmp/%{name}-%{version}-root
 
 %define	_prefix	/usr/X11R6
@@ -152,6 +157,9 @@ rm -rf $RPM_BUILD_ROOT
 #%{_libdir}/libqxt.a*
 
 %changelog
+* Wed Aug 11 1999 Wojciech "Sas" Ciêciwa <cieciwa@alpha.zarz.agh.edu.pl>
+- fixes BuildRequires problem.
+
 * Tue Aug 10 1999 Wojciech "Sas" Ciêciwa <cieciwa@alpha.zarz.agh.edu.pl>
   [2.0.1-2]
 - fixes problem with Lesstif.
