@@ -1,5 +1,9 @@
 # TODO:
 # 	* /usr/X11R6/tools/designer/templates	=> /usr/X11R6/share/qt/templates
+#
+# Conditional build:
+# _without_prelink	- without objprelink (problems with new binutils?)
+#
 #%define		_snapshot	20020222
 Summary:	The Qt3 GUI application framework
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
@@ -39,15 +43,13 @@ BuildRequires:	libungif-devel
 BuildRequires:	mysql-devel
 BuildRequires:	postgresql-backend-devel
 BuildRequires:	postgresql-devel
-BuildRequires:	sed
 BuildRequires:	unixODBC-devel
 BuildRequires:	zlib-devel
-%ifnarch alpha sparc
-BuildRequires:	objprelink
+%ifarch %{ix86} ppc
+%{!?_without_prelink:BuildRequires:	objprelink}
 %endif
 Requires:	OpenGL
 Requires:	XFree86-libs >= 4.0.2
-Requires:	libmng
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	qt-extensions
 
@@ -100,7 +102,7 @@ Statyczne biblioteki Qt.
 
 %package examples
 Summary:	Qt tutorial/examples
-Summary(pl):	Qt æwiczenia/przyk³ady
+Summary(pl):	Æwiczenia i przyk³ady do Qt
 Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{version}
 
@@ -108,7 +110,7 @@ Requires:	%{name}-devel = %{version}
 Qt tutorial/examples.
 
 %description examples -l pl
-Qt æwiczenia/przyk³ady.
+Æwiczenia/przyk³ady do Qt.
 
 %package plugins-mysql
 Summary:	Qt MySQL plugin
@@ -152,8 +154,8 @@ Wtyczka ODBC do Qt.
 %patch0 -p1
 #%patch1 -p1
 #%patch2 -p1
-%ifnarch alpha sparc
-%patch3 -p1
+%ifarch %{ix86} ppc
+%{!?_without_prelink:%patch3 -p1}
 %endif
 %patch4 -p1
 %patch5 -p1
@@ -164,7 +166,7 @@ Wtyczka ODBC do Qt.
 %patch10 -p1
 
 # There is no file pointed by this sym-link and there is cp -L in %%install
-rm include/qt_windows.h
+rm -f include/qt_windows.h
 
 %build
 QTDIR=`/bin/pwd`; export QTDIR
