@@ -2,7 +2,6 @@
 # Conditional build:
 %bcond_with	nas		# enable NAS audio support
 %bcond_with	nvidia		# prelink Qt/KDE and depend on NVIDIA binaries
-%bcond_with	xlibs		# use x.org libs instead of XFree86 libs
 %bcond_without	single		# don't build single-threaded libraries
 %bcond_without	static_libs	# don't build static libraries
 %bcond_without	cups		# disable CUPS support
@@ -43,24 +42,13 @@ Patch9:		%{name}-qmake-opt.patch
 Patch10:	%{name}-xcursor_version.patch
 Patch11:	%{name}-gcc34.patch
 URL:		http://www.trolltech.com/products/qt/
-BuildRequires:	OpenGL-devel
+BuildRequires:	X11-OpenGL-devel
 %{?with_nvidia:BuildRequires:	XFree86-driver-nvidia-devel < 1.0.4620}
 # incompatible with bison
 BuildRequires:	byacc
 %{?with_cups:BuildRequires:	cups-devel}
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
-BuildRequires:	XFree86-devel
-BuildRequires:	OpenGL-devel
-%if %{with xlibs}
-BuildRequires:	libXcursor-devel
-BuildRequires:	libXft-devel
-BuildRequires:	libXrender-devel
-%else
-BuildRequires:	xcursor-devel
-BuildRequires:	xft-devel
-BuildRequires:	xrender-devel
-%endif
 BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel >= 1.0.0
 BuildRequires:	libpng-devel >= 1.0.8
@@ -74,7 +62,7 @@ BuildRequires:	perl-base
 BuildRequires:	sed >= 4.0
 %{?with_odbc:BuildRequires:	unixODBC-devel}
 BuildRequires:	zlib-devel
-Requires:	OpenGL
+Requires:	X11-OpenGL
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Conflicts:	kdelibs <= 8:3.2-0.030602.1
 Obsoletes:	qt-extensions
@@ -108,15 +96,13 @@ Summary(es):	Archivos de inclusión y documentación necesaria para compilar aplic
 Summary(pl):	Pliki nag³ówkowe, przyk³ady i dokumentacja do biblioteki
 Summary(pt_BR):	Arquivos de inclusão e documentação necessária para compilar aplicações Qt
 Group:		X11/Development/Libraries
-Requires:	%{name} = %{epoch}:%{version}-%{release}
-%if ! %{with xlibs}
-Requires:	XFree86-devel
-%endif
+Requires:	X11-OpenGL-devel
 Requires:	freetype-devel
 Requires:	libjpeg-devel
 Requires:	libmng-devel
 Requires:	libpng-devel
 Requires:	libstdc++-devel
+Requires:	%{name} = %{epoch}:%{version}-%{release}
 Conflicts:	qt2-devel
 
 %description devel
@@ -162,7 +148,7 @@ Statyczna biblioteka Qt.
 Summary:	QT Documentation in HTML format
 Summary(pl):	Dokumentacja QT w formacie HTML
 Group:		X11/Development/Libraries
-Obsoletes:	%{name}-doc-html
+Obsoletes:	qt-doc-html
 
 %description doc
 Qt documentation in HTML format.
@@ -174,7 +160,7 @@ Dokumentacja qt w formacie HTML.
 Summary:	QT man pages
 Summary(pl):	QT - strony man
 Group:		X11/Development/Libraries
-Obsoletes:	%{name}-doc-man
+Obsoletes:	qt-doc-man
 
 %description man
 Qt documentation in man pages format.
@@ -205,7 +191,7 @@ Summary(pt_BR):	Plugin de suporte a MySQL para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Provides:	%{name}-plugin-sql
-Obsoletes:	%{name}-plugins-mysql
+Obsoletes:	qt-plugins-mysql
 
 %description plugin-mysql
 Database plugin for MySQL Qt support.
@@ -225,7 +211,7 @@ Requires:	%{name} = %{epoch}:%{version}-%{release}
 %{?with_single:Requires:	%{name}-st = %{epoch}:%{version}-%{release}}
 Provides:	%{name}-plugin-sql
 %{?with_single:Provides:	%{name}-plugin-sql-st = %{epoch}:%{version}-%{release}}
-Obsoletes:	%{name}-plugins-psql
+Obsoletes:	qt-plugins-psql
 
 %description plugin-psql
 Database plugin for pgsql Qt support.
@@ -243,7 +229,7 @@ Summary(pt_BR):	Plugin de suporte a ODBC para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Provides:	%{name}-plugin-sql
-Obsoletes:	%{name}-plugins-odbc
+Obsoletes:	qt-plugins-odbc
 
 %description plugin-odbc
 Database plugin for ODBC Qt support.
