@@ -3,7 +3,7 @@ Summary(pl):	Biblioteka Qt2 do tworzenia GUI
 Name:		qt
 %define		libqutil_version 1.0.0
 Version:	2.3.0
-Release:	3
+Release:	4
 Epoch:		1
 License:	GPL
 Group:		X11/Libraries
@@ -48,6 +48,7 @@ Group(de):	X11/Entwicklung/Libraries
 Group(pl):	X11/Programowanie/Biblioteki
 Requires:	%{name} = %{version}
 Requires:	XFree86-devel
+Requires:	libstdc++-devel
 
 %description devel
 Contains the files necessary to develop applications using Qt: header
