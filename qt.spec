@@ -20,7 +20,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	%{_ver}.%{_snap}
-Release:	1
+Release:	2
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -328,6 +328,18 @@ QT Development Utilities.
 %description utils -l pl
 Narzêdzia programistyczne QT.
 
+%package -n qtconfig
+Summary:	QT widgets configuration tool
+Summary(pl):	Narzêdzie do konfigurowania widgetów QT
+Group:		X11/Applications
+Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
+
+%description -n qtconfig
+A tool for configuring look and behavior of QT widgets.
+
+%description -n qtconfig -l pl
+Narzêdie do konfiguracji wygl±du i zachowania widgetów QT.
+
 %prep
 %setup -q -n %{name}-copy-%{_snap}
 %patch0 -p1
@@ -542,6 +554,7 @@ install -d \
 	%{?with_single:$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st/network} \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name}/lib \
 	$RPM_BUILD_ROOT%{_mandir}/man{1,3} \
+	$RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir}}
 
 install bin/{findtr,qt20fix,qtrename140,qt32castcompat} \
 	tools/{msg2qm/msg2qm,mergetr/mergetr} \
@@ -557,6 +570,12 @@ ln -sf libqt.so.%{_ver}		$RPM_BUILD_ROOT%{_libdir}/libqt.so
 install lib/qt.pc		$RPM_BUILD_ROOT%{_pkgconfigdir}
 cp -R plugins-st/*		$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st
 %endif
+
+install debian/maintain/qtconfig.desktop \
+	$RPM_BUILD_ROOT%{_desktopdir}
+
+install tools/qtconfig/images/appicon.png \
+	$RPM_BUILD_ROOT%{_pixmapsdir}/qtconfig.png
 
 install doc/man/man1/*.1	$RPM_BUILD_ROOT%{_mandir}/man1
 install doc/man/man3/*.3qt	$RPM_BUILD_ROOT%{_mandir}/man3
@@ -676,8 +695,18 @@ EOF
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/[!adl]*
-%attr(755,root,root) %{_bindir}/l[!i]*
+%attr(755,root,root) %{_bindir}/findtr
+%attr(755,root,root) %{_bindir}/lrelease
+%attr(755,root,root) %{_bindir}/lupdate
+%attr(755,root,root) %{_bindir}/mergetr
+%attr(755,root,root) %{_bindir}/moc
+%attr(755,root,root) %{_bindir}/msg2qm
+%attr(755,root,root) %{_bindir}/qm2ts
+%attr(755,root,root) %{_bindir}/qmake
+%attr(755,root,root) %{_bindir}/qt20fix
+%attr(755,root,root) %{_bindir}/qt32castcompat
+%attr(755,root,root) %{_bindir}/qtrename140
+%attr(755,root,root) %{_bindir}/uic
 %{_includedir}
 %{_libdir}/libqassistantclient.so
 %{_libdir}/libdesignercore.so
@@ -768,8 +797,9 @@ EOF
 
 %files utils
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/[ad]*
-%attr(755,root,root) %{_bindir}/li*
+%attr(755,root,root) %{_bindir}/assistant
+%attr(755,root,root) %{_bindir}/designer
+%attr(755,root,root) %{_bindir}/linguist
 %dir %{_libdir}/%{name}/plugins-?t/designer
 %attr(755,root,root) %{_libdir}/%{name}/plugins-?t/designer/*.so
 %{_datadir}/qt/designer
@@ -779,3 +809,9 @@ EOF
 %lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/designer.qm
 %lang(de) %{_datadir}/locale/de/LC_MESSAGES/linguist.qm
 %lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/linguist.qm
+
+%files -n qtconfig
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/qtconfig
+%{_desktopdir}/qtconfig.desktop
+%{_pixmapsdir}/qtconfig.png
