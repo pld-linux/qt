@@ -33,7 +33,7 @@ Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
 #Source1:	ftp://ftp.trolltech.com/qsa/%{name}-designer-changes-qsa-beta3.tar.gz
 #%% Source1-md5:	61dbb6efe50e04fcaa5a592e9bf58664
 Source1:	http://ep09.kernel.pl/~djurban/snap/%{name}-patches-030801.tar.bz2
-# Source1-md5:	00c5652d4d3eb1a28e55c4591d38afea
+# Source1-md5:	edc2340cd8317b19515718de29102219
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
