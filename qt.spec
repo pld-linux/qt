@@ -37,7 +37,7 @@ Requires:	libmng
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	qt-extensions
 
-%define 	_noautoreqdep	libGL.so.1 libGLU.so.1
+%define		_noautoreqdep	libGL.so.1 libGLU.so.1
 %define		_prefix		/usr/X11R6
 %define		_includedir	%{_prefix}/include/qt
 %define		_mandir		%{_prefix}/man
@@ -173,7 +173,7 @@ _EOF_
 (cd plugins/src/sqldrivers/mysql && $QTDIR/bin/qmake -o Makefile \
 	"INCLUDEPATH+=/usr/include/mysql" "LIBS+=-L/usr/lib -lmysqlclient" mysql.pro)
 (cd plugins/src/sqldrivers/odbc && $QTDIR/bin/qmake \
-	"INCLUDEPATH+=/usr/include" "LIBS+=-L/usr/lib -lodbc")            
+	"INCLUDEPATH+=/usr/include" "LIBS+=-L/usr/lib -lodbc")
 (cd plugins/src/sqldrivers/psql && $QTDIR/bin/qmake \
 	"INCLUDEPATH+=/usr/include/postgresql" "LIBS+=-L/usr/lib -lpq")
 
@@ -206,7 +206,7 @@ _EOF_
 %{__make} symlinks src-qmake src-moc sub-src \
 	SYSCONF_CFLAGS="%{rpmcflags}" \
 	SYSCONF_CXXFLAGS="%{rpmcflags}"
-	
+
 %install
 rm -rf $RPM_BUILD_ROOT
 
@@ -257,7 +257,7 @@ done
 
 cp -dpr examples $RPM_BUILD_ROOT%{_examplesdir}/%{name}
 cp -dpr tutorial $RPM_BUILD_ROOT%{_datadir}/tutorial/%{name}
-				
+
 gzip -9nf LICENSE.QPL
 
 %post -p /sbin/ldconfig
