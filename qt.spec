@@ -280,7 +280,7 @@ perl -pi -e "
 #find examples -name '*.pro' -exec \
 #	perl -pi -e 's|(DEPENDPATH=)../../include|$1%{_includedir}|' {} \;
 
-DEFAULTOPT="-prefix %{_prefix} -docdir %{_docdir}/%{name}-%{version} \
+DEFAULTOPT="-prefix %{_prefix} -docdir %{_docdir}/%{name}-doc-html-%{version} \
 	    -datadir %{_datadir}/qt -headerdir %{_includedir}\
 	    -release -qt-gif -system-zlib -no-g++-exceptions -stl \
 	    -no-exceptions \
@@ -521,7 +521,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files doc-html
 %defattr(644,root,root,755)
-%doc doc/html/*
+%{_docdir}/%{name}-doc-html-%{version}
 
 %files doc-man
 %defattr(644,root,root,755)
