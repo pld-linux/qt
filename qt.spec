@@ -200,7 +200,7 @@ rm -rf $RPM_BUILD_ROOT
 - removed compiling tutorial and examples during building (qt.patch),
 - fixed dependences for devel by adding "Requires: %%{name} = %%{version}",
 - html, tutorial, examples and doc are marked as %doc in devel subpackage,
-- header files moved to /usr/include/qt (to be consistent with FSSTND),
+- header files moved to %{_includedir}/qt (to be consistent with FSSTND),
 - replaced "mkdir -p" with "install -d" in %install,
 - added striping binaries,
 - %{_libdir}/lib*.so moved to devel,
