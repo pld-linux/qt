@@ -98,8 +98,8 @@ export LD_LIBRARY_PATH SYSCONF_CFLAGS SYSCONF_CXXFLAGS
         SYSCONF_CFLAGS="%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}" \
 	SYSCONF_CXXFLAGS="%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}"
 %else
-        SYSCONF_CFLAGS="%{!?debug:$RPM_OPT_FLAGS -O}%{?debug:-O -g}" \
-	SYSCONF_CXXFLAGS="%{!?debug:$RPM_OPT_FLAGS -O}%{?debug:-O -g}"
+        SYSCONF_CFLAGS="%{!?debug: -0O}%{?debug:-O -g}" \
+	SYSCONF_CXXFLAGS="%{!?debug: -O0}%{?debug:-O -g}"
 %endif
 	
 %install
