@@ -13,6 +13,7 @@ Patch2:		qt-enablegif.patch
 URL:		http://www.troll.no/
 BuildPrereq:	libstdc++-devel
 BuildPrereq:	XFree86-devel
+BuildPrereq:	Mesa-devel
 Buildroot:	/tmp/%{name}-%{version}-root
 
 %description
@@ -138,7 +139,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/src/examples/%{name}
 
 %files extensions
-%attr(755,root,root) /usr/X11R6/lib/libqimgio.so.*.*
+%defattr(755,root,root,755)
+/usr/X11R6/lib/libqimgio.so.*.*
 
 %changelog
 * Sat Apr 24 1999 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
