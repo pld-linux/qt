@@ -2,6 +2,7 @@
 # Conditional build:
 %bcond_with	nas		# enable NAS audio support
 %bcond_with	nvidia		# prelink Qt/KDE and depend on NVIDIA binaries
+%bcond_with	xlibs		# use x.org libs instead of XFree86 libs
 %bcond_without	single		# don't build single-threaded libraries
 %bcond_without	static_libs	# don't build static libraries
 %bcond_without	cups		# disable CUPS support
@@ -14,8 +15,8 @@
 %define		_withsql	1
 %{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}
 
-%define		_snap	040205
-%define		_ver	3.3.0
+%define		_snap	040404
+%define		_ver	3.3.1
 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
@@ -23,12 +24,12 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	%{_ver}.%{_snap}
-Release:	3
+Release:	1
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
 Source0:	http://ep09.pld-linux.org/~adgor/kde/%{name}-copy-%{_snap}.tar.bz2
-# Source0-md5:	62618279e47b3c7c8da65b113f9eae86
+# Source0-md5:	ee7331d1f81df1d41484ab5d950a657d
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
@@ -39,16 +40,28 @@ Patch6:		%{name}-locale.patch
 Patch7:		%{name}-make_use_of_locale.patch
 Patch8:		%{name}-make_assistant_use_global_docs.patch
 Patch9:		%{name}-qmake-opt.patch
-Patch10:	%{name}-textedit_speedup.patch
+Patch10:	%{name}-xcursor_version.patch
 Patch11:	%{name}-gcc34.patch
 URL:		http://www.trolltech.com/products/qt/
 BuildRequires:	OpenGL-devel
-%{?with_nvidia:BuildRequires:	XFree86-driver-nvidia-devel}
+%{?with_nvidia:BuildRequires:	XFree86-driver-nvidia-devel < 1.0.4620}
 # incompatible with bison
 BuildRequires:	byacc
 %{?with_cups:BuildRequires:	cups-devel}
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
+%if %{with xlibs}
+BuildRequires:	libXcursor-devel
+BuildRequires:	libXft-devel
+BuildRequires:	libXmu-devel
+BuildRequires:	libXrandr-devel
+%else
+BuildRequires:	XFree86-devel
+BuildRequires:	OpenGL-devel
+BuildRequires:	xft-devel
+BuildRequires:	xcursor-devel
+BuildRequires:	xrender-devel
+%endif
 BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel >= 1.0.0
 BuildRequires:	libpng-devel >= 1.0.8
@@ -61,12 +74,8 @@ BuildRequires:	perl-base
 %{?with_pgsql:BuildRequires:	postgresql-devel}
 BuildRequires:	sed >= 4.0
 %{?with_odbc:BuildRequires:	unixODBC-devel}
-BuildRequires:	xcursor-devel
-BuildRequires:	xrender-devel
-BuildRequires:	xft-devel
 BuildRequires:	zlib-devel
 Requires:	OpenGL
-Requires:	XFree86-libs >= 4.0.2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Conflicts:	kdelibs <= 8:3.2-0.030602.1
 Obsoletes:	qt-extensions
@@ -101,7 +110,9 @@ Summary(pl):	Pliki nag³ówkowe, przyk³ady i dokumentacja do biblioteki
 Summary(pt_BR):	Arquivos de inclusão e documentação necessária para compilar aplicações Qt
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
+%if ! %{with xlibs}
 Requires:	XFree86-devel
+%endif
 Requires:	freetype-devel
 Requires:	libjpeg-devel
 Requires:	libmng-devel
@@ -322,6 +333,32 @@ Database plugin for ODBC support in single-threaded Qt.
 %description st-plugin-odbc -l pl
 Wtyczka ODBC do jednow±tkowej wersji Qt.
 
+%package style-cde
+Summary:	Qt style - CDE
+Summary(pl):	Styl Qt - CDE
+Group:		X11/Amusements
+Requires:	%{name} = %{epoch}:%{version}-%{release}
+Conflicts:	qt =< 6:3.3.0.040207-1
+
+%description style-cde
+Qt style - CDE.
+
+%description style-cde -l pl
+Styl Qt - CDE.
+
+%package style-compact
+Summary:	Qt style - Compact
+Summary(pl):	Styl Qt - Compact
+Group:		X11/Amusements
+Requires:	%{name} = %{epoch}:%{version}-%{release}
+Conflicts:	qt =< 6:3.3.0.040207-1
+
+%description style-compact
+Qt style - Compact.
+
+%description style-compact -l pl
+Styl Qt - Compact.
+
 %package utils
 Summary:	QT Utils
 Summary(pl):	Narzêdzia QT
@@ -539,6 +576,7 @@ export Z=`/bin/pwd`
 %if %{without designer}
 grep -v designer tools/tools.pro > tools/tools.pro.1
 mv tools/tools.pro{.1,}
+make -C tools/designer/uic
 %endif
 
 # Do not build tutorial and examples. Provide them as sources.
