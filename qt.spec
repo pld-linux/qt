@@ -15,7 +15,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.0.5
-Release:	2.1
+Release:	2.2
 Epoch:		3
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -29,6 +29,8 @@ Patch5:		%{name}-FHS.patch
 Patch6:		%{name}-configure.patch
 Patch7:		%{name}-qmake-opt.patch
 Patch8:		%{name}-QFont.patch
+Patch9:		%{name}-fix-lv.patch
+Patch10:	%{name}-gcc31dlopen.patch
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
 BuildRequires:	freetype-devel >= 2.0.0
@@ -211,6 +213,8 @@ Plugin de suporte a ODBC para Qt.
 %patch6 -p1
 %patch7 -p1
 %patch8 -p1
+%patch9 -p1
+%patch10 -p1
 
 # There is no file pointed by this sym-link and there is cp -L in %%install
 rm -f include/qt_windows.h
