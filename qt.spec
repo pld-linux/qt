@@ -10,13 +10,12 @@
 %bcond_without	odbc		# disable unixODBC support
 %bcond_without	pgsql		# disable PostgreSQL support
 %bcond_without	designer	# disable designer, it builds longer than
-				# libqt and doesnt really change in snaps.
 				
 %define		_withsql	1
 %{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}
 
-%define		_snap	040412
-%define		_ver	3.3.1
+%define		_snap		040412
+%define		_ver		3.3.1
 %define		_packager	djurban
 
 Summary:	The Qt3 GUI application framework
@@ -25,7 +24,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	%{_ver}.%{_snap}
-Release:	1
+Release:	2
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
@@ -408,9 +407,8 @@ Libraries IDE used for GUI designing with QT library.
 %description designer-libs -l pl
 Biblioteki do IDE s³u¿±cego do projektowania GUI za pomoc± biblioteki QT.
 
-
 %prep
-%setup -q -n %{name}-copy
+%setup -q -n %{name}-copy-%{_snap}
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -428,12 +426,27 @@ Biblioteki do IDE s³u¿±cego do projektowania GUI za pomoc± biblioteki QT.
 
 # change QMAKE_CFLAGS_RELEASE to build
 # properly optimized libs
+plik="mkspecs/linux-g++/qmake.conf"
+
 perl -pi -e "
-	s|-O2|%{rpmcflags}|;
 	s|/usr/X11R6/lib|/usr/X11R6/%{_lib}|;
 	s|/usr/lib|%{_libdir}|;
 	s|\\(QTDIR\\)/lib|\\(QTDIR\\)/%{_lib}|;
-	" mkspecs/linux-g++/qmake.conf
+	" $plik
+
+cat $plik \
+	|grep -v QMAKE_CFLAGS_RELEASE \
+	|grep -v QMAKE_CXXFLAGS_RELEASE \
+	|grep -v QMAKE_CFLAGS_DEBUG \
+	|grep -v QMAKE_CXXFLAGS_DEBUG \
+	> $plik.1
+
+mv $plik.1  $plik
+echo >> $plik
+echo -e "QMAKE_CFLAGS_RELEASE\t=\t%{rpmcflags}" >> $plik
+echo -e "QMAKE_CXXFLAGS_RELEASE\t=\t%{rpmcflags}" >> $plik
+echo -e "QMAKE_CFLAGS_DEBUG\t=\t%{debugcflags}" >> $plik
+echo -e "QMAKE_CXXFLAGS_DEBUG\t=\t%{debugcflags}" >> $plik
 
 %build
 export QTDIR=`/bin/pwd`
@@ -447,7 +460,8 @@ if [ "%{_lib}" != "lib" ] ; then
 fi
 
 # pass OPTFLAGS for qmake itself
-export OPTFLAGS="%{rpmcflags} -DQT_CLEAN_NAMESPACE"
+#export OPTFLAGS="%{rpmcflags} -DQT_CLEAN_NAMESPACE"
+#export OPTFLAGS="$OPTFLAGS -DQT_CLEAN_NAMESPACE"
 
 %{__make} -f Makefile.cvs
 
@@ -571,7 +585,7 @@ _EOF_
 # Do not build tutorial and examples. Provide them as sources.
 %{__make} symlinks src-qmake src-moc sub-src
 
-# Dont make tools, only plugins.
+# Do not make tools, only plugins.
 %{__make} -C plugins/src sub-imageformats sub-sqldrivers sub-styles
 
 # This will not remove previously compiled libraries. But WILL remove
@@ -597,32 +611,30 @@ cp -R plugins/{imageformats,styles} plugins-st
 yes
 _EOF_
 
-export Z=`/bin/pwd`
-
 %if %{without designer}
 grep -v designer tools/tools.pro > tools/tools.pro.1
 mv tools/tools.pro{.1,}
 %{__make} -C tools/designer/uic \
-	UIC="LD_PRELOAD=$Z/%{_lib}/libqt-mt.so.3 $Z/bin/uic -L $Z/plugins"
+	UIC="LD_PRELOAD=$QTDIR/%{_lib}/libqt-mt.so.3 $QTDIR/bin/uic -L$QTDIR/plugins"
 %endif
 
 # Do not build tutorial and examples. Provide them as sources.
 #%%{__make} symlinks src-qmake src-moc sub-src sub-tools
 %{__make} sub-tools \
-	UIC="LD_PRELOAD=$Z/%{_lib}/libqt-mt.so.3 $Z/bin/uic -L $Z/plugins"
+	UIC="LD_PRELOAD=$QTDIR/%{_lib}/libqt-mt.so.3 $QTDIR/bin/uic -L$QTDIR/plugins"
 
 %if %{with designer}
 cd tools/designer/designer
-LD_PRELOAD=$Z/%{_lib}/libqt-mt.so.3 lrelease designer_de.ts
-LD_PRELOAD=$Z/%{_lib}/libqt-mt.so.3 lrelease designer_fr.ts
+LD_PRELOAD=$QTDIR/%{_lib}/libqt-mt.so.3 lrelease designer_de.ts
+LD_PRELOAD=$QTDIR/%{_lib}/libqt-mt.so.3 lrelease designer_fr.ts
 %endif
-cd $Z/tools/assistant
-LD_PRELOAD=$Z/%{_lib}/libqt-mt.so.3 lrelease assistant_de.ts
-LD_PRELOAD=$Z/%{_lib}/libqt-mt.so.3 lrelease assistant_fr.ts
-cd $Z/tools/linguist/linguist
-LD_PRELOAD=$Z/%{_lib}/libqt-mt.so.3 lrelease linguist_de.ts
-LD_PRELOAD=$Z/%{_lib}/libqt-mt.so.3 lrelease linguist_fr.ts
-cd $Z
+cd $QTDIR/tools/assistant
+LD_PRELOAD=$QTDIR/%{_lib}/libqt-mt.so.3 lrelease assistant_de.ts
+LD_PRELOAD=$QTDIR/%{_lib}/libqt-mt.so.3 lrelease assistant_fr.ts
+cd $QTDIR/tools/linguist/linguist
+LD_PRELOAD=$QTDIR/%{_lib}/libqt-mt.so.3 lrelease linguist_de.ts
+LD_PRELOAD=$QTDIR/%{_lib}/libqt-mt.so.3 lrelease linguist_fr.ts
+cd $QTDIR
 
 ##make -C extensions/nsplugin/src
 
@@ -676,25 +688,10 @@ cp -dpR examples tutorial $RPM_BUILD_ROOT%{_examplesdir}/%{name}
 
 mv $RPM_BUILD_ROOT{%{_libdir}/*.prl,%{_examplesdir}/%{name}/lib}
 
+# From now qt includedir becomes %{_includedir}/qt
 perl -pi -e "
 	s|(QMAKE_INCDIR_QT\\s*=\\s*\\\$\\(QTDIR\\)/include)|\$1/qt|
 	" $RPM_BUILD_ROOT/%{_datadir}/qt/mkspecs/linux-g++/qmake.conf
-
-plik="$RPM_BUILD_ROOT/%{_datadir}/qt/mkspecs/linux-g++/qmake.conf"
-
-cat $plik \
-	|grep -v QMAKE_CFLAGS_RELEASE \
-	|grep -v QMAKE_CXXFLAGS_RELEASE \
-	|grep -v QMAKE_CFLAGS_DEBUG \
-	|grep -v QMAKE_CXXFLAGS_DEBUG \
-	> $plik.1
-
-echo -e "QMAKE_CFLAGS_RELEASE\t=\t%{rpmcflags}" > $plik
-echo -e "QMAKE_CXXFLAGS_RELEASE\t=\t%{rpmcflags}" >> $plik
-echo -e "QMAKE_CFLAGS_DEBUG\t=\t%{debugcflags}" >> $plik
-echo -e "QMAKE_CXXFLAGS_DEBUG\t=\t%{debugcflags}" >> $plik
-cat $plik.1 >> $plik
-rm $plik.1
 
 # We provide qt style classes as plugins,
 # so make corresponding changes to the qconfig.h.
