@@ -1,7 +1,5 @@
 # TODO:
 # - hack assistant, to use some global config file with documentation list
-# - hack linguist to make it use translations
-# - hack qt to use translations
 # Conditional build:
 # _with_nas		- enable nas audio support
 # _with_single		- build also single threaded libraries
@@ -25,7 +23,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.2.0
-Release:	1
+Release:	2
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -34,6 +32,8 @@ Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
 #Source0:	http://www.kernel.pl/~adgor/kde/%{name}-copy-%{_snap}.tar.bz2
 #Source1:	ftp://ftp.trolltech.com/qsa/%{name}-designer-changes-qsa-beta3.tar.gz
 #%% Source1-md5:	61dbb6efe50e04fcaa5a592e9bf58664
+Source1:	http://ep09.kernel.pl/~djurban/snap/%{name}-patches-030801.tar.bz2
+# Source1-md5:	00c5652d4d3eb1a28e55c4591d38afea
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
@@ -43,6 +43,7 @@ Patch3:		%{name}-FHS.patch
 Patch6:         %{name}-qmake-nostatic.patch
 Patch7:		%{name}-disable_tutorials.patch
 Patch8:         %{name}-locale.patch
+Patch9:         %{name}-make_use_of_locale.patch
 URL:		http://www.trolltech.com/products/qt/
 BuildRequires:	OpenGL-devel
 # incompatible with bison
@@ -263,7 +264,7 @@ Narzedzia programistyczne QT.
 
 %prep
 #%%setup -q -n %{name}-copy
-%setup -q -n %{name}-x11-free-%{version}
+%setup -q -n %{name}-x11-free-%{version} -a1
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -273,10 +274,13 @@ Narzedzia programistyczne QT.
 %patch6 -p1
 %patch7 -p1
 %patch8 -p1
+%patch9 -p1
 
 %build
 export QTDIR=`/bin/pwd`
 export YACC='byacc -d'
+
+mv patches/apply_patches ./
 
 # change QMAKE_CFLAGS_RELEASE to build
 # properly optimized libs
@@ -286,7 +290,7 @@ perl -pi -e "
 
 #%{__make} -f Makefile.cvs
 
-#./apply_patches
+./apply_patches
 
 ##################################
 # DEFAULT OPTIONS FOR ALL BUILDS #
@@ -298,6 +302,7 @@ DEFAULTOPT=" \
 	-datadir %{_datadir}/qt \
 	-docdir %{_docdir}/%{name}-doc \
 	-sysconfdir %{_sysconfdir} \
+	-translationdir %{_datadir}/locale/  \
 	-fast \
 	-qt-gif \
 	-system-libjpeg \
@@ -432,6 +437,19 @@ _EOF_
 #%%{__make} symlinks src-qmake src-moc sub-src sub-tools
 %{__make} sub-tools
 
+export Z=`/bin/pwd`
+
+cd tools/designer/designer/
+lrelease designer_de.ts
+lrelease designer_fr.ts
+cd $Z/tools/assistant
+lrelease assistant_de.ts
+lrelease assistant_fr.ts
+cd $Z/tools/linguist
+lrelease linguist_de.ts
+lrelease linguist_fr.ts
+cd $Z
+
 %install
 rm -rf $RPM_BUILD_ROOT
 
@@ -503,7 +521,26 @@ cat >> $RPM_BUILD_ROOT%{_includedir}/qconfig.h << EOF
 #define QT_NO_STYLE_PLATINUM
 #define QT_NO_STYLE_SGI
 #define QT_NO_STYLE_WINDOWS
+
 EOF
+
+install -d $RPM_BUILD_ROOT%{_datadir}/locale/LC_MESSAGES/{ar,de,fr,ru}
+install translations/qt_ar.qm $RPM_BUILD_ROOT%{_datadir}/locale/LC_MESSAGES/ar/qt.qm
+install translations/qt_de.qm $RPM_BUILD_ROOT%{_datadir}/locale/LC_MESSAGES/de/qt.qm
+install translations/qt_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale/LC_MESSAGES/fr/qt.qm
+install translations/qt_ru.qm $RPM_BUILD_ROOT%{_datadir}/locale/LC_MESSAGES/ru/qt.qm
+
+install tools/designer/designer/designer_de.qm	$RPM_BUILD_ROOT%{_datadir}/locale/LC_MESSAGES/de/designer.qm
+install tools/designer/designer/designer_fr.qm  $RPM_BUILD_ROOT%{_datadir}/locale/LC_MESSAGES/fr/designer.qm
+
+install tools/assistant/assistant_de.qm  $RPM_BUILD_ROOT%{_datadir}/locale/LC_MESSAGES/de/assistant.qm
+install tools/assistant/assistant_fr.qm  $RPM_BUILD_ROOT%{_datadir}/locale/LC_MESSAGES/fr/assistant.qm
+
+install tools/linguist/linguist/linguist_de.qm  $RPM_BUILD_ROOT%{_datadir}/locale/LC_MESSAGES/de/linguist.qm
+install tools/linguist/linguist/linguist_fr.qm  $RPM_BUILD_ROOT%{_datadir}/locale/LC_MESSAGES/fr/linguist.qm
+
+
+install tools/qm2ts/qm2ts.1 $RPM_BUILD_ROOT%{_mandir}/man1
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -530,6 +567,11 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/%{name}/plugins-?t/imageformats/*.so
 %attr(755,root,root) %{_libdir}/%{name}/plugins-?t/styles/*.so
 %dir %{_datadir}/qt
+%lang(ar) %{_datadir}/locale/ar/LC_MESSAGES/qt.qm
+%lang(de) %{_datadir}/locale/de/LC_MESSAGES/qt.qm
+%lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/qt.qm
+%lang(ru) %{_datadir}/locale/ru/LC_MESSAGES/qt.qm
+
 
 %files devel
 %defattr(644,root,root,755)
@@ -543,6 +585,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}
 %{_datadir}/qt/[!d]*
 %{_mandir}/man1/*
+%{_libdir}/pkgconfig/qt-mt.pc
+   
 
 %if %{?_with_static:1}0
 %files static
@@ -587,3 +631,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/%{name}/plugins*/designer
 %attr(755,root,root) %{_libdir}/%{name}/plugins-?t/designer/*.so
 %{_datadir}/qt/designer
+%lang(de) %{_datadir}/locale/de/LC_MESSAGES/assistant.qm
+%lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/assistant.qm
+%lang(de) %{_datadir}/locale/de/LC_MESSAGES/designer.qm
+%lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/designer.qm
+%lang(de) %{_datadir}/locale/de/LC_MESSAGES/linguist.qm
+%lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/linguist.qm
