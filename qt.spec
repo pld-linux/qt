@@ -1,26 +1,21 @@
-Summary:	The Qt GUI application framework: Shared library
-Summary(pl):	Biblioteka Qt do tworzenia GUI
+Summary:	The Qt2 GUI application framework
+Summary(pl):	Biblioteka Qt2 do tworzenia GUI
 Name:		qt
-Version:	1.44
-Release:	7
-Copyright:	distributable
+Version:	2.0.1
+Release:	1
+Copyright:	QPL
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
-Source:		ftp://ftp.troll.no/qt/source/%{name}-%{version}.tar.gz
-Patch0:		qt.patch
-Patch1:		qt-opt.patch
-Patch2:		qt-enablegif.patch
-URL:		http://www.troll.no/
-BuildRequires:	libstdc++-devel
-BuildRequires:	XFree86-devel
-BuildRequires:	Mesa-devel
-BuildRequires:	libjpeg-devel
+#ftp:		ftp.troll.no
+#path:		qt/source
+Source:		qt-%version.tar.gz
+BuildRequires:	libungif-devel
+BuildRequires:	zlib-devel
 BuildRequires:	libpng-devel
-BuildRequires:	lesstif-devel
-Buildroot:	/tmp/%{name}-%{version}-root
+Buildroot: /tmp/%{name}-%{version}-root
 
-%define _prefix /usr/X11R6
-%define	_mandir %{_prefix}/man
+%define	_prefix	/usr/X11R6
+%define	_mandir	/usr/share/man
 
 %description
 Contains the shared library needed to run Qt applications, as well as
@@ -30,72 +25,79 @@ the README files for Qt.
 Zawiera bibliotekê Qt wymagan± przez aplikacje, które z niej korzystaj±.
 
 %package devel
-Summary:	Include files and documentation needed to compile
-Summary(pl):	Pliki nag³ówkowe, przyk³ady i dokumentacja do biblioteki 
-Group:		X11/Development/Libraries
-Group(pl):	X11/Programowanie/Biblioteki
-Requires:	%{name} = %{version}
-Requires:	%{name}-extensions = %{version}
+Summary:        Include files and documentation needed to compile
+Summary(pl):    Pliki nag³ówkowe, przyk³ady i dokumentacja do biblioteki 
+Group:          X11/Development/Libraries
+Group(pl):      X11/Programowanie/Biblioteki
+Requires:       %{name} = %{version}
+Requires:       %{name}-ext = %{version}
 
 %description devel
 Contains the files necessary to develop applications using Qt: header
 files, the Qt meta object compiler, man pages, HTML documentation and
 example programs. See http://www.troll.no/ for more information about
-Qt, or file:/usr/doc/%{name}-devel-%{version}/html/index.html for Qt
-documentation in HTML.
+Qt, or file:/usr/share/doc/%{name}-devel-%{version}/index.html 
+for Qt documentation in HTML.
 
 %description -l pl devel
 Pakiet tem zawiera pliki potrzebne do tworzenia i kompilacji aplikacji
-korzystaj±cych z biblioteki Qt jak pliki nag³ówkowe, meta kompiler (moc),
+korzystaj±cych z biblioteki Qt, jak pliki nag³ówkowe, meta kompiler (moc),
 dokumentacjê. Zobacz http://www.troll.no/ aby dowiedzieæ siê wiêcej o Qt.
 Dokumentacjê do biblioteki znajdziesz tak¿e pod:
-/usr/doc/%{name}-%{version}/html/index.html  
+/usr/share/doc/%{name}-devel-%{version}/index.html  
 
-%package extensions
-Summary:	Qt extensions, library and headers file
-Summary(pl):	Rozszerzenia biblioteki QT
-Group:		X11/Libraries
-Group(pl):	X11/Biblioteki
-Requires:	%{name} = %{version}
+%package ext
+Summary:        Qt extensions, library and headers file
+Summary(pl):    Qt extensions, rozrze¿enia dla QT biblioteki i pliki nag³ówkowe 
+Group:          X11/Libraries
+Group(pl):      X11/Biblioteki
+Requires:       %{name} = %{version}
 
-%description extensions
+%description ext
 Contains the Qt extension files with library and include files.
 Contains extension for Motif/Lesstif, OpenGL, image manipulation.
 
-%description -l pl extensions
-Pakiet zawiera zestaw rozszerzeñ dla biblioteki Qt. Biblioteki oraz pliki
+%description -l pl ext
+Pakiet zawiera zestaw rozsze¿eñ dla biblioteki Qt. Biblioteki oraz pliki
 nag³ówkowe dla nastêpuj±cych pakietów: Motif/Lestif, OpenGL, Netscape oraz
 operacji na obrazach.
 
 %prep
-%setup  -q
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
+%setup -q
 
 %build
 QTDIR=`/bin/pwd`; export QTDIR
-make linux-g++-shared
+./configure \
+	-shared \
+	-sm \
+	-system-zlib \
+	-gif \
+	-system-libpng
 
-LD_LIBRARY_PATH=%{_libdir} make
+#make  RPM_OPT_FLAGS="$RPM_OPT_FLAGS"
 
-(cd extensions/imageio/src; LD_LIBRARY_PATH=%{_libdir} make)
-(cd extensions/opengl/src; LD_LIBRARY_PATH=%{_libdir} make)
-(cd extensions/xt/src; LD_LIBRARY_PATH=%{_libdir} \
- make INCPATH="-I%{_includedir} -I../../../include")
+LD_LIBRARY_PAYH=%{_libdir} make
+
+(cd extensions/opengl/src;LD_LIBRARY_PATH=%{_libdir};make)
+(cd extensions/imageio/src;LD_LIBRARY_PATH=%{_libdir};make)
+(cd extensions/xt/src;LD_LIBRARY_PATH=%{_libdir};make \
+	INCPATH="-I%{_includepatch} -I../../../include")
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_bindir},%{_includedir},%{_libdir},%{_mandir}/man{1,3}} \
-	$RPM_BUILD_ROOT/usr/src/examples/%{name}
+install -d $RPM_BUILD_ROOT/{%{_bindir},%{_libdir},%{_includedir},%{_mandir}/man{1,3}}
 
-install -s bin/moc $RPM_BUILD_ROOT%{_bindir}/moc
-install -s lib/libqt.so.*.* $RPM_BUILD_ROOT%{_libdir}
-ln -sf libqt.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libqt.so
-install man/man1/* $RPM_BUILD_ROOT%{_mandir}/man1
-install man/man3/* $RPM_BUILD_ROOT%{_mandir}/man3
-install include/* $RPM_BUILD_ROOT%{_includedir}
+install -s bin/* $RPM_BUILD_ROOT/%{_bindir}/
 
+install -s lib/lib*.so* $RPM_BUILD_ROOT/%{_libdir}
+
+install lib/lib*.a $RPM_BUILD_ROOT%{_libdir}
+
+install include/* $RPM_BUILD_ROOT/%{_includedir}
+install man/man1/* $RPM_BUILD_ROOT/%{_mandir}/man1
+install man/man3/* $RPM_BUILD_ROOT/%{_mandir}/man3
+
+# Extensions
 install -s lib/libqimgio.so.*.* $RPM_BUILD_ROOT%{_libdir}
 ln -sf libqimgio.so.0.1 $RPM_BUILD_ROOT%{_libdir}/libqimgio.so
 install extensions/imageio/src/*.h $RPM_BUILD_ROOT%{_includedir}
@@ -104,46 +106,54 @@ install lib/libqgl.a $RPM_BUILD_ROOT%{_libdir}
 install extensions/opengl/src/*.h $RPM_BUILD_ROOT%{_includedir}
 
 if [ -f lib/libqxt.a ] ; then
-	install lib/libqxt.a $RPM_BUILD_ROOT%{_libdir}
+        install lib/libqxt.a $RPM_BUILD_ROOT%{_libdir}
 fi
 install extensions/xt/src/*.h $RPM_BUILD_ROOT%{_includedir}/
+	
+bzip2 -9 $RPM_BUILD_ROOT%{_mandir}/man[13]/* \
+	ANNOUNCE FAQ README* MANIFEST PLATFORMS changes* LICENSE.QPL
 
-for a in {tutorial,examples}/{Makefile,*/Makefile}; do
-	cat $a | sed 's-^SYSCONF_MOC.*-SYSCONF_MOC              = %{_bindir}/moc-' | \
-	sed 's-^SYSCONF_CXXFLAGS_QT     = \$(QTDIR)/include-SYSCONF_CXXFLAGS_QT = %{_includedir}-' | \
-	sed 's-^SYSCONF_LFLAGS_QT       = \$(QTDIR)/lib-SYSCONF_LFLAGS_QT = %{_libdir}-' > $a.
-	mv -vf $a. $a
-done
+%post   
+/sbin/ldconfig
 
-cp -dpr tutorial examples $RPM_BUILD_ROOT/usr/src/examples/%{name}
+%post ext
+/sbin/ldconfig
 
-gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man[13]/* \
-	README* LICENSE FAQ ANNOUNCE changes-* doc/*
+%postun 
+/sbin/ldconfig
 
-%post   -p /sbin/ldconfig
-%postun -p /sbin/ldconfig
-
-%post   -p /sbin/ldconfig extensions
-%postun -p /sbin/ldconfig extensions
+%postun ext
+/sbin/ldconfig
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(644,root,root,755)
-%doc LICENSE.gz README*.gz FAQ.gz
-%attr(755,root,root) %{_libdir}/libqt.so.*.*
+%defattr(644, root, root, 755)
+%doc {ANNOUNCE,FAQ,README*,MANIFEST,changes*,PLATFORMS,LICENSE.QPL}.bz2
+%attr(755,root,root) %{_libdir}/libqt.so.%{version}
 
 %files devel
-%defattr(644,root,root,755)
-%doc html doc changes-*.gz ANNOUNCE.gz
+%defattr(644, root, root, 755)
+%doc doc/*
 %attr(755,root,root) %{_bindir}/*
-%attr(755,root,root) %{_libdir}/lib*.so
-%{_libdir}/lib*.a
+%{_libdir}/*.a
 %{_mandir}/man[13]/*
 %{_includedir}/*
-/usr/src/examples/%{name}
 
-%files extensions
+%files ext
 %defattr(755,root,root,755)
 %{_libdir}/libqimgio.so.*.*
+
+%changelog
+* Mon Aug  9 1999 Wojciech "Sas" Ciêciwa <cieciwa@alpha.zarz.agh.edu.pl>
+  [2.0.1-1]
+- update to last version.
+
+* Tue Jun 15 1999 Wojciech "Sas" Ciêciwa <cieciwa@alpha.zarz.agh.edu.pl>
+  [2.00beta2-snapshot-19990614-1]
+- update to last version.
+
+* Mon Jun 14 1999 Wojciech "Sas" Ciêciwa <cieciwa@alpha.zarz.agh.edu.pl>
+  [2.00beta2-snapshot-19990613-1]
+- build RPM.
