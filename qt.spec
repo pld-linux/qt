@@ -9,7 +9,7 @@ Group(pl):	X11/Biblioteki
 Source0:	ftp://ftp.troll.no/qt/source/%{name}-x11-%{version}.tar.gz
 BuildRequires:	libungif-devel
 BuildRequires:	zlib-devel
-BuildRequires:	libpng >= 1.0.8
+BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel
 BuildRequires:	libstdc++-devel
