@@ -20,7 +20,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.2
-Release:	0.%{_snap}.3
+Release:	0.%{_snap}.4
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -33,6 +33,7 @@ Patch3:		%{name}-FHS.patch
 Patch4:		%{name}-qmake-opt.patch
 Patch5:		%{name}-cursors.patch
 Patch6:         %{name}-qmake-nostatic.patch
+Patch7:         %{name}-qtconfig.h.patch
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.3.0
 BuildRequires:	XFree86-xft-devel
