@@ -15,8 +15,9 @@
 %define		_withsql	1
 %{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}
 
-%define		_snap	040404
+%define		_snap	040412
 %define		_ver	3.3.1
+%define		_packager	djurban
 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
@@ -28,8 +29,8 @@ Release:	1
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
-Source0:	http://ep09.pld-linux.org/~adgor/kde/%{name}-copy-%{_snap}.tar.bz2
-# Source0-md5:	ee7331d1f81df1d41484ab5d950a657d
+Source0:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-%{_snap}.tar.bz2
+# Source0-md5:	bd798476f4643f39ddc45dd52819f23c
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
@@ -383,8 +384,33 @@ A tool for configuring look and behavior of QT widgets.
 %description -n qtconfig -l pl
 Narzêdie do konfiguracji wygl±du i zachowania widgetów QT.
 
+%package designer
+Summary:        IDE used for GUI designing with QT library
+Summary(pl):    IDE s³u¿±ce do projektowania GUI za pomoc± biblioteki QT
+Group:          X11/Applications
+Requires:       %{name}-designer-libs = %{epoch}:%{version}-%{release}
+
+%description designer
+IDE used for GUI designing with QT library.
+
+%description designer -l pl
+IDE s³u¿±ce do projektowania GUI za pomoc± biblioteki QT.
+
+%package designer-libs
+Summary:        Libraries IDE used for GUI designing with QT library
+Summary(pl):    Biblioteki do IDE s³u¿±cego do projektowania GUI za pomoc± biblioteki QT
+Group:          X11/Applications
+Requires:       %{name} = %{epoch}:%{version}-%{release}
+
+%description designer-libs
+Libraries IDE used for GUI designing with QT library.
+
+%description designer-libs -l pl
+Biblioteki do IDE s³u¿±cego do projektowania GUI za pomoc± biblioteki QT.
+
+
 %prep
-%setup -q -n %{name}-copy-%{_snap}
+%setup -q -n %{name}-copy
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -576,7 +602,8 @@ export Z=`/bin/pwd`
 %if %{without designer}
 grep -v designer tools/tools.pro > tools/tools.pro.1
 mv tools/tools.pro{.1,}
-%{__make} -C tools/designer/uic
+%{__make} -C tools/designer/uic \
+	UIC="LD_PRELOAD=$Z/%{_lib}/libqt-mt.so.3 $Z/bin/uic -L $Z/plugins"
 %endif
 
 # Do not build tutorial and examples. Provide them as sources.
@@ -743,11 +770,6 @@ EOF
 %doc FAQ LICENSE.* README* changes*
 %dir %{_sysconfdir}/qt
 %attr(755,root,root) %{_libdir}/libqassistantclient.so.*.*.*
-%if %{with designer}
-%attr(755,root,root) %{_libdir}/libdesignercore.so.*.*.*
-%attr(755,root,root) %{_libdir}/libeditor.so.*.*.*
-%endif
-%attr(755,root,root) %{_libdir}/libqui.so.*.*.*
 %attr(755,root,root) %{_libdir}/libqt-mt.so.*.*.*
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/plugins-mt
@@ -784,11 +806,6 @@ EOF
 %attr(755,root,root) %{_bindir}/uic
 %{_includedir}
 %{_libdir}/libqassistantclient.so
-%if %{with designer}
-%{_libdir}/libdesignercore.so
-%{_libdir}/libeditor.so
-%endif
-%{_libdir}/libqui.so
 %{_libdir}/libqt-mt.so
 %{_datadir}/qt/[!d]*
 %{_mandir}/man1/*
@@ -872,23 +889,35 @@ EOF
 %endif
 %endif
 
-%files utils
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/assistant
 %if %{with designer}
+%files designer-libs
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libdesignercore.so.*.*.*
+%attr(755,root,root) %{_libdir}/libeditor.so.*.*.*
+%attr(755,root,root) %{_libdir}/libqui.so.*.*.*
+%{_libdir}/libqui.so
+%{_libdir}/libdesignercore.so
+%{_libdir}/libeditor.so
+
+
+%files designer
+%defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/designer
 %{_desktopdir}/designer.desktop
-%endif
-%attr(755,root,root) %{_bindir}/linguist
 %dir %{_libdir}/%{name}/plugins-?t/designer
 %attr(755,root,root) %{_libdir}/%{name}/plugins-?t/designer/*.so
 %{_datadir}/qt/designer
-%lang(de) %{_datadir}/locale/de/LC_MESSAGES/assistant.qm
-%lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/assistant.qm
-%if %{with designer}
 %lang(de) %{_datadir}/locale/de/LC_MESSAGES/designer.qm
 %lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/designer.qm
 %endif
+
+
+%files utils
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/assistant
+%attr(755,root,root) %{_bindir}/linguist
+%lang(de) %{_datadir}/locale/de/LC_MESSAGES/assistant.qm
+%lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/assistant.qm
 %lang(de) %{_datadir}/locale/de/LC_MESSAGES/linguist.qm
 %lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/linguist.qm
 
