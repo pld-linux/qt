@@ -14,8 +14,8 @@
 %define		_withsql	1
 %{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}
 
-%define		_snap	040207
-%define		_ver	3.3.0
+%define		_snap	040304
+%define		_ver	3.3.1
 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
@@ -28,7 +28,7 @@ Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
 Source0:	http://ep09.pld-linux.org/~adgor/kde/%{name}-copy-%{_snap}.tar.bz2
-# Source0-md5:	a0dde821adb3a75d4e3d271b4c1787cb
+# Source0-md5:	562da1d1933c6ca8e2d6f6702f9441c3
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
@@ -39,6 +39,7 @@ Patch6:		%{name}-locale.patch
 Patch7:		%{name}-make_use_of_locale.patch
 Patch8:		%{name}-make_assistant_use_global_docs.patch
 Patch9:		%{name}-qmake-opt.patch
+Patch10:	%{name}-xcursor_version.patch
 URL:		http://www.trolltech.com/products/qt/
 BuildRequires:	OpenGL-devel
 %{?with_nvidia:BuildRequires:	XFree86-driver-nvidia-devel < 1.0.4620}
@@ -320,6 +321,32 @@ Database plugin for ODBC support in single-threaded Qt.
 %description st-plugin-odbc -l pl
 Wtyczka ODBC do jednow±tkowej wersji Qt.
 
+%package style-cde
+Summary:	Qt style - CDE
+Summary(pl):	Styl Qt - CDE
+Group:		X11/Amusements
+Requires:	%{name} = %{epoch}:%{version}-%{release}
+Conflicts:	qt =< 6:3.3.0.040207-1
+
+%description style-cde
+Qt style - CDE.
+
+%description style-cde -l pl
+Styl Qt - CDE.
+
+%package style-compact
+Summary:	Qt style - Compact
+Summary(pl):	Styl Qt - Compact
+Group:		X11/Amusements
+Requires:	%{name} = %{epoch}:%{version}-%{release}
+Conflicts:	qt =< 6:3.3.0.040207-1
+
+%description style-compact
+Qt style - Compact.
+
+%description style-compact -l pl
+Styl Qt - Compact.
+
 %package utils
 Summary:	QT Utils
 Summary(pl):	Narzêdzia QT
@@ -356,6 +383,7 @@ Narzêdie do konfiguracji wygl±du i zachowania widgetów QT.
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
+%patch10 -p1
 
 ./apply_patches
 
