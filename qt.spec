@@ -14,7 +14,7 @@ BuildRequires:	Mesa-devel
 BuildRequires:	XFree86-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	lesstif-devel
-Buildroot:	/tmp/%{name}-%{version}-root
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_prefix		/usr/X11R6
 
@@ -113,7 +113,6 @@ install include/* $RPM_BUILD_ROOT/%{_includedir}
 # Extensions
 install extensions/opengl/src/*.h $RPM_BUILD_ROOT%{_includedir}
 install extensions/xt/src/*.h $RPM_BUILD_ROOT%{_includedir}
-
 
 strip --strip-unneeded $RPM_BUILD_ROOT/%{_bindir}/* || :
 strip --strip-unneeded $RPM_BUILD_ROOT/%{_libdir}/*.so*
