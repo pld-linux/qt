@@ -1,0 +1,13 @@
+Common subdirectories: qt-x11-free-3.0.2.orig/config.tests and qt-x11-free-3.0.2/config.tests
+diff -u qt-x11-free-3.0.2.orig/configure qt-x11-free-3.0.2/configure
+--- qt-x11-free-3.0.2.orig/configure	Thu Jan 24 20:42:33 2002
++++ qt-x11-free-3.0.2/configure	Sat Feb 16 12:38:38 2002
+@@ -624,7 +624,7 @@
+ trap "\
+ [ -r qconfig.h-hold ] && mv -f $outpath/qconfig.h-hold $outpath/include/qconfig.h ;\
+ [ -r qmodules.h-hold ] && mv -f $outpath/qmodules.h-hold $outpath/include/qmodules.h ;\
+-exit 130" SIGHUP SIGINT SIGTERM
++exit 130" HUP INT TERM
+ 
+ ### please add a comment here: what is qdir? why do we set it here?
+ qdir="\$(QTDIR)"
