@@ -43,6 +43,8 @@ Patch7:         %{name}-make_use_of_locale.patch
 Patch8:         %{name}-make_assistant_use_global_docs.patch
 Patch9:         %{name}-qlineedit_khtml_fix.patch
 Patch10:        %{name}-qmake_la_generation_fix.patch
+Patch11:	%{name}-qmlined-fix.patch
+Patch12:	%{name}-qmake-opt.patch
 URL:		http://www.trolltech.com/products/qt/
 BuildRequires:	OpenGL-devel
 # incompatible with bison
@@ -275,6 +277,9 @@ Narzedzia programistyczne QT.
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
+# patch10 was not applied, but it's still not right --q
+%patch11 -p1
+%patch12 -p1
 
 %build
 export QTDIR=`/bin/pwd`
@@ -292,6 +297,8 @@ mv patches/apply_patches ./
 perl -pi -e "
 	s|-O2|%{rpmcflags}|;
 	" mkspecs/linux-g++/qmake.conf
+# pass OPTFLAGS for qmake itself
+export OPTFLAGS="%{rpmcflags}"
 
 #%{__make} -f Makefile.cvs
 
@@ -441,7 +448,6 @@ _EOF_
 # Do not build tutorial and examples. Provide them as sources.
 #%%{__make} symlinks src-qmake src-moc sub-src sub-tools
 %{__make} sub-tools
-
 
 export Z=`/bin/pwd`
 
