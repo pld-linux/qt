@@ -67,7 +67,7 @@ BuildRequires:	xft-devel
 Requires:	OpenGL
 Requires:	XFree86-libs >= 4.0.2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-Conflicts:	kdelibs =< 3.2-0.030602.1
+Conflicts:	kdelibs =< 8:3.2-0.030602.1
 Obsoletes:	qt-extensions
 
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1
