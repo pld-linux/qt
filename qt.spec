@@ -2,7 +2,7 @@ Summary:	The Qt2 GUI application framework
 Summary(pl):	Biblioteka Qt2 do tworzenia GUI
 Name:		qt
 Version:	2.1.1
-Release: 3
+Release:	3
 License:	QPL
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
@@ -80,9 +80,9 @@ QTDIR=`/bin/pwd`; export QTDIR
 LD_LIBRARY_PATH=%{_libdir} ;	export LD_LIBRARY_PATH
 SYSCONF_CFLAGS="-pipe -DNO_DEBUG $RPM_OPT_FLAGS" ;	export SYSCONF_CFLAGS
 SYSCONF_CXXFLAGS="-pipe -DNO_DEBUG $RPM_OPT_FLAGS" ;	export SYSCONF_CXXFLAGS
-make SYCONF_CFLAGS="$RPM_OPT_FLAGS" SYSCONF_CXXFLAGS="$RPM_OPT_FLAGS" moc
-make SYSCONF_CXXFLAGS="$RPM_OPT_FLAGS" SYCONF_CFLAGS="$RPM_OPT_FLAGS" src
-make util
+%{__make} SYCONF_CFLAGS="$RPM_OPT_FLAGS" SYSCONF_CXXFLAGS="$RPM_OPT_FLAGS" moc
+%{__make} SYSCONF_CXXFLAGS="$RPM_OPT_FLAGS" SYCONF_CFLAGS="$RPM_OPT_FLAGS" src
+%{__make} util
 
 echo " Compiling Extensions ..."
 (cd extensions/opengl/src;LD_LIBRARY_PATH=%{_libdir};make)
@@ -128,7 +128,7 @@ for a in {tutorial,examples}/{Makefile,*/Makefile}; do
         cat $a | sed 's-^SYSCONF_MOC.*-SYSCONF_MOC = %{_bindir}/moc -' | \
 	sed 's-^SYSCONF_CXXFLAGS_QT     = \$(QTDIR)/include-SYSCONF_CXXFLAGS_QT = %{_includedir}-' | \
 	sed 's-^SYSCONF_LFLAGS_QT       = \$(QTDIR)/lib-SYSCONF_LFLAGS_QT = %{_libdir}-' > $a.
-        mv -vf $a. $a
+        mv -f $a. $a
 done
 
 cp -dpr examples $RPM_BUILD_ROOT/usr/src/examples/%{name}
