@@ -101,9 +101,10 @@ fi
 install extensions/xt/src/*.h $RPM_BUILD_ROOT/usr/X11R6/include/X11/qt
 
 for a in {tutorial,examples}/{Makefile,*/Makefile}; do
-	cat $a | sed 's-^SYSCONF_MOC.*-SYSCONF_MOC		= /usr/X11R6/bin/moc-' | \
-	sed 's-^SYSCONF_CXXFLAGS_QT	= \$(QTDIR)/include-SYSCONF_CXXFLAGS_QT	= /usr/X11R6/include/qt-' | \
-	sed 's-^SYSCONF_LFLAGS_QT	= \$(QTDIR)/lib-SYSCONF_LFLAGS_QT	= /usr/X11R6/lib-' > $a
+	cat $a | sed 's-^SYSCONF_MOC.*-SYSCONF_MOC              = /usr/X11R6/bin/moc-' | \
+	sed 's-^SYSCONF_CXXFLAGS_QT     =\$(QTDIR)/include-SYSCONF_CXXFLAGS_QT = /usr/X11R6/include/qt-' | \
+	sed 's-^SYSCONF_LFLAGS_QT       = \$(QTDIR)/lib-SYSCONF_LFLAGS_QT = /usr/X11R6/lib-' > $a.
+	mv -vf $a. $a
 done
 
 gzip -9nf $RPM_BUILD_ROOT/usr/X11R6/man/man[13]/* \
