@@ -5,7 +5,7 @@ Name:		qt
 %define		libqui_version 1.0.0
 %define		libeditor_version 1.0.0
 Version:	3.0.2
-Release:	0.%{_snapshot}.1
+Release:	0.%{_snapshot}.2
 Epoch:		1
 License:	GPL
 Group:		X11/Libraries
@@ -157,9 +157,9 @@ sed 's/-O2/%{rpmcflags}/' mkspecs/linux-g++/qmake.conf > qmk.tmp
 mv -f qmk.tmp mkspecs/linux-g++/qmake.conf
 
 DEFAULTOPT="-prefix %{_prefix} -bindir %{_bindir} -libdir %{_libdir} -docdir %{_docdir} \
-            -headerdir include/qt -release -qt-gif -system-zlib -no-g++-exceptions \
-	    -stl -remote -system-libpng -system-libjpeg -system-libmng -sm -xinerama \
-	    -xrender -xft -xkb"
+            -headerdir %{_includedir} -plugindir %{_libdir}/qt/plugins  -plugindir %{_datadir}/qt \
+	    -release -qt-gif -system-zlib -no-g++-exceptions -stl -remote -system-libpng \
+	    -system-libjpeg -system-libmng -sm -xinerama -xrender -xft -xkb"
 
 ./configure \
 	$DEFAULTOPT \
