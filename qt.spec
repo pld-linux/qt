@@ -8,10 +8,9 @@
 %bcond_without	odbc	# disable unixODBC support
 %bcond_without	pgsql	# disable PostgreSQL support
 
+#%%define	_snap	030925
 
-#%%define 	_snap	030925
-
-%define 	_withsql	1
+%define		_withsql	1
 %{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}
 
 Summary:	The Qt3 GUI application framework
@@ -476,7 +475,7 @@ SHAREDOPT=" \
 	-plugin-style-platinum \
 	-plugin-style-sgi \
 	-plugin-style-windows"
-	
+
 ########################
 # SHARED SINGLE-THREAD #
 ########################
@@ -556,7 +555,7 @@ install -d \
 	%{?with_single:$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st/network} \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name}/lib \
 	$RPM_BUILD_ROOT%{_mandir}/man{1,3} \
-	
+
 install bin/{findtr,qt20fix,qtrename140,qt32castcompat} \
 	tools/{msg2qm/msg2qm,mergetr/mergetr} \
 	$RPM_BUILD_ROOT%{_bindir}
@@ -631,7 +630,6 @@ install tools/assistant/assistant_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_
 install tools/linguist/linguist/linguist_de.qm $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/linguist.qm
 install tools/linguist/linguist/linguist_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/linguist.qm
 
-
 install tools/linguist/qm2ts/qm2ts.1 $RPM_BUILD_ROOT%{_mandir}/man1
 
 install -d $RPM_BUILD_ROOT%{_sysconfdir}/qt
@@ -640,14 +638,14 @@ echo -e "\n" > $RPM_BUILD_ROOT%{_sysconfdir}/qt/doclist
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post	
+%post
 /sbin/ldconfig
 echo "#####################################################"
 echo "# After qt 3.2.0 the single version was separated.  #"
 echo "# Please install qt-st if you really require it.    #"
 echo "# If you do not use qt-st explicitly, please ignore #"
 echo "# this, as you will not notice any changes. In most #"
-echo "# cases do not install qt-st, as it is obsolete.    #"
+echo "# cases do not install qt-st, as it is obsoleted.   #"
 echo "#####################################################"
 
 %postun -p /sbin/ldconfig
