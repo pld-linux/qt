@@ -1,12 +1,12 @@
 #
 # Conditional build:
-%bcond_with	nas	# enable NAS audio support
-%bcond_without	single	# don't build single-threaded libraries
-%bcond_without	static	# don't build static libraries
-%bcond_without	cups	# disable CUPS support
-%bcond_without	mysql	# disable MySQL support
-%bcond_without	odbc	# disable unixODBC support
-%bcond_without	pgsql	# disable PostgreSQL support
+%bcond_with	nas		# enable NAS audio support
+%bcond_without	single		# don't build single-threaded libraries
+%bcond_without	static_libs	# don't build static libraries
+%bcond_without	cups		# disable CUPS support
+%bcond_without	mysql		# disable MySQL support
+%bcond_without	odbc		# disable unixODBC support
+%bcond_without	pgsql		# disable PostgreSQL support
 
 %define		_withsql	1
 %{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}
@@ -30,7 +30,7 @@ Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
 ##Source1:	http://www.kernel.pl/~djurban/pld/unix-sdk-3.0b5.tar.Z
 ## Source1-md5:	1e43785d5697c60937e8d6236e7d7d7e
 Source2:	http://www.kernel.pl/~djurban/snap/%{name}-patches-031115.tar.bz2	
-# Source2-md5:	c9212ba066a8deb087fe10f009ad7629
+# Source2-md5:	2ad72a8bcb6dddd1c597ed883faa9efb
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
@@ -398,7 +398,7 @@ DEFAULTOPT=" \
 #   OPTIONS FOR STATIC-{ST,MT}   #
 ##################################
 
-%if %{with static}
+%if %{with static_libs}
 STATICOPT=" \
 	-qt-imgfmt-jpeg \
 	-qt-imgfmt-mng \
@@ -413,7 +413,7 @@ STATICOPT=" \
 #      STATIC SINGLE-THREAD      #
 ##################################
 
-%if %{with static} && %{with single}
+%if %{with static_libs} && %{with single}
 ./configure \
 	$DEFAULTOPT \
 	$STATICOPT \
@@ -432,7 +432,7 @@ _EOF_
 #      STATIC MULTI-THREAD       #
 ##################################
 
-%if %{with static}
+%if %{with static_libs}
 ./configure \
 	$DEFAULTOPT \
 	$STATICOPT \
@@ -552,7 +552,7 @@ install bin/{findtr,qt20fix,qtrename140,qt32castcompat} \
 	tools/{msg2qm/msg2qm,mergetr/mergetr} \
 	$RPM_BUILD_ROOT%{_bindir}
 
-%if %{with static}
+%if %{with static_libs}
 install lib/libqt*.a		$RPM_BUILD_ROOT%{_libdir}
 %endif
 
@@ -693,7 +693,7 @@ EOF
 %{_mandir}/man1/*
 %{_pkgconfigdir}/qt-mt.pc
 
-%if %{with static}
+%if %{with static_libs}
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libqt-mt.a
@@ -746,7 +746,7 @@ EOF
 %attr(755,root,root) %{_libdir}/libqt.so
 %{_pkgconfigdir}/qt.pc
 
-%if %{with static}
+%if %{with static_libs}
 %files st-static
 %defattr(644,root,root,755)
 %{_libdir}/libqt.a
