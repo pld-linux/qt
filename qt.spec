@@ -34,6 +34,8 @@ Source0:	ftp://ftp.trolltech.com/qt/source/qt-x11-free-%{version}.tar.bz2
 # Source0-md5:	903cad618274ad84d7d13fd0027a6c3c
 Source1:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-patches-040427.tar.bz2
 # Source1-md5:	ec9cfcbeee331483184bed6807cd8394
+Source2:	%{name}config.desktop
+Source3:	designer.desktop
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
@@ -672,15 +674,15 @@ install %{_lib}/qt.pc		$RPM_BUILD_ROOT%{_pkgconfigdir}
 cp -R plugins-st/*		$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st
 %endif
 
-install debian/maintain/qtconfig.desktop \
-	$RPM_BUILD_ROOT%{_desktopdir}
+install %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}
+
 %if %{with designer}
-install debian/maintain/designer-qt3.desktop \
-	$RPM_BUILD_ROOT%{_desktopdir}/designer.desktop
+install %{SOURCE3} $RPM_BUILD_ROOT%{_desktopdir}/designer.desktop
 
 sed -i 's/Exec=designer-qt3/Exec=designer/' \
     $RPM_BUILD_ROOT%{_desktopdir}/designer.desktop	
 %endif
+
 install tools/qtconfig/images/appicon.png \
 	$RPM_BUILD_ROOT%{_pixmapsdir}/qtconfig.png
 
