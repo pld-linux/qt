@@ -442,14 +442,13 @@ export YACC='byacc -d'
 export PATH=$QTDIR/bin:$PATH
 export LD_LIBRARY_PATH=$QTDIR/%{_lib}:$LD_LIBRARY_PATH
 
-
 if [ "%{_lib}" != "lib" ] ; then
 	ln -s lib "%{_lib}"
 fi
 
-# pass OPTFLAGS for qmake itself
+# pass OPTFLAGS to build qmake itself with optimization
+export OPTFLAGS="%{rpmcflags}"
 #export OPTFLAGS="%{rpmcflags} -DQT_CLEAN_NAMESPACE"
-#export OPTFLAGS="$OPTFLAGS -DQT_CLEAN_NAMESPACE"
 
 #%{__make} -f Makefile.cvs
 
