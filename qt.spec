@@ -11,7 +11,7 @@
 %bcond_without	designer	# don't build designer (it takes long)
 %bcond_without	sqlite		# don't build SQLite plugin
 %bcond_without	ibase		# build ibase (InterBase/Firebird) plugin
-%bcond_with	pch		# enable pch in qmake
+%bcond_without	pch		# do not use precompiled header support
 #
 %ifnarch %{ix86} amd64 sparc sparcv9 alpha ppc
 %undefine	with_ibase
@@ -19,8 +19,8 @@
 %define		_withsql	1
 %{!?with_sqlite:%{!?with_ibase:%{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}}}
 
-%define		_ver		3.3.3
-%define		_snap		041113
+%define		_ver		3.3.4
+%define		_snap		050208
 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
@@ -28,21 +28,16 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	%{_ver}.%{_snap}
-#Version:	%{_ver}
 Release:	1
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
 Source0:	http://ftp.pld-linux.org/software/kde/%{name}-copy-%{_snap}.tar.bz2
-# Source0-md5:	089276eced1c0f570f441d26b1be9dc7
-#Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
-#Source1:	http://ftp.pld-linux.org/software/kde/%{name}-copy-patches-040819.tar.bz2
-#%% Source1-md5:	f35f461463d89f7b035530d8d1f02ad6
+# Source0-md5:	d0ee7cbac2f8b6051849693b633d1b93
 Source2:	%{name}config.desktop
 Source3:	designer.desktop
 Source4:	assistant.desktop
 Source5:	linguist.desktop
-#Source6:	%{name}-apply_patches.sh
 Source7:	designer.png
 Source8:	assistant.png
 Source9:	linguist.png
@@ -55,15 +50,13 @@ Patch5:		%{name}-make_use_of_locale.patch
 Patch6:		%{name}-qmake-opt.patch
 Patch7:		%{name}-locale-charmap.patch
 Patch8:		%{name}-gcc34.patch
-# for troll only
 Patch10:	%{name}-antialias.patch
-#
 Patch12:	%{name}-x11-free-quiet.patch
-Patch13:	%{name}-x11-mono.patch
-Patch14:	%{name}-x11-qfontdatabase_x11.patch
+#Patch13:	%{name}-x11-mono.patch
+#Patch14:	%{name}-x11-qfontdatabase_x11.patch
+#Patch15:	%{name}-copy-q_export_plugin.patch
 URL:		http://www.trolltech.com/products/qt/
 Icon:		qt.xpm
-#%{?with_ibase:BuildRequires:	Firebird-devel >= 1.5.0}
 %{?with_ibase:BuildRequires:	Firebird-devel}
 BuildRequires:	OpenGL-devel
 %{?with_nvidia:BuildRequires:	X11-driver-nvidia-devel >= 1.0.6111-2}
@@ -81,9 +74,12 @@ BuildRequires:	libungif-devel
 BuildRequires:	perl-base
 %{?with_pgsql:BuildRequires:	postgresql-backend-devel}
 %{?with_pgsql:BuildRequires:	postgresql-devel}
+BuildRequires:	rpmbuild(macros) >= 1.167
 BuildRequires:	sed >= 4.0
 %{?with_odbc:BuildRequires:	unixODBC-devel}
-%{?with_sqlite:BuildRequires:	sqlite-devel}
+# There is an internal sqlite copy used to
+# build this plugin - TODO
+#%{?with_sqlite:BuildRequires:	sqlite-devel}
 BuildRequires:	xcursor-devel
 BuildRequires:	xft-devel
 BuildRequires:	xrender-devel
@@ -183,6 +179,7 @@ Requires:	libstdc++-devel
 Requires:	xcursor-devel
 Requires:	xft-devel
 Requires:	xrender-devel
+Requires:	zlib-devel
 Conflicts:	qt2-devel
 
 %description devel
@@ -658,7 +655,6 @@ Biblioteki wykorzystywane przez narzêdzie projektowania interfejsu
 graficznego - Qt Designer.
 
 %prep
-#%setup -q -n %{name}-x11-free-%{version} -a1
 %setup -q -n %{name}-copy-%{_snap}
 %patch0 -p1
 %patch1 -p1
@@ -673,9 +669,8 @@ graficznego - Qt Designer.
 %patch12 -p1
 #%patch13 -p1
 #%patch14 -p1
+#%patch15 -p1
 
-#install %{SOURCE6} ./apply_patches
-#chmod +x ./apply_patches
 ./apply_patches
 
 # change QMAKE_CFLAGS_RELEASE to build
@@ -700,10 +695,9 @@ cat $plik \
 mv $plik.1 $plik
 echo >> $plik
 echo -e "QMAKE_CFLAGS_RELEASE\t=\t%{rpmcflags}" >> $plik
-echo -e "QMAKE_CXXFLAGS_RELEASE\t=\t%{rpmcflags}" >> $plik
+echo -e "QMAKE_CXXFLAGS_RELEASE\t=\t%{rpmcxxflags}" >> $plik
 echo -e "QMAKE_CFLAGS_DEBUG\t=\t%{debugcflags}" >> $plik
 echo -e "QMAKE_CXXFLAGS_DEBUG\t=\t%{debugcflags}" >> $plik
-%{?with_pch:echo -e "DEFINES\t+=\tUSING_PCH" >> $plik}
 
 %build
 export QTDIR=`/bin/pwd`
@@ -715,7 +709,7 @@ if [ "%{_lib}" != "lib" ] ; then
 fi
 
 # pass OPTFLAGS to build qmake itself with optimization
-export OPTFLAGS="%{rpmcflags}"
+export OPTFLAGS="%{rpmcxxflags}"
 
 %{__make} -f Makefile.cvs
 
@@ -901,7 +895,7 @@ do
 done
 cd -
 
-##make -C extensions/nsplugin/src
+#%%{__make} -C extensions/nsplugin/src
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -987,13 +981,14 @@ cat >> $RPM_BUILD_ROOT%{_includedir}/qt/qconfig.h << EOF
 
 EOF
 
-install -d $RPM_BUILD_ROOT%{_datadir}/locale/{ar,de,fr,ru,he,cs,sk}/LC_MESSAGES
+install -d $RPM_BUILD_ROOT%{_datadir}/locale/{ar,cs,de,es,fr,he,ru,sk}/LC_MESSAGES
 install translations/qt_ar.qm $RPM_BUILD_ROOT%{_datadir}/locale/ar/LC_MESSAGES/qt.qm
-install translations/qt_de.qm $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/qt.qm
-install translations/qt_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/qt.qm
-install translations/qt_ru.qm $RPM_BUILD_ROOT%{_datadir}/locale/ru/LC_MESSAGES/qt.qm
-install translations/qt_iw.qm $RPM_BUILD_ROOT%{_datadir}/locale/he/LC_MESSAGES/qt.qm
 install translations/qt_cs.qm $RPM_BUILD_ROOT%{_datadir}/locale/cs/LC_MESSAGES/qt.qm
+install translations/qt_de.qm $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/qt.qm
+install translations/qt_es.qm $RPM_BUILD_ROOT%{_datadir}/locale/es/LC_MESSAGES/qt.qm
+install translations/qt_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/qt.qm
+install translations/qt_he.qm $RPM_BUILD_ROOT%{_datadir}/locale/he/LC_MESSAGES/qt.qm
+install translations/qt_ru.qm $RPM_BUILD_ROOT%{_datadir}/locale/ru/LC_MESSAGES/qt.qm
 install translations/qt_sk.qm $RPM_BUILD_ROOT%{_datadir}/locale/sk/LC_MESSAGES/qt.qm
 
 
@@ -1061,12 +1056,13 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/%{name}/plugins-mt/styles/*.so
 %dir %{_datadir}/qt
 %lang(ar) %{_datadir}/locale/ar/LC_MESSAGES/qt.qm
+%lang(cs) %{_datadir}/locale/cs/LC_MESSAGES/qt.qm
 %lang(de) %{_datadir}/locale/de/LC_MESSAGES/qt.qm
+%lang(es) %{_datadir}/locale/es/LC_MESSAGES/qt.qm
 %lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/qt.qm
 %lang(he) %{_datadir}/locale/he/LC_MESSAGES/qt.qm
 %lang(ru) %{_datadir}/locale/ru/LC_MESSAGES/qt.qm
 %lang(sk) %{_datadir}/locale/sk/LC_MESSAGES/qt.qm
-%lang(cs) %{_datadir}/locale/cs/LC_MESSAGES/qt.qm
 
 %files devel
 %defattr(644,root,root,755)
