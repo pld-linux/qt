@@ -75,7 +75,7 @@ operacji na obrazach.
 
 %build
 QTDIR=`/bin/pwd`; export QTDIR
-make linux-g++-shared
+%{__make} linux-g++-shared
 
 LD_LIBRARY_PATH=%{_libdir} make
 
