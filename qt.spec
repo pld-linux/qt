@@ -1,20 +1,18 @@
 #
 # Conditional build:
-# _with_nas		- enable nas audio support
-# _with_single		- build also single threaded libraries
-# _with_static		- build also static libraries
-#
-# _without_cups		- disable cups support
-# _without_mysql	- without mysql support
-# _without_odbc		- without unixODBC support
-# _without_pgsql	- without PostgreSQL support
+%bcond_with	nas	# enable NAS audio support
+%bcond_without	single	# don't build single-threaded libraries
+%bcond_without	static	# don't build static libraries
+%bcond_without	cups	# disable CUPS support
+%bcond_without	mysql	# disable MySQL support
+%bcond_without	odbc	# disable unixODBC support
+%bcond_without	pgsql	# disable PostgreSQL support
 #
 
 #%%define 	_snap	030723
 
 %define 	_withsql	1
-
-%{?_without_mysql:%{?_without_pgsql:%{?_without_odbc:%define _withsql 0}}}
+%{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}
 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
@@ -49,7 +47,7 @@ URL:		http://www.trolltech.com/products/qt/
 BuildRequires:	OpenGL-devel
 # incompatible with bison
 BuildRequires:	byacc
-%{!?_without_cups:BuildRequires:	cups-devel}
+%{?with_cups:BuildRequires:	cups-devel}
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
 BuildRequires:	libjpeg-devel
@@ -57,17 +55,17 @@ BuildRequires:	libmng-devel >= 1.0.0
 BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	libstdc++-devel
 BuildRequires:	libungif-devel
-%{!?_without_mysql:BuildRequires:	mysql-devel}
-%{?_with_nas:BuildRequires:		nas-devel}
+%{?with_mysql:BuildRequires:	mysql-devel}
+%{?with_nas:BuildRequires:		nas-devel}
 BuildRequires:	perl
-%{!?_without_pgsql:BuildRequires:	postgresql-backend-devel}
-%{!?_without_pgsql:BuildRequires:	postgresql-devel}
-%{?_with_nas:BuildRequires:	nas-devel}
-%{!?_without_odbc:BuildRequires:	unixODBC-devel}
+%{?with_pgsql:BuildRequires:	postgresql-backend-devel}
+%{?with_pgsql:BuildRequires:	postgresql-devel}
+%{?with_nas:BuildRequires:	nas-devel}
+%{?with_odbc:BuildRequires:	unixODBC-devel}
 BuildRequires:	xcursor-devel
 BuildRequires:	xft-devel
 BuildRequires:	zlib-devel
-%{?_with_single:Provides:	%{name}-st = %{epoch}:%{version}-%{release}}
+%{?with_single:Provides:	%{name}-st = %{epoch}:%{version}-%{release}}
 Requires:	OpenGL
 Requires:	XFree86-libs >= 4.0.2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -144,7 +142,7 @@ Summary:	Qt static libraries
 Summary(pl):	Biblioteki statyczne Qt
 Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
-%{?_with_single:Provides:	%{name}-static-st = %{epoch}:%{version}-%{release}}
+%{?with_single:Provides:	%{name}-static-st = %{epoch}:%{version}-%{release}}
 
 %description static
 Static QT libraries.
@@ -198,9 +196,9 @@ Summary(pl):	Wtyczka MySQL do Qt
 Summary(pt_BR):	Plugin de suporte a mysql para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
-%{?_with_single:Requires:	%{name}-st = %{epoch}:%{version}-%{release}}
+%{?with_single:Requires:	%{name}-st = %{epoch}:%{version}-%{release}}
 Provides:	%{name}-plugin-sql
-%{?_with_single:Provides:	%{name}-plugin-sql-st = %{epoch}:%{version}-%{release}}
+%{?with_single:Provides:	%{name}-plugin-sql-st = %{epoch}:%{version}-%{release}}
 Obsoletes:	%{name}-plugins-mysql
 
 %description plugin-mysql
@@ -218,9 +216,9 @@ Summary(pl):	Wtyczka PostgreSQL do Qt
 Summary(pt_BR):	Plugin de suporte a pgsql para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
-%{?_with_single:Requires:	%{name}-st = %{epoch}:%{version}-%{release}}
+%{?with_single:Requires:	%{name}-st = %{epoch}:%{version}-%{release}}
 Provides:	%{name}-plugin-sql
-%{?_with_single:Provides:	%{name}-plugin-sql-st = %{epoch}:%{version}-%{release}}
+%{?with_single:Provides:	%{name}-plugin-sql-st = %{epoch}:%{version}-%{release}}
 Obsoletes:	%{name}-plugins-psql
 
 %description plugin-psql
@@ -238,9 +236,9 @@ Summary(pl):	Wtyczka ODBC do Qt
 Summary(pt_BR):	Plugin de suporte a ODBC para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
-%{?_with_single:Requires:	%{name}-st = %{epoch}:%{version}-%{release}}
+%{?with_single:Requires:	%{name}-st = %{epoch}:%{version}-%{release}}
 Provides:	%{name}-plugin-sql
-%{?_with_single:Provides:	%{name}-plugin-sql-st = %{epoch}:%{version}-%{release}}
+%{?with_single:Provides:	%{name}-plugin-sql-st = %{epoch}:%{version}-%{release}}
 Obsoletes:	%{name}-plugins-odbc
 
 %description plugin-odbc
@@ -262,7 +260,7 @@ Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
 QT Development Utilities.
 
 %description utils -l pl
-Narzedzia programistyczne QT.
+Narzêdzia programistyczne QT.
 
 %prep
 #%%setup -q -n %{name}-copy
@@ -323,22 +321,22 @@ DEFAULTOPT=" \
 	-system-libpng \
 	-system-zlib \
 	-no-exceptions \
-	%{?_without_cups:-no-cups} \
-	%{?_with_nas:-system-nas-sound} \
+	%{!?with_cups:-no-cups} \
+	%{?with_nas:-system-nas-sound} \
 	%{?debug:-debug}"
 
 ##############################
 # OPTIONS FOR STATIC-{ST,MT} #
 ##############################
 
-%if %{?_with_static:1}0
+%if %{with static}
 STATICOPT=" \
 	-qt-imgfmt-jpeg \
 	-qt-imgfmt-mng \
 	-qt-imgfmt-png \
-	%{!?_without_mysql:-qt-sql-mysql} \
-	%{!?_without_odbc:-qt-sql-odbc} \
-	%{!?_without_pgsql:-qt-sql-psql} \
+	%{?with_mysql:-qt-sql-mysql} \
+	%{?with_odbc:-qt-sql-odbc} \
+	%{?with_pgsql:-qt-sql-psql} \
 	-static"
 %endif
 
@@ -346,7 +344,7 @@ STATICOPT=" \
 # STATIC SINGLE-THREAD #
 ########################
 
-%if %{?_with_static:%{?_with_single:1}}0
+%if %{with static} && %{with single}
 ./configure \
 	$DEFAULTOPT \
 	$STATICOPT \
@@ -365,7 +363,7 @@ _EOF_
 # STATIC MULTI-THREAD #
 #######################
 
-%if %{?_with_static:1}0
+%if %{with static}
 ./configure \
 	$DEFAULTOPT \
 	$STATICOPT \
@@ -389,9 +387,9 @@ SHAREDOPT=" \
 	-plugin-imgfmt-jpeg \
 	-plugin-imgfmt-mng \
 	-plugin-imgfmt-png \
-	%{!?_without_mysql:-plugin-sql-mysql} \
-	%{!?_without_odbc:-plugin-sql-odbc} \
-	%{!?_without_pgsql:-plugin-sql-psql} \
+	%{?with_mysql:-plugin-sql-mysql} \
+	%{?with_odbc:-plugin-sql-odbc} \
+	%{?with_pgsql:-plugin-sql-psql} \
 	-plugin-style-cde \
 	-plugin-style-compact \
 	-plugin-style-motif \
@@ -404,7 +402,7 @@ SHAREDOPT=" \
 # SHARED SINGLE-THREAD #
 ########################
 
-%if %{?_with_single:1}0
+%if %{with single}
 # workaround for some nasty bug to avoid
 # linking plugins statically with -lqt-mt
 rm -f lib/libqt-mt.prl
@@ -473,9 +471,10 @@ export QTDIR=`/bin/pwd`
 
 %{__make} install \
 	INSTALL_ROOT=$RPM_BUILD_ROOT
+
 install -d \
 	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-mt/{network,qsa} \
-	%{?_with_single:$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st/network} \
+	%{?with_single:$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st/network} \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name}/lib \
 	$RPM_BUILD_ROOT%{_mandir}/man{1,3} \
 	
@@ -483,14 +482,14 @@ install bin/{findtr,qt20fix,qtrename140,qt32castcompat} \
 	tools/{msg2qm/msg2qm,mergetr/mergetr} \
 	$RPM_BUILD_ROOT%{_bindir}
 
-%if %{?_with_static:1}0
+%if %{with static}
 install lib/libqt*.a		$RPM_BUILD_ROOT%{_libdir}
 %endif
 
-%if %{?_with_single:1}0
+%if %{with single}
 install lib/libqt.so.*.*.*	$RPM_BUILD_ROOT%{_libdir}
 ln -sf libqt.so.%{version}	$RPM_BUILD_ROOT%{_libdir}/libqt.so
-cp -R plugins-st/*		$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st/
+cp -R plugins-st/*		$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st
 %endif
 
 install doc/man/man1/*.1	$RPM_BUILD_ROOT%{_mandir}/man1
@@ -605,7 +604,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/*
 %{_libdir}/pkgconfig/qt-mt.pc
 
-%if %{?_with_static:1}0
+%if %{with static}
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/*.a
@@ -623,19 +622,19 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %{_mandir}/man3/*
 
-%if %{!?_without_mysql:1}0
+%if %{with mysql}
 %files plugin-mysql
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}/plugins-?t/sqldrivers/lib*mysql.so
 %endif
 
-%if %{!?_without_pgsql:1}0
+%if %{with pgsql}
 %files plugin-psql
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}/plugins-?t/sqldrivers/lib*psql.so
 %endif
 
-%if %{!?_without_odbc:1}0
+%if %{with odbc}
 %files plugin-odbc
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}/plugins-?t/sqldrivers/lib*odbc.so
