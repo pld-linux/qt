@@ -9,8 +9,8 @@
 %bcond_without	mysql		# disable MySQL support
 %bcond_without	odbc		# disable unixODBC support
 %bcond_without	pgsql		# disable PostgreSQL support
-%bcond_without	designer	# disable designer, it builds longer than
-				
+%bcond_without	designer	# don't build designer (it takes long)
+#
 %define		_withsql	1
 %{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}
 
