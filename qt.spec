@@ -18,7 +18,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.1
-Release:	0.%{_snapshot}.2
+Release:	0.%{_snapshot}.3
 Epoch:		5
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -261,7 +261,7 @@ OPTFLAGS="%{rpmcflags}" \
 	<<_EOF_
 yes
 _EOF_
-%{__make} -f Makefile.cvs
+
 # Build libraries and everything needed to do this. Do not build examples and 
 # such. They will be built with shared, sigle-thread libraries.
 %{__make} symlinks src-qmake src-moc sub-src
@@ -291,7 +291,7 @@ OPTFLAGS="%{rpmcflags}" \
 	<<_EOF_
 yes
 _EOF_
-%{__make} -f Makefile.cvs
+
 # Build libraries and everything needed to do this. Do not build examples and 
 # such. They will be built with shared, sigle-thread libraries.
 %{__make} symlinks src-qmake src-moc sub-src
@@ -327,7 +327,7 @@ OPTFLAGS="%{rpmcflags}" \
 	<<_EOF_
 yes
 _EOF_
-%{__make} -f Makefile.cvs
+
 # Build libraries and everything needed to do this. Do not build examples and 
 # such. They will be built with shared, multi-thread libraries.
 %{__make} symlinks src-qmake src-moc sub-src
@@ -364,7 +364,7 @@ OPTFLAGS="%{rpmcflags}" \
 	<<_EOF_
 yes
 _EOF_
-%{__make} -f Makefile.cvs
+
 # Do not build tutorial and examples. Provide them as sources.
 %{__make} symlinks src-qmake src-moc sub-src sub-tools
 
