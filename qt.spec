@@ -64,6 +64,7 @@ BuildRequires:	perl-base
 BuildRequires:	xcursor-devel
 BuildRequires:	xft-devel
 BuildRequires:	zlib-devel
+BuildRequires:	xrender-devel
 Requires:	OpenGL
 Requires:	XFree86-libs >= 4.0.2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
