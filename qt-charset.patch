@@ -15,7 +15,7 @@ diff -urN qt-2.3.0.org/src/tools/qtextcodec.cpp qt-2.3.0/src/tools/qtextcodec.cp
  #else
 +    
 +    // Use nl_langinfo first
-+    QCString origlocale = setlocale( LC_CTYPE, "" );
++    QCString origlocale = setlocale( LC_CTYPE, NULL);
 +    char * codeset=nl_langinfo(CODESET); 
 +    setlocale( LC_CTYPE, origlocale.data() );
 +    if (codeset) {
