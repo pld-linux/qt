@@ -5,7 +5,7 @@ Name:		qt
 %define		libqt_version 2.2.0
 %define		libqutil_version 1.0.0
 Version:	2.2.0
-Release:	0.beta2.1
+Release:	0.beta2.2
 License:	QPL
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
@@ -17,6 +17,7 @@ BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel
 BuildRequires:	libstdc++-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+Obsoletes:	qt-extensions
 
 %define		_prefix		/usr/X11R6
 %define		_mandir		%{_prefix}/man
@@ -49,24 +50,6 @@ korzystaj±cych z biblioteki Qt, jak pliki nag³ówkowe, meta kompiler
 (moc), dokumentacjê. Zobacz http://www.troll.no/ aby dowiedzieæ siê
 wiêcej o Qt. Dokumentacjê do biblioteki znajdziesz tak¿e pod:
 /usr/share/doc/%{name}-devel-%{version}/index.html
-
-%package extensions
-Summary:	Qt extensions, library
-Summary(pl):	Qt extensions, rozrze¿enia dla QT biblioteki 
-Group:		X11/Libraries
-Group(pl):	X11/Biblioteki
-Requires:	%{name} = %{version}
-Obsoletes:	qt-GL
-Obsoletes:	qt-Xt
-
-%description extensions
-Contains the Qt extension files with library. Contains extension for
-Motif/Lesstif, OpenGL, image manipulation.
-
-%description -l pl extensions
-Pakiet zawiera zestaw rozsze¿eñ dla biblioteki Qt. Biblioteki dla
-nastêpuj±cych pakietów: Motif/Lestif, OpenGL, Netscape oraz operacji
-na obrazach.
 
 %package examples
 Summary:	Qt tutorial/examples
@@ -164,7 +147,3 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 /usr/src/examples/%{name}
 %{_datadir}/tutorial/%{name}
-
-#%files extensions
-#%defattr(644,root,root,755)
-#%{_libdir}/libqxt.a
