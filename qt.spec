@@ -18,7 +18,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.0.4
-Release:	3
+Release:	4
 Epoch:		3
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -41,7 +41,6 @@ BuildRequires:	libungif-devel
 %if %{!?_without_mysql:1}%{?_without_mysql:0}
 BuildRequires:	mysql-devel
 %endif
-BuildRequires:	nas-devel
 BuildRequires:	perl
 %if %{!?_without_psql:1}%{?_without_psql:0}
 BuildRequires:	postgresql-backend-devel
