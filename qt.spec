@@ -17,7 +17,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.0.4
-Release:	1
+Release:	2
 Epoch:		3
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -92,6 +92,10 @@ Summary(pt_BR):	Arquivos de inclusão e documentação necessária para compilar apl
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}
 Requires:	XFree86-devel
+Requires:	freetype-devel
+Requires:	libjpeg-devel
+Requires:	libmng-devel
+Requires:	libpng-devel
 Requires:	libstdc++-devel
 Conflicts:	qt2-devel
 
