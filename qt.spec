@@ -450,10 +450,10 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc LICENSE.QPL.gz
-%attr(755,root,root) %{_libdir}/libqt.so.*.*.*
-%attr(755,root,root) %{_libdir}/libqui.so.*.*.*
-%attr(755,root,root) %{_libdir}/libeditor.so.*.*.*
-%attr(755,root,root) %{_libdir}/libqt-mt.so.*.*.*
+%attr(755,root,root) %{_libdir}/libqt.so.*
+%attr(755,root,root) %{_libdir}/libqui.so.*
+%attr(755,root,root) %{_libdir}/libeditor.so.*
+%attr(755,root,root) %{_libdir}/libqt-mt.so.*
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/plugins
 %dir %{_libdir}/%{name}/plugins/imageformats
