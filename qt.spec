@@ -42,6 +42,9 @@ Source3:	designer.desktop
 Source4:	assistant.desktop
 Source5:	linguist.desktop
 Source6:	%{name}-apply_patches.sh
+Source7:	designer.png
+Source8:	assistant.png
+Source9:	linguist.png
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-FHS.patch
 Patch2:		%{name}-qmake-nostatic.patch
@@ -932,10 +935,16 @@ install %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}
 
 %if %{with designer}
 install %{SOURCE3} $RPM_BUILD_ROOT%{_desktopdir}/designer.desktop
+install %{SOURCE7} $RPM_BUILD_ROOT%{_pixmapsdir}
 %endif
 
 install %{SOURCE4} $RPM_BUILD_ROOT%{_desktopdir}
 install %{SOURCE5} $RPM_BUILD_ROOT%{_desktopdir}
+
+install %{SOURCE8} %{SOURCE9} $RPM_BUILD_ROOT%{_pixmapsdir}
+
+install tools/qtconfig/images/appicon.png \
+	$RPM_BUILD_ROOT%{_pixmapsdir}/qtconfig.png
 
 %if %{without designer}
 install bin/uic $RPM_BUILD_ROOT%{_bindir}
@@ -944,8 +953,7 @@ install bin/uic $RPM_BUILD_ROOT%{_bindir}
 # Because trolltech fails to think.
 rm -rf $RPM_BUILD_ROOT%{_bindir}/qmake
 install qmake/qmake $RPM_BUILD_ROOT%{_bindir}/qmake
-install tools/qtconfig/images/appicon.png \
-	$RPM_BUILD_ROOT%{_pixmapsdir}/qtconfig.png
+
 
 install doc/man/man1/*.1	$RPM_BUILD_ROOT%{_mandir}/man1
 install doc/man/man3/*.3qt	$RPM_BUILD_ROOT%{_mandir}/man3
@@ -1206,6 +1214,7 @@ rm -rf $RPM_BUILD_ROOT
 %lang(de) %{_datadir}/locale/de/LC_MESSAGES/assistant.qm
 %lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/assistant.qm
 %{_desktopdir}/assistant.desktop
+%{_pixmapsdir}/assistant.png
 
 %files linguist
 %defattr(644,root,root,755)
@@ -1218,8 +1227,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/msg2qm
 %lang(de) %{_datadir}/locale/de/LC_MESSAGES/linguist.qm
 %lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/linguist.qm
-%{_desktopdir}/linguist.desktop
 %{_datadir}/qt/phrasebooks
+%{_desktopdir}/linguist.desktop
+%{_pixmapsdir}/linguist.png
 %{_mandir}/man1/l*
 %{_mandir}/man1/*qm*
 
