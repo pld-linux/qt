@@ -29,7 +29,7 @@ Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 #Version:	%{_ver}.%{_snap}
 Version:	%{_ver}
-Release:	6
+Release:	1
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
@@ -844,7 +844,12 @@ LD_PRELOAD=$QTDIR/%{_lib}/libqt-mt.so.3 lrelease assistant_fr.ts
 cd $QTDIR/tools/linguist/linguist
 LD_PRELOAD=$QTDIR/%{_lib}/libqt-mt.so.3 lrelease linguist_de.ts
 LD_PRELOAD=$QTDIR/%{_lib}/libqt-mt.so.3 lrelease linguist_fr.ts
-cd $QTDIR
+cd $QTDIR/translations/
+for i in *.ts ;
+do
+        LD_PRELOAD=$QTDIR/%{_lib}/libqt-mt.so.3 lrelease ${i}
+done
+cd -
 
 ##make -C extensions/nsplugin/src
 
@@ -852,6 +857,13 @@ cd $QTDIR
 rm -rf $RPM_BUILD_ROOT
 
 export QTDIR=`/bin/pwd`
+
+cd $QTDIR/translations/
+for i in *.ts ;
+do
+        LD_PRELOAD=$QTDIR/%{_lib}/libqt-mt.so.3 lrelease ${i}
+done
+cd -
 
 %{__make} install \
 	INSTALL_ROOT=$RPM_BUILD_ROOT
