@@ -28,7 +28,7 @@ Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 #Version:	%{_ver}.%{_snap}
 Version:	%{_ver}
-Release:	1.8
+Release:	2
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
@@ -40,19 +40,17 @@ Source1:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-patches-040427
 Source2:	%{name}config.desktop
 Source3:	designer.desktop
 Patch0:		%{name}-tools.patch
-Patch1:		%{name}-postgresql_7_2.patch
-Patch2:		%{name}-mysql_includes.patch
-Patch3:		%{name}-FHS.patch
-Patch4:		%{name}-qmake-nostatic.patch
-Patch5:		%{name}-disable_tutorials.patch
-Patch6:		%{name}-locale.patch
-Patch7:		%{name}-make_use_of_locale.patch
-Patch8:		%{name}-make_assistant_use_global_docs.patch
-Patch9:		%{name}-qmake-opt.patch
-Patch10:	%{name}-xcursor_version.patch
-Patch11:	%{name}-gcc34.patch
+Patch1:		%{name}-FHS.patch
+Patch2:		%{name}-qmake-nostatic.patch
+Patch3:		%{name}-disable_tutorials.patch
+Patch4:		%{name}-locale.patch
+Patch5:		%{name}-make_use_of_locale.patch
+Patch6:		%{name}-make_assistant_use_global_docs.patch
+Patch7:		%{name}-qmake-opt.patch
+Patch8:		%{name}-xcursor_version.patch
+Patch9:		%{name}-gcc34.patch
 # for troll only
-Patch12:	%{name}-autodetect-pch.patch
+Patch10:	%{name}-autodetect-pch.patch
 URL:		http://www.trolltech.com/products/qt/
 BuildRequires:	OpenGL-devel
 %{?with_nvidia:BuildRequires:	XFree86-driver-nvidia-devel < 1.0.4620}
@@ -486,8 +484,8 @@ Biblioteki do IDE s³u¿±cego do projektowania GUI za pomoc± biblioteki QT.
 #setup -q -n %{name}-copy-%{_snap}
 %setup -q -n %{name}-x11-free-%{version} -a1
 %patch0 -p1
-##atch1 -p1
-##atch2 -p1
+%patch1 -p1
+%patch2 -p1
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
@@ -495,9 +493,7 @@ Biblioteki do IDE s³u¿±cego do projektowania GUI za pomoc± biblioteki QT.
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
-%patch10 -p1
-%patch11 -p1
-%{?with_pch:%patch12 -p1}
+%{?with_pch:%patch10 -p1}
 
 cat >> patches/DISABLED <<EOF
 0005
