@@ -15,14 +15,13 @@
 %define 	_withsql	1
 %{?_without_mysql:%{?_without_pgsql:%{?_without_odbc:%define _withsql 0}}}
 
-
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.1.2
-Release:	5
+Release:	6
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -36,10 +35,12 @@ Patch4:		%{name}-qmake-opt.patch
 Patch5:		%{name}-cursors.patch
 Patch6:         %{name}-qmake-nostatic.patch
 Patch7:		%{name}-qmlined-fix.patch
+URL:		http://www.troll.com/
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
 # incompatible with bison
 BuildRequires:	byacc
+%{!?_without_cups:BuildRequires:        cups-devel}
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
 BuildRequires:	libjpeg-devel
@@ -47,16 +48,15 @@ BuildRequires:	libmng-devel >= 1.0.0
 BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	libstdc++-devel
 BuildRequires:	libungif-devel
-BuildRequires:	xft-devel
 %{!?_without_mysql:BuildRequires:	mysql-devel}
+%{?_with_prelink:BuildRequires:	objprelink}
 BuildRequires:	perl
 %{!?_without_pgsql:BuildRequires:	postgresql-backend-devel}
 %{!?_without_pgsql:BuildRequires:	postgresql-devel}
-%{!?_without_odbc:BuildRequires:	unixODBC-devel}
-%{!?_without_cups:BuildRequires:        cups-devel}
 %{?_with_nas:BuildRequires:	nas-devel}
+%{!?_without_odbc:BuildRequires:	unixODBC-devel}
+BuildRequires:	xft-devel
 BuildRequires:	zlib-devel
-%{?_with_prelink:BuildRequires:	objprelink}
 Requires:	OpenGL
 Requires:	XFree86-libs >= 4.0.2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -104,7 +104,7 @@ Conflicts:	qt2-devel
 %description devel
 Contains the files necessary to develop applications using Qt: header
 files, the Qt meta object compiler, man pages, HTML documentation and
-example programs. See http://www.troll.no/ for more information about
+example programs. See http://www.troll.com/ for more information about
 Qt, or file:/usr/share/doc/%{name}-%{version}/html/index.html for Qt
 documentation in HTML.
 
@@ -112,20 +112,20 @@ documentation in HTML.
 Contiene los archivos necesarios para desarrollar aplicaciones
 usando Qt: archivos de inclusión, compilador de metaobjetos Qt,
 páginas de manual, documentación HTML y programas ejemplo. Mira
-http://www.troll.no para más información sobre el Qt, o el
+http://www.troll.com/ para más información sobre el Qt, o el
 archivo file:/usr/share/doc/%{name}-%{version}/html/index.html en la
 documentación en HTML.
 
 %description devel -l pl
 Pakiet tem zawiera pliki potrzebne do tworzenia i kompilacji aplikacji
 korzystaj±cych z biblioteki Qt, jak pliki nag³ówkowe, meta kompiler
-(moc), dokumentacjê. Zobacz http://www.troll.no/ aby dowiedzieæ siê
+(moc), dokumentacjê. Zobacz http://www.troll.com/ aby dowiedzieæ siê
 wiêcej o Qt. Dokumentacjê do biblioteki znajdziesz tak¿e pod:
 /usr/share/doc/%{name}-%{version}/html/index.html
 
 %description devel -l pt_BR
 Contém os arquivos necessários para desenvolver aplicações usando Qt: arquivos
-de inclusão, compilador de meta-objetos Qt, veja http://www.trolltech.com para
+de inclusão, compilador de meta-objetos Qt, veja http://www.trolltech.com/ para
 mais informações sobre ele.
 
 %package static
@@ -295,17 +295,17 @@ done
 OPTFLAGS="%{rpmcflags}" \
 ./configure \
 	$DEFAULTOPT \
-	-no-thread \
+	$DEFAULTSTYLES \
 	-fast \
-	-static \
+	-no-style-windowsxp \
+	-no-thread \
 	-qt-imgfmt-png \
 	-qt-imgfmt-jpeg \
 	-qt-imgfmt-mng \
 	%{!?_without_mysql:-qt-sql-mysql} \
 	%{!?_without_odbc:-qt-sql-odbc} \
 	%{!?_without_pgsql:-qt-sql-psql} \
-	$DEFAULTSTYLES \
-	-no-style-windowsxp \
+	-static \
 	<<_EOF_
 yes
 _EOF_
@@ -324,17 +324,17 @@ _EOF_
 OPTFLAGS="%{rpmcflags}" \
 ./configure \
 	$DEFAULTOPT \
-	-thread \
-	-static \
+	$DEFAULTSTYLES \
 	-fast\
+	-no-style-windowsxp \
 	-qt-imgfmt-png \
 	-qt-imgfmt-jpeg \
 	-qt-imgfmt-mng \
 	%{!?_without_mysql:-qt-sql-mysql} \
 	%{!?_without_odbc:-qt-sql-odbc} \
 	%{!?_without_pgsql:-qt-sql-psql} \
-	$DEFAULTSTYLES \
-	-no-style-windowsxp \
+	-static \
+	-thread \
 	<<_EOF_
 yes
 _EOF_
@@ -363,9 +363,10 @@ rm -f lib/libqt-mt.prl
 OPTFLAGS="%{rpmcflags}" \
 ./configure \
 	$DEFAULTOPT \
+	$DEFAULTSTYLES \
 	-fast \
+	-no-style-windowsxp \
 	-no-thread \
-	-shared \
 	-plugindir %{_libdir}/qt/plugins-st \
 	-plugin-imgfmt-png \
 	-plugin-imgfmt-jpeg \
@@ -373,8 +374,7 @@ OPTFLAGS="%{rpmcflags}" \
 	%{!?_without_mysql:-plugin-sql-mysql} \
 	%{!?_without_odbc:-plugin-sql-odbc} \
 	%{!?_without_pgsql:-plugin-sql-psql} \
-	$DEFAULTSTYLES \
-	-no-style-windowsxp \
+	-shared \
 	<<_EOF_
 yes
 _EOF_
@@ -405,8 +405,8 @@ cp -R plugins/sqldrivers plugins-st
 OPTFLAGS="%{rpmcflags}" \
 ./configure \
 	$DEFAULTOPT \
-	-thread \
-	-shared \
+	$DEFAULTSTYLES \
+	-no-style-windowsxp \
 	-plugindir %{_libdir}/qt/plugins-mt \
 	-plugin-imgfmt-png \
 	-plugin-imgfmt-jpeg \
@@ -414,8 +414,8 @@ OPTFLAGS="%{rpmcflags}" \
 	%{!?_without_mysql:-plugin-sql-mysql} \
 	%{!?_without_odbc:-plugin-sql-odbc} \
 	%{!?_without_pgsql:-plugin-sql-psql} \
-	$DEFAULTSTYLES \
-	-no-style-windowsxp \
+	-shared \
+	-thread \
 	<<_EOF_
 yes
 _EOF_
@@ -425,19 +425,19 @@ _EOF_
 
 %install
 rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT{%{_mandir}/man{1,3},%{_examplesdir}/%{name}/lib} \
+	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-{m,s}t/network
 
 QTDIR=`/bin/pwd`; export QTDIR
 LD_LIBRARY_PATH="$QTDIR/lib" ; export LD_LIBRARY_PATH
 PATH="$QTDIR/bin:$PATH"
 
-%{__make} install INSTALL_ROOT=$RPM_BUILD_ROOT
+%{__make} install \
+	INSTALL_ROOT=$RPM_BUILD_ROOT
 
 rm -rf `find $RPM_BUILD_ROOT -name CVS`
-
 rm -rf `find . -name CVS`
 
-install -d $RPM_BUILD_ROOT{%{_mandir}/man{1,3},%{_examplesdir}/%{name}/lib} \
-	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-{m,s}t/network
 install bin/{findtr,qt20fix,qtrename140} \
 	tools/msg2qm/msg2qm tools/mergetr/mergetr \
 	$RPM_BUILD_ROOT%{_bindir}
