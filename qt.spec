@@ -67,7 +67,7 @@ wiêcej o Qt. Dokumentacjê do biblioteki znajdziesz tak¿e pod:
 
 %package examples
 Summary:	Qt tutorial/examples
-Summary(pl):	Qt przyk³ady
+Summary(pl):	Qt æwiczenia/przyk³ady
 Group:		X11/Development/Libraries
 Group(de):	X11/Entwicklung/Libraries
 Group(pl):	X11/Programowanie/Biblioteki
@@ -77,7 +77,7 @@ Requires:	%{name}-devel = %{version}
 Qt tutorial/examples.
 
 %description examples -l pl
-Qt przyk³ady.
+Qt æwiczenia/przyk³ady.
 
 %prep
 %setup -q
@@ -137,7 +137,7 @@ ln -s -f libqt-mt.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libqt-mt.so
 # empty symlinks
 rm -f include/qt_mac.h include/qt_windows.h include/jri.h \
 	include/jritypes.h include/npapi.h include/npupp.h
-install include/* $RPM_BUILD_ROOT/%{_includedir}
+install include/* $RPM_BUILD_ROOT%{_includedir}
 
 install doc/man/man3/* $RPM_BUILD_ROOT%{_mandir}/man3
 
