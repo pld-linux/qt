@@ -22,7 +22,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.1.2
-Release:	3
+Release:	4
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -149,17 +149,6 @@ Qt documentation in HTML format.
 
 %description doc-html -l pl
 Dokumentacja qt w formacie HTML.
-
-%package doc-man
-Summary:	QT man pages
-Summary(pl):	QT - strony man
-Group:		X11/Development/Libraries
-
-%description doc-man
-Qt documentation in man pages format.
-
-%description doc-man -l pl
-Dokumentacja qt w formacie stron man.
 
 %package examples
 Summary:	Example programs made with Qt version %{version}
@@ -539,6 +528,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}
 %{_datadir}/qt/[!d]*
 %{_mandir}/man1/*
+%{_mandir}/man3/*
 
 %if %{!?_without_static:1}%{?_without_static:0}
 %files static
@@ -549,10 +539,6 @@ rm -rf $RPM_BUILD_ROOT
 %files doc-html
 %defattr(644,root,root,755)
 %{_docdir}/%{name}-doc-html-%{version}
-
-%files doc-man
-%defattr(644,root,root,755)
-%{_mandir}/man3/*
 
 %if %{!?_without_examples:1}%{?_without_examples:0}
 %files examples
