@@ -18,13 +18,13 @@ Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
-Version:	3.2.1
-Release:	4
+Version:	3.2.2
+Release:	1
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
 Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
-# Source0-md5:	9ae022ffe7603ec34aba150f6cca257a
+# Source0-md5:	77d6e71e603fa54b9898d3364ef42aef
 #Source0:	http://www.kernel.pl/~adgor/kde/%{name}-copy-%{_snap}.tar.bz2
 #Source1:	ftp://ftp.trolltech.com/qsa/%{name}-designer-changes-qsa-beta3.tar.gz
 Source1:	http://www.kernel.pl/~djurban/snap/%{name}-patches-030925.tar.bz2
@@ -40,11 +40,9 @@ Patch6:		%{name}-locale.patch
 Patch7:		%{name}-make_use_of_locale.patch
 Patch8:		%{name}-make_assistant_use_global_docs.patch
 Patch9:		%{name}-qlineedit_khtml_fix.patch
-Patch10:	%{name}-qmake_la_generation_fix.patch
-Patch11:	%{name}-qmlined-fix.patch
-Patch12:	%{name}-qmake-opt.patch
-Patch13:	%{name}-qmake-la-and-pc-fix.patch
-Patch14:	%{name}-post321fixes.patch
+Patch10:	%{name}-qmake-opt.patch
+Patch11:	%{name}-qmake-la-and-pc-fix.patch
+#Patch12:	%{name}-post321fixes.patch
 URL:		http://www.trolltech.com/products/qt/
 BuildRequires:	OpenGL-devel
 # incompatible with bison
@@ -351,9 +349,7 @@ Narzêdzia programistyczne QT.
 %patch9 -p1
 %patch10 -p1
 %patch11 -p1
-%patch12 -p1
-%patch13 -p1
-%patch14 -p1
+#%patch12 -p1
 
 rm -rf `find $RPM_BUILD_ROOT -name CVS`
 rm -rf `find . -name CVS`
