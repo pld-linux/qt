@@ -1059,6 +1059,7 @@ EOF
 %attr(755,root,root) %{_bindir}/uic
 %{_includedir}/qt
 %{_libdir}/libqassistantclient.so
+%{_libdir}/libqt-mt.la
 %{_libdir}/libqt-mt.so
 %{_mandir}/man1/moc*
 %{_mandir}/man1/uic*
