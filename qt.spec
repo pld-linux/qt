@@ -94,9 +94,14 @@ SYSCONF_CXXFLAGS="-pipe -DNO_DEBUG %{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}"
 export LD_LIBRARY_PATH SYSCONF_CFLAGS SYSCONF_CXXFLAGS
 
 %{__make} symlinks  src-moc src-mt sub-src sub-tools\
-	SYSCONF_CFLAGS="%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}" \
+%ifnarch alpha
+        SYSCONF_CFLAGS="%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}" \
 	SYSCONF_CXXFLAGS="%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}"
-
+%else
+        SYSCONF_CFLAGS="%{!?debug:$RPM_OPT_FLAGS -O}%{?debug:-O -g}" \
+	SYSCONF_CXXFLAGS="%{!?debug:$RPM_OPT_FLAGS -O}%{?debug:-O -g}"
+%endif
+	
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir},%{_includedir},%{_mandir}/man3} \
