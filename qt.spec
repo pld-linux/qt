@@ -12,8 +12,8 @@
 # _without_cups		- disable cups support
 #
 
-%define 	_withsql	0
-%{?_without_mysql:%{?_without_psql:%{?_without_odbc:%define _withsql 1}}}
+%define 	_withsql	1
+%{?_without_mysql:%{?_without_psql:%{?_without_odbc:%define _withsql 0}}}
 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
