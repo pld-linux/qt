@@ -1,16 +1,17 @@
-Summary:	The Qt2 GUI application framework
-Summary(pl):	Biblioteka Qt2 do tworzenia GUI
+Summary:	The Qt3 GUI application framework
+Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Name:		qt
-%define		libqutil_version 1.0.0
-Version:	2.3.1
-Release:	3
+%define		libqui_version 1.0.0
+%define		libeditor_version 1.0.0
+Version:	3.0.0
+Release:	1
 Epoch:		1
 License:	GPL
 Group:		X11/Libraries
 Group(de):	X11/Libraries
 Group(es):	X11/Bibliotecas
 Group(pl):	X11/Biblioteki
-Source0:	ftp://ftp.troll.no/qt/source/%{name}-x11-%{version}.tar.gz
+Source0:	ftp://ftp.troll.no/qt/source/%{name}-x11-free-%{version}.tar.gz
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-huge_val.patch
 Patch2:		%{name}-charset.patch
@@ -23,9 +24,12 @@ BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	libstdc++-devel
 BuildRequires:	libungif-devel
 BuildRequires:	zlib-devel
-%ifnarch alpha
-BuildRequires:	objprelink
-%endif
+BuildRequires:	mysql-devel
+BuildRequires:	unixODBC-devel
+BuildRequires:	freetype-devel
+#%ifnarch alpha
+#BuildRequires:	objprelink
+#%endif
 Requires:	OpenGL
 Requires:	XFree86-libs >= 4.0.2
 Requires:	libmng
@@ -69,6 +73,20 @@ korzystaj±cych z biblioteki Qt, jak pliki nag³ówkowe, meta kompiler
 wiêcej o Qt. Dokumentacjê do biblioteki znajdziesz tak¿e pod:
 /usr/share/doc/%{name}-devel-%{version}/index.html
 
+%package static
+Summary:	Qt static libraries
+Summary(pl):	Biblioteki statyczne Qt.
+Group:		X11/Development/Libraries
+Group(de):	X11/Entwicklung/Libraries
+Group(pl):	X11/Programowanie/Biblioteki
+Requires:	%{name}-devel = %{version}
+
+%description static
+Static QT libraries.
+
+%description static -l pl
+Statyczne biblioteki Qt.
+
 %package examples
 Summary:	Qt tutorial/examples
 Summary(pl):	Qt æwiczenia/przyk³ady
@@ -84,69 +102,107 @@ Qt tutorial/examples.
 Qt æwiczenia/przyk³ady.
 
 %prep
-%setup -q
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
-%ifnarch alpha
-%patch3 -p0
-%endif
+%setup -q -n %{name}-x11-free-%{version}
+#%patch0 -p1
+#%patch1 -p1
+#%patch2 -p1
+#%ifnarch alpha
+#%patch3 -p0
+#%endif
 
 %build
 QTDIR=`/bin/pwd`; export QTDIR
-./configure \
-	-gif \
-	-no-g++-exceptions \
-	-release \
-	-shared \
-	-sm \
-	-system-jpeg \
-	-system-libmng \
-	-system-libpng \
-	-system-zlib \
-	-thread <<_EOF_
-yes
-_EOF_
-
 LD_LIBRARY_PATH=%{_libdir}
 SYSCONF_CFLAGS="-pipe -DNO_DEBUG %{rpmcflags}"
 SYSCONF_CXXFLAGS="-pipe -DNO_DEBUG %{rpmcflags}"
 export LD_LIBRARY_PATH SYSCONF_CFLAGS SYSCONF_CXXFLAGS
 
-%{__make} symlinks src-moc src-mt sub-src sub-tools\
-%ifnarch alpha
+DEFAULTOPT="-prefix %{_prefix} -bindir %{_bindir} -libdir %{_libdir} -docdir %{_docdir} \
+            -headerdir include/qt -release -qt-gif -system-zlib -no-g++-exceptions \
+	    -stl -remote -system-libpng -system-libjpeg -system-libmng -sm -xinerama \
+	    -xrender -xft -xkb"
+
+./configure \
+	$DEFAULTOPT \
+	-shared <<_EOF_
+yes
+_EOF_
+
+%{__make} symlinks src-qmake src-moc sub-src sub-tools \
 	SYSCONF_CFLAGS="%{rpmcflags}" \
 	SYSCONF_CXXFLAGS="%{rpmcflags}"
-%else
-	SYSCONF_CFLAGS="%{!?debug:-0O}%{?debug:-O0 -g}" \
-	SYSCONF_CXXFLAGS="%{!?debug:-O0}%{?debug:-O0 -g}"
-%endif
+
+# Build extra tools and plugins
+(cd plugins/src/sqldrivers/mysql && $QTDIR/bin/qmake -o Makefile \
+	"INCLUDEPATH+=/usr/include/mysql" "LIBS+=-L/usr/lib -lmysqlclient" mysql.pro)
+(cd plugins/src/sqldrivers/odbc && $QTDIR/bin/qmake \
+	"INCLUDEPATH+=/usr/include" "LIBS+=-L/usr/lib -lodbc")            
+
+for dir in tools/mergetr tools/msg2qm tools/makeqpf tools/qembed tools/qvfb \
+           extensions/xt/src plugins/src/accessible plugins/src/codecs \
+	   plugins/src/imageformats plugins/src/styles \
+	   plugins/src/sqldrivers/mysql plugins/src/sqldrivers/odbc ; do
+  %{__make} -C $dir \
+	SYSCONF_CFLAGS="%{rpmcflags}" \
+	SYSCONF_CXXFLAGS="%{rpmcflags}"
+done
+
+./configure \
+	$DEFAULTOPT \
+	-thread <<_EOF_
+yes
+_EOF_
+
+%{__make} symlinks src-qmake src-moc sub-src \
+	SYSCONF_CFLAGS="%{rpmcflags}" \
+	SYSCONF_CXXFLAGS="%{rpmcflags}"
+
+./configure \
+	$DEFAULTOPT \
+	-static <<_EOF_
+yes
+_EOF_
+
+%{__make} symlinks src-qmake src-moc sub-src \
+	SYSCONF_CFLAGS="%{rpmcflags}" \
+	SYSCONF_CXXFLAGS="%{rpmcflags}"
 	
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir},%{_includedir},%{_mandir}/man3} \
-	$RPM_BUILD_ROOT/usr/src/examples/%{name} \
+
+install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{name},%{_includedir},%{_mandir}/man{1,3}} \
+	$RPM_BUILD_ROOT%{_examplesdir}/%{name} \
 	$RPM_BUILD_ROOT%{_datadir}/tutorial/%{name} \
 
-install bin/* $RPM_BUILD_ROOT%{_bindir}/
-install tools/msg2qm/msg2qm $RPM_BUILD_ROOT%{_bindir}/
-install tools/mergetr/mergetr $RPM_BUILD_ROOT%{_bindir}/
+rm -f   bin/*.bat
+install bin/*			$RPM_BUILD_ROOT%{_bindir}/
+install tools/msg2qm/msg2qm	$RPM_BUILD_ROOT%{_bindir}/
+install tools/mergetr/mergetr	$RPM_BUILD_ROOT%{_bindir}/
+install tools/makeqpf/makeqpf	$RPM_BUILD_ROOT%{_bindir}/
+install tools/qembed/qembed	$RPM_BUILD_ROOT%{_bindir}/
+install tools/qvfb/qvfb		$RPM_BUILD_ROOT%{_bindir}/
+install qmake/qmake		$RPM_BUILD_ROOT%{_bindir}/
 
-install lib/libqt.so.%{version} $RPM_BUILD_ROOT%{_libdir}
-ln -s -f libqt.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libqt.so
+install plugins/*/*.so		$RPM_BUILD_ROOT%{_libdir}/%{name}
 
-install lib/libqutil.so.%{libqutil_version} $RPM_BUILD_ROOT%{_libdir}
-ln -s -f libqutil.so.%{libqutil_version} $RPM_BUILD_ROOT%{_libdir}/libqutil.so
+#install lib/libqt.so.%{version}	$RPM_BUILD_ROOT%{_libdir}
+#ln -s -f libqt.so.%{version}	$RPM_BUILD_ROOT%{_libdir}/libqt.so
 
-install lib/libqt-mt.so.%{version} $RPM_BUILD_ROOT%{_libdir}
-ln -s -f libqt-mt.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libqt-mt.so
+install lib/libqui.so.%{libqui_version}	$RPM_BUILD_ROOT%{_libdir}
+ln -s -f libqui.so.%{libqui_version}	$RPM_BUILD_ROOT%{_libdir}/libqui.so
 
-# empty symlinks
-rm -f include/qt_mac.h include/qt_windows.h include/jri.h \
-	include/jritypes.h include/npapi.h include/npupp.h
-install include/* $RPM_BUILD_ROOT%{_includedir}
+install lib/libqt-mt.so.%{version}	$RPM_BUILD_ROOT%{_libdir}
+ln -s -f libqt-mt.so.%{version}		$RPM_BUILD_ROOT%{_libdir}/libqt-mt.so
 
-install doc/man/man3/* $RPM_BUILD_ROOT%{_mandir}/man3
+install lib/libeditor.so.%{libeditor_version}	$RPM_BUILD_ROOT%{_libdir}
+ln -s -f libeditor.so.%{libeditor_version}	$RPM_BUILD_ROOT%{_libdir}/libeditor.so
+
+install lib/*.a		$RPM_BUILD_ROOT%{_libdir}
+
+cp -a include/*		$RPM_BUILD_ROOT%{_includedir}
+
+install doc/man/man1/*	$RPM_BUILD_ROOT%{_mandir}/man1
+install doc/man/man3/*	$RPM_BUILD_ROOT%{_mandir}/man3
 
 for a in {tutorial,examples}/{Makefile,*/Makefile}; do
 	cat $a | sed 's-^SYSCONF_MOC.*-SYSCONF_MOC = %{_bindir}/moc -' | \
@@ -155,7 +211,7 @@ for a in {tutorial,examples}/{Makefile,*/Makefile}; do
 	mv -f $a. $a
 done
 
-cp -dpr examples $RPM_BUILD_ROOT/usr/src/examples/%{name}
+cp -dpr examples $RPM_BUILD_ROOT%{_examplesdir}/%{name}
 cp -dpr tutorial $RPM_BUILD_ROOT%{_datadir}/tutorial/%{name}
 				
 gzip -9nf LICENSE.QPL
@@ -170,18 +226,26 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc LICENSE.QPL.gz
 %attr(755,root,root) %{_libdir}/libqt.so.*.*
-%attr(755,root,root) %{_libdir}/libqutil.so.*.*
+%attr(755,root,root) %{_libdir}/libqui.so.*.*
+%attr(755,root,root) %{_libdir}/libeditor.so.*.*
 %attr(755,root,root) %{_libdir}/libqt-mt.so.*.*
+%dir %{_libdir}/%{name}
+%attr(755,root,root) %{_libdir}/%{name}/*.so
 
 %files devel
 %defattr(644,root,root,755)
 %doc doc/html/*
 %attr(755,root,root) %{_bindir}/*
 %{_libdir}/libqt.so
-%{_libdir}/libqutil.so
+%{_libdir}/libqui.so
+%{_libdir}/libeditor.so
 %{_libdir}/libqt-mt.so
 %{_includedir}
-%{_mandir}/man*/*
+%{_mandir}/man?/*
+
+%files static
+%defattr(644,root,root,755)
+%{_libdir}/*.a
 
 %files examples
 %defattr(644,root,root,755)
