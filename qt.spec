@@ -1200,12 +1200,13 @@ rm -rf $RPM_BUILD_ROOT
 %files designer
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/designer
-%{_desktopdir}/designer.desktop
-%dir %{_libdir}/%{name}/plugins-?t/designer
 %attr(755,root,root) %{_libdir}/%{name}/plugins-?t/designer/*.so
+%dir %{_libdir}/%{name}/plugins-?t/designer
 %{_datadir}/qt/designer
 %lang(de) %{_datadir}/locale/de/LC_MESSAGES/designer.qm
 %lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/designer.qm
+%{_desktopdir}/designer.desktop
+%{_pixmapsdir}/designer.png
 %endif
 
 %files assistant
