@@ -14,7 +14,7 @@ Source0:	ftp://ftp.troll.no/qt/source/%{name}-x11-%{version}.tar.gz
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-huge_val.patch
 Patch2:		%{name}-charset.patch
-BuildRequires:	XFree86-OpenGL-devel
+BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
 BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel >= 1.0.0
@@ -22,7 +22,7 @@ BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	libstdc++-devel
 BuildRequires:	libungif-devel
 BuildRequires:	zlib-devel
-Requires:	XFree86-OpenGL-libs
+Requires:	OpenGL
 Requires:	XFree86-libs >= 4.0.2
 Requires:	libmng
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
