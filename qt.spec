@@ -109,6 +109,9 @@ ln -sf libqt.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libqt.so
 install -s lib/libqutil.so.%{libqutil_version} $RPM_BUILD_ROOT%{_libdir}
 ln -sf libqutil.so.%{libqutil_version} $RPM_BUILD_ROOT%{_libdir}/libqutil.so
 
+install -s lib/libqt-mt.so.%{version} $RPM_BUILD_ROOT%{_libdir}
+ln -sf libqt-mt.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libqt-mt.so
+
 # empty symlinks
 rm -f include/qt_mac.h include/qt_windows.h include/jri.h \
 	include/jritypes.h include/npapi.h include/npupp.h
@@ -142,6 +145,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE.QPL.gz
 %attr(755,root,root) %{_libdir}/libqt.so.*.*
 %attr(755,root,root) %{_libdir}/libqutil.so.*.*
+%attr(755,root,root) %{_libdir}/libqt-mt.so.*.*
 
 %files devel
 %defattr(644,root,root,755)
@@ -149,6 +153,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/*
 %{_libdir}/libqt.so
 %{_libdir}/libqutil.so
+%{_libdir}/libqt-mt.so
 %{_includedir}/*.h
 %{_mandir}/man*/*
 
