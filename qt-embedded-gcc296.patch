@@ -1,0 +1,48 @@
+--- qt-2.2.2/src/kernel/qgfxraster_qws.cpp.gcc296	Mon Nov 13 19:59:52 2000
++++ qt-2.2.2/src/kernel/qgfxraster_qws.cpp	Mon Nov 13 20:02:43 2000
+@@ -428,11 +428,11 @@
+ 		    g = (srcval & 0xff00) >> 8;
+ 		    b = srcval & 0xff;
+ 		    unsigned int hold = *(dptr+col);
+-		    int or=(hold & 0xff0000) >> 16;
++		    int _or=(hold & 0xff0000) >> 16;
+ 		    int og=(hold & 0xff00) >> 8;
+ 		    int ob=(hold & 0xff);
+ 
+-		    r = ((r-or) * av) / 256 + or;
++		    r = ((r-_or) * av) / 256 + _or;
+ 		    g = ((g-og) * av) / 256 + og;
+ 		    b = ((b-ob) * av) / 256 + ob;
+ 
+@@ -468,12 +468,12 @@
+ 		    g = (srcval & 0xff00) >> 8;
+ 		    b = srcval & 0xff;
+ 
+-		    int or;
++		    int _or;
+ 		    int og;
+ 		    int ob;
+-		    qt_conv16ToRgb(*(dptr+col),or,og,ob);
++		    qt_conv16ToRgb(*(dptr+col),_or,og,ob);
+ 
+-		    r = ((r-or) * av) / 256 + or;
++		    r = ((r-_or) * av) / 256 + _or;
+ 		    g = ((g-og) * av) / 256 + og;
+ 		    b = ((b-ob) * av) / 256 + ob;
+ 
+@@ -513,12 +513,12 @@
+ 		    b = srcval & 0xff;
+ 
+ 		    unsigned char hold = *(dptr+col);
+-		    int or,og,ob;
+-		    or=qRed(screenclut[hold]);
++		    int _or,og,ob;
++		    _or=qRed(screenclut[hold]);
+ 		    og=qGreen(screenclut[hold]);
+ 		    ob=qBlue(screenclut[hold]);
+ 
+-		    r = ((r-or) * av) / 256 + or;
++		    r = ((r-_or) * av) / 256 + _or;
+ 		    g = ((g-og) * av) / 256 + og;
+ 		    b = ((b-ob) * av) / 256 + ob;
+ 

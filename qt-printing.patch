@@ -1,0 +1,76 @@
+--- qt-2.3.0/src/kernel/qpsprinter.cpp.deush	Sun Mar 18 11:54:45 2001
++++ qt-2.3.0/src/kernel/qpsprinter.cpp	Sun Mar 18 12:00:13 2001
+@@ -4911,16 +4911,51 @@
+ 	    if ( xlfd ) {
+ 		char** font_path; 
+ 		font_path = XGetFontPath( qt_xdisplay(), &npaths);
+-		for (int i=0; i<npaths && fontfilename.length()==0; i++) {
+-		    if ((font_path[i])[0] != '/') continue; // not a path name, a font server
+-		    QString fontmapname;
++               QStringList font_path_list;
++               bool xfsconfig_read = FALSE;
++               for (int i=0; i<npaths; i++) {
++                   // Red Hat Linux: If we're using xfs, append font paths from /etc/X11/fs/config
++                   // can't hurt, and chances are we'll get all fonts that way.
++                   if (((font_path[i])[0] != '/') && !xfsconfig_read) {
++                       // We're using xfs -> read its config
++                       bool finished = FALSE;
++                       QFile f("/etc/X11/fs/config");
++                       f.open(IO_ReadOnly);
++                       while(f.status()==IO_Ok && !finished) {
++                           QString fs;
++                           f.readLine(fs, 1024);
++                           fs=fs.stripWhiteSpace();
++                           if (fs.left(9)=="catalogue" && fs.contains('=')) {
++                               fs=fs.mid(fs.find('=')+1).stripWhiteSpace();
++                               while(f.status()==IO_Ok && fs.right(1)==",") {
++                                   if (!fs.contains(":unscaled")) 
++                                       font_path_list += fs.left(fs.length()-1);
++                                   f.readLine(fs, 1024);
++                                   fs=fs.stripWhiteSpace();
++                               }
++                               finished = TRUE;
++                           }
++                       }
++                       f.close();
++                       xfsconfig_read = TRUE;
++                   } else if(!strstr(font_path[i], ":unscaled")) {
++                       // Fonts paths marked :unscaled are always bitmapped fonts
++                       // -> we can as well ignore them now and save time
++                       font_path_list += font_path[i];
++                   }
++               }
++               XFreeFontPath(font_path);
++               for (QStringList::Iterator it=font_path_list.begin(); it!=font_path_list.end() && fontfilename.isEmpty(); it++) {
++                   if ((*it).left(1) != "/") continue; // not a path name, a font server
++		QString fontmapname;
+ 		    int num = 0;
+ 		    // search font.dir and font.scale for the right file
+ 		    while ( num < 2 ) {
+ 			if ( num == 0 )
+-			    fontmapname.sprintf("%s%s",font_path[i],"/fonts.scale");
++			fontmapname = (*it) + "/fonts.scale";
+ 			else
+-			    fontmapname.sprintf("%s%s",font_path[i],"/fonts.dir");
++			fontmapname = (*it) + "/fonts.dir";
++			
+ 			//qWarning(fontmapname);
+ 			QFile fontmap(fontmapname);
+ 			if (fontmap.open(IO_ReadOnly)) {
+@@ -4936,7 +4971,7 @@
+ 				// remove the most common bitmap formats
+ 				    if( !ffn.contains( ".pcf" ) && !ffn.contains( " .bdf" ) &&
+ 					!ffn.contains( ".spd" ) && !ffn.contains( ".phont" ) ) {
+-					fontfilename = font_path[i] + QString("/") + ffn;
++					fontfilename = (*it) + QString("/") + ffn;
+ 					if ( QFile::exists(fontfilename) ) {
+ 					    //qDebug("found font file %s", fontfilename.latin1());
+ 					    break;
+@@ -4950,7 +4985,6 @@
+ 			num++;
+ 		    }
+ 		}
+-		XFreeFontPath(font_path);
+ 	    }
+ 
+ 	    // memory mapping would be better here

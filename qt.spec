@@ -1,20 +1,15 @@
 #
 # Conditional build:
 # _without_mysql	- without mysql support
-# _without_pgsql		- without PostgreSQL support
+# _without_pgsql	- without PostgreSQL support
 # _without_odbc		- without unixODBC support
-#
 # _without_static	- don't build static library
 # _without_examples	- don't build and include samples
-#
 # _with_nas		- enable nas audio support
-#
 # _without_cups		- disable cups support
-#
 
 %define 	_withsql	1
 %{?_without_mysql:%{?_without_pgsql:%{?_without_odbc:%define _withsql 0}}}
-
 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
@@ -22,7 +17,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.1.2
-Release:	5
+Release:	7
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -34,11 +29,15 @@ Patch2:		%{name}-mysql_includes.patch
 Patch3:		%{name}-FHS.patch
 Patch4:		%{name}-qmake-opt.patch
 Patch5:		%{name}-cursors.patch
-Patch6:         %{name}-qmake-nostatic.patch
+Patch6:		%{name}-qmake-nostatic.patch
+Patch7:		%{name}-qmlined-fix.patch
+Patch8:		%{name}-locale.patch
+URL:		http://www.trolltech.com/
 BuildRequires:	OpenGL-devel
 BuildRequires:	XFree86-devel >= 4.0.2
 # incompatible with bison
 BuildRequires:	byacc
+%{!?_without_cups:BuildRequires:        cups-devel}
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
 BuildRequires:	libjpeg-devel
@@ -46,24 +45,25 @@ BuildRequires:	libmng-devel >= 1.0.0
 BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	libstdc++-devel
 BuildRequires:	libungif-devel
-BuildRequires:	xft-devel
 %{!?_without_mysql:BuildRequires:	mysql-devel}
+%{?_with_nas:BuildRequires:	nas-devel}
+%{?_with_prelink:BuildRequires:	objprelink}
 BuildRequires:	perl
 %{!?_without_pgsql:BuildRequires:	postgresql-backend-devel}
 %{!?_without_pgsql:BuildRequires:	postgresql-devel}
 %{!?_without_odbc:BuildRequires:	unixODBC-devel}
-%{!?_without_cups:BuildRequires:        cups-devel}
-%{?_with_nas:BuildRequires:	nas-devel}
+# BuildRequires:	xft-devel
 BuildRequires:	zlib-devel
-%{?_with_prelink:BuildRequires:	objprelink}
 Requires:	OpenGL
 Requires:	XFree86-libs >= 4.0.2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	qt-extensions
 
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1
+%define		_prefix		/usr/X11R6
 %define		_includedir	%{_prefix}/include/qt
 %define         _qt_sl		%{version}
+%define         _mandir         %{_prefix}/man
 
 %description
 Qt is a GUI software toolkit which simplifies the task of writing and
@@ -82,8 +82,8 @@ Pakiet ten zawiera bibliotekê niezbêdn± do uruchamiania aplikacji Qt,
 jak równie¿ pliki README z Qt.
 
 %description -l pt_BR
-Contém as bibliotecas compartilhadas necessárias para rodar aplicações Qt, bem
-como os arquivos README.
+Contém as bibliotecas compartilhadas necessárias para rodar aplicações
+Qt, bem como os arquivos README.
 
 %package devel
 Summary:	Development files and documentation for the Qt GUI toolkit
@@ -91,7 +91,7 @@ Summary(es):	Archivos de inclusión y documentación necesaria para compilar aplic
 Summary(pl):	Pliki nag³ówkowe, przyk³ady i dokumentacja do biblioteki
 Summary(pt_BR):	Arquivos de inclusão e documentação necessária para compilar aplicações Qt
 Group:		X11/Development/Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{epoch}:%{version}
 Requires:	XFree86-devel
 Requires:	freetype-devel
 Requires:	libjpeg-devel
@@ -103,35 +103,35 @@ Conflicts:	qt2-devel
 %description devel
 Contains the files necessary to develop applications using Qt: header
 files, the Qt meta object compiler, man pages, HTML documentation and
-example programs. See http://www.troll.no/ for more information about
-Qt, or file:/usr/share/doc/%{name}-%{version}/html/index.html for Qt
-documentation in HTML.
+example programs. See http://www.trolltech.com/ for more information
+about Qt, or file:/usr/share/doc/%{name}-%{version}/html/index.html
+for Qt documentation in HTML.
 
 %description devel -l es
-Contiene los archivos necesarios para desarrollar aplicaciones
-usando Qt: archivos de inclusión, compilador de metaobjetos Qt,
-páginas de manual, documentación HTML y programas ejemplo. Mira
-http://www.troll.no para más información sobre el Qt, o el
+Contiene los archivos necesarios para desarrollar aplicaciones usando
+Qt: archivos de inclusión, compilador de metaobjetos Qt, páginas de
+manual, documentación HTML y programas ejemplo. Mira
+http://www.trolltech.com/ para más información sobre el Qt, o el
 archivo file:/usr/share/doc/%{name}-%{version}/html/index.html en la
 documentación en HTML.
 
 %description devel -l pl
 Pakiet tem zawiera pliki potrzebne do tworzenia i kompilacji aplikacji
 korzystaj±cych z biblioteki Qt, jak pliki nag³ówkowe, meta kompiler
-(moc), dokumentacjê. Zobacz http://www.troll.no/ aby dowiedzieæ siê
-wiêcej o Qt. Dokumentacjê do biblioteki znajdziesz tak¿e pod:
+(moc), dokumentacjê. Zobacz http://www.trolltech.com/ aby dowiedzieæ
+siê wiêcej o Qt. Dokumentacjê do biblioteki znajdziesz tak¿e pod:
 /usr/share/doc/%{name}-%{version}/html/index.html
 
 %description devel -l pt_BR
-Contém os arquivos necessários para desenvolver aplicações usando Qt: arquivos
-de inclusão, compilador de meta-objetos Qt, veja http://www.trolltech.com para
-mais informações sobre ele.
+Contém os arquivos necessários para desenvolver aplicações usando Qt:
+arquivos de inclusão, compilador de meta-objetos Qt, veja
+http://www.trolltech.com/ para mais informações sobre ele.
 
 %package static
 Summary:	Qt static libraries
 Summary(pl):	Biblioteki statyczne Qt
 Group:		X11/Development/Libraries
-Requires:	%{name}-devel = %{version}
+Requires:	%{name}-devel = %{epoch}:%{version}
 
 %description static
 Static QT libraries.
@@ -155,7 +155,7 @@ Summary:	Example programs made with Qt version %{version}
 Summary(pl):	Æwiczenia i przyk³ady do Qt
 Summary(pt_BR):	Programas exemplo desenvolvidos com o Qt
 Group:		X11/Development/Libraries
-Requires:	%{name}-devel = %{version}
+Requires:	%{name}-devel = %{epoch}:%{version}
 
 %description examples
 Example programs made with Qt version %{version}.
@@ -171,7 +171,7 @@ Summary:	Database plugin for mysql Qt support
 Summary(pl):	Wtyczka MySQL do Qt
 Summary(pt_BR):	Plugin de suporte a mysql para Qt
 Group:		X11/Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{epoch}:%{version}
 
 %description plugins-mysql
 Database plugin for mysql Qt support.
@@ -187,7 +187,7 @@ Summary:	Database plugin for pgsql Qt support
 Summary(pl):	Wtyczka PostgreSQL do Qt
 Summary(pt_BR):	Plugin de suporte a pgsql para Qt
 Group:		X11/Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{epoch}:%{version}
 
 %description plugins-psql
 Database plugin for pgsql Qt support.
@@ -203,7 +203,7 @@ Summary:	Database plugin for ODBC Qt support
 Summary(pl):	Wtyczka ODBC do Qt
 Summary(pt_BR):	Plugin de suporte a ODBC para Qt
 Group:		X11/Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{epoch}:%{version}
 
 %description plugins-odbc
 Database plugin for ODBC Qt support.
@@ -218,7 +218,7 @@ Plugin de suporte a ODBC para Qt.
 Summary:	QT Utils
 Summary(pl):	Narzêdzia QT
 Group:		X11/Development/Tools
-Requires:	%{name}-devel = %{version}
+Requires:	%{name}-devel = %{epoch}:%{version}
 
 %description utils
 QT Development Utilities.
@@ -238,6 +238,8 @@ Narzedzia programistyczne QT.
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
+%patch7 -p1
+%patch8 -p1
 
 # mkspecs has wrong includes what makes it require patching every files that uses qmake
 # this is a fix
@@ -293,17 +295,17 @@ done
 OPTFLAGS="%{rpmcflags}" \
 ./configure \
 	$DEFAULTOPT \
-	-no-thread \
+	$DEFAULTSTYLES \
 	-fast \
-	-static \
+	-no-style-windowsxp \
+	-no-thread \
 	-qt-imgfmt-png \
 	-qt-imgfmt-jpeg \
 	-qt-imgfmt-mng \
 	%{!?_without_mysql:-qt-sql-mysql} \
 	%{!?_without_odbc:-qt-sql-odbc} \
 	%{!?_without_pgsql:-qt-sql-psql} \
-	$DEFAULTSTYLES \
-	-no-style-windowsxp \
+	-static \
 	<<_EOF_
 yes
 _EOF_
@@ -322,17 +324,17 @@ _EOF_
 OPTFLAGS="%{rpmcflags}" \
 ./configure \
 	$DEFAULTOPT \
-	-thread \
-	-static \
+	$DEFAULTSTYLES \
 	-fast\
+	-no-style-windowsxp \
 	-qt-imgfmt-png \
 	-qt-imgfmt-jpeg \
 	-qt-imgfmt-mng \
 	%{!?_without_mysql:-qt-sql-mysql} \
 	%{!?_without_odbc:-qt-sql-odbc} \
 	%{!?_without_pgsql:-qt-sql-psql} \
-	$DEFAULTSTYLES \
-	-no-style-windowsxp \
+	-static \
+	-thread \
 	<<_EOF_
 yes
 _EOF_
@@ -361,9 +363,10 @@ rm -f lib/libqt-mt.prl
 OPTFLAGS="%{rpmcflags}" \
 ./configure \
 	$DEFAULTOPT \
+	$DEFAULTSTYLES \
 	-fast \
+	-no-style-windowsxp \
 	-no-thread \
-	-shared \
 	-plugindir %{_libdir}/qt/plugins-st \
 	-plugin-imgfmt-png \
 	-plugin-imgfmt-jpeg \
@@ -371,8 +374,7 @@ OPTFLAGS="%{rpmcflags}" \
 	%{!?_without_mysql:-plugin-sql-mysql} \
 	%{!?_without_odbc:-plugin-sql-odbc} \
 	%{!?_without_pgsql:-plugin-sql-psql} \
-	$DEFAULTSTYLES \
-	-no-style-windowsxp \
+	-shared \
 	<<_EOF_
 yes
 _EOF_
@@ -403,8 +405,8 @@ cp -R plugins/sqldrivers plugins-st
 OPTFLAGS="%{rpmcflags}" \
 ./configure \
 	$DEFAULTOPT \
-	-thread \
-	-shared \
+	$DEFAULTSTYLES \
+	-no-style-windowsxp \
 	-plugindir %{_libdir}/qt/plugins-mt \
 	-plugin-imgfmt-png \
 	-plugin-imgfmt-jpeg \
@@ -412,8 +414,8 @@ OPTFLAGS="%{rpmcflags}" \
 	%{!?_without_mysql:-plugin-sql-mysql} \
 	%{!?_without_odbc:-plugin-sql-odbc} \
 	%{!?_without_pgsql:-plugin-sql-psql} \
-	$DEFAULTSTYLES \
-	-no-style-windowsxp \
+	-shared \
+	-thread \
 	<<_EOF_
 yes
 _EOF_
@@ -423,19 +425,19 @@ _EOF_
 
 %install
 rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT{%{_mandir}/man{1,3},%{_examplesdir}/%{name}/lib} \
+	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-{m,s}t/network
 
 QTDIR=`/bin/pwd`; export QTDIR
 LD_LIBRARY_PATH="$QTDIR/lib" ; export LD_LIBRARY_PATH
 PATH="$QTDIR/bin:$PATH"
 
-%{__make} install INSTALL_ROOT=$RPM_BUILD_ROOT
+%{__make} install \
+	INSTALL_ROOT=$RPM_BUILD_ROOT
 
 rm -rf `find $RPM_BUILD_ROOT -name CVS`
-
 rm -rf `find . -name CVS`
 
-install -d $RPM_BUILD_ROOT{%{_mandir}/man{1,3},%{_examplesdir}/%{name}/lib} \
-	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-{m,s}t/network
 install bin/{findtr,qt20fix,qtrename140} \
 	tools/msg2qm/msg2qm tools/mergetr/mergetr \
 	$RPM_BUILD_ROOT%{_bindir}
@@ -455,7 +457,7 @@ cp -R plugins-st/* $RPM_BUILD_ROOT%{_libdir}/qt/plugins-st/
 
 cp -dpR .qmake.cache examples tutorial \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name}
-	
+
 mv $RPM_BUILD_ROOT{%{_libdir}/*.prl,%{_examplesdir}/%{name}/lib}
 
 # Fix Makefiles for tutorial and examples. How people who made so cool
@@ -497,12 +499,12 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc FAQ LICENSE.* README* changes*
-%attr(755,root,root) %{_libdir}/libdesigner.so.*
-%attr(755,root,root) %{_libdir}/libeditor.so.*
-%attr(755,root,root) %{_libdir}/libqassistantclient.so.*
-%attr(755,root,root) %{_libdir}/libqt.so.*
-%attr(755,root,root) %{_libdir}/libqt-mt.so.*
-%attr(755,root,root) %{_libdir}/libqui.so.*
+%attr(755,root,root) %{_libdir}/libdesigner.so.*.*.*
+%attr(755,root,root) %{_libdir}/libeditor.so.*.*.*
+%attr(755,root,root) %{_libdir}/libqassistantclient.so.*.*.*
+%attr(755,root,root) %{_libdir}/libqt.so.*.*.*
+%attr(755,root,root) %{_libdir}/libqt-mt.so.*.*.*
+%attr(755,root,root) %{_libdir}/libqui.so.*.*.*
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/plugins*
 %dir %{_libdir}/%{name}/plugins*/imageformats
