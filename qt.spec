@@ -36,20 +36,20 @@ Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
 Patch3:		%{name}-FHS.patch
-Patch4:         %{name}-qmake-nostatic.patch
+Patch4:		%{name}-qmake-nostatic.patch
 Patch5:		%{name}-disable_tutorials.patch
-Patch6:         %{name}-locale.patch
-Patch7:         %{name}-make_use_of_locale.patch
-Patch8:         %{name}-make_assistant_use_global_docs.patch
-Patch9:         %{name}-qlineedit_khtml_fix.patch
-Patch10:        %{name}-qmake_la_generation_fix.patch
+Patch6:		%{name}-locale.patch
+Patch7:		%{name}-make_use_of_locale.patch
+Patch8:		%{name}-make_assistant_use_global_docs.patch
+Patch9:		%{name}-qlineedit_khtml_fix.patch
+Patch10:	%{name}-qmake_la_generation_fix.patch
 Patch11:	%{name}-qmlined-fix.patch
 Patch12:	%{name}-qmake-opt.patch
 URL:		http://www.trolltech.com/products/qt/
 BuildRequires:	OpenGL-devel
 # incompatible with bison
 BuildRequires:	byacc
-%{!?_without_cups:BuildRequires:        cups-devel}
+%{!?_without_cups:BuildRequires:	cups-devel}
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
 BuildRequires:	libjpeg-devel
@@ -144,7 +144,7 @@ Summary:	Qt static libraries
 Summary(pl):	Biblioteki statyczne Qt
 Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
-%{?_with_single:Provides: %{name}-static-st = %{epoch}:%{version}-%{release}}
+%{?_with_single:Provides:	%{name}-static-st = %{epoch}:%{version}-%{release}}
 
 %description static
 Static QT libraries.
@@ -198,9 +198,9 @@ Summary(pl):	Wtyczka MySQL do Qt
 Summary(pt_BR):	Plugin de suporte a mysql para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
-%{?_with_single:Requires: %{name}-st = %{epoch}:%{version}-%{release}}
+%{?_with_single:Requires:	%{name}-st = %{epoch}:%{version}-%{release}}
 Provides:	%{name}-plugin-sql
-%{?_with_single:Provides: %{name}-plugin-sql-st = %{epoch}:%{version}-%{release}}
+%{?_with_single:Provides:	%{name}-plugin-sql-st = %{epoch}:%{version}-%{release}}
 Obsoletes:	%{name}-plugins-mysql
 
 %description plugin-mysql
@@ -218,9 +218,9 @@ Summary(pl):	Wtyczka PostgreSQL do Qt
 Summary(pt_BR):	Plugin de suporte a pgsql para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
-%{?_with_single:Requires: %{name}-st = %{epoch}:%{version}-%{release}}
+%{?_with_single:Requires:	%{name}-st = %{epoch}:%{version}-%{release}}
 Provides:	%{name}-plugin-sql
-%{?_with_single:Provides: %{name}-plugin-sql-st = %{epoch}:%{version}-%{release}}
+%{?_with_single:Provides:	%{name}-plugin-sql-st = %{epoch}:%{version}-%{release}}
 Obsoletes:	%{name}-plugins-psql
 
 %description plugin-psql
@@ -238,9 +238,9 @@ Summary(pl):	Wtyczka ODBC do Qt
 Summary(pt_BR):	Plugin de suporte a ODBC para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
-%{?_with_single:Requires: %{name}-st = %{epoch}:%{version}-%{release}}
+%{?_with_single:Requires:	%{name}-st = %{epoch}:%{version}-%{release}}
 Provides:	%{name}-plugin-sql
-%{?_with_single:Provides: %{name}-plugin-sql-st = %{epoch}:%{version}-%{release}}
+%{?_with_single:Provides:	%{name}-plugin-sql-st = %{epoch}:%{version}-%{release}}
 Obsoletes:	%{name}-plugins-odbc
 
 %description plugin-odbc
@@ -314,7 +314,7 @@ DEFAULTOPT=" \
 	-datadir %{_datadir}/qt \
 	-docdir %{_docdir}/%{name}-doc \
 	-sysconfdir %{_sysconfdir} \
-	-translationdir %{_datadir}/locale/  \
+	-translationdir %{_datadir}/locale/ \
 	-fast \
 	-qt-gif \
 	-system-libjpeg \
@@ -542,14 +542,14 @@ install translations/qt_ru.qm $RPM_BUILD_ROOT%{_datadir}/locale/ru/LC_MESSAGES/q
 install translations/qt_iw.qm $RPM_BUILD_ROOT%{_datadir}/locale/he/LC_MESSAGES/qt.qm
 
 
-install tools/designer/designer/designer_de.qm	$RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/designer.qm
-install tools/designer/designer/designer_fr.qm  $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/designer.qm
+install tools/designer/designer/designer_de.qm $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/designer.qm
+install tools/designer/designer/designer_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/designer.qm
 
-install tools/assistant/assistant_de.qm  $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/assistant.qm
-install tools/assistant/assistant_fr.qm  $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/assistant.qm
+install tools/assistant/assistant_de.qm $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/assistant.qm
+install tools/assistant/assistant_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/assistant.qm
 
-install tools/linguist/linguist/linguist_de.qm  $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/linguist.qm
-install tools/linguist/linguist/linguist_fr.qm  $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/linguist.qm
+install tools/linguist/linguist/linguist_de.qm $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/linguist.qm
+install tools/linguist/linguist/linguist_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/linguist.qm
 
 
 install tools/linguist/qm2ts/qm2ts.1 $RPM_BUILD_ROOT%{_mandir}/man1
@@ -604,7 +604,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/qt/[!d]*
 %{_mandir}/man1/*
 %{_libdir}/pkgconfig/qt-mt.pc
-   
+
 %if %{?_with_static:1}0
 %files static
 %defattr(644,root,root,755)
