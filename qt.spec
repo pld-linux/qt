@@ -88,7 +88,6 @@ Requires:	xrender
 Requires:	freetype
 Requires:	libpng
 Requires:	libjpeg
-Requires:	libungif
 Requires:	libmng
 Requires:	OpenGL
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -157,7 +156,6 @@ Requires:	libstdc++-devel
 Requires:	xft-devel
 Requires:	xcursor-devel
 Requires:	xrender-devel
-Requires:       libungif-devel
 Requires:	libmng-devel
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Conflicts:	qt2-devel
