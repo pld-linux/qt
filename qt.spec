@@ -18,7 +18,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.1
-Release:	0.%{_snapshot}.1
+Release:	0.%{_snapshot}.2
 Epoch:		5
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -54,12 +54,12 @@ Requires:	XFree86-libs >= 4.0.2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	qt-extensions
 
-%define		_docdir		/usr/share/doc/%{name}-%{version}
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1
 %define		_prefix		/usr/X11R6
 %define		_includedir	%{_prefix}/include/qt
 %define		_mandir		%{_prefix}/man
 %define         _qt_sl		3.1.0
+
 %description
 Qt is a GUI software toolkit which simplifies the task of writing and
 maintaining GUI (Graphical User Interface) applications for the X
@@ -389,7 +389,8 @@ rm -rf `find $RPM_BUILD_ROOT -name CVS`
 rm -rf `find . -name CVS`
 
 install -d $RPM_BUILD_ROOT{%{_mandir}/man{1,3},%{_examplesdir}/%{name}/lib} \
-	$RPM_BUILD_ROOT{%{_libdir}/qt/plugins-st,%{_docdir}/html}
+	$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st \
+	$RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}/html
 
 install bin/findtr tools/msg2qm/msg2qm tools/mergetr/mergetr \
 	$RPM_BUILD_ROOT%{_bindir}
@@ -409,12 +410,11 @@ cp -R plugins-st/* $RPM_BUILD_ROOT%{_libdir}/qt/plugins-st/
 cp -dpR .qmake.cache examples tutorial \
 	$RPM_BUILD_ROOT%{_examplesdir}/%{name}
 	
-cp LICENSE.QPL $RPM_BUILD_ROOT%{_docdir}
-
-mv $RPM_BUILD_ROOT%{_docdir}/{*.html,html}	
-mv $RPM_BUILD_ROOT%{_docdir}/{*.{jpg,png,xml},html}
-mv $RPM_BUILD_ROOT%{_docdir}/{{headerfilesynonyms,index,propertydocs},html}
-mv $RPM_BUILD_ROOT%{_docdir}/{{propertyindex,titleindex,whatsthis},html}
+cd $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}
+mv [!h]* html
+mv h?[!m]* html
+cd -
+cp LICENSE.QPL $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}
 
 mv $RPM_BUILD_ROOT{%{_libdir}/*.prl,%{_examplesdir}/%{name}/lib}
 
@@ -440,7 +440,7 @@ perl -pi -e "
 
 %files
 %defattr(644,root,root,755)
-%{_docdir}/LICENSE.QPL
+%{_docdir}/%{name}-%{version}/LICENSE.QPL
 %attr(755,root,root) %{_libdir}/libqt.so.*
 %attr(755,root,root) %{_libdir}/libqui.so.*
 %attr(755,root,root) %{_libdir}/libeditor.so.*
@@ -457,7 +457,7 @@ perl -pi -e "
 
 %files devel
 %defattr(644,root,root,755)
-%{_docdir}/html
+%{_docdir}/%{name}-%{version}/html
 %attr(755,root,root) %{_bindir}/*
 %{_libdir}/libqt.so
 %{_libdir}/libqt-mt.so
