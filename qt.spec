@@ -10,7 +10,9 @@
 # _without_static	- don't build static library
 # _without_examples	- don't build and include samples
 
+%define		_kdever		kde-3.1-rc1
 %define		_snapshot	20021024
+%define		_state		unstable
 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
@@ -18,11 +20,11 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.1
-Release:	0.%{_snapshot}.3
+Release:	0.%{_snapshot}.4
 Epoch:		5
 License:	GPL / QPL
 Group:		X11/Libraries
-Source0:	%{name}-copy.tar.bz2
+Source0:	ftp://ftp.kde.org/pub/kde/%{_state}/%{_kdever}/src/%{name}-copy-%{version}_%{_snapshot}.tar.bz2
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-postgresql_7_2.patch
 Patch2:		%{name}-mysql_includes.patch
@@ -194,7 +196,7 @@ Wtyczka ODBC do Qt.
 Plugin de suporte a ODBC para Qt.
 
 %prep
-%setup -q -n %{name}-copy
+%setup -q -n %{name}-copy-%{version}_%{_snapshot}
 %patch0 -p1
 #%ifarch %{ix86} ppc
 #%{?_with_prelink:%patch1 -p1}
@@ -441,9 +443,9 @@ perl -pi -e "
 %{_docdir}/%{name}-%{version}/LICENSE.QPL
 %attr(755,root,root) %{_libdir}/libqt.so.*
 %attr(755,root,root) %{_libdir}/libqui.so.*
-%attr(755,root,root) %{_libdir}/libeditor.so.*
-%attr(755,root,root) %{_libdir}/libqassistantclient.so.*
-%attr(755,root,root) %{_libdir}/libdesigner.so.* 
+#%attr(755,root,root) %{_libdir}/libeditor.so.*
+#%attr(755,root,root) %{_libdir}/libqassistantclient.so.*
+#%attr(755,root,root) %{_libdir}/libdesigner.so.* 
 %attr(755,root,root) %{_libdir}/libqt-mt.so.*
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/plugins*
@@ -460,7 +462,7 @@ perl -pi -e "
 %{_libdir}/libqt.so
 %{_libdir}/libqt-mt.so
 %{_libdir}/libqui.so
-%{_libdir}/libeditor.so
+#%{_libdir}/libeditor.so
 %{_includedir}
 %{_mandir}/man?/*
 %dir %{_libdir}/%{name}/plugins*/designer
