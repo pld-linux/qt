@@ -58,7 +58,7 @@ Patch13:	%{name}-x11-mono.patch
 Patch14:	%{name}-x11-qfontdatabase_x11.patch
 URL:		http://www.trolltech.com/products/qt/
 Icon:		qt.xpm
-%{?with_ibase:BuildRequires:	Firebird-devel}
+%{?with_ibase:BuildRequires:	Firebird-devel >= 1.5.0}
 BuildRequires:	OpenGL-devel
 %{?with_nvidia:BuildRequires:	XFree86-driver-nvidia-devel < 1.0.4620}
 %{?with_cups:BuildRequires:	cups-devel}
@@ -82,18 +82,18 @@ BuildRequires:	xcursor-devel
 BuildRequires:	xft-devel
 BuildRequires:	xrender-devel
 BuildRequires:	zlib-devel
-Requires:	xft
-Requires:	xcursor
-Requires:	xrender
-Requires:	freetype
-Requires:	libpng
-Requires:	libjpeg
-Requires:	libmng
+#Requires:	xft
+#Requires:	xcursor
+#Requires:	xrender
+Requires:	freetype >= 2.0.0
+#Requires:	libjpeg
+Requires:	libmng >= 1.0.0
+#Requires:	libpng
 Requires:	OpenGL
-BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-Conflicts:	kdelibs <= 8:3.2-0.030602.1
 Obsoletes:	qt-extensions
 Obsoletes:	qt-utils
+Conflicts:	kdelibs <= 8:3.2-0.030602.1
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1
 
@@ -149,9 +149,9 @@ Summary(pt_BR):	Arquivos de inclusão necessária para compilar aplicações Qt
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	OpenGL-devel
-Requires:	freetype-devel
+Requires:	freetype-devel >= 2.0.0
 Requires:	libjpeg-devel
-Requires:	libmng-devel
+Requires:	libmng-devel >= 1.0.0
 Requires:	libpng-devel
 Requires:	libstdc++-devel
 Requires:	xcursor-devel
@@ -261,7 +261,7 @@ Summary(pl):	Wtyczka InterBase/Firebird do Qt
 Summary(pt_BR):	Plugin de suporte a InterBase/Firebird para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
-Requires:	Firebird-lib
+Requires:	Firebird-lib >= 1.5.0
 Provides:	%{name}-plugin-sql = %{epoch}:%{version}-%{release}
 
 %description plugin-ibase
@@ -280,8 +280,8 @@ Summary:	Database plugin for MySQL Qt support
 Summary(pl):	Wtyczka MySQL do Qt
 Summary(pt_BR):	Plugin de suporte a MySQL para Qt
 Group:		X11/Libraries
-Requires:	mysql-libs
 Requires:	%{name} = %{epoch}:%{version}-%{release}
+#Requires:	mysql-libs
 Provides:	%{name}-plugin-sql = %{epoch}:%{version}-%{release}
 Obsoletes:	qt-plugins-mysql
 
@@ -301,8 +301,8 @@ Summary:	Database plugin for ODBC Qt support
 Summary(pl):	Wtyczka ODBC do Qt
 Summary(pt_BR):	Plugin de suporte a ODBC para Qt
 Group:		X11/Libraries
-Requires:	unixODBC
 Requires:	%{name} = %{epoch}:%{version}-%{release}
+#Requires:	unixODBC
 Provides:	%{name}-plugin-sql = %{epoch}:%{version}-%{release}
 Obsoletes:	qt-plugins-odbc
 
@@ -322,8 +322,8 @@ Summary:	Database plugin for PostgreSQL Qt support
 Summary(pl):	Wtyczka PostgreSQL do Qt
 Summary(pt_BR):	Plugin de suporte a pgsql para Qt
 Group:		X11/Libraries
-Requires:	postgresql-libs
 Requires:	%{name} = %{epoch}:%{version}-%{release}
+#Requires:	postgresql-libs
 Provides:	%{name}-plugin-sql = %{epoch}:%{version}-%{release}
 Obsoletes:	qt-plugins-psql
 
@@ -343,8 +343,8 @@ Summary:	Database plugin for SQLite Qt support
 Summary(pl):	Wtyczka SQLite do Qt
 Summary(pt_BR):	Plugin de suporte a SQLite para Qt
 Group:		X11/Libraries
-Requires:	sqlite
 Requires:	%{name} = %{epoch}:%{version}-%{release}
+#Requires:	sqlite
 Provides:	%{name}-plugin-sql = %{epoch}:%{version}-%{release}
 
 %description plugin-sqlite
@@ -464,8 +464,8 @@ ju¿ wspierana i nie zaleca siê jej instalowania bez wyra¼nej potrzeby.
 Summary:	Database plugin for InterBase/Firebird support in single-threaded Qt
 Summary(pl):	Wtyczka InterBase/Firebird do jednow±tkowej wersji Qt
 Group:		X11/Libraries
-Requires:	Firebird-lib
 Requires:	%{name}-st = %{epoch}:%{version}-%{release}
+Requires:	Firebird-lib >= 1.5.0
 Provides:	%{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
 
 %description st-plugin-ibase
@@ -480,8 +480,8 @@ korzystanie z baz danych InterBase/Firebird poprzez klasy QSql.
 Summary:	Database plugin for MySQL support in single-threaded Qt
 Summary(pl):	Wtyczka MySQL do jednow±tkowej wersji Qt
 Group:		X11/Libraries
-Requires:	mysql-libs
 Requires:	%{name}-st = %{epoch}:%{version}-%{release}
+#Requires:	mysql-libs
 Provides:	%{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
 
 %description st-plugin-mysql
@@ -496,8 +496,8 @@ korzystanie z baz danych MySQL poprzez klasy QSql.
 Summary:	Database plugin for ODBC support in single-threaded Qt
 Summary(pl):	Wtyczka ODBC do jednow±tkowej wersji Qt
 Group:		X11/Libraries
-Requires:	unixODBC
 Requires:	%{name}-st = %{epoch}:%{version}-%{release}
+#Requires:	unixODBC
 Provides:	%{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
 
 %description st-plugin-odbc
@@ -513,8 +513,8 @@ Summary:	Database plugin for PostgreSQL support in single-threaded Qt
 Summary(pl):	Wtyczka PostgreSQL do jednow±tkowej wersji Qt
 Summary(pt_BR):	Plugin de suporte a pgsql para Qt
 Group:		X11/Libraries
-Requires:	postgresql-libs
 Requires:	%{name}-st = %{epoch}:%{version}-%{release}
+#Requires:	postgresql-libs
 Provides:	%{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
 
 %description st-plugin-psql
@@ -529,8 +529,8 @@ korzystanie z baz danych PostgreSQL poprzez klasy QSql.
 Summary:	Database plugin for SQLite support in single-threaded Qt
 Summary(pl):	Wtyczka SQLite do jednow±tkowej wersji Qt
 Group:		X11/Libraries
-Requires:	sqlite
 Requires:	%{name}-st = %{epoch}:%{version}-%{release}
+#Requires:	sqlite
 Provides:	%{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
 
 %description st-plugin-sqlite
