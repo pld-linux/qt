@@ -105,7 +105,7 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir},%{_includedir},%{_mandir}/man{1
 install -d $RPM_BUILD_ROOT/usr/src/examples/%{name}
 install -d $RPM_BUILD_ROOT/usr/share/tutorial/%{name}
 
-install -s bin/* $RPM_BUILD_ROOT/%{_bindir}/
+install bin/* $RPM_BUILD_ROOT/%{_bindir}/
 
 install -s lib/lib*.so* $RPM_BUILD_ROOT/%{_libdir}
 
@@ -127,7 +127,9 @@ if [ -f lib/libqxt.a ] ; then
         install lib/libqxt.a $RPM_BUILD_ROOT%{_libdir}
 fi
 install extensions/xt/src/*.h $RPM_BUILD_ROOT%{_includedir}/
-	
+
+strip --strip-unneeded $RPM_BUILD_ROOT/%{_bindir}/* || :
+
 gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man[13]/* \
 	ANNOUNCE FAQ README* MANIFEST PLATFORMS changes* LICENSE.QPL
 
