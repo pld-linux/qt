@@ -22,7 +22,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	3.1.1
-Release:	3
+Release:	3.1
 Epoch:		6
 License:	GPL / QPL
 Group:		X11/Libraries
@@ -59,7 +59,9 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	qt-extensions
 
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1
+%define		_prefix		/usr/X11R6
 %define		_includedir	%{_prefix}/include/qt
+%define		_mandir		%{_prefix}/man
 %define         _qt_sl		%{version}
 
 %description
