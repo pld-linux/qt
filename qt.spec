@@ -227,7 +227,7 @@ install qmake/qmake		$RPM_BUILD_ROOT%{_bindir}/
 install plugins/sqldrivers/*.so		$RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/sqldrivers
 install plugins/imageformats/*.so	$RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/imageformats
 install plugins/designer/*.so		$RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/designer
-install plugins/styles/*.so		$RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/styles
+#install plugins/styles/*.so		$RPM_BUILD_ROOT%{_libdir}/%{name}/plugins/styles
 
 install lib/libqt.so.%{version}	$RPM_BUILD_ROOT%{_libdir}
 ln -s -f libqt.so.%{version}	$RPM_BUILD_ROOT%{_libdir}/libqt.so
@@ -276,9 +276,10 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/plguins
 %dir %{_libdir}/%{name}/plguins/imageformats
+%dir %{_libdir}/%{name}/plguins/styles
 %dir %{_libdir}/%{name}/plguins/sqldrivers
 %attr(755,root,root) %{_libdir}/%{name}/plugins/imageformats/*.so
-%attr(755,root,root) %{_libdir}/%{name}/plugins/styles/*.so
+#%attr(755,root,root) %{_libdir}/%{name}/plugins/styles/*.so
 
 %files devel
 %defattr(644,root,root,755)
