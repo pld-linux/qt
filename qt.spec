@@ -146,17 +146,16 @@ Summary(es):	Archivos de inclusión necesaria para compilar aplicaciones Qt
 Summary(pl):	Pliki nag³ówkowe, przyk³ady i dokumentacja do biblioteki
 Summary(pt_BR):	Arquivos de inclusão necessária para compilar aplicações Qt
 Group:		X11/Development/Libraries
+Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	OpenGL-devel
 Requires:	freetype-devel
 Requires:	libjpeg-devel
 Requires:	libmng-devel
 Requires:	libpng-devel
 Requires:	libstdc++-devel
-Requires:	xft-devel
 Requires:	xcursor-devel
+Requires:	xft-devel
 Requires:	xrender-devel
-Requires:	libmng-devel
-Requires:	%{name} = %{epoch}:%{version}-%{release}
 Conflicts:	qt2-devel
 
 %description devel
@@ -165,13 +164,11 @@ compiler (moc) and the user interface compiler (uic); Qt include
 files, pkgconfig helpers and tools for preserving compatibility
 between versions of Qt.
 
-
 %description devel -l pl
 Ten pakiet zawiera narzêdzia programistyczne Qt: kompilator
 metaobiektów (moc), kompilator interfejsu u¿ytkownika (uic); pliki
 nag³ówkowe, wsparcie dla pkgconfig oraz narzêdzia u³atwiaj±ce
 zachowanie kompatybilno¶ci niezale¿nie od wersji Qt.
-
 
 %package static
 Summary:	Qt static library
@@ -195,7 +192,6 @@ LiveConnect plugin.
 This package contains the static, multi-threaded, linux version of the
 Qt library.
 
-
 %description static -l pl
 Qt oferuje kompletny system do tworzenia i rozwijania aplikacji w
 jêzyku C++, w którego sk³ad wchodzi biblioteka z klasami oraz
@@ -215,8 +211,8 @@ Ten pakiet zawiera statyczn±, wielow±tkow±, linuksow± wersjê
 biblioteki Qt.
 
 %package doc
-Summary:	QT Documentation in HTML format
-Summary(pl):	Dokumentacja QT w formacie HTML
+Summary:	Qt Documentation in HTML format
+Summary(pl):	Dokumentacja Qt w formacie HTML
 Group:		X11/Development/Libraries
 Obsoletes:	qt-doc-html
 
@@ -227,8 +223,8 @@ Qt documentation in HTML format.
 Dokumentacja qt w formacie HTML.
 
 %package man
-Summary:	QT man pages
-Summary(pl):	QT - strony man
+Summary:	Qt man pages
+Summary(pl):	Qt - strony man
 Group:		X11/Development/Libraries
 Obsoletes:	qt-doc-man
 
@@ -236,7 +232,7 @@ Obsoletes:	qt-doc-man
 Qt documentation in man pages format.
 
 %description man -l pl
-Dokumentacja qt w formacie stron man.
+Dokumentacja Qt w formacie stron man.
 
 %package examples
 Summary:	Example programs bundled with Qt
@@ -334,13 +330,12 @@ Obsoletes:	qt-plugins-psql
 This package contains a multi-thread enabled plugin for accessing
 PostgreSQL database via the QSql classes.
 
+%description plugin-psql -l es
+Plugin de suporte a pgsql para Qt.
 
 %description plugin-psql -l pl
 Ten pakiet zawiera wielow±tkow± wersjê wtyczki do Qt umo¿liwiaj±cej
 korzystanie z baz danych PostgreSQL poprzez klasy QSql.
-
-%description plugin-psql -l es
-Plugin de suporte a pgsql para Qt.
 
 %package plugin-sqlite
 Summary:	Database plugin for SQLite Qt support
@@ -361,8 +356,9 @@ Ten pakiet zawiera wielow±tkow± wersjê wtyczki do Qt umo¿liwiaj±cej
 korzystanie z baz danych PostgreSQL poprzez klasy QSql.
 
 %description plugin-sqlite -l pt_BR
-Plugin de suporte a SQLite para Qt. # <end multithreaded plugins desc>
+Plugin de suporte a SQLite para Qt.
 
+# <end multithreaded plugins desc>
 
 # <begin single threaded desc>
 
@@ -548,8 +544,8 @@ korzystanie z baz danych PostgreSQL poprzez klasy QSql.
 Summary:	Translation helper for Qt
 Summary(pl):	Aplikacja u³atwiaj±ca t³umaczenie aplikacji oparty o Qt
 Group:		X11/Development/Tools
-Requires:	%{name} >= %{epoch}:%{version}-%{release}
-Conflicts:	%{name}-devel < 6:3.3.2-3
+Requires:	%{name} = %{epoch}:%{version}-%{release}
+Conflicts:	qt-devel < 6:3.3.2-3
 
 %description linguist
 This program provides an interface that shortens and helps systematize
@@ -570,9 +566,9 @@ nastêpnego, a¿ wszystkie bêd± przet³umaczone.
 Summary:	Qt documentation browser
 Summary(pl):	Przegl±darka dokumentacji Qt
 Group:		X11/Development/Tools
-Requires:	%{name} >= %{epoch}:%{version}-%{release}
+Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name}-doc
-Conflicts:	%{name}-devel < 6:3.3.2-3
+Conflicts:	qt-devel < 6:3.3.2-3
 
 %description assistant
 Qt Assistant is a tool for browsing on-line documentation with
@@ -586,7 +582,7 @@ indeksowania, dodawania zak³adek i pe³notekstowego wyszukiwania.
 Summary:	Qt makefile generator
 Summary(pl):	Generator plików makefile dla aplikacji Qt
 Group:		X11/Development/Tools
-Conflicts:	%{name}-devel < 6:3.3.2-3
+Conflicts:	qt-devel < 6:3.3.2-3
 
 %description -n qmake
 A powerful makefile generator. It can create makefiles on any platform
@@ -597,35 +593,35 @@ Rozbudowany generator plików makefile. Potrafi tworzyæ pliki makefile
 na ka¿dej platformi na podstawie ³atwego w przygotowaniu pliku .pro.
 
 %package -n qtconfig
-Summary:	QT widgets configuration tool
-Summary(pl):	Narzêdzie do konfigurowania widgetów QT
+Summary:	Qt widgets configuration tool
+Summary(pl):	Narzêdzie do konfigurowania widgetów Qt
 Group:		X11/Applications
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 
 %description -n qtconfig
-A tool for configuring look and behavior of QT widgets.
+A tool for configuring look and behavior of Qt widgets.
 
 %description -n qtconfig -l pl
-Narzêdie do konfiguracji wygl±du i zachowania widgetów QT.
+Narzêdie do konfiguracji wygl±du i zachowania widgetów Qt.
 
 %package designer
-Summary:	IDE used for GUI designing with QT library
-Summary(pl):	IDE s³u¿±ce do projektowania GUI za pomoc± biblioteki QT
+Summary:	IDE used for GUI designing with Qt library
+Summary(pl):	IDE s³u¿±ce do projektowania GUI za pomoc± biblioteki Qt
 Group:		X11/Applications
 Requires:	%{name}-designer-libs = %{epoch}:%{version}-%{release}
 
 %description designer
-An advanced tool used for GUI designing with QT library.
+An advanced tool used for GUI designing with Qt library.
 
 %description designer -l pl
 Zaawansowane narzêdzie s³u¿±ce do projektowania interfejsu graficznego
-za pomoc± biblioteki QT.
+za pomoc± biblioteki Qt.
 
 %package designer-libs
-Summary:	Libraries IDE used for GUI designing with QT library
-Summary(pl):	Biblioteki do IDE s³u¿±cego do projektowania GUI za pomoc± biblioteki QT
+Summary:	Libraries IDE used for GUI designing with Qt library
+Summary(pl):	Biblioteki do IDE s³u¿±cego do projektowania GUI za pomoc± biblioteki Qt
 Group:		X11/Applications
-Requires:	%{name} >= %{epoch}:%{version}-%{release}
+Requires:	%{name} = %{epoch}:%{version}-%{release}
 
 %description designer-libs
 Libraries used by the Qt GUI Designer.
@@ -1218,7 +1214,6 @@ EOF
 %{_datadir}/qt/phrasebooks
 %{_mandir}/man1/l*
 %{_mandir}/man1/*qm*
-
 
 %files -n qtconfig
 %defattr(644,root,root,755)
