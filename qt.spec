@@ -15,7 +15,7 @@ BuildRequires:	Mesa-devel
 BuildRequires:	XFree86-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	lesstif-devel
-BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+Buildroot:	/tmp/%{name}-%{version}-root
 
 %define		_prefix		/usr/X11R6
 %define _lib_version	2.2
@@ -79,23 +79,25 @@ QTDIR=`/bin/pwd`; export QTDIR
 LD_LIBRARY_PATH=%{_libdir} ;	export LD_LIBRARY_PATH
 SYSCONF_CFLAGS="-pipe -DNO_DEBUG $RPM_OPT_FLAGS" ;	export SYSCONF_CFLAGS
 SYSCONF_CXXFLAGS="-pipe -DNO_DEBUG $RPM_OPT_FLAGS" ;	export SYSCONF_CXXFLAGS
-make moc
-make src
-make util
+make SYCONF_CFLAGS="$RPM_OPT_FLAGS" SYSCONF_CXXFLAGS="$RPM_OPT_FLAGS" moc
+#printenv SYSCONF_CXXFLAGS
+#printenv SYSCONF_CFLAGS
+make SYSCONF_CXXFLAGS="$RPM_OPT_FLAGS" SYCONF_CFLAGS="$RPM_OPT_FLAGS" src
+#make util
 
 echo " Compiling Extensions ..."
 #not needed
 #(cd extensions/imageio/src;LD_LIBRARY_PATH=%{_libdir};make)
-(cd extensions/network/src;LD_LIBRARY_PATH=%{_libdir};make)
+#(cd extensions/network/src;LD_LIBRARY_PATH=%{_libdir};make)
 #(cd extensions/nsplugin/src;LD_LIBRARY_PATH=%{_libdir};make)
-(cd extensions/opengl/src;LD_LIBRARY_PATH=%{_libdir};make)
+#(cd extensions/opengl/src;LD_LIBRARY_PATH=%{_libdir};make)
 #not needned
 #(cd extensions/xembed/src;LD_LIBRARY_PATH=%{_libdir};make)
-(cd extensions/xt/src;LD_LIBRARY_PATH=%{_libdir};make \
-	INCPATH="-I%{_includepatch} -I../../../include")
+#(cd extensions/xt/src;LD_LIBRARY_PATH=%{_libdir};make \
+#	INCPATH="-I%{_includepatch} -I../../../include")
 
 # tutorial
-(cd tutorial;LD_LIBRARY_PATH=%{_libdir};make)
+#(cd tutorial;LD_LIBRARY_PATH=%{_libdir};make)
 
 #examples
 # remover due to many errors in sources
@@ -125,6 +127,7 @@ install extensions/network/src/*.h $RPM_BUILD_ROOT%{_includedir}
 install extensions/opengl/src/*.h $RPM_BUILD_ROOT%{_includedir}
 #install extensions/xembed/src/*.h $RPM_BUILD_ROOT%{_includedir}
 install extensions/xt/src/*.h $RPM_BUILD_ROOT%{_includedir}
+
 
 strip --strip-unneeded $RPM_BUILD_ROOT/%{_bindir}/* || :
 strip --strip-unneeded $RPM_BUILD_ROOT/%{_libdir}/*.so*
