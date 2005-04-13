@@ -53,6 +53,7 @@ Patch5:		%{name}-make_use_of_locale.patch
 Patch6:		%{name}-qmake-opt.patch
 Patch7:		%{name}-locale-charmap.patch
 Patch8:		%{name}-gcc34.patch
+Patch9:		%{name}-support-cflags-with-commas.patch
 # for troll only
 Patch10:	%{name}-antialias.patch
 #
@@ -667,6 +668,7 @@ graficznego - Qt Designer.
 %patch6 -p1
 %patch7 -p1
 %patch8 -p1
+%patch9 -p1
 %patch10 -p1
 %patch12 -p1
 %patch13 -p1
