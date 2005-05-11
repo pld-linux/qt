@@ -13,7 +13,7 @@
 %bcond_with	ibase		# build ibase (InterBase/Firebird) plugin
 %bcond_with	pch		# enable pch in qmake
 #
-%ifnarch %{ix86} amd64 sparc sparcv9 alpha ppc
+%ifnarch %{ix86} %{x8664} sparc sparcv9 alpha ppc
 %undefine	with_ibase
 %endif
 %define		_withsql	1
@@ -79,7 +79,7 @@ BuildRequires:	libungif-devel
 BuildRequires:	perl-base
 %{?with_pgsql:BuildRequires:	postgresql-backend-devel}
 %{?with_pgsql:BuildRequires:	postgresql-devel}
-BuildRequires:	rpmbuild(macros) >= 1.167
+BuildRequires:	rpmbuild(macros) >= 1.213
 BuildRequires:	sed >= 4.0
 %{?with_sqlite:BuildRequires:	sqlite-devel}
 %{?with_odbc:BuildRequires:	unixODBC-devel}
