@@ -10,37 +10,34 @@
 %bcond_without	pgsql		# don't build PostgreSQL plugin
 %bcond_without	designer	# don't build designer (it takes long)
 %bcond_without	sqlite		# don't build SQLite plugin
-%bcond_with	ibase		# build ibase (InterBase/Firebird) plugin
-%bcond_with	pch		# enable pch in qmake
+%bcond_without	ibase		# build ibase (InterBase/Firebird) plugin
+%bcond_without	pch		# do not use precompiled header support
 #
-%ifnarch %{ix86} %{x8664} sparc sparcv9 alpha ppc
+%ifnarch %{ix86} amd64 sparc sparcv9 alpha ppc
 %undefine	with_ibase
 %endif
 %define		_withsql	1
 %{!?with_sqlite:%{!?with_ibase:%{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}}}
 
 %define		_ver		3.3.4
+%define		_snap		050602
 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
-Version:	%{_ver}
-Release:	3
+Version:	%{_ver}.%{_snap}
+Release:	1
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
-#Source0:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-%{_snap}.tar.bz2
-Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
-# Source0-md5:	027f4e82fbe592b39d2f160bfb3a73af
-Source1:	http://ftp.pld-linux.org/software/kde/%{name}-copy-patches-040819.tar.bz2
-# Source1-md5:	f35f461463d89f7b035530d8d1f02ad6
+Source0:	http://ftp.pld-linux.org/software/kde/%{name}-copy-%{_snap}.tar.bz2
+##% Source0-md5:	20ad0c23d8c78889565efbd934e52c96
 Source2:	%{name}config.desktop
 Source3:	designer.desktop
 Source4:	assistant.desktop
 Source5:	linguist.desktop
-Source6:	%{name}-apply_patches.sh
 Source7:	designer.png
 Source8:	assistant.png
 Source9:	linguist.png
@@ -53,16 +50,15 @@ Patch5:		%{name}-make_use_of_locale.patch
 Patch6:		%{name}-qmake-opt.patch
 Patch7:		%{name}-locale-charmap.patch
 Patch8:		%{name}-gcc34.patch
-Patch9:		%{name}-support-cflags-with-commas.patch
-# for troll only
+Patch9:         %{name}-support-cflags-with-commas.patch
 Patch10:	%{name}-antialias.patch
-#
 Patch12:	%{name}-x11-free-quiet.patch
-Patch13:	%{name}-x11-mono.patch
-Patch14:	%{name}-x11-qfontdatabase_x11.patch
+#Patch13:	%{name}-x11-mono.patch
+#Patch14:	%{name}-x11-qfontdatabase_x11.patch
+#Patch15:	%{name}-copy-q_export_plugin.patch
 URL:		http://www.trolltech.com/products/qt/
 Icon:		qt.xpm
-%{?with_ibase:BuildRequires:	Firebird-devel >= 1.5.0}
+%{?with_ibase:BuildRequires:	Firebird-devel}
 BuildRequires:	OpenGL-devel
 %{?with_nvidia:BuildRequires:	X11-driver-nvidia-devel >= 1.0.6111-2}
 %{?with_cups:BuildRequires:	cups-devel}
@@ -79,10 +75,12 @@ BuildRequires:	libungif-devel
 BuildRequires:	perl-base
 %{?with_pgsql:BuildRequires:	postgresql-backend-devel}
 %{?with_pgsql:BuildRequires:	postgresql-devel}
-BuildRequires:	rpmbuild(macros) >= 1.213
+BuildRequires:	rpmbuild(macros) >= 1.167
 BuildRequires:	sed >= 4.0
-%{?with_sqlite:BuildRequires:	sqlite-devel}
 %{?with_odbc:BuildRequires:	unixODBC-devel}
+# There is an internal sqlite copy used to
+# build this plugin - TODO
+#%{?with_sqlite:BuildRequires:	sqlite-devel}
 BuildRequires:	xcursor-devel
 BuildRequires:	xft-devel
 BuildRequires:	xrender-devel
@@ -658,7 +656,7 @@ Biblioteki wykorzystywane przez narzêdzie projektowania interfejsu
 graficznego - Qt Designer.
 
 %prep
-%setup -q -n %{name}-x11-free-%{version} -a1
+%setup -q -n %{name}-copy-%{_snap}
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -671,15 +669,11 @@ graficznego - Qt Designer.
 %patch9 -p1
 %patch10 -p1
 %patch12 -p1
-%patch13 -p1
-%patch14 -p1
+#%patch13 -p1
+#%patch14 -p1
+#%patch15 -p1
 
-install %{SOURCE6} ./apply_patches
-chmod +x ./apply_patches
-# patch 0021 currently applied in 3.3.4 release
-rm patches/0021-qiconview-dragalittle.patch
 ./apply_patches
-rm ../.qt-x11-free-%{version}.applied
 
 # change QMAKE_CFLAGS_RELEASE to build
 # properly optimized libs
@@ -719,7 +713,7 @@ fi
 # pass OPTFLAGS to build qmake itself with optimization
 export OPTFLAGS="%{rpmcxxflags}"
 
-#%{__make} -f Makefile.cvs
+%{__make} -f Makefile.cvs
 
 ##################################
 # DEFAULT OPTIONS FOR ALL BUILDS #
@@ -903,7 +897,7 @@ do
 done
 cd -
 
-##make -C extensions/nsplugin/src
+#%%{__make} -C extensions/nsplugin/src
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -998,6 +992,7 @@ install translations/qt_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/q
 install translations/qt_he.qm $RPM_BUILD_ROOT%{_datadir}/locale/he/LC_MESSAGES/qt.qm
 install translations/qt_ru.qm $RPM_BUILD_ROOT%{_datadir}/locale/ru/LC_MESSAGES/qt.qm
 install translations/qt_sk.qm $RPM_BUILD_ROOT%{_datadir}/locale/sk/LC_MESSAGES/qt.qm
+
 
 %if %{with designer}
 install tools/designer/designer/designer_de.qm $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/designer.qm
