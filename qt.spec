@@ -10,7 +10,7 @@
 %bcond_without	pgsql		# don't build PostgreSQL plugin
 %bcond_without	designer	# don't build designer (it takes long)
 %bcond_without	sqlite		# don't build SQLite plugin
-%bcond_with	ibase		# build ibase (InterBase/Firebird) plugin
+%bcond_without	ibase		# don't build ibase (InterBase/Firebird) plugin
 %bcond_with	pch		# enable pch in qmake
 #
 %ifnarch %{ix86} %{x8664} sparc sparcv9 alpha ppc
