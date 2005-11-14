@@ -19,8 +19,8 @@
 %define		_withsql	1
 %{!?with_sqlite:%{!?with_ibase:%{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}}}
 
-%define		_ver		3.3.4
-%define		_snap		050602
+%define		_ver		3.3.5
+%define		_snap		051113
 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
@@ -55,7 +55,8 @@ Patch10:	%{name}-antialias.patch
 Patch12:	%{name}-x11-free-quiet.patch
 #Patch13:	%{name}-x11-mono.patch
 #Patch14:	%{name}-x11-qfontdatabase_x11.patch
-#Patch15:	%{name}-copy-q_export_plugin.patch
+Patch15:	%{name}-uic_colon_fix.patch
+Patch16:	%{name}-fvisibility.patch
 URL:		http://www.trolltech.com/products/qt/
 Icon:		qt.xpm
 %{?with_ibase:BuildRequires:	Firebird-devel}
@@ -75,7 +76,7 @@ BuildRequires:	libungif-devel
 BuildRequires:	perl-base
 %{?with_pgsql:BuildRequires:	postgresql-backend-devel}
 %{?with_pgsql:BuildRequires:	postgresql-devel}
-BuildRequires:	rpmbuild(macros) >= 1.167
+BuildRequires:	rpmbuild(macros) >= 1.213
 BuildRequires:	sed >= 4.0
 %{?with_odbc:BuildRequires:	unixODBC-devel}
 # There is an internal sqlite copy used to
@@ -671,7 +672,8 @@ graficznego - Qt Designer.
 %patch12 -p1
 #%patch13 -p1
 #%patch14 -p1
-#%patch15 -p1
+%patch15 -p0
+%patch16 -p0
 
 ./apply_patches
 
