@@ -89,14 +89,14 @@ BuildRequires:	xcursor-devel
 BuildRequires:	xft-devel
 BuildRequires:	xrender-devel
 BuildRequires:	zlib-devel
-#Requires:	xft
-#Requires:	xcursor
-#Requires:	xrender
+Requires:	OpenGL
 Requires:	freetype >= 2.0.0
 #Requires:	libjpeg
 Requires:	libmng >= 1.0.0
 #Requires:	libpng
-Requires:	OpenGL
+#Requires:	xcursor
+#Requires:	xft
+#Requires:	xrender
 Obsoletes:	qt-extensions
 Obsoletes:	qt-utils
 Conflicts:	kdelibs <= 8:3.2-0.030602.1
@@ -595,8 +595,8 @@ nastêpnego, a¿ wszystkie bêd± przet³umaczone.
 Summary:	Qt documentation browser
 Summary(pl):	Przegl±darka dokumentacji Qt
 Group:		X11/Development/Tools
-Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name}-doc
+Requires:	%{name} = %{epoch}:%{version}-%{release}
 Conflicts:	qt-devel < 6:3.3.2-3
 
 %description assistant
