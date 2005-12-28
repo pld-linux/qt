@@ -2,7 +2,7 @@
 # Conditional build:
 %bcond_with	nas		# enable NAS audio support
 %bcond_with	nvidia		# prelink Qt/KDE and depend on NVIDIA binaries
-%bcond_without	single		# don't build single-threaded libraries
+%bcond_with	single		# build single-threaded libraries
 %bcond_without	static_libs	# don't build static libraries
 %bcond_without	cups		# disable CUPS support
 %bcond_without	mysql		# don't build MySQL plugin
@@ -10,8 +10,8 @@
 %bcond_without	pgsql		# don't build PostgreSQL plugin
 %bcond_without	designer	# don't build designer (it takes long)
 %bcond_without	sqlite		# don't build SQLite plugin
-%bcond_without	ibase		# build ibase (InterBase/Firebird) plugin
-%bcond_without	pch		# do not use precompiled header support
+%bcond_with	ibase		# build ibase (InterBase/Firebird) plugin
+%bcond_with	pch		# use precompiled header support
 #
 %ifnarch %{ix86} amd64 sparc sparcv9 alpha ppc
 %undefine	with_ibase
@@ -28,11 +28,11 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	%{_ver}.%{_snap}
-Release:	1
+Release:	2
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
-Source0:	http://ftp.pld-linux.org/software/kde/%{name}-copy-%{_snap}.tar.bz2
+Source0:	ftp://ep09.pld-linux.org/software/kde/%{name}-copy-%{_snap}.tar.bz2
 ##% Source0-md5:	20ad0c23d8c78889565efbd934e52c96
 Source2:	%{name}config.desktop
 Source3:	designer.desktop
