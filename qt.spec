@@ -63,7 +63,6 @@ Patch14:	%{name}-x11-qfontdatabase_x11.patch
 Patch15:	%{name}-uic_colon_fix.patch
 Patch16:	%{name}-qlistview-takeItem_crash.patch
 URL:		http://www.trolltech.com/products/qt/
-Icon:		qt.xpm
 %{?with_ibase:BuildRequires:	Firebird-devel >= 1.5.0}
 BuildRequires:	OpenGL-devel
 %{?with_nvidia:BuildRequires:	X11-driver-nvidia-devel >= 1.0.6111-2}
