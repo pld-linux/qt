@@ -12,28 +12,29 @@
 %bcond_without	sqlite		# don't build SQLite plugin
 %bcond_with	ibase		# build ibase (InterBase/Firebird) plugin
 %bcond_with	pch		# use precompiled header support
-#
+
 %ifnarch %{ix86} amd64 sparc sparcv9 alpha ppc
 %undefine	with_ibase
 %endif
+
 %define		_withsql	1
 %{!?with_sqlite:%{!?with_ibase:%{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}}}
-
-%define		_ver		3.3.5
-%define		_snap		051113
 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
+%define		_ver	3.3.5
+%define		_snap	20060112
 Version:	%{_ver}.%{_snap}
-Release:	3
+Release:	1
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
-Source0:	ftp://ep09.pld-linux.org/software/kde/%{name}-copy-%{_snap}.tar.bz2
-# Source0-md5:	388d579bbf8e5a0c92a88850d79c7389
+#Source0:	ftp://ep09.pld-linux.org/software/kde/%{name}-copy-%{_snap}.tar.bz2
+Source0:	%{name}-copy-%{_snap}.tar.bz2
+# Source0-md5:	bd49fcd56b2533fcd5fe6e4a3a126318
 Source2:	%{name}config.desktop
 Source3:	designer.desktop
 Source4:	assistant.desktop
@@ -657,7 +658,7 @@ Biblioteki wykorzystywane przez narzêdzie projektowania interfejsu
 graficznego - Qt Designer.
 
 %prep
-%setup -q -n %{name}-copy-%{_snap}
+%setup -q -n %{name}-copy
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
