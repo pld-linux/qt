@@ -68,11 +68,11 @@ BuildRequires:	OpenGL-devel
 %{?with_nvidia:BuildRequires:	X11-driver-nvidia-devel >= 1.0.6111-2}
 %{?with_cups:BuildRequires:	cups-devel}
 BuildRequires:	flex
-BuildRequires:	freetype-devel >= 2.0.0
+BuildRequires:	freetype-devel >= 1:2.0.0
 %{?with_pch:BuildRequires:	gcc >= 5:3.4.0}
 BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel >= 1.0.0
-BuildRequires:	libpng-devel >= 1.0.8
+BuildRequires:	libpng-devel >= 2:1.0.8
 BuildRequires:	libstdc++-devel
 BuildRequires:	libungif-devel
 %{?with_mysql:BuildRequires:	mysql-devel}
@@ -89,7 +89,7 @@ BuildRequires:	xft-devel
 BuildRequires:	xrender-devel
 BuildRequires:	zlib-devel
 Requires:	OpenGL
-Requires:	freetype >= 2.0.0
+Requires:	freetype >= 1:2.0.0
 #Requires:	libjpeg
 Requires:	libmng >= 1.0.0
 #Requires:	libpng
@@ -175,7 +175,7 @@ Summary(pt_BR):	Arquivos de inclusão necessária para compilar aplicações Qt
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	OpenGL-devel
-Requires:	freetype-devel >= 2.0.0
+Requires:	freetype-devel >= 1:2.0.0
 Requires:	libjpeg-devel
 Requires:	libmng-devel >= 1.0.0
 Requires:	libpng-devel
@@ -594,8 +594,8 @@ nastêpnego, a¿ wszystkie bêd± przet³umaczone.
 Summary:	Qt documentation browser
 Summary(pl):	Przegl±darka dokumentacji Qt
 Group:		X11/Development/Tools
-Requires:	%{name}-doc
 Requires:	%{name} = %{epoch}:%{version}-%{release}
+Requires:	%{name}-doc
 Conflicts:	qt-devel < 6:3.3.2-3
 
 %description assistant
