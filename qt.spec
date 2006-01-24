@@ -59,7 +59,6 @@ Patch12:	%{name}-x11-free-quiet.patch
 Patch15:	%{name}-uic_colon_fix.patch
 Patch16:	%{name}-fvisibility.patch
 URL:		http://www.trolltech.com/products/qt/
-Icon:		qt.xpm
 %{?with_ibase:BuildRequires:	Firebird-devel}
 BuildRequires:	OpenGL-devel
 %{?with_nvidia:BuildRequires:	X11-driver-nvidia-devel >= 1.0.6111-2}
