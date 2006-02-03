@@ -61,6 +61,7 @@ Patch16:	%{name}-fvisibility.patch
 URL:		http://www.trolltech.com/products/qt/
 %{?with_ibase:BuildRequires:	Firebird-devel}
 BuildRequires:	OpenGL-devel
+BuildRequires:	OpenGLU-devel
 %{?with_nvidia:BuildRequires:	X11-driver-nvidia-devel >= 1.0.6111-2}
 %{?with_cups:BuildRequires:	cups-devel}
 BuildRequires:	flex
@@ -82,17 +83,13 @@ BuildRequires:	sed >= 4.0
 # There is an internal sqlite copy used to
 # build this plugin - TODO
 #%{?with_sqlite:BuildRequires:	sqlite-devel}
-BuildRequires:	xcursor-devel
-BuildRequires:	xft-devel
-BuildRequires:	xrender-devel
+BuildRequires:	xorg-lib-libXcursor-devel
+BuildRequires:	xorg-lib-libXft-devel
+BuildRequires:	xorg-lib-libXrandr-devel
+BuildRequires:	xorg-lib-libXrender-devel
 BuildRequires:	zlib-devel
-#Requires:	xft
-#Requires:	xcursor
-#Requires:	xrender
 Requires:	freetype >= 2.0.0
-#Requires:	libjpeg
 Requires:	libmng >= 1.0.0
-#Requires:	libpng
 Requires:	OpenGL
 Obsoletes:	qt-extensions
 Obsoletes:	qt-utils
@@ -100,6 +97,8 @@ Conflicts:	kdelibs <= 8:3.2-0.030602.1
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1
+
+%define		specflags	-fno-strict-aliasing
 
 # <begin main library description>
 
@@ -173,14 +172,16 @@ Summary(pt_BR):	Arquivos de inclusão necessária para compilar aplicações Qt
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	OpenGL-devel
+Requires:	OpenGLU-devel
 Requires:	freetype-devel >= 2.0.0
 Requires:	libjpeg-devel
 Requires:	libmng-devel >= 1.0.0
 Requires:	libpng-devel
 Requires:	libstdc++-devel
-Requires:	xcursor-devel
-Requires:	xft-devel
-Requires:	xrender-devel
+Requires:	xorg-lib-libXcursor-devel
+Requires:	xorg-lib-libXft-devel
+Requires:	xorg-lib-libXrandr-devel
+Requires:	xorg-lib-libXrender-devel
 Requires:	zlib-devel
 Conflicts:	qt2-devel
 
@@ -684,8 +685,9 @@ plik="mkspecs/linux-g++/qmake.conf"
 perl -pi -e "
 	s|QMAKE_CC.*=.*gcc|QMAKE_CC = %{__cc}|;
 	s|QMAKE_CXX.*=.*g\+\+|QMAKE_CXX = %{__cxx}|;
-	s|/usr/X11R6/lib|/usr/X11R6/%{_lib}|;
 	s|/usr/lib|%{_libdir}|;
+	s|/usr/X11R6/include|%{_includedir}|;
+	s|/usr/X11R6/lib|%{_libdir}|;
 	s|\\(QTDIR\\)/lib|\\(QTDIR\\)/%{_lib}|;
 	" $plik
 
@@ -709,7 +711,7 @@ export PATH=$QTDIR/bin:$PATH
 export LD_LIBRARY_PATH=$QTDIR/%{_lib}:$LD_LIBRARY_PATH
 
 if [ "%{_lib}" != "lib" ] ; then
-	ln -s lib "%{_lib}"
+	rm -rf %{_lib} && ln -sf lib %{_lib}
 fi
 
 # pass OPTFLAGS to build qmake itself with optimization
