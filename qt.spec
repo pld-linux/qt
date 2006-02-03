@@ -61,7 +61,7 @@ Patch16:	%{name}-fvisibility.patch
 URL:		http://www.trolltech.com/products/qt/
 %{?with_ibase:BuildRequires:	Firebird-devel}
 BuildRequires:	OpenGL-devel
-BuildRequires:	OpenGLU-devel
+BuildRequires:	OpenGL-GLU-devel
 %{?with_nvidia:BuildRequires:	X11-driver-nvidia-devel >= 1.0.6111-2}
 %{?with_cups:BuildRequires:	cups-devel}
 BuildRequires:	flex
@@ -85,6 +85,7 @@ BuildRequires:	sed >= 4.0
 #%{?with_sqlite:BuildRequires:	sqlite-devel}
 BuildRequires:	xorg-lib-libXcursor-devel
 BuildRequires:	xorg-lib-libXft-devel
+BuildRequires:	xorg-lib-libXinerama-devel
 BuildRequires:	xorg-lib-libXrandr-devel
 BuildRequires:	xorg-lib-libXrender-devel
 BuildRequires:	zlib-devel
@@ -172,7 +173,7 @@ Summary(pt_BR):	Arquivos de inclusão necessária para compilar aplicações Qt
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	OpenGL-devel
-Requires:	OpenGLU-devel
+Requires:	OpenG-GLU-devel
 Requires:	freetype-devel >= 2.0.0
 Requires:	libjpeg-devel
 Requires:	libmng-devel >= 1.0.0
@@ -180,6 +181,7 @@ Requires:	libpng-devel
 Requires:	libstdc++-devel
 Requires:	xorg-lib-libXcursor-devel
 Requires:	xorg-lib-libXft-devel
+Requires:	xorg-lib-libXinerama-devel
 Requires:	xorg-lib-libXrandr-devel
 Requires:	xorg-lib-libXrender-devel
 Requires:	zlib-devel
