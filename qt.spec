@@ -623,7 +623,7 @@ from a simple .pro definitions file.
 
 %description -n qmake -l pl
 Rozbudowany generator plików makefile. Potrafi tworzyæ pliki makefile
-na ka¿dej platformei na podstawie ³atwego w przygotowaniu pliku .pro.
+na ka¿dej platformie na podstawie ³atwego w przygotowaniu pliku .pro.
 
 %package -n qtconfig
 Summary:	Qt widgets configuration tool
