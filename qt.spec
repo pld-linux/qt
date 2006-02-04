@@ -28,7 +28,7 @@ Name:		qt
 %define		_ver	3.3.5
 %define		_snap	20060112
 Version:	%{_ver}.%{_snap}
-Release:	1
+Release:	2
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
@@ -623,7 +623,7 @@ from a simple .pro definitions file.
 
 %description -n qmake -l pl
 Rozbudowany generator plików makefile. Potrafi tworzyæ pliki makefile
-na ka¿dej platformi na podstawie ³atwego w przygotowaniu pliku .pro.
+na ka¿dej platformei na podstawie ³atwego w przygotowaniu pliku .pro.
 
 %package -n qtconfig
 Summary:	Qt widgets configuration tool
@@ -749,6 +749,7 @@ DEFAULTOPT=" \
 	-ipv6 \
 	-I%{_includedir}/postgresql/server \
 	-I%{_includedir}/mysql \
+	-L%{_libdir} \
 	%{!?with_cups:-no-cups} \
 	%{?with_nas:-system-nas-sound} \
 	%{?with_nvidia:-dlopen-opengl} \
