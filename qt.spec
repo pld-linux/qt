@@ -11,7 +11,7 @@
 %bcond_without	designer	# don't build designer (it takes long)
 %bcond_without	sqlite		# don't build SQLite plugin
 %bcond_with	ibase		# build ibase (InterBase/Firebird) plugin
-%bcond_with	pch		# use precompiled header support
+%bcond_without	pch		# don't use precompiled header support
 
 %ifnarch %{ix86} amd64 sparc sparcv9 alpha ppc
 %undefine	with_ibase
@@ -83,6 +83,8 @@ BuildRequires:	sed >= 4.0
 # There is an internal sqlite copy used to
 # build this plugin - TODO
 #%{?with_sqlite:BuildRequires:	sqlite-devel}
+BuildRequires:	xorg-lib-libSM-devel
+BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXcursor-devel
 BuildRequires:	xorg-lib-libXft-devel
 BuildRequires:	xorg-lib-libXinerama-devel
@@ -173,12 +175,14 @@ Summary(pt_BR):	Arquivos de inclusão necessária para compilar aplicações Qt
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	OpenGL-devel
-Requires:	OpenG-GLU-devel
+Requires:	OpenGL-GLU-devel
 Requires:	freetype-devel >= 2.0.0
 Requires:	libjpeg-devel
 Requires:	libmng-devel >= 1.0.0
 Requires:	libpng-devel
 Requires:	libstdc++-devel
+Requires:	xorg-lib-libSM-devel
+Requires:	xorg-lib-libX11-devel
 Requires:	xorg-lib-libXcursor-devel
 Requires:	xorg-lib-libXft-devel
 Requires:	xorg-lib-libXinerama-devel
