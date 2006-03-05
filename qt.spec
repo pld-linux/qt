@@ -1,7 +1,7 @@
 #
 # Conditional build:
+%bcond_with	dlopen_gl	# dlopen libGL.so and libXmu.so instead of direct linking (NOTE: should dlopen by soname, not *.so like it does now!)
 %bcond_with	nas		# enable NAS audio support
-%bcond_with	nvidia		# prelink Qt/KDE and depend on NVIDIA binaries
 %bcond_without	single		# don't build single-threaded libraries
 %bcond_without	static_libs	# don't build static libraries
 %bcond_without	cups		# disable CUPS support
@@ -65,7 +65,6 @@ Patch16:	%{name}-qlistview-takeItem_crash.patch
 URL:		http://www.trolltech.com/products/qt/
 %{?with_ibase:BuildRequires:	Firebird-devel >= 1.5.0}
 BuildRequires:	OpenGL-devel
-%{?with_nvidia:BuildRequires:	X11-driver-nvidia-devel >= 1.0.6111-2}
 %{?with_cups:BuildRequires:	cups-devel}
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 1:2.0.0
@@ -88,7 +87,6 @@ BuildRequires:	xcursor-devel
 BuildRequires:	xft-devel
 BuildRequires:	xrender-devel
 BuildRequires:	zlib-devel
-Requires:	OpenGL
 Requires:	freetype >= 1:2.0.0
 #Requires:	libjpeg
 Requires:	libmng >= 1.0.0
@@ -174,7 +172,7 @@ Summary(pl):	Pliki nag³ówkowe, przyk³ady i dokumentacja do biblioteki
 Summary(pt_BR):	Arquivos de inclusão necessária para compilar aplicações Qt
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
-Requires:	OpenGL-devel
+%{!?with_dlopen_gl:Requires:	OpenGL-devel}
 Requires:	freetype-devel >= 1:2.0.0
 Requires:	libjpeg-devel
 Requires:	libmng-devel >= 1.0.0
@@ -752,7 +750,7 @@ DEFAULTOPT=" \
 	-I%{_includedir}/mysql \
 	%{!?with_cups:-no-cups} \
 	%{?with_nas:-system-nas-sound} \
-	%{?with_nvidia:-dlopen-opengl} \
+	%{?with_dlopen_gl:-dlopen-opengl} \
 	%{?with_pch:-pch} \
 	%{?debug:-debug}"
 
