@@ -64,7 +64,7 @@ Patch15:	%{name}-uic_colon_fix.patch
 Patch16:	%{name}-qlistview-takeItem_crash.patch
 URL:		http://www.trolltech.com/products/qt/
 %{?with_ibase:BuildRequires:	Firebird-devel >= 1.5.0}
-BuildRequires:	OpenGL-devel
+BuildRequires:	OpenGL-GLU-devel
 %{?with_cups:BuildRequires:	cups-devel}
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 1:2.0.0
@@ -83,9 +83,14 @@ BuildRequires:	rpmbuild(macros) >= 1.213
 BuildRequires:	sed >= 4.0
 %{?with_sqlite:BuildRequires:	sqlite-devel}
 %{?with_odbc:BuildRequires:	unixODBC-devel}
-BuildRequires:	xcursor-devel
-BuildRequires:	xft-devel
-BuildRequires:	xrender-devel
+BuildRequires:	xorg-lib-libSM-devel
+BuildRequires:	xorg-lib-libXcursor-devel
+BuildRequires:	xorg-lib-libXext-devel
+BuildRequires:	xorg-lib-libXinerama-devel
+BuildRequires:	xorg-lib-libXft-devel
+BuildRequires:	xorg-lib-libXmu-devel
+BuildRequires:	xorg-lib-libXrandr-devel
+BuildRequires:	xorg-lib-libXrender-devel
 BuildRequires:	zlib-devel
 Requires:	freetype >= 1:2.0.0
 Requires:	libmng >= 1.0.0
@@ -173,9 +178,14 @@ Requires:	libjpeg-devel
 Requires:	libmng-devel >= 1.0.0
 Requires:	libpng-devel
 Requires:	libstdc++-devel
-Requires:	xcursor-devel
-Requires:	xft-devel
-Requires:	xrender-devel
+Requires:	xorg-lib-libSM-devel
+Requires:	xorg-lib-libXcursor-devel
+Requires:	xorg-lib-libXext-devel
+Requires:	xorg-lib-libXinerama-devel
+Requires:	xorg-lib-libXft-devel
+Requires:	xorg-lib-libXmu-devel
+Requires:	xorg-lib-libXrandr-devel
+Requires:	xorg-lib-libXrender-devel
 Requires:	zlib-devel
 Conflicts:	qt2-devel
 
@@ -678,8 +688,9 @@ plik="mkspecs/linux-g++/qmake.conf"
 perl -pi -e "
 	s|QMAKE_CC.*=.*gcc|QMAKE_CC = %{__cc}|;
 	s|QMAKE_CXX.*=.*g\+\+|QMAKE_CXX = %{__cxx}|;
-	s|/usr/X11R6/lib|/usr/X11R6/%{_lib}|;
 	s|/usr/lib|%{_libdir}|;
+	s|/usr/X11R6/lib|/usr/%{_lib}|;
+	s|/usr/X11R6/include|/usr/include|;
 	s|\\(QTDIR\\)/lib|\\(QTDIR\\)/%{_lib}|;
 	" $plik
 
