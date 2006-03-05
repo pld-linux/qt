@@ -88,12 +88,7 @@ BuildRequires:	xft-devel
 BuildRequires:	xrender-devel
 BuildRequires:	zlib-devel
 Requires:	freetype >= 1:2.0.0
-#Requires:	libjpeg
 Requires:	libmng >= 1.0.0
-#Requires:	libpng
-#Requires:	xcursor
-#Requires:	xft
-#Requires:	xrender
 Obsoletes:	qt-extensions
 Obsoletes:	qt-utils
 Conflicts:	kdelibs <= 8:3.2-0.030602.1
@@ -306,7 +301,6 @@ Summary(pl):	Wtyczka MySQL do Qt
 Summary(pt_BR):	Plugin de suporte a MySQL para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
-#Requires:	mysql-libs
 Provides:	%{name}-plugin-sql = %{epoch}:%{version}-%{release}
 Obsoletes:	qt-plugins-mysql
 
@@ -327,7 +321,6 @@ Summary(pl):	Wtyczka ODBC do Qt
 Summary(pt_BR):	Plugin de suporte a ODBC para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
-#Requires:	unixODBC
 Provides:	%{name}-plugin-sql = %{epoch}:%{version}-%{release}
 Obsoletes:	qt-plugins-odbc
 
@@ -348,7 +341,6 @@ Summary(pl):	Wtyczka PostgreSQL do Qt
 Summary(pt_BR):	Plugin de suporte a PostgreSQL para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
-#Requires:	postgresql-libs
 Provides:	%{name}-plugin-sql = %{epoch}:%{version}-%{release}
 Obsoletes:	qt-plugins-psql
 
@@ -369,7 +361,6 @@ Summary(pl):	Wtyczka SQLite do Qt
 Summary(pt_BR):	Plugin de suporte a SQLite para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
-#Requires:	sqlite
 Provides:	%{name}-plugin-sql = %{epoch}:%{version}-%{release}
 
 %description plugin-sqlite
@@ -506,7 +497,6 @@ Summary:	Database plugin for MySQL support in single-threaded Qt
 Summary(pl):	Wtyczka MySQL do jednow±tkowej wersji Qt
 Group:		X11/Libraries
 Requires:	%{name}-st = %{epoch}:%{version}-%{release}
-#Requires:	mysql-libs
 Provides:	%{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
 
 %description st-plugin-mysql
@@ -522,7 +512,6 @@ Summary:	Database plugin for ODBC support in single-threaded Qt
 Summary(pl):	Wtyczka ODBC do jednow±tkowej wersji Qt
 Group:		X11/Libraries
 Requires:	%{name}-st = %{epoch}:%{version}-%{release}
-#Requires:	unixODBC
 Provides:	%{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
 
 %description st-plugin-odbc
@@ -539,7 +528,6 @@ Summary(pl):	Wtyczka PostgreSQL do jednow±tkowej wersji Qt
 Summary(pt_BR):	Plugin de suporte a PostgreSQL para Qt
 Group:		X11/Libraries
 Requires:	%{name}-st = %{epoch}:%{version}-%{release}
-#Requires:	postgresql-libs
 Provides:	%{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
 
 %description st-plugin-psql
@@ -555,7 +543,6 @@ Summary:	Database plugin for SQLite support in single-threaded Qt
 Summary(pl):	Wtyczka SQLite do jednow±tkowej wersji Qt
 Group:		X11/Libraries
 Requires:	%{name}-st = %{epoch}:%{version}-%{release}
-#Requires:	sqlite
 Provides:	%{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
 
 %description st-plugin-sqlite
