@@ -1,9 +1,0 @@
-[Desktop Entry]
-Name=Designer
-Comment=RAD tool for QT
-Comment[pl]=Narzędzie RAD dla QT
-Exec=designer
-Terminal=false
-Type=Application
-Encoding=UTF-8
-# vi: encoding=utf-8
