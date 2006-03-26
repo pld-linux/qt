@@ -1,7 +1,7 @@
 #
 # Conditional build:
+%bcond_with	dlopen_gl	# dlopen libGL.so and libXmu.so instead of direct linking (NOTE: should dlopen by soname, not *.so like it does now!)
 %bcond_with	nas		# enable NAS audio support
-%bcond_with	nvidia		# prelink Qt/KDE and depend on NVIDIA binaries
 %bcond_without	single		# don't build single-threaded libraries
 %bcond_without	static_libs	# don't build static libraries
 %bcond_without	cups		# disable CUPS support
@@ -10,7 +10,7 @@
 %bcond_without	pgsql		# don't build PostgreSQL plugin
 %bcond_without	designer	# don't build designer (it takes long)
 %bcond_without	sqlite		# don't build SQLite plugin
-%bcond_with	ibase		# build ibase (InterBase/Firebird) plugin
+%bcond_without	ibase		# don't build ibase (InterBase/Firebird) plugin
 %bcond_with	pch		# enable pch in qmake
 #
 %ifnarch %{ix86} %{x8664} sparc sparcv9 alpha ppc
@@ -19,7 +19,7 @@
 %define		_withsql	1
 %{!?with_sqlite:%{!?with_ibase:%{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}}}
 
-%define		_ver		3.3.5
+%define		_ver		3.3.6
 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
@@ -27,13 +27,13 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	%{_ver}
-Release:	2
+Release:	1
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
 #Source0:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-%{_snap}.tar.bz2
 Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
-# Source0-md5:	05d04688c0c0230ed54e89102d689ca4
+# Source0-md5:	dc1384c03ac08af21f6fefab32d982cf
 Source1:	http://ftp.pld-linux.org/software/kde/%{name}-copy-patches-040819.tar.bz2
 # Source1-md5:	f35f461463d89f7b035530d8d1f02ad6
 Source2:	%{name}config.desktop
@@ -62,17 +62,15 @@ Patch13:	%{name}-x11-mono.patch
 Patch14:	%{name}-x11-qfontdatabase_x11.patch
 Patch15:	%{name}-uic_colon_fix.patch
 URL:		http://www.trolltech.com/products/qt/
-Icon:		qt.xpm
 %{?with_ibase:BuildRequires:	Firebird-devel >= 1.5.0}
 BuildRequires:	OpenGL-devel
-%{?with_nvidia:BuildRequires:	X11-driver-nvidia-devel >= 1.0.6111-2}
 %{?with_cups:BuildRequires:	cups-devel}
 BuildRequires:	flex
-BuildRequires:	freetype-devel >= 2.0.0
+BuildRequires:	freetype-devel >= 1:2.0.0
 %{?with_pch:BuildRequires:	gcc >= 5:3.4.0}
 BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel >= 1.0.0
-BuildRequires:	libpng-devel >= 1.0.8
+BuildRequires:	libpng-devel >= 2:1.0.8
 BuildRequires:	libstdc++-devel
 BuildRequires:	libungif-devel
 %{?with_mysql:BuildRequires:	mysql-devel}
@@ -88,14 +86,8 @@ BuildRequires:	xcursor-devel
 BuildRequires:	xft-devel
 BuildRequires:	xrender-devel
 BuildRequires:	zlib-devel
-#Requires:	xft
-#Requires:	xcursor
-#Requires:	xrender
-Requires:	freetype >= 2.0.0
-#Requires:	libjpeg
+Requires:	freetype >= 1:2.0.0
 Requires:	libmng >= 1.0.0
-#Requires:	libpng
-Requires:	OpenGL
 Obsoletes:	qt-extensions
 Obsoletes:	qt-utils
 Conflicts:	kdelibs <= 8:3.2-0.030602.1
@@ -174,8 +166,8 @@ Summary(pl):	Pliki nag³ówkowe, przyk³ady i dokumentacja do biblioteki
 Summary(pt_BR):	Arquivos de inclusão necessária para compilar aplicações Qt
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
-Requires:	OpenGL-devel
-Requires:	freetype-devel >= 2.0.0
+%{!?with_dlopen_gl:Requires:	OpenGL-devel}
+Requires:	freetype-devel >= 1:2.0.0
 Requires:	libjpeg-devel
 Requires:	libmng-devel >= 1.0.0
 Requires:	libpng-devel
@@ -308,7 +300,6 @@ Summary(pl):	Wtyczka MySQL do Qt
 Summary(pt_BR):	Plugin de suporte a MySQL para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
-#Requires:	mysql-libs
 Provides:	%{name}-plugin-sql = %{epoch}:%{version}-%{release}
 Obsoletes:	qt-plugins-mysql
 
@@ -329,7 +320,6 @@ Summary(pl):	Wtyczka ODBC do Qt
 Summary(pt_BR):	Plugin de suporte a ODBC para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
-#Requires:	unixODBC
 Provides:	%{name}-plugin-sql = %{epoch}:%{version}-%{release}
 Obsoletes:	qt-plugins-odbc
 
@@ -350,7 +340,6 @@ Summary(pl):	Wtyczka PostgreSQL do Qt
 Summary(pt_BR):	Plugin de suporte a PostgreSQL para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
-#Requires:	postgresql-libs
 Provides:	%{name}-plugin-sql = %{epoch}:%{version}-%{release}
 Obsoletes:	qt-plugins-psql
 
@@ -371,7 +360,6 @@ Summary(pl):	Wtyczka SQLite do Qt
 Summary(pt_BR):	Plugin de suporte a SQLite para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
-#Requires:	sqlite
 Provides:	%{name}-plugin-sql = %{epoch}:%{version}-%{release}
 
 %description plugin-sqlite
@@ -508,7 +496,6 @@ Summary:	Database plugin for MySQL support in single-threaded Qt
 Summary(pl):	Wtyczka MySQL do jednow±tkowej wersji Qt
 Group:		X11/Libraries
 Requires:	%{name}-st = %{epoch}:%{version}-%{release}
-#Requires:	mysql-libs
 Provides:	%{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
 
 %description st-plugin-mysql
@@ -524,7 +511,6 @@ Summary:	Database plugin for ODBC support in single-threaded Qt
 Summary(pl):	Wtyczka ODBC do jednow±tkowej wersji Qt
 Group:		X11/Libraries
 Requires:	%{name}-st = %{epoch}:%{version}-%{release}
-#Requires:	unixODBC
 Provides:	%{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
 
 %description st-plugin-odbc
@@ -541,7 +527,6 @@ Summary(pl):	Wtyczka PostgreSQL do jednow±tkowej wersji Qt
 Summary(pt_BR):	Plugin de suporte a PostgreSQL para Qt
 Group:		X11/Libraries
 Requires:	%{name}-st = %{epoch}:%{version}-%{release}
-#Requires:	postgresql-libs
 Provides:	%{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
 
 %description st-plugin-psql
@@ -557,7 +542,6 @@ Summary:	Database plugin for SQLite support in single-threaded Qt
 Summary(pl):	Wtyczka SQLite do jednow±tkowej wersji Qt
 Group:		X11/Libraries
 Requires:	%{name}-st = %{epoch}:%{version}-%{release}
-#Requires:	sqlite
 Provides:	%{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
 
 %description st-plugin-sqlite
@@ -618,7 +602,7 @@ from a simple .pro definitions file.
 
 %description -n qmake -l pl
 Rozbudowany generator plików makefile. Potrafi tworzyæ pliki makefile
-na ka¿dej platformi na podstawie ³atwego w przygotowaniu pliku .pro.
+na ka¿dej platformie na podstawie ³atwego w przygotowaniu pliku .pro.
 
 %package -n qtconfig
 Summary:	Qt widgets configuration tool
@@ -682,6 +666,8 @@ chmod +x ./apply_patches
 rm patches/0021-qiconview-dragalittle.patch
 # patch 0037 currently applied in 3.3.5 release
 rm patches/0037-dnd-timestamp-fix.patch
+# patch 0051 currently applied in 3.3.6 release
+rm patches/0051-qtoolbar_77047.patch
 ./apply_patches
 rm ../.qt-x11-free-%{version}.applied
 
@@ -751,7 +737,7 @@ DEFAULTOPT=" \
 	-I%{_includedir}/mysql \
 	%{!?with_cups:-no-cups} \
 	%{?with_nas:-system-nas-sound} \
-	%{?with_nvidia:-dlopen-opengl} \
+	%{?with_dlopen_gl:-dlopen-opengl} \
 	%{?with_pch:-pch} \
 	%{?debug:-debug}"
 
