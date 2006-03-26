@@ -19,7 +19,7 @@
 %define		_withsql	1
 %{!?with_sqlite:%{!?with_ibase:%{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}}}
 
-%define		_ver		3.3.5
+%define		_ver		3.3.6
 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
@@ -27,13 +27,13 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	%{_ver}
-Release:	4
+Release:	1
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
 #Source0:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-%{_snap}.tar.bz2
 Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
-# Source0-md5:	05d04688c0c0230ed54e89102d689ca4
+# Source0-md5:	dc1384c03ac08af21f6fefab32d982cf
 Source1:	http://ftp.pld-linux.org/software/kde/%{name}-copy-patches-040819.tar.bz2
 # Source1-md5:	f35f461463d89f7b035530d8d1f02ad6
 Source2:	%{name}config.desktop
@@ -61,7 +61,6 @@ Patch12:	%{name}-x11-free-quiet.patch
 Patch13:	%{name}-x11-mono.patch
 Patch14:	%{name}-x11-qfontdatabase_x11.patch
 Patch15:	%{name}-uic_colon_fix.patch
-Patch16:	%{name}-qlistview-takeItem_crash.patch
 URL:		http://www.trolltech.com/products/qt/
 %{?with_ibase:BuildRequires:	Firebird-devel >= 1.5.0}
 BuildRequires:	OpenGL-devel
@@ -660,7 +659,6 @@ graficznego - Qt Designer.
 %patch13 -p1
 %patch14 -p1
 %patch15 -p0
-%patch16 -p1
 
 install %{SOURCE6} ./apply_patches
 chmod +x ./apply_patches
@@ -668,6 +666,8 @@ chmod +x ./apply_patches
 rm patches/0021-qiconview-dragalittle.patch
 # patch 0037 currently applied in 3.3.5 release
 rm patches/0037-dnd-timestamp-fix.patch
+# patch 0051 currently applied in 3.3.6 release
+rm patches/0051-qtoolbar_77047.patch
 ./apply_patches
 rm ../.qt-x11-free-%{version}.applied
 
