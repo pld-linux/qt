@@ -34,8 +34,8 @@ Group:		X11/Libraries
 #Source0:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-%{_snap}.tar.bz2
 Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
 # Source0-md5:	dc1384c03ac08af21f6fefab32d982cf
-Source1:	http://ftp.pld-linux.org/software/kde/%{name}-copy-patches-040819.tar.bz2
-# Source1-md5:	f35f461463d89f7b035530d8d1f02ad6
+Source1:	http://ep09.pld-linux.org/~arekm/%{name}-copy-patches-060404.tar.bz2
+# Source1-md5:	7cd0cf968a3610f2da55a7945eaa076f
 Source2:	%{name}config.desktop
 Source3:	designer.desktop
 Source4:	assistant.desktop
@@ -672,12 +672,6 @@ graficznego - Qt Designer.
 
 install %{SOURCE6} ./apply_patches
 chmod +x ./apply_patches
-# patch 0021 currently applied in 3.3.4 release
-rm patches/0021-qiconview-dragalittle.patch
-# patch 0037 currently applied in 3.3.5 release
-rm patches/0037-dnd-timestamp-fix.patch
-# patch 0051 currently applied in 3.3.6 release
-rm patches/0051-qtoolbar_77047.patch
 ./apply_patches
 rm ../.qt-x11-free-%{version}.applied
 
