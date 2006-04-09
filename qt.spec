@@ -25,16 +25,16 @@ Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
 Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
-%define		_ver	3.3.5
-%define		_snap	20060112
+%define		_ver	3.3.6
+%define		_snap	060409
 Version:	%{_ver}.%{_snap}
-Release:	2
+Release:	1
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
-#Source0:	ftp://ep09.pld-linux.org/software/kde/%{name}-copy-%{_snap}.tar.bz2
-Source0:	%{name}-copy-%{_snap}.tar.bz2
-# Source0-md5:	bd49fcd56b2533fcd5fe6e4a3a126318
+Source0:	ftp://ep09.pld-linux.org/software/kde/%{name}-copy-%{_snap}.tar.bz2
+#Source0:	%{name}-copy-%{_snap}.tar.bz2
+# Source0-md5:	5c8bf2334842d46fddfc4f91f2572ef7
 Source2:	%{name}config.desktop
 Source3:	designer.desktop
 Source4:	assistant.desktop
