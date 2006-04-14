@@ -668,6 +668,7 @@ graficznego - Qt Designer.
 %patch9 -p1
 %patch10 -p1
 %patch12 -p1
+# 13 and 14: break font size, commented out
 #%patch13 -p1
 #%patch14 -p1
 %patch15 -p0
