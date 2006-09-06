@@ -26,15 +26,15 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 %define		_ver	3.3.6
-%define		_snap	060409
+%define		_snap	060905
 Version:	%{_ver}.%{_snap}
 Release:	1
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
 Source0:	ftp://ep09.pld-linux.org/software/kde/%{name}-copy-%{_snap}.tar.bz2
+# Source0-md5:	cd92fb0322c151cab2f7b2beec3d30bd
 #Source0:	%{name}-copy-%{_snap}.tar.bz2
-# Source0-md5:	5c8bf2334842d46fddfc4f91f2572ef7
 Source2:	%{name}config.desktop
 Source3:	designer.desktop
 Source4:	assistant.desktop
@@ -67,11 +67,11 @@ BuildRequires:	OpenGL-GLU-devel
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
 %{?with_pch:BuildRequires:	gcc >= 5:3.4.0}
+BuildRequires:	giflib-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel >= 1.0.0
 BuildRequires:	libpng-devel >= 1.0.8
 BuildRequires:	libstdc++-devel
-BuildRequires:	libungif-devel
 %{?with_mysql:BuildRequires:	mysql-devel}
 %{?with_nas:BuildRequires:	nas-devel}
 BuildRequires:	perl-base
