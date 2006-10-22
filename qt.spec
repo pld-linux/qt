@@ -19,7 +19,7 @@
 %define		_withsql	1
 %{!?with_sqlite:%{!?with_ibase:%{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}}}
 
-%define		_ver		3.3.6
+%define		_ver		3.3.7
 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
@@ -33,9 +33,9 @@ License:	GPL/QPL
 Group:		X11/Libraries
 #Source0:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-%{_snap}.tar.bz2
 Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
-# Source0-md5:	dc1384c03ac08af21f6fefab32d982cf
-Source1:	http://ftp.pld-linux.org/software/kde/%{name}-copy-patches-040819.tar.bz2
-# Source1-md5:	f35f461463d89f7b035530d8d1f02ad6
+# Source0-md5:	655e21cf6a7e66daf8ec6ceda81aae1e
+Source1:	http://ep09.pld-linux.org/~arekm/%{name}-copy-patches-060404.tar.bz2
+# Source1-md5:	7cd0cf968a3610f2da55a7945eaa076f
 Source2:	%{name}config.desktop
 Source3:	designer.desktop
 Source4:	assistant.desktop
@@ -61,18 +61,19 @@ Patch12:	%{name}-x11-free-quiet.patch
 Patch13:	%{name}-x11-mono.patch
 Patch14:	%{name}-x11-qfontdatabase_x11.patch
 Patch15:	%{name}-uic_colon_fix.patch
+Patch16:	%{name}-fvisibility.patch
 URL:		http://www.trolltech.com/products/qt/
 %{?with_ibase:BuildRequires:	Firebird-devel >= 1.5.0}
-BuildRequires:	OpenGL-devel
+BuildRequires:	OpenGL-GLU-devel
 %{?with_cups:BuildRequires:	cups-devel}
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 1:2.0.0
 %{?with_pch:BuildRequires:	gcc >= 5:3.4.0}
+BuildRequires:	giflib-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel >= 1.0.0
 BuildRequires:	libpng-devel >= 2:1.0.8
 BuildRequires:	libstdc++-devel
-BuildRequires:	libungif-devel
 %{?with_mysql:BuildRequires:	mysql-devel}
 %{?with_nas:BuildRequires:	nas-devel}
 BuildRequires:	perl-base
@@ -94,6 +95,7 @@ Conflicts:	kdelibs <= 8:3.2-0.030602.1
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1
+%define		specflags	-fno-strict-aliasing
 
 # <begin main library description>
 
@@ -656,18 +658,14 @@ graficznego - Qt Designer.
 %patch9 -p1
 %patch10 -p1
 %patch12 -p1
-%patch13 -p1
-%patch14 -p1
+# 13 and 14: break font size, commented out
+#%patch13 -p1
+#%patch14 -p1
 %patch15 -p0
+%patch16 -p0
 
 install %{SOURCE6} ./apply_patches
 chmod +x ./apply_patches
-# patch 0021 currently applied in 3.3.4 release
-rm patches/0021-qiconview-dragalittle.patch
-# patch 0037 currently applied in 3.3.5 release
-rm patches/0037-dnd-timestamp-fix.patch
-# patch 0051 currently applied in 3.3.6 release
-rm patches/0051-qtoolbar_77047.patch
 ./apply_patches
 rm ../.qt-x11-free-%{version}.applied
 
@@ -703,7 +701,7 @@ export PATH=$QTDIR/bin:$PATH
 export LD_LIBRARY_PATH=$QTDIR/%{_lib}:$LD_LIBRARY_PATH
 
 if [ "%{_lib}" != "lib" ] ; then
-	ln -s lib "%{_lib}"
+	ln -sf lib "%{_lib}"
 fi
 
 # pass OPTFLAGS to build qmake itself with optimization
@@ -720,6 +718,7 @@ DEFAULTOPT=" \
 	-verbose \
 	-prefix %{_prefix} \
 	-libdir %{_libdir} \
+	-L%{_libdir} \
 	-headerdir %{_includedir}/qt \
 	-datadir %{_datadir}/qt \
 	-docdir %{_docdir}/%{name}-doc \
@@ -735,7 +734,7 @@ DEFAULTOPT=" \
 	-ipv6 \
 	-I%{_includedir}/postgresql/server \
 	-I%{_includedir}/mysql \
-	%{!?with_cups:-no-cups} \
+	%{!?with_cups:-no}-cups \
 	%{?with_nas:-system-nas-sound} \
 	%{?with_dlopen_gl:-dlopen-opengl} \
 	%{?with_pch:-pch} \
