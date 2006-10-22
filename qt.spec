@@ -33,7 +33,7 @@ License:	GPL/QPL
 Group:		X11/Libraries
 #Source0:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-%{_snap}.tar.bz2
 Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
-# Source0-md5:	dc1384c03ac08af21f6fefab32d982cf
+# Source0-md5:	655e21cf6a7e66daf8ec6ceda81aae1e
 Source1:	http://ep09.pld-linux.org/~arekm/%{name}-copy-patches-060404.tar.bz2
 # Source1-md5:	7cd0cf968a3610f2da55a7945eaa076f
 Source2:	%{name}config.desktop
