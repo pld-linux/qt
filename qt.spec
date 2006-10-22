@@ -19,7 +19,7 @@
 %define		_withsql	1
 %{!?with_sqlite:%{!?with_ibase:%{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}}}
 
-%define		_ver		3.3.6
+%define		_ver		3.3.7
 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
@@ -27,7 +27,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	%{_ver}
-Release:	2
+Release:	1
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
@@ -712,7 +712,7 @@ export PATH=$QTDIR/bin:$PATH
 export LD_LIBRARY_PATH=$QTDIR/%{_lib}:$LD_LIBRARY_PATH
 
 if [ "%{_lib}" != "lib" ] ; then
-	ln -s lib "%{_lib}"
+	ln -sf lib "%{_lib}"
 fi
 
 # pass OPTFLAGS to build qmake itself with optimization
@@ -729,6 +729,7 @@ DEFAULTOPT=" \
 	-verbose \
 	-prefix %{_prefix} \
 	-libdir %{_libdir} \
+	-L%{_libdir} \
 	-headerdir %{_includedir}/qt \
 	-datadir %{_datadir}/qt \
 	-docdir %{_docdir}/%{name}-doc \
@@ -744,7 +745,7 @@ DEFAULTOPT=" \
 	-ipv6 \
 	-I%{_includedir}/postgresql/server \
 	-I%{_includedir}/mysql \
-	%{!?with_cups:-no-cups} \
+	%{!?with_cups:-no}-cups \
 	%{?with_nas:-system-nas-sound} \
 	%{?with_dlopen_gl:-dlopen-opengl} \
 	%{?with_pch:-pch} \
