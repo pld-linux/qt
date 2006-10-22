@@ -1,0 +1,12 @@
+--- qt-x11-free-3.3.6/src/codecs/qtextcodec.cpp~	2006-03-26 20:01:29.000000000 +0200
++++ qt-x11-free-3.3.6/src/codecs/qtextcodec.cpp	2006-03-26 20:00:42.000000000 +0200
+@@ -2784,7 +2784,9 @@
+ #else
+ 
+ #if defined (_XOPEN_UNIX) && !defined(Q_OS_QNX6) && !defined(Q_OS_OSF) && !defined(Q_OS_MAC)
++    char *oldLocale = setlocale(LC_CTYPE, "");
+     char *charset = nl_langinfo (CODESET);
++    setlocale(LC_CTYPE, oldLocale);
+     if ( charset )
+         localeMapper = QTextCodec::codecForName( charset );
+ #endif
