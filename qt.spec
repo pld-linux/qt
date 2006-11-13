@@ -873,7 +873,7 @@ cp -R plugins/{imageformats,styles} plugins-st
 yes
 _EOF_
 
-%if %{without designer}
+%if !%{with designer}
 grep -v designer tools/tools.pro > tools/tools.pro.1
 mv tools/tools.pro{.1,}
 %{__make} -C tools/designer/uic \
@@ -951,7 +951,7 @@ install %{SOURCE8} %{SOURCE9} $RPM_BUILD_ROOT%{_pixmapsdir}
 install tools/qtconfig/images/appicon.png \
 	$RPM_BUILD_ROOT%{_pixmapsdir}/qtconfig.png
 
-%if %{without designer}
+%if !%{with designer}
 install bin/uic $RPM_BUILD_ROOT%{_bindir}
 %endif
 
