@@ -27,7 +27,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	%{_ver}
-Release:	6
+Release:	7
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
@@ -1034,7 +1034,7 @@ do
 done
 
 # drop some bad symlink
-rm -f %{_datadir}/qt/mkspecs/linux-g++/linux-g++
+rm -f $RPM_BUILD_ROOT%{_datadir}/qt/mkspecs/linux-g++/linux-g++
 
 %clean
 rm -rf $RPM_BUILD_ROOT
