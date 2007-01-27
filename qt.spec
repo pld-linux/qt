@@ -2,7 +2,7 @@
 # Conditional build:
 %bcond_with	dlopen_gl	# dlopen libGL.so and libXmu.so instead of direct linking (NOTE: should dlopen by soname, not *.so like it does now!)
 %bcond_with	nas		# enable NAS audio support
-%bcond_without	single		# don't build single-threaded libraries
+%bcond_with	single		# enable single-threaded libraries
 %bcond_without	static_libs	# don't build static libraries
 %bcond_without	cups		# disable CUPS support
 %bcond_without	mysql		# don't build MySQL plugin
@@ -11,7 +11,7 @@
 %bcond_without	designer	# don't build designer (it takes long)
 %bcond_without	sqlite		# don't build SQLite plugin
 %bcond_with	ibase		# don't build ibase (InterBase/Firebird) plugin
-%bcond_with	pch		# enable pch in qmake
+%bcond_without	pch		# don't enable pch in qmake
 #
 %ifnarch %{ix86} %{x8664} sparc sparcv9 alpha ppc
 %undefine	with_ibase
@@ -27,7 +27,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	%{_ver}
-Release:	7
+Release:	8
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
