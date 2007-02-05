@@ -1,0 +1,20 @@
+qt-bugs@ issue : none
+bugs.kde.org number : none
+applied: no 
+author: Dirk Mueller <mueller@kde.org>
+
+Don't waste CPU cycles.
+
+Index: src/kernel/qtextengine.cpp
+===================================================================
+--- src/kernel/qtextengine.cpp	(revision 544824)
++++ src/kernel/qtextengine.cpp	(working copy)
+@@ -1108,7 +1108,7 @@ void QTextEngine::itemize( int mode )
+     if ( string.length() == 0 )
+ 	return;
+ 
+-    if ( 1 || !(mode & NoBidi) ) {
++    if ( !(mode & NoBidi) ) {
+ 	if ( direction == QChar::DirON )
+ 	    direction = basicDirection( string );
+ 	bidiItemize( this, direction == QChar::DirR, mode );
