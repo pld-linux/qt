@@ -22,9 +22,9 @@
 %define		_ver		3.3.7
 
 Summary:	The Qt3 GUI application framework
-Summary(es.UTF-8):   Biblioteca para ejecutar aplicaciones GUI Qt
-Summary(pl.UTF-8):   Biblioteka Qt3 do tworzenia GUI
-Summary(pt_BR.UTF-8):   Estrutura para rodar aplicações GUI Qt
+Summary(es.UTF-8):	Biblioteca para ejecutar aplicaciones GUI Qt
+Summary(pl.UTF-8):	Biblioteka Qt3 do tworzenia GUI
+Summary(pt_BR.UTF-8):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	%{_ver}
 Release:	9
@@ -195,9 +195,9 @@ Qt, bem como os arquivos README.
 
 %package devel
 Summary:	Development files for the Qt GUI toolkit
-Summary(es.UTF-8):   Archivos de inclusión necesaria para compilar aplicaciones Qt
-Summary(pl.UTF-8):   Pliki nagłówkowe, przykłady i dokumentacja do biblioteki
-Summary(pt_BR.UTF-8):   Arquivos de inclusão necessária para compilar aplicações Qt
+Summary(es.UTF-8):	Archivos de inclusión necesaria para compilar aplicaciones Qt
+Summary(pl.UTF-8):	Pliki nagłówkowe, przykłady i dokumentacja do biblioteki
+Summary(pt_BR.UTF-8):	Arquivos de inclusão necessária para compilar aplicações Qt
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 %{!?with_dlopen_gl:Requires:	OpenGL-devel}
@@ -231,7 +231,7 @@ zachowanie kompatybilności niezależnie od wersji Qt.
 
 %package static
 Summary:	Qt static library
-Summary(pl.UTF-8):   Biblioteka statyczna Qt
+Summary(pl.UTF-8):	Biblioteka statyczna Qt
 Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
 
@@ -271,7 +271,7 @@ biblioteki Qt.
 
 %package doc
 Summary:	Qt Documentation in HTML format
-Summary(pl.UTF-8):   Dokumentacja Qt w formacie HTML
+Summary(pl.UTF-8):	Dokumentacja Qt w formacie HTML
 Group:		X11/Development/Libraries
 Obsoletes:	qt-doc-html
 
@@ -283,7 +283,7 @@ Dokumentacja qt w formacie HTML.
 
 %package man
 Summary:	Qt man pages
-Summary(pl.UTF-8):   Qt - strony man
+Summary(pl.UTF-8):	Qt - strony man
 Group:		X11/Development/Libraries
 Obsoletes:	qt-doc-man
 
@@ -295,8 +295,8 @@ Dokumentacja Qt w formacie stron man.
 
 %package examples
 Summary:	Example programs bundled with Qt
-Summary(pl.UTF-8):   Ćwiczenia i przykłady do Qt
-Summary(pt_BR.UTF-8):   Programas exemplo desenvolvidos com o Qt
+Summary(pl.UTF-8):	Ćwiczenia i przykłady do Qt
+Summary(pt_BR.UTF-8):	Programas exemplo desenvolvidos com o Qt
 Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
 
@@ -315,8 +315,8 @@ Programas exemplo para o Qt versão.
 
 %package plugin-ibase
 Summary:	Database plugin for InterBase/Firebird Qt support
-Summary(pl.UTF-8):   Wtyczka InterBase/Firebird do Qt
-Summary(pt_BR.UTF-8):   Plugin de suporte a InterBase/Firebird para Qt
+Summary(pl.UTF-8):	Wtyczka InterBase/Firebird do Qt
+Summary(pt_BR.UTF-8):	Plugin de suporte a InterBase/Firebird para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	Firebird-lib >= 1.5.0
@@ -335,8 +335,8 @@ Plugin de suporte a InterBase/Firebird para Qt.
 
 %package plugin-mysql
 Summary:	Database plugin for MySQL Qt support
-Summary(pl.UTF-8):   Wtyczka MySQL do Qt
-Summary(pt_BR.UTF-8):   Plugin de suporte a MySQL para Qt
+Summary(pl.UTF-8):	Wtyczka MySQL do Qt
+Summary(pt_BR.UTF-8):	Plugin de suporte a MySQL para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Provides:	%{name}-plugin-sql = %{epoch}:%{version}-%{release}
@@ -355,8 +355,8 @@ Plugin de suporte a MySQL para Qt.
 
 %package plugin-odbc
 Summary:	Database plugin for ODBC Qt support
-Summary(pl.UTF-8):   Wtyczka ODBC do Qt
-Summary(pt_BR.UTF-8):   Plugin de suporte a ODBC para Qt
+Summary(pl.UTF-8):	Wtyczka ODBC do Qt
+Summary(pt_BR.UTF-8):	Plugin de suporte a ODBC para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Provides:	%{name}-plugin-sql = %{epoch}:%{version}-%{release}
@@ -375,8 +375,8 @@ Plugin de suporte a ODBC para Qt.
 
 %package plugin-psql
 Summary:	Database plugin for PostgreSQL Qt support
-Summary(pl.UTF-8):   Wtyczka PostgreSQL do Qt
-Summary(pt_BR.UTF-8):   Plugin de suporte a PostgreSQL para Qt
+Summary(pl.UTF-8):	Wtyczka PostgreSQL do Qt
+Summary(pt_BR.UTF-8):	Plugin de suporte a PostgreSQL para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Provides:	%{name}-plugin-sql = %{epoch}:%{version}-%{release}
@@ -395,8 +395,8 @@ korzystanie z baz danych PostgreSQL poprzez klasy QSql.
 
 %package plugin-sqlite
 Summary:	Database plugin for SQLite Qt support
-Summary(pl.UTF-8):   Wtyczka SQLite do Qt
-Summary(pt_BR.UTF-8):   Plugin de suporte a SQLite para Qt
+Summary(pl.UTF-8):	Wtyczka SQLite do Qt
+Summary(pt_BR.UTF-8):	Plugin de suporte a SQLite para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Provides:	%{name}-plugin-sql = %{epoch}:%{version}-%{release}
@@ -419,7 +419,7 @@ Plugin de suporte a SQLite para Qt.
 
 %package st
 Summary:	Single-threaded Qt library
-Summary(pl.UTF-8):   Jednowątkowa wersja biblioteki Qt
+Summary(pl.UTF-8):	Jednowątkowa wersja biblioteki Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 
@@ -461,7 +461,7 @@ już wspierana i nie zaleca się jej instalowania bez wyraźnej potrzeby.
 
 %package st-devel
 Summary:	Development files for single-threaded Qt library
-Summary(pl.UTF-8):   Pliki programistyczne dla jednowątkowej biblioteki Qt
+Summary(pl.UTF-8):	Pliki programistyczne dla jednowątkowej biblioteki Qt
 Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
 Requires:	%{name}-st = %{epoch}:%{version}-%{release}
@@ -474,7 +474,7 @@ Pliki programistyczne dla jednowątkowej biblioteki Qt.
 
 %package st-static
 Summary:	Single-threaded Qt static libraries
-Summary(pl.UTF-8):   Jednowątkowa statyczna biblioteka Qt
+Summary(pl.UTF-8):	Jednowątkowa statyczna biblioteka Qt
 Group:		X11/Development/Libraries
 Requires:	%{name}-st-devel = %{epoch}:%{version}-%{release}
 
@@ -516,7 +516,7 @@ już wspierana i nie zaleca się jej instalowania bez wyraźnej potrzeby.
 
 %package st-plugin-ibase
 Summary:	Database plugin for InterBase/Firebird support in single-threaded Qt
-Summary(pl.UTF-8):   Wtyczka InterBase/Firebird do jednowątkowej wersji Qt
+Summary(pl.UTF-8):	Wtyczka InterBase/Firebird do jednowątkowej wersji Qt
 Group:		X11/Libraries
 Requires:	%{name}-st = %{epoch}:%{version}-%{release}
 Requires:	Firebird-lib >= 1.5.0
@@ -532,7 +532,7 @@ korzystanie z baz danych InterBase/Firebird poprzez klasy QSql.
 
 %package st-plugin-mysql
 Summary:	Database plugin for MySQL support in single-threaded Qt
-Summary(pl.UTF-8):   Wtyczka MySQL do jednowątkowej wersji Qt
+Summary(pl.UTF-8):	Wtyczka MySQL do jednowątkowej wersji Qt
 Group:		X11/Libraries
 Requires:	%{name}-st = %{epoch}:%{version}-%{release}
 Provides:	%{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
@@ -547,7 +547,7 @@ korzystanie z baz danych MySQL poprzez klasy QSql.
 
 %package st-plugin-odbc
 Summary:	Database plugin for ODBC support in single-threaded Qt
-Summary(pl.UTF-8):   Wtyczka ODBC do jednowątkowej wersji Qt
+Summary(pl.UTF-8):	Wtyczka ODBC do jednowątkowej wersji Qt
 Group:		X11/Libraries
 Requires:	%{name}-st = %{epoch}:%{version}-%{release}
 Provides:	%{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
@@ -562,8 +562,8 @@ korzystanie z usług unixODBC poprzez klasy QSql.
 
 %package st-plugin-psql
 Summary:	Database plugin for PostgreSQL support in single-threaded Qt
-Summary(pl.UTF-8):   Wtyczka PostgreSQL do jednowątkowej wersji Qt
-Summary(pt_BR.UTF-8):   Plugin de suporte a PostgreSQL para Qt
+Summary(pl.UTF-8):	Wtyczka PostgreSQL do jednowątkowej wersji Qt
+Summary(pt_BR.UTF-8):	Plugin de suporte a PostgreSQL para Qt
 Group:		X11/Libraries
 Requires:	%{name}-st = %{epoch}:%{version}-%{release}
 Provides:	%{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
@@ -578,7 +578,7 @@ korzystanie z baz danych PostgreSQL poprzez klasy QSql.
 
 %package st-plugin-sqlite
 Summary:	Database plugin for SQLite support in single-threaded Qt
-Summary(pl.UTF-8):   Wtyczka SQLite do jednowątkowej wersji Qt
+Summary(pl.UTF-8):	Wtyczka SQLite do jednowątkowej wersji Qt
 Group:		X11/Libraries
 Requires:	%{name}-st = %{epoch}:%{version}-%{release}
 Provides:	%{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
@@ -593,7 +593,7 @@ korzystanie z baz danych PostgreSQL poprzez klasy QSql.
 
 %package linguist
 Summary:	Translation helper for Qt
-Summary(pl.UTF-8):   Aplikacja ułatwiająca tłumaczenie aplikacji oparty o Qt
+Summary(pl.UTF-8):	Aplikacja ułatwiająca tłumaczenie aplikacji oparty o Qt
 Group:		X11/Development/Tools
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Conflicts:	qt-devel < 6:3.3.2-3
@@ -615,7 +615,7 @@ następnego, aż wszystkie będą przetłumaczone.
 
 %package assistant
 Summary:	Qt documentation browser
-Summary(pl.UTF-8):   Przeglądarka dokumentacji Qt
+Summary(pl.UTF-8):	Przeglądarka dokumentacji Qt
 Group:		X11/Development/Tools
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name}-doc
@@ -631,7 +631,7 @@ indeksowania, dodawania zakładek i pełnotekstowego wyszukiwania.
 
 %package -n qmake
 Summary:	Qt makefile generator
-Summary(pl.UTF-8):   Generator plików makefile dla aplikacji Qt
+Summary(pl.UTF-8):	Generator plików makefile dla aplikacji Qt
 Group:		X11/Development/Tools
 Conflicts:	qt-devel < 6:3.3.2-3
 
@@ -645,7 +645,7 @@ na każdej platformie na podstawie łatwego w przygotowaniu pliku .pro.
 
 %package -n qtconfig
 Summary:	Qt widgets configuration tool
-Summary(pl.UTF-8):   Narzędzie do konfigurowania widgetów Qt
+Summary(pl.UTF-8):	Narzędzie do konfigurowania widgetów Qt
 Group:		X11/Applications
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 
@@ -657,7 +657,7 @@ Narzędie do konfiguracji wyglądu i zachowania widgetów Qt.
 
 %package designer
 Summary:	IDE used for GUI designing with Qt library
-Summary(pl.UTF-8):   IDE służące do projektowania GUI za pomocą biblioteki Qt
+Summary(pl.UTF-8):	IDE służące do projektowania GUI za pomocą biblioteki Qt
 Group:		X11/Applications
 Requires:	%{name}-designer-libs = %{epoch}:%{version}-%{release}
 
@@ -670,7 +670,7 @@ za pomocą biblioteki Qt.
 
 %package designer-libs
 Summary:	Libraries IDE used for GUI designing with Qt library
-Summary(pl.UTF-8):   Biblioteki do IDE służącego do projektowania GUI za pomocą biblioteki Qt
+Summary(pl.UTF-8):	Biblioteki do IDE służącego do projektowania GUI za pomocą biblioteki Qt
 Group:		X11/Applications
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 
