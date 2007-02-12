@@ -23,9 +23,9 @@
 %define		_snap		050208
 
 Summary:	The Qt3 GUI application framework
-Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
-Summary(pl):	Biblioteka Qt3 do tworzenia GUI
-Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
+Summary(es.UTF-8):   Biblioteca para ejecutar aplicaciones GUI Qt
+Summary(pl.UTF-8):   Biblioteka Qt3 do tworzenia GUI
+Summary(pt_BR.UTF-8):   Estrutura para rodar aplicaÃ§Ãµes GUI Qt
 Name:		qt
 Version:	%{_ver}.%{_snap}
 Release:	1
@@ -119,55 +119,55 @@ Qt library, the style plugins and translation files for Qt. Please
 install qt-st if you need the single-threaded version of this library
 (which isn't usually necessary).
 
-%description -l es
+%description -l es.UTF-8
 Qt es un completo framework de desarrollo de aplicaciones en C++, el
 que incluye una biblioteca de clases y unas herramientas para el
 desarrollo multiplataforma e internacionalizado. Usando Qt, un
-genérico árbol de código fuente se puede usar para construir
+genÃ©rico Ã¡rbol de cÃ³digo fuente se puede usar para construir
 aplicaciones que puedan ejecutarse nativamente en varias plataformas
 (Windows, Unix/Linux, Mac OS X, Linux embebido).
 
-Qt provee un rico conjunto de componentes estándares y le permite
+Qt provee un rico conjunto de componentes estÃ¡ndares y le permite
 escribir unos propios. Encapsula cuatro APIs diferentes dependientes
-de la plataforma y también APIs para el manejo de ficheros, la red, el
-manejo de los procesos e hilos, acceso a bases de datos, etc. También
-está incluido soporte de migración de Motif y un plugin para Netscape
+de la plataforma y tambiÃ©n APIs para el manejo de ficheros, la red, el
+manejo de los procesos e hilos, acceso a bases de datos, etc. TambiÃ©n
+estÃ¡ incluido soporte de migraciÃ³n de Motif y un plugin para Netscape
 LiveConnect.
 
-Este paquete contiene la versión compartida multi-hilvanada de la
-biblioteca Qt, los plugin de estilo y ficheros de traducción para Qt.
-Instálese qt-st si necesita la versión mono-hilvanada de esta
+Este paquete contiene la versiÃ³n compartida multi-hilvanada de la
+biblioteca Qt, los plugin de estilo y ficheros de traducciÃ³n para Qt.
+InstÃ¡lese qt-st si necesita la versiÃ³n mono-hilvanada de esta
 biblioteca (lo cual normalmente no es necesario).
 
-%description -l pl
+%description -l pl.UTF-8
 Qt oferuje kompletny system do tworzenia i rozwijania aplikacji w
-jêzyku C++, w którego sk³ad wchodzi biblioteka z klasami oraz
-wieloplatformowymi narzêdziami do rozwijania i t³umaczenia aplikacji.
-Z pomoc± Qt jeden kod ¼ród³owy mo¿e byæ natywnie uruchamiany na
-ró¿nych platformach (Windows, Unix/Linux, Mac OS X).
+jÄ™zyku C++, w ktÃ³rego skÅ‚ad wchodzi biblioteka z klasami oraz
+wieloplatformowymi narzÄ™dziami do rozwijania i tÅ‚umaczenia aplikacji.
+Z pomocÄ… Qt jeden kod ÅºrÃ³dÅ‚owy moÅ¼e byÄ‡ natywnie uruchamiany na
+rÃ³Å¼nych platformach (Windows, Unix/Linux, Mac OS X).
 
-Qt ma bogaty zbiór standardowych elementów interfejsu graficznego, ale
-pozwala równie¿ na pisanie w³asnych elementów. £±czy w sposób
-niewidoczny dla programisty interfejsy programowania ró¿nych systemów,
-tworz±c w ten sposób jeden interfejs dla obs³ugi plików, sieci,
-procesów, w±tków, baz danych itp. Umo¿liwia tak¿e ³atwe przenoszenie
-na Qt aplikacji korzystaj±cych z Motif oraz pisanie wtyczek z
+Qt ma bogaty zbiÃ³r standardowych elementÃ³w interfejsu graficznego, ale
+pozwala rÃ³wnieÅ¼ na pisanie wÅ‚asnych elementÃ³w. ÅÄ…czy w sposÃ³b
+niewidoczny dla programisty interfejsy programowania rÃ³Å¼nych systemÃ³w,
+tworzÄ…c w ten sposÃ³b jeden interfejs dla obsÅ‚ugi plikÃ³w, sieci,
+procesÃ³w, wÄ…tkÃ³w, baz danych itp. UmoÅ¼liwia takÅ¼e Å‚atwe przenoszenie
+na Qt aplikacji korzystajÄ…cych z Motif oraz pisanie wtyczek z
 wykorzystaniem Netscape LiveConnect.
 
-Ten pakiet zawiera wspó³dzielon±, wielow±tkow±, linuksow± wersjê
-biblioteki Qt, wtyczki ze stylami oraz pliki t³umaczeñ Qt. Zainstaluj
-qt-st je¶li potrzebujesz wersji jednow±tkowej tej biblioteki (co
+Ten pakiet zawiera wspÃ³Å‚dzielonÄ…, wielowÄ…tkowÄ…, linuksowÄ… wersjÄ™
+biblioteki Qt, wtyczki ze stylami oraz pliki tÅ‚umaczeÅ„ Qt. Zainstaluj
+qt-st jeÅ›li potrzebujesz wersji jednowÄ…tkowej tej biblioteki (co
 zwykle nie jest konieczne).
 
-%description -l pt_BR
-Contém as bibliotecas compartilhadas necessárias para rodar aplicações
+%description -l pt_BR.UTF-8
+ContÃ©m as bibliotecas compartilhadas necessÃ¡rias para rodar aplicaÃ§Ãµes
 Qt, bem como os arquivos README.
 
 %package devel
 Summary:	Development files for the Qt GUI toolkit
-Summary(es):	Archivos de inclusión necesaria para compilar aplicaciones Qt
-Summary(pl):	Pliki nag³ówkowe, przyk³ady i dokumentacja do biblioteki
-Summary(pt_BR):	Arquivos de inclusão necessária para compilar aplicações Qt
+Summary(es.UTF-8):   Archivos de inclusiÃ³n necesaria para compilar aplicaciones Qt
+Summary(pl.UTF-8):   Pliki nagÅ‚Ã³wkowe, przykÅ‚ady i dokumentacja do biblioteki
+Summary(pt_BR.UTF-8):   Arquivos de inclusÃ£o necessÃ¡ria para compilar aplicaÃ§Ãµes Qt
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	OpenGL-devel
@@ -188,15 +188,15 @@ compiler (moc) and the user interface compiler (uic); Qt include
 files, pkgconfig helpers and tools for preserving compatibility
 between versions of Qt.
 
-%description devel -l pl
-Ten pakiet zawiera narzêdzia programistyczne Qt: kompilator
-metaobiektów (moc), kompilator interfejsu u¿ytkownika (uic); pliki
-nag³ówkowe, wsparcie dla pkgconfig oraz narzêdzia u³atwiaj±ce
-zachowanie kompatybilno¶ci niezale¿nie od wersji Qt.
+%description devel -l pl.UTF-8
+Ten pakiet zawiera narzÄ™dzia programistyczne Qt: kompilator
+metaobiektÃ³w (moc), kompilator interfejsu uÅ¼ytkownika (uic); pliki
+nagÅ‚Ã³wkowe, wsparcie dla pkgconfig oraz narzÄ™dzia uÅ‚atwiajÄ…ce
+zachowanie kompatybilnoÅ›ci niezaleÅ¼nie od wersji Qt.
 
 %package static
 Summary:	Qt static library
-Summary(pl):	Biblioteka statyczna Qt
+Summary(pl.UTF-8):   Biblioteka statyczna Qt
 Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
 
@@ -216,63 +216,63 @@ LiveConnect plugin.
 This package contains the static, multi-threaded, linux version of the
 Qt library.
 
-%description static -l pl
+%description static -l pl.UTF-8
 Qt oferuje kompletny system do tworzenia i rozwijania aplikacji w
-jêzyku C++, w którego sk³ad wchodzi biblioteka z klasami oraz
-wieloplatformowymi narzêdziami do rozwijania i t³umaczenia aplikacji.
-Z pomoc± Qt jeden kod ¼ród³owy mo¿e byæ natywnie uruchamiany na
-ró¿nych platformach (Windows, Unix/Linux, Mac OS X).
+jÄ™zyku C++, w ktÃ³rego skÅ‚ad wchodzi biblioteka z klasami oraz
+wieloplatformowymi narzÄ™dziami do rozwijania i tÅ‚umaczenia aplikacji.
+Z pomocÄ… Qt jeden kod ÅºrÃ³dÅ‚owy moÅ¼e byÄ‡ natywnie uruchamiany na
+rÃ³Å¼nych platformach (Windows, Unix/Linux, Mac OS X).
 
-Qt ma bogaty zbiór standardowych elementów interfejsu graficznego, ale
-pozwala równie¿ na pisanie w³asnych elementów. £±czy w sposób
-niewidoczny dla programisty interfejsy programowania ró¿nych systemów,
-tworz±c w ten sposób jeden interfejs dla obs³ugi plików, sieci,
-procesów, w±tków, baz danych itp. Umo¿liwia tak¿e ³atwe przenoszenie
-na Qt aplikacji korzystaj±cych z Motif oraz pisanie wtyczek z
+Qt ma bogaty zbiÃ³r standardowych elementÃ³w interfejsu graficznego, ale
+pozwala rÃ³wnieÅ¼ na pisanie wÅ‚asnych elementÃ³w. ÅÄ…czy w sposÃ³b
+niewidoczny dla programisty interfejsy programowania rÃ³Å¼nych systemÃ³w,
+tworzÄ…c w ten sposÃ³b jeden interfejs dla obsÅ‚ugi plikÃ³w, sieci,
+procesÃ³w, wÄ…tkÃ³w, baz danych itp. UmoÅ¼liwia takÅ¼e Å‚atwe przenoszenie
+na Qt aplikacji korzystajÄ…cych z Motif oraz pisanie wtyczek z
 wykorzystaniem Netscape LiveConnect.
 
-Ten pakiet zawiera statyczn±, wielow±tkow±, linuksow± wersjê
+Ten pakiet zawiera statycznÄ…, wielowÄ…tkowÄ…, linuksowÄ… wersjÄ™
 biblioteki Qt.
 
 %package doc
 Summary:	Qt Documentation in HTML format
-Summary(pl):	Dokumentacja Qt w formacie HTML
+Summary(pl.UTF-8):   Dokumentacja Qt w formacie HTML
 Group:		X11/Development/Libraries
 Obsoletes:	qt-doc-html
 
 %description doc
 Qt documentation in HTML format.
 
-%description doc -l pl
+%description doc -l pl.UTF-8
 Dokumentacja qt w formacie HTML.
 
 %package man
 Summary:	Qt man pages
-Summary(pl):	Qt - strony man
+Summary(pl.UTF-8):   Qt - strony man
 Group:		X11/Development/Libraries
 Obsoletes:	qt-doc-man
 
 %description man
 Qt documentation in man pages format.
 
-%description man -l pl
+%description man -l pl.UTF-8
 Dokumentacja Qt w formacie stron man.
 
 %package examples
 Summary:	Example programs bundled with Qt
-Summary(pl):	Æwiczenia i przyk³ady do Qt
-Summary(pt_BR):	Programas exemplo desenvolvidos com o Qt
+Summary(pl.UTF-8):   Ä†wiczenia i przykÅ‚ady do Qt
+Summary(pt_BR.UTF-8):   Programas exemplo desenvolvidos com o Qt
 Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
 
 %description examples
 Example programs bundled with Qt version.
 
-%description examples -l pl
-Æwiczenia/przyk³ady do³±czone do Qt.
+%description examples -l pl.UTF-8
+Ä†wiczenia/przykÅ‚ady doÅ‚Ä…czone do Qt.
 
-%description examples -l pt_BR
-Programas exemplo para o Qt versão.
+%description examples -l pt_BR.UTF-8
+Programas exemplo para o Qt versÃ£o.
 
 # <end main library desc>
 
@@ -280,8 +280,8 @@ Programas exemplo para o Qt versão.
 
 %package plugin-ibase
 Summary:	Database plugin for InterBase/Firebird Qt support
-Summary(pl):	Wtyczka InterBase/Firebird do Qt
-Summary(pt_BR):	Plugin de suporte a InterBase/Firebird para Qt
+Summary(pl.UTF-8):   Wtyczka InterBase/Firebird do Qt
+Summary(pt_BR.UTF-8):   Plugin de suporte a InterBase/Firebird para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	Firebird-lib >= 1.5.0
@@ -291,17 +291,17 @@ Provides:	%{name}-plugin-sql = %{epoch}:%{version}-%{release}
 This package contains a multi-thread enabled plugin for accessing
 Interbase/Firebird database via the QSql classes.
 
-%description plugin-ibase -l pl
-Ten pakiet zawiera wielow±tkow± wersjê wtyczki do Qt umo¿liwiaj±cej
+%description plugin-ibase -l pl.UTF-8
+Ten pakiet zawiera wielowÄ…tkowÄ… wersjÄ™ wtyczki do Qt umoÅ¼liwiajÄ…cej
 korzystanie z baz danych Interbase/Firebird poprzez klasy QSql.
 
-%description plugin-ibase -l pt_BR
+%description plugin-ibase -l pt_BR.UTF-8
 Plugin de suporte a InterBase/Firebird para Qt.
 
 %package plugin-mysql
 Summary:	Database plugin for MySQL Qt support
-Summary(pl):	Wtyczka MySQL do Qt
-Summary(pt_BR):	Plugin de suporte a MySQL para Qt
+Summary(pl.UTF-8):   Wtyczka MySQL do Qt
+Summary(pt_BR.UTF-8):   Plugin de suporte a MySQL para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 #Requires:	mysql-libs
@@ -312,17 +312,17 @@ Obsoletes:	qt-plugins-mysql
 This package contains a multi-thread enabled plugin for accessing
 MySQL database via the QSql classes.
 
-%description plugin-mysql -l pl
-Ten pakiet zawiera wielow±tkow± wersjê wtyczki do Qt umo¿liwiaj±cej
+%description plugin-mysql -l pl.UTF-8
+Ten pakiet zawiera wielowÄ…tkowÄ… wersjÄ™ wtyczki do Qt umoÅ¼liwiajÄ…cej
 korzystanie z baz danych MySQL poprzez klasy QSql.
 
-%description plugin-mysql -l pt_BR
+%description plugin-mysql -l pt_BR.UTF-8
 Plugin de suporte a MySQL para Qt.
 
 %package plugin-odbc
 Summary:	Database plugin for ODBC Qt support
-Summary(pl):	Wtyczka ODBC do Qt
-Summary(pt_BR):	Plugin de suporte a ODBC para Qt
+Summary(pl.UTF-8):   Wtyczka ODBC do Qt
+Summary(pt_BR.UTF-8):   Plugin de suporte a ODBC para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 #Requires:	unixODBC
@@ -333,17 +333,17 @@ Obsoletes:	qt-plugins-odbc
 This package contains a multi-thread enabled plugin for accessing
 unixODBC services via the QSql classes.
 
-%description plugin-odbc -l pl
-Ten pakiet zawiera wielow±tkow± wersjê wtyczki do Qt umo¿liwiaj±cej
-korzystanie z us³ug unixODBC poprzez klasy QSql.
+%description plugin-odbc -l pl.UTF-8
+Ten pakiet zawiera wielowÄ…tkowÄ… wersjÄ™ wtyczki do Qt umoÅ¼liwiajÄ…cej
+korzystanie z usÅ‚ug unixODBC poprzez klasy QSql.
 
-%description plugin-odbc -l pt_BR
+%description plugin-odbc -l pt_BR.UTF-8
 Plugin de suporte a ODBC para Qt.
 
 %package plugin-psql
 Summary:	Database plugin for PostgreSQL Qt support
-Summary(pl):	Wtyczka PostgreSQL do Qt
-Summary(pt_BR):	Plugin de suporte a PostgreSQL para Qt
+Summary(pl.UTF-8):   Wtyczka PostgreSQL do Qt
+Summary(pt_BR.UTF-8):   Plugin de suporte a PostgreSQL para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 #Requires:	postgresql-libs
@@ -354,17 +354,17 @@ Obsoletes:	qt-plugins-psql
 This package contains a multi-thread enabled plugin for accessing
 PostgreSQL database via the QSql classes.
 
-%description plugin-psql -l es
+%description plugin-psql -l es.UTF-8
 Plugin de suporte a PostgreSQL para Qt.
 
-%description plugin-psql -l pl
-Ten pakiet zawiera wielow±tkow± wersjê wtyczki do Qt umo¿liwiaj±cej
+%description plugin-psql -l pl.UTF-8
+Ten pakiet zawiera wielowÄ…tkowÄ… wersjÄ™ wtyczki do Qt umoÅ¼liwiajÄ…cej
 korzystanie z baz danych PostgreSQL poprzez klasy QSql.
 
 %package plugin-sqlite
 Summary:	Database plugin for SQLite Qt support
-Summary(pl):	Wtyczka SQLite do Qt
-Summary(pt_BR):	Plugin de suporte a SQLite para Qt
+Summary(pl.UTF-8):   Wtyczka SQLite do Qt
+Summary(pt_BR.UTF-8):   Plugin de suporte a SQLite para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 #Requires:	sqlite
@@ -375,11 +375,11 @@ This package contains a multi-thread enabled plugin for using the
 SQLite library (which allows to acces virtually any SQL database) via
 the QSql classes.
 
-%description plugin-sqlite -l pl
-Ten pakiet zawiera wielow±tkow± wersjê wtyczki do Qt umo¿liwiaj±cej
+%description plugin-sqlite -l pl.UTF-8
+Ten pakiet zawiera wielowÄ…tkowÄ… wersjÄ™ wtyczki do Qt umoÅ¼liwiajÄ…cej
 korzystanie z baz danych PostgreSQL poprzez klasy QSql.
 
-%description plugin-sqlite -l pt_BR
+%description plugin-sqlite -l pt_BR.UTF-8
 Plugin de suporte a SQLite para Qt.
 
 # <end multithreaded plugins desc>
@@ -388,7 +388,7 @@ Plugin de suporte a SQLite para Qt.
 
 %package st
 Summary:	Single-threaded Qt library
-Summary(pl):	Jednow±tkowa wersja biblioteki Qt
+Summary(pl.UTF-8):   JednowÄ…tkowa wersja biblioteki Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 
@@ -409,28 +409,28 @@ This package contains the shared, single-threaded, linux version of
 the Qt library and single-threaded styles for Qt. This version is
 deprecated, please do not install it unless you explicitly need to.
 
-%description st -l pl
+%description st -l pl.UTF-8
 Qt oferuje kompletny system do tworzenia i rozwijania aplikacji w
-jêzyku C++, w którego sk³ad wchodzi biblioteka z klasami oraz
-wieloplatformowymi narzêdziami do rozwijania i t³umaczenia aplikacji.
-Z pomoc± Qt jeden kod ¼ród³owy mo¿e byæ natywnie uruchamiany na
-ró¿nych platformach (Windows, Unix/Linux, Mac OS X).
+jÄ™zyku C++, w ktÃ³rego skÅ‚ad wchodzi biblioteka z klasami oraz
+wieloplatformowymi narzÄ™dziami do rozwijania i tÅ‚umaczenia aplikacji.
+Z pomocÄ… Qt jeden kod ÅºrÃ³dÅ‚owy moÅ¼e byÄ‡ natywnie uruchamiany na
+rÃ³Å¼nych platformach (Windows, Unix/Linux, Mac OS X).
 
-Qt ma bogaty zbiór standardowych elementów interfejsu graficznego, ale
-pozwala równie¿ na pisanie w³asnych elementów. £±czy w sposób
-niewidoczny dla programisty interfejsy programowania ró¿nych systemów,
-tworz±c w ten sposób jeden interfejs dla obs³ugi plików, sieci,
-procesów, w±tków, baz danych itp. Umo¿liwia tak¿e ³atwe przenoszenie
-na Qt aplikacji korzystaj±cych z Motif oraz pisanie wtyczek z
+Qt ma bogaty zbiÃ³r standardowych elementÃ³w interfejsu graficznego, ale
+pozwala rÃ³wnieÅ¼ na pisanie wÅ‚asnych elementÃ³w. ÅÄ…czy w sposÃ³b
+niewidoczny dla programisty interfejsy programowania rÃ³Å¼nych systemÃ³w,
+tworzÄ…c w ten sposÃ³b jeden interfejs dla obsÅ‚ugi plikÃ³w, sieci,
+procesÃ³w, wÄ…tkÃ³w, baz danych itp. UmoÅ¼liwia takÅ¼e Å‚atwe przenoszenie
+na Qt aplikacji korzystajÄ…cych z Motif oraz pisanie wtyczek z
 wykorzystaniem Netscape LiveConnect.
 
-Ten pakiet zawiera wspó³dzielon±, jednow±tkow±, linuksow± wersjê
-biblioteki Qt oraz jednow±tkowe wtyczki ze stylami. Ta wersja nie jest
-ju¿ wspierana i nie zaleca siê jej instalowania bez wyra¼nej potrzeby.
+Ten pakiet zawiera wspÃ³Å‚dzielonÄ…, jednowÄ…tkowÄ…, linuksowÄ… wersjÄ™
+biblioteki Qt oraz jednowÄ…tkowe wtyczki ze stylami. Ta wersja nie jest
+juÅ¼ wspierana i nie zaleca siÄ™ jej instalowania bez wyraÅºnej potrzeby.
 
 %package st-devel
 Summary:	Development files for single-threaded Qt library
-Summary(pl):	Pliki programistyczne dla jednow±tkowej biblioteki Qt
+Summary(pl.UTF-8):   Pliki programistyczne dla jednowÄ…tkowej biblioteki Qt
 Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
 Requires:	%{name}-st = %{epoch}:%{version}-%{release}
@@ -438,12 +438,12 @@ Requires:	%{name}-st = %{epoch}:%{version}-%{release}
 %description st-devel
 This package contains the single threaded
 
-%description st-devel -l pl
-Pliki programistyczne dla jednow±tkowej biblioteki Qt.
+%description st-devel -l pl.UTF-8
+Pliki programistyczne dla jednowÄ…tkowej biblioteki Qt.
 
 %package st-static
 Summary:	Single-threaded Qt static libraries
-Summary(pl):	Jednow±tkowa statyczna biblioteka Qt
+Summary(pl.UTF-8):   JednowÄ…tkowa statyczna biblioteka Qt
 Group:		X11/Development/Libraries
 Requires:	%{name}-st-devel = %{epoch}:%{version}-%{release}
 
@@ -464,28 +464,28 @@ This package contains the static, single-threaded, linux version of
 the Qt library and single-threaded styles for Qt. This version is
 deprecated, please do not install it unless you explicitly need to.
 
-%description st-static -l pl
+%description st-static -l pl.UTF-8
 Qt oferuje kompletny system do tworzenia i rozwijania aplikacji w
-jêzyku C++, w którego sk³ad wchodzi biblioteka z klasami oraz
-wieloplatformowymi narzêdziami do rozwijania i t³umaczenia aplikacji.
-Z pomoc± Qt jeden kod ¼ród³owy mo¿e byæ natywnie uruchamiany na
-ró¿nych platformach (Windows, Unix/Linux, Mac OS X).
+jÄ™zyku C++, w ktÃ³rego skÅ‚ad wchodzi biblioteka z klasami oraz
+wieloplatformowymi narzÄ™dziami do rozwijania i tÅ‚umaczenia aplikacji.
+Z pomocÄ… Qt jeden kod ÅºrÃ³dÅ‚owy moÅ¼e byÄ‡ natywnie uruchamiany na
+rÃ³Å¼nych platformach (Windows, Unix/Linux, Mac OS X).
 
-Qt ma bogaty zbiór standardowych elementów interfejsu graficznego, ale
-pozwala równie¿ na pisanie w³asnych elementów. £±czy w sposób
-niewidoczny dla programisty interfejsy programowania ró¿nych systemów,
-tworz±c w ten sposób jeden interfejs dla obs³ugi plików, sieci,
-procesów, w±tków, baz danych itp. Umo¿liwia tak¿e ³atwe przenoszenie
-na Qt aplikacji korzystaj±cych z Motif oraz pisanie wtyczek z
+Qt ma bogaty zbiÃ³r standardowych elementÃ³w interfejsu graficznego, ale
+pozwala rÃ³wnieÅ¼ na pisanie wÅ‚asnych elementÃ³w. ÅÄ…czy w sposÃ³b
+niewidoczny dla programisty interfejsy programowania rÃ³Å¼nych systemÃ³w,
+tworzÄ…c w ten sposÃ³b jeden interfejs dla obsÅ‚ugi plikÃ³w, sieci,
+procesÃ³w, wÄ…tkÃ³w, baz danych itp. UmoÅ¼liwia takÅ¼e Å‚atwe przenoszenie
+na Qt aplikacji korzystajÄ…cych z Motif oraz pisanie wtyczek z
 wykorzystaniem Netscape LiveConnect.
 
-Ten pakiet zawiera wspó³dzielon±, jednow±tkow±, linuksow± wersjê
-biblioteki Qt oraz jednow±tkowe wtyczki ze stylami. Ta wersja nie jest
-ju¿ wspierana i nie zaleca siê jej instalowania bez wyra¼nej potrzeby.
+Ten pakiet zawiera wspÃ³Å‚dzielonÄ…, jednowÄ…tkowÄ…, linuksowÄ… wersjÄ™
+biblioteki Qt oraz jednowÄ…tkowe wtyczki ze stylami. Ta wersja nie jest
+juÅ¼ wspierana i nie zaleca siÄ™ jej instalowania bez wyraÅºnej potrzeby.
 
 %package st-plugin-ibase
 Summary:	Database plugin for InterBase/Firebird support in single-threaded Qt
-Summary(pl):	Wtyczka InterBase/Firebird do jednow±tkowej wersji Qt
+Summary(pl.UTF-8):   Wtyczka InterBase/Firebird do jednowÄ…tkowej wersji Qt
 Group:		X11/Libraries
 Requires:	%{name}-st = %{epoch}:%{version}-%{release}
 Requires:	Firebird-lib >= 1.5.0
@@ -495,13 +495,13 @@ Provides:	%{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
 This package contains a single-thread plugin for accessing
 InterBase/Firebird database via the QSql classes.
 
-%description st-plugin-ibase -l pl
-Ten pakiet zawiera jednow±tkow± wersjê wtyczki do Qt umo¿liwiaj±cej
+%description st-plugin-ibase -l pl.UTF-8
+Ten pakiet zawiera jednowÄ…tkowÄ… wersjÄ™ wtyczki do Qt umoÅ¼liwiajÄ…cej
 korzystanie z baz danych InterBase/Firebird poprzez klasy QSql.
 
 %package st-plugin-mysql
 Summary:	Database plugin for MySQL support in single-threaded Qt
-Summary(pl):	Wtyczka MySQL do jednow±tkowej wersji Qt
+Summary(pl.UTF-8):   Wtyczka MySQL do jednowÄ…tkowej wersji Qt
 Group:		X11/Libraries
 Requires:	%{name}-st = %{epoch}:%{version}-%{release}
 #Requires:	mysql-libs
@@ -511,13 +511,13 @@ Provides:	%{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
 This package contains a single-thread plugin for accessing MySQL
 database via the QSql classes.
 
-%description st-plugin-mysql -l pl
-Ten pakiet zawiera jednow±tkow± wersjê wtyczki do Qt umo¿liwiaj±cej
+%description st-plugin-mysql -l pl.UTF-8
+Ten pakiet zawiera jednowÄ…tkowÄ… wersjÄ™ wtyczki do Qt umoÅ¼liwiajÄ…cej
 korzystanie z baz danych MySQL poprzez klasy QSql.
 
 %package st-plugin-odbc
 Summary:	Database plugin for ODBC support in single-threaded Qt
-Summary(pl):	Wtyczka ODBC do jednow±tkowej wersji Qt
+Summary(pl.UTF-8):   Wtyczka ODBC do jednowÄ…tkowej wersji Qt
 Group:		X11/Libraries
 Requires:	%{name}-st = %{epoch}:%{version}-%{release}
 #Requires:	unixODBC
@@ -527,14 +527,14 @@ Provides:	%{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
 This package contains a single-thread enabled plugin for accessing
 unixODBC services via the QSql classes.
 
-%description st-plugin-odbc -l pl
-Ten pakiet zawiera jednow±tkow± wersjê wtyczki do Qt umo¿liwiaj±cej
-korzystanie z us³ug unixODBC poprzez klasy QSql.
+%description st-plugin-odbc -l pl.UTF-8
+Ten pakiet zawiera jednowÄ…tkowÄ… wersjÄ™ wtyczki do Qt umoÅ¼liwiajÄ…cej
+korzystanie z usÅ‚ug unixODBC poprzez klasy QSql.
 
 %package st-plugin-psql
 Summary:	Database plugin for PostgreSQL support in single-threaded Qt
-Summary(pl):	Wtyczka PostgreSQL do jednow±tkowej wersji Qt
-Summary(pt_BR):	Plugin de suporte a PostgreSQL para Qt
+Summary(pl.UTF-8):   Wtyczka PostgreSQL do jednowÄ…tkowej wersji Qt
+Summary(pt_BR.UTF-8):   Plugin de suporte a PostgreSQL para Qt
 Group:		X11/Libraries
 Requires:	%{name}-st = %{epoch}:%{version}-%{release}
 #Requires:	postgresql-libs
@@ -544,13 +544,13 @@ Provides:	%{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
 This package contains a single-thread plugin for accessing PostgreSQL
 database via the QSql classes.
 
-%description st-plugin-psql -l pl
-Ten pakiet zawiera jednow±tkow± wersjê wtyczki do Qt umo¿liwiaj±cej
+%description st-plugin-psql -l pl.UTF-8
+Ten pakiet zawiera jednowÄ…tkowÄ… wersjÄ™ wtyczki do Qt umoÅ¼liwiajÄ…cej
 korzystanie z baz danych PostgreSQL poprzez klasy QSql.
 
 %package st-plugin-sqlite
 Summary:	Database plugin for SQLite support in single-threaded Qt
-Summary(pl):	Wtyczka SQLite do jednow±tkowej wersji Qt
+Summary(pl.UTF-8):   Wtyczka SQLite do jednowÄ…tkowej wersji Qt
 Group:		X11/Libraries
 Requires:	%{name}-st = %{epoch}:%{version}-%{release}
 #Requires:	sqlite
@@ -560,13 +560,13 @@ Provides:	%{name}-st-plugin-sql = %{epoch}:%{version}-%{release}
 This package contains a single-thread plugin for using the SQLite
 library (which allows to acces virtually any SQL database)
 
-%description st-plugin-sqlite -l pl
-Ten pakiet zawiera jednow±tkow± wersjê wtyczki do Qt umo¿liwiaj±cej
+%description st-plugin-sqlite -l pl.UTF-8
+Ten pakiet zawiera jednowÄ…tkowÄ… wersjÄ™ wtyczki do Qt umoÅ¼liwiajÄ…cej
 korzystanie z baz danych PostgreSQL poprzez klasy QSql.
 
 %package linguist
 Summary:	Translation helper for Qt
-Summary(pl):	Aplikacja u³atwiaj±ca t³umaczenie aplikacji oparty o Qt
+Summary(pl.UTF-8):   Aplikacja uÅ‚atwiajÄ…ca tÅ‚umaczenie aplikacji oparty o Qt
 Group:		X11/Development/Tools
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Conflicts:	qt-devel < 6:3.3.2-3
@@ -579,16 +579,16 @@ translator in a simple window. When one UI text is translated, the
 program automatically progresses to the next, until they are all
 completed.
 
-%description linguist -l pl
-Ten program oferuje interfejs znacznie przy¶pieszaj±cy proces
-t³umaczenia interfejsu u¿ytkownika. Zbiera wszystkie teksty
-przeznaczone do t³umaczenia i przedstawia w ³atwym w obs³udze oknie.
-Gdy jeden z nich jest ju¿ przet³umaczony, automatycznie przechodzi do
-nastêpnego, a¿ wszystkie bêd± przet³umaczone.
+%description linguist -l pl.UTF-8
+Ten program oferuje interfejs znacznie przyÅ›pieszajÄ…cy proces
+tÅ‚umaczenia interfejsu uÅ¼ytkownika. Zbiera wszystkie teksty
+przeznaczone do tÅ‚umaczenia i przedstawia w Å‚atwym w obsÅ‚udze oknie.
+Gdy jeden z nich jest juÅ¼ przetÅ‚umaczony, automatycznie przechodzi do
+nastÄ™pnego, aÅ¼ wszystkie bÄ™dÄ… przetÅ‚umaczone.
 
 %package assistant
 Summary:	Qt documentation browser
-Summary(pl):	Przegl±darka dokumentacji Qt
+Summary(pl.UTF-8):   PrzeglÄ…darka dokumentacji Qt
 Group:		X11/Development/Tools
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name}-doc
@@ -598,13 +598,13 @@ Conflicts:	qt-devel < 6:3.3.2-3
 Qt Assistant is a tool for browsing on-line documentation with
 indexing, bookmarks and full-text search.
 
-%description assistant -l pl
-Qt Assistant to narzêdzie do przegl±dania dokumentacji z mo¿liwo¶ci±
-indeksowania, dodawania zak³adek i pe³notekstowego wyszukiwania.
+%description assistant -l pl.UTF-8
+Qt Assistant to narzÄ™dzie do przeglÄ…dania dokumentacji z moÅ¼liwoÅ›ciÄ…
+indeksowania, dodawania zakÅ‚adek i peÅ‚notekstowego wyszukiwania.
 
 %package -n qmake
 Summary:	Qt makefile generator
-Summary(pl):	Generator plików makefile dla aplikacji Qt
+Summary(pl.UTF-8):   Generator plikÃ³w makefile dla aplikacji Qt
 Group:		X11/Development/Tools
 Conflicts:	qt-devel < 6:3.3.2-3
 
@@ -612,46 +612,46 @@ Conflicts:	qt-devel < 6:3.3.2-3
 A powerful makefile generator. It can create makefiles on any platform
 from a simple .pro definitions file.
 
-%description -n qmake -l pl
-Rozbudowany generator plików makefile. Potrafi tworzyæ pliki makefile
-na ka¿dej platformi na podstawie ³atwego w przygotowaniu pliku .pro.
+%description -n qmake -l pl.UTF-8
+Rozbudowany generator plikÃ³w makefile. Potrafi tworzyÄ‡ pliki makefile
+na kaÅ¼dej platformi na podstawie Å‚atwego w przygotowaniu pliku .pro.
 
 %package -n qtconfig
 Summary:	Qt widgets configuration tool
-Summary(pl):	Narzêdzie do konfigurowania widgetów Qt
+Summary(pl.UTF-8):   NarzÄ™dzie do konfigurowania widgetÃ³w Qt
 Group:		X11/Applications
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 
 %description -n qtconfig
 A tool for configuring look and behavior of Qt widgets.
 
-%description -n qtconfig -l pl
-Narzêdie do konfiguracji wygl±du i zachowania widgetów Qt.
+%description -n qtconfig -l pl.UTF-8
+NarzÄ™die do konfiguracji wyglÄ…du i zachowania widgetÃ³w Qt.
 
 %package designer
 Summary:	IDE used for GUI designing with Qt library
-Summary(pl):	IDE s³u¿±ce do projektowania GUI za pomoc± biblioteki Qt
+Summary(pl.UTF-8):   IDE sÅ‚uÅ¼Ä…ce do projektowania GUI za pomocÄ… biblioteki Qt
 Group:		X11/Applications
 Requires:	%{name}-designer-libs = %{epoch}:%{version}-%{release}
 
 %description designer
 An advanced tool used for GUI designing with Qt library.
 
-%description designer -l pl
-Zaawansowane narzêdzie s³u¿±ce do projektowania interfejsu graficznego
-za pomoc± biblioteki Qt.
+%description designer -l pl.UTF-8
+Zaawansowane narzÄ™dzie sÅ‚uÅ¼Ä…ce do projektowania interfejsu graficznego
+za pomocÄ… biblioteki Qt.
 
 %package designer-libs
 Summary:	Libraries IDE used for GUI designing with Qt library
-Summary(pl):	Biblioteki do IDE s³u¿±cego do projektowania GUI za pomoc± biblioteki Qt
+Summary(pl.UTF-8):   Biblioteki do IDE sÅ‚uÅ¼Ä…cego do projektowania GUI za pomocÄ… biblioteki Qt
 Group:		X11/Applications
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 
 %description designer-libs
 Libraries used by the Qt GUI Designer.
 
-%description designer-libs -l pl
-Biblioteki wykorzystywane przez narzêdzie projektowania interfejsu
+%description designer-libs -l pl.UTF-8
+Biblioteki wykorzystywane przez narzÄ™dzie projektowania interfejsu
 graficznego - Qt Designer.
 
 %prep
