@@ -19,7 +19,7 @@
 %define		_withsql	1
 %{!?with_sqlite:%{!?with_ibase:%{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}}}
 
-%define		_ver		3.3.7
+%define		_ver		3.3.8
 
 Summary:	The Qt3 GUI application framework
 Summary(es.UTF-8):	Biblioteca para ejecutar aplicaciones GUI Qt
@@ -27,12 +27,12 @@ Summary(pl.UTF-8):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR.UTF-8):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	%{_ver}
-Release:	9
+Release:	1
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
-Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
-# Source0-md5:	655e21cf6a7e66daf8ec6ceda81aae1e
+Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.gz
+# Source0-md5:	37aec12c8c7b0e164957ec1aa3fd0189
 Source1:	%{name}config.desktop
 Source2:	designer.desktop
 Source3:	assistant.desktop
@@ -64,12 +64,7 @@ Patch156:	0056-khotkeys_input_84434.patch
 Patch159:	0059-qpopup_has_mouse.patch
 Patch160:	0060-qpopup_ignore_mousepos.patch
 Patch161:	0061-qscrollview-propagate-horizontal-wheelevent.patch
-Patch169:	0069-fix-minsize.patch
-Patch170:	0070-fix-broken-fonts.patch
-Patch171:	0071-fix-qtextedit-performance.patch
 Patch173:	0073-xinerama-aware-qpopup.patch
-Patch174:	0074-indic-script-fix.patch
-Patch175:	0075-fix-array-underrun.diff
 
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-FHS.patch
@@ -705,12 +700,7 @@ graficznego - Qt Designer.
 %patch159 -p0
 %patch160 -p0
 %patch161 -p0
-%patch169 -p0
-%patch170 -p0
-%patch171 -p0
 %patch173 -p0
-%patch174 -p0
-%patch175 -p0
 
 %patch0 -p1
 %patch1 -p1
