@@ -27,7 +27,7 @@ Summary(pl.UTF-8):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR.UTF-8):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	%{_ver}
-Release:	1
+Release:	2
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
@@ -65,6 +65,8 @@ Patch159:	0059-qpopup_has_mouse.patch
 Patch160:	0060-qpopup_ignore_mousepos.patch
 Patch161:	0061-qscrollview-propagate-horizontal-wheelevent.patch
 Patch173:	0073-xinerama-aware-qpopup.patch
+Patch176:	0076-fix-qprocess.diff
+Patch177:	0077-utf8-decoder-fixes.diff
 
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-FHS.patch
@@ -701,6 +703,8 @@ graficznego - Qt Designer.
 %patch160 -p0
 %patch161 -p0
 %patch173 -p0
+%patch176 -p0
+%patch177 -p0
 
 %patch0 -p1
 %patch1 -p1
