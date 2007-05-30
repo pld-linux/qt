@@ -27,7 +27,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	%{_ver}
-Release:	2
+Release:	3
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
@@ -62,6 +62,7 @@ Patch13:	%{name}-x11-mono.patch
 Patch14:	%{name}-x11-qfontdatabase_x11.patch
 Patch15:	%{name}-uic_colon_fix.patch
 Patch16:	%{name}-fvisibility.patch
+Patch17:	%{name}-argb-visual-hack.patch
 URL:		http://www.trolltech.com/products/qt/
 %{?with_ibase:BuildRequires:	Firebird-devel >= 1.5.0}
 BuildRequires:	OpenGL-GLU-devel
@@ -663,6 +664,7 @@ graficznego - Qt Designer.
 #%patch14 -p1
 %patch15 -p0
 %patch16 -p0
+%patch17 -p0
 
 install %{SOURCE6} ./apply_patches
 chmod +x ./apply_patches
