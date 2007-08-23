@@ -19,7 +19,7 @@
 %define		_withsql	1
 %{!?with_sqlite:%{!?with_ibase:%{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}}}
 
-%define		_ver		3.3.7
+%define		_ver		3.3.8
 
 Summary:	The Qt3 GUI application framework
 Summary(es):	Biblioteca para ejecutar aplicaciones GUI Qt
@@ -27,23 +27,50 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	%{_ver}
-Release:	3
+Release:	4
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
-#Source0:	http://ep09.pld-linux.org/~%{_packager}/kde/%{name}-copy-%{_snap}.tar.bz2
-Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.bz2
-# Source0-md5:	655e21cf6a7e66daf8ec6ceda81aae1e
-Source1:	http://ep09.pld-linux.org/~arekm/%{name}-copy-patches-060404.tar.bz2
-# Source1-md5:	7cd0cf968a3610f2da55a7945eaa076f
-Source2:	%{name}config.desktop
-Source3:	designer.desktop
-Source4:	assistant.desktop
-Source5:	linguist.desktop
-Source6:	%{name}-apply_patches.sh
-Source7:	designer.png
-Source8:	assistant.png
-Source9:	linguist.png
+Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.gz
+# Source0-md5:	37aec12c8c7b0e164957ec1aa3fd0189
+Source1:	%{name}config.desktop
+Source2:	designer.desktop
+Source3:	assistant.desktop
+Source4:	linguist.desktop
+Source5:	designer.png
+Source6:	assistant.png
+Source7:	linguist.png
+
+# qt-copy patches
+# http://websvn.kde.org/branches/qt/3.3/qt-copy/patches/
+Patch101:	0001-dnd_optimization.patch
+Patch102:	0002-dnd_active_window_fix.patch
+Patch105:	0005-qpixmap_mitshm.patch
+Patch107:	0007-qpixmap_constants.patch
+Patch115:	0015-qiconview-finditem.patch
+Patch116:	0016-qiconview-rebuildcontainer.patch
+Patch117:	0017-qiconview-ctrl_rubber.patch
+Patch120:	0020-designer-deletetabs.patch
+Patch132:	0032-fix_rotated_randr.diff
+Patch135:	0035-qvaluelist-streaming-operator.patch
+Patch136:	0036-qprogressbar-optimization.patch
+Patch138:	0038-dragobject-dont-prefer-unknown.patch
+Patch144:	0044-qscrollview-windowactivate-fix.diff
+Patch146:	0046-qiconview-no-useless-scrollbar.diff
+Patch147:	0047-fix-kmenu-width.diff
+Patch148:	0048-qclipboard_hack_80072.patch
+Patch149:	0049-qiconview-rubber_on_move.diff
+Patch156:	0056-khotkeys_input_84434.patch
+Patch159:	0059-qpopup_has_mouse.patch
+Patch160:	0060-qpopup_ignore_mousepos.patch
+Patch161:	0061-qscrollview-propagate-horizontal-wheelevent.patch
+Patch173:	0073-xinerama-aware-qpopup.patch
+Patch176:	0076-fix-qprocess.diff
+Patch177:	0077-utf8-decoder-fixes.diff
+Patch178:	0078-argb-visual-hack.patch
+Patch179:	0079-compositing-types.patch
+Patch180:	0080-net-wm-sync-request.patch
+Patch181:	0081-format-string-fixes.diff
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-FHS.patch
 Patch2:		%{name}-qmake-nostatic.patch
@@ -62,7 +89,6 @@ Patch13:	%{name}-x11-mono.patch
 Patch14:	%{name}-x11-qfontdatabase_x11.patch
 Patch15:	%{name}-uic_colon_fix.patch
 Patch16:	%{name}-fvisibility.patch
-Patch17:	%{name}-argb-visual-hack.patch
 URL:		http://www.trolltech.com/products/qt/
 %{?with_ibase:BuildRequires:	Firebird-devel >= 1.5.0}
 BuildRequires:	OpenGL-GLU-devel
@@ -647,6 +673,35 @@ graficznego - Qt Designer.
 
 %prep
 %setup -q -n %{name}-x11-free-%{version} -a1
+
+%patch101 -p0
+%patch102 -p0
+%patch105 -p0
+%patch107 -p0
+%patch115 -p0
+%patch116 -p0
+%patch117 -p0
+%patch120 -p0
+%patch132 -p0
+%patch135 -p0
+%patch136 -p0
+%patch138 -p0
+%patch144 -p0
+%patch146 -p0
+%patch147 -p0
+%patch148 -p0
+%patch149 -p0
+%patch156 -p0
+%patch159 -p0
+%patch160 -p0
+%patch161 -p0
+%patch173 -p0
+%patch176 -p0
+%patch177 -p0
+%patch178 -p0
+%patch179 -p0
+%patch180 -p0
+%patch181 -p0
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -664,12 +719,6 @@ graficznego - Qt Designer.
 #%patch14 -p1
 %patch15 -p0
 %patch16 -p0
-%patch17 -p0
-
-install %{SOURCE6} ./apply_patches
-chmod +x ./apply_patches
-./apply_patches
-rm ../.qt-x11-free-%{version}.applied
 
 # change QMAKE_CFLAGS_RELEASE to build
 # properly optimized libs
@@ -927,22 +976,22 @@ install %{_lib}/qt.pc		$RPM_BUILD_ROOT%{_pkgconfigdir}
 cp -R plugins-st/*		$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st
 %endif
 
-install %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}
+install %{SOURCE1} $RPM_BUILD_ROOT%{_desktopdir}
 
 %if %{with designer}
-install %{SOURCE3} $RPM_BUILD_ROOT%{_desktopdir}/designer.desktop
-install %{SOURCE7} $RPM_BUILD_ROOT%{_pixmapsdir}
+install %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}/designer.desktop
+install %{SOURCE5} $RPM_BUILD_ROOT%{_pixmapsdir}
 %endif
 
+install %{SOURCE3} $RPM_BUILD_ROOT%{_desktopdir}
 install %{SOURCE4} $RPM_BUILD_ROOT%{_desktopdir}
-install %{SOURCE5} $RPM_BUILD_ROOT%{_desktopdir}
 
-install %{SOURCE8} %{SOURCE9} $RPM_BUILD_ROOT%{_pixmapsdir}
+install %{SOURCE6} %{SOURCE7} $RPM_BUILD_ROOT%{_pixmapsdir}
 
 install tools/qtconfig/images/appicon.png \
 	$RPM_BUILD_ROOT%{_pixmapsdir}/qtconfig.png
 
-%if %{without designer}
+%if !%{with designer}
 install bin/uic $RPM_BUILD_ROOT%{_bindir}
 %endif
 
@@ -1024,6 +1073,8 @@ do
 
 done
 
+# drop some bad symlink
+rm -f $RPM_BUILD_ROOT%{_datadir}/qt/mkspecs/linux-g++/linux-g++
 
 %clean
 rm -rf $RPM_BUILD_ROOT
