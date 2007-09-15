@@ -27,7 +27,7 @@ Summary(pl):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	%{_ver}
-Release:	4
+Release:	5
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
@@ -71,6 +71,8 @@ Patch178:	0078-argb-visual-hack.patch
 Patch179:	0079-compositing-types.patch
 Patch180:	0080-net-wm-sync-request.patch
 Patch181:	0081-format-string-fixes.diff
+Patch182:	0082-fix-qdatetime-fromstring.diff
+Patch183:	0083-CVE-2007-4137.diff
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-FHS.patch
 Patch2:		%{name}-qmake-nostatic.patch
@@ -702,6 +704,9 @@ graficznego - Qt Designer.
 %patch179 -p0
 %patch180 -p0
 %patch181 -p0
+%patch182 -p0
+%patch183 -p0
+
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
