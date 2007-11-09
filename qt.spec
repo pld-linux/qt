@@ -27,7 +27,7 @@ Summary(pl.UTF-8):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR.UTF-8):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	%{_ver}
-Release:	6
+Release:	7
 Epoch:		6
 License:	GPL/QPL
 Group:		X11/Libraries
@@ -684,7 +684,7 @@ Biblioteki wykorzystywane przez narzędzie projektowania interfejsu
 graficznego - Qt Designer.
 
 %prep
-%setup -q -n %{name}-x11-free-%{version} -a1
+%setup -q -n %{name}-x11-free-%{version}
 
 %patch101 -p0
 %patch102 -p0
