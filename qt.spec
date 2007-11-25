@@ -29,7 +29,7 @@ Name:		qt
 Version:	%{_ver}
 Release:	8
 Epoch:		6
-License:	GPL/QPL
+License:	QPL v1 or GPL v2
 Group:		X11/Libraries
 Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.gz
 # Source0-md5:	37aec12c8c7b0e164957ec1aa3fd0189
