@@ -814,7 +814,7 @@ STATICOPT=" \
 %endif
 
 ##################################
-#      STATIC SINGLE-THREAD      #
+#	  STATIC SINGLE-THREAD	  #
 ##################################
 
 %if %{with static_libs} && %{with single}
@@ -832,7 +832,7 @@ _EOF_
 %endif
 
 ##################################
-#      STATIC MULTI-THREAD       #
+#	  STATIC MULTI-THREAD	   #
 ##################################
 
 %if %{with static_libs}
@@ -873,7 +873,7 @@ SHAREDOPT=" \
 	-plugin-style-windows"
 
 ##################################
-#      SHARED SINGLE-THREAD      #
+#	  SHARED SINGLE-THREAD	  #
 ##################################
 
 %if %{with single}
@@ -906,7 +906,7 @@ cp -R plugins/{imageformats,styles} plugins-st
 %endif
 
 ##################################
-#      SHARED MULTI-THREAD       #
+#	  SHARED MULTI-THREAD	   #
 ##################################
 
 ./configure \
@@ -1015,11 +1015,10 @@ mv $RPM_BUILD_ROOT{%{_libdir}/*.prl,%{_examplesdir}/%{name}/lib}
 # From now QMAKE_INCDIR_QT becomes %{_includedir}/qt
 perl -pi -e "
 	s|(QMAKE_INCDIR_QT\\s*=\\s*\\\$\\(QTDIR\\)/include)|\$1/qt|
-	" $RPM_BUILD_ROOT/%{_datadir}/qt/mkspecs/linux-g++/qmake.conf
+	" $RPM_BUILD_ROOT%{_datadir}/qt/mkspecs/linux-g++/qmake.conf
 
 # We provide qt style classes as plugins,
 # so make corresponding changes to the qconfig.h.
-chmod 644 $RPM_BUILD_ROOT%{_includedir}/qt/qconfig.h
 
 cat >> $RPM_BUILD_ROOT%{_includedir}/qt/qconfig.h << EOF
 
