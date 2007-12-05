@@ -115,8 +115,8 @@ BuildRequires:	sed >= 4.0
 BuildRequires:	xorg-lib-libSM-devel
 BuildRequires:	xorg-lib-libXcursor-devel
 BuildRequires:	xorg-lib-libXext-devel
-BuildRequires:	xorg-lib-libXinerama-devel
 BuildRequires:	xorg-lib-libXft-devel
+BuildRequires:	xorg-lib-libXinerama-devel
 BuildRequires:	xorg-lib-libXmu-devel
 BuildRequires:	xorg-lib-libXrandr-devel
 BuildRequires:	xorg-lib-libXrender-devel
@@ -211,8 +211,8 @@ Requires:	libstdc++-devel
 Requires:	xorg-lib-libSM-devel
 Requires:	xorg-lib-libXcursor-devel
 Requires:	xorg-lib-libXext-devel
-Requires:	xorg-lib-libXinerama-devel
 Requires:	xorg-lib-libXft-devel
+Requires:	xorg-lib-libXinerama-devel
 Requires:	xorg-lib-libXmu-devel
 Requires:	xorg-lib-libXrandr-devel
 Requires:	xorg-lib-libXrender-devel
@@ -824,7 +824,7 @@ STATICOPT=" \
 %endif
 
 ##################################
-#      STATIC SINGLE-THREAD      #
+#	  STATIC SINGLE-THREAD	  #
 ##################################
 
 %if %{with static_libs} && %{with single}
@@ -842,7 +842,7 @@ _EOF_
 %endif
 
 ##################################
-#      STATIC MULTI-THREAD       #
+#	  STATIC MULTI-THREAD	   #
 ##################################
 
 %if %{with static_libs}
@@ -883,7 +883,7 @@ SHAREDOPT=" \
 	-plugin-style-windows"
 
 ##################################
-#      SHARED SINGLE-THREAD      #
+#	  SHARED SINGLE-THREAD	  #
 ##################################
 
 %if %{with single}
@@ -916,7 +916,7 @@ cp -R plugins/{imageformats,styles} plugins-st
 %endif
 
 ##################################
-#      SHARED MULTI-THREAD       #
+#	  SHARED MULTI-THREAD	   #
 ##################################
 
 ./configure \
@@ -1029,7 +1029,6 @@ perl -pi -e "
 
 # We provide qt style classes as plugins,
 # so make corresponding changes to the qconfig.h.
-chmod 644 $RPM_BUILD_ROOT%{_includedir}/qt/qconfig.h
 
 cat >> $RPM_BUILD_ROOT%{_includedir}/qt/qconfig.h << EOF
 
