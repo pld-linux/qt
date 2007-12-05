@@ -716,6 +716,7 @@ graficznego - Qt Designer.
 %patch181 -p0
 %patch182 -p0
 %patch183 -p0
+
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -928,7 +929,7 @@ cp -R plugins/{imageformats,styles} plugins-st
 yes
 _EOF_
 
-%if !%{with designer}
+%if %{without designer}
 grep -v designer tools/tools.pro > tools/tools.pro.1
 mv tools/tools.pro{.1,}
 %{__make} -C tools/designer/uic \
@@ -1025,7 +1026,7 @@ mv $RPM_BUILD_ROOT{%{_libdir}/*.prl,%{_examplesdir}/%{name}/lib}
 # From now QMAKE_INCDIR_QT becomes %{_includedir}/qt
 perl -pi -e "
 	s|(QMAKE_INCDIR_QT\\s*=\\s*\\\$\\(QTDIR\\)/include)|\$1/qt|
-	" $RPM_BUILD_ROOT/%{_datadir}/qt/mkspecs/linux-g++/qmake.conf
+	" $RPM_BUILD_ROOT%{_datadir}/qt/mkspecs/linux-g++/qmake.conf
 
 # We provide qt style classes as plugins,
 # so make corresponding changes to the qconfig.h.
