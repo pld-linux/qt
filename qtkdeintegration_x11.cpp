@@ -23,9 +23,9 @@ static QCString findLibrary()
         || getenv( "QT_NO_KDE_INTEGRATION" )[ 0 ] == '0' )
         {
 #ifdef USE_LIB64_PATHES
-        return "/opt/kde3/lib64/kde3/plugins/integration/libqtkde";
+        return "/usr/lib64/kde3/plugins/integration/libqtkde";
 #else
-        return "/opt/kde3/lib/kde3/plugins/integration/libqtkde";
+        return "/usr/lib/kde3/plugins/integration/libqtkde";
 #endif
         }
     return "";
