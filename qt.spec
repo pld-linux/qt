@@ -16,8 +16,8 @@
 %ifnarch %{ix86} %{x8664} sparc sparcv9 alpha ppc
 %undefine	with_ibase
 %endif
-%define		_withsql	1
-%{!?with_sqlite:%{!?with_ibase:%{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}}}
+%define		with_sql	1
+%{!?with_sqlite:%{!?with_ibase:%{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine with_sql}}}}}
 
 %define		_ver		3.3.8
 
@@ -767,9 +767,9 @@ export QTDIR=`/bin/pwd`
 export PATH=$QTDIR/bin:$PATH
 export LD_LIBRARY_PATH=$QTDIR/%{_lib}:$LD_LIBRARY_PATH
 
-if [ "%{_lib}" != "lib" ] ; then
+%if "%{_lib}" != "lib"
 	ln -sf lib "%{_lib}"
-fi
+%endif
 
 # pass OPTFLAGS to build qmake itself with optimization
 export OPTFLAGS="%{rpmcxxflags}"
@@ -912,7 +912,7 @@ _EOF_
 rm -rf plugins-st
 mkdir plugins-st
 cp -R plugins/{imageformats,styles} plugins-st
-%{?_withsql:cp -R plugins/sqldrivers plugins-st}
+%{?with_sql:cp -R plugins/sqldrivers plugins-st}
 %{__make} clean
 %endif
 
@@ -1116,7 +1116,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/%{name}/plugins-mt/imageformats
 %attr(755,root,root) %{_libdir}/%{name}/plugins-mt/imageformats/*.so
 %dir %{_libdir}/%{name}/plugins-mt/network
-%{?_withsql:%dir %{_libdir}/%{name}/plugins-mt/sqldrivers}
+%{?with_sql:%dir %{_libdir}/%{name}/plugins-mt/sqldrivers}
 %dir %{_libdir}/%{name}/plugins-mt/styles
 %attr(755,root,root) %{_libdir}/%{name}/plugins-mt/styles/*.so
 %dir %{_datadir}/qt
@@ -1203,7 +1203,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libqt.so.*.*.*
 %dir %{_libdir}/%{name}/plugins-st
 %dir %{_libdir}/%{name}/plugins-st/network
-%{?_withsql:%dir %{_libdir}/%{name}/plugins-st/sqldrivers}
+%{?with_sql:%dir %{_libdir}/%{name}/plugins-st/sqldrivers}
 %dir %{_libdir}/%{name}/plugins-st/imageformats
 %attr(755,root,root) %{_libdir}/%{name}/plugins-st/imageformats/*.so
 %dir %{_libdir}/%{name}/plugins-st/styles
