@@ -938,7 +938,7 @@ mv tools/tools.pro{.1,}
 
 # Do not build tutorial and examples. Provide them as sources.
 #%%{__make} symlinks src-qmake src-moc sub-src sub-tools
-%{__make} sub-tools \
+%{__make} -j1 sub-tools \
 	UIC="LD_PRELOAD=$QTDIR/%{_lib}/libqt-mt.so.3 $QTDIR/bin/uic -L $QTDIR/plugins"
 
 %if %{with designer}
