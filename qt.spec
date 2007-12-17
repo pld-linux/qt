@@ -27,7 +27,7 @@ Summary(pl.UTF-8):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR.UTF-8):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	%{_ver}
-Release:	8
+Release:	10
 Epoch:		6
 License:	QPL v1 or GPL v2
 Group:		X11/Libraries
@@ -40,6 +40,9 @@ Source4:	linguist.desktop
 Source5:	designer.png
 Source6:	assistant.png
 Source7:	linguist.png
+# generated using notes from kdebase-SuSE/qtkdeintegration/README
+Source8:	qtkdeintegration_x11.cpp
+Source9:	qtkdeintegration_x11_p.h
 
 # qt-copy patches
 # http://websvn.kde.org/branches/qt/3.3/qt-copy/patches/
@@ -91,6 +94,7 @@ Patch13:	%{name}-x11-mono.patch
 Patch14:	%{name}-x11-qfontdatabase_x11.patch
 Patch15:	%{name}-uic_colon_fix.patch
 Patch16:	%{name}-fvisibility.patch
+Patch17:	qtkdeintegration.patch
 URL:		http://www.trolltech.com/products/qt/
 %{?with_ibase:BuildRequires:	Firebird-devel >= 1.5.0}
 BuildRequires:	OpenGL-GLU-devel
@@ -734,6 +738,11 @@ graficznego - Qt Designer.
 #%patch14 -p1
 %patch15 -p0
 %patch16 -p0
+%patch17 -p0
+
+# copy qt kde integration files
+cp %{SOURCE8} %{SOURCE9} src/kernel
+cp %{SOURCE9} include/private
 
 # change QMAKE_CFLAGS_RELEASE to build
 # properly optimized libs
@@ -781,6 +790,9 @@ export OPTFLAGS="%{rpmcxxflags}"
 ##################################
 
 DEFAULTOPT=" \
+%if "%{_lib}" != "lib"
+	-DUSE_LIB64_PATHES \
+%endif
 	-DQT_CLEAN_NAMESPACE \
 	-verbose \
 	-prefix %{_prefix} \
