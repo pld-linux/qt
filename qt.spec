@@ -16,8 +16,8 @@
 %ifnarch %{ix86} %{x8664} sparc sparcv9 alpha ppc
 %undefine	with_ibase
 %endif
-%define		_withsql	1
-%{!?with_sqlite:%{!?with_ibase:%{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine _withsql}}}}}
+%define		with_sql	1
+%{!?with_sqlite:%{!?with_ibase:%{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine with_sql}}}}}
 
 %define		_ver		3.3.8
 
@@ -27,7 +27,7 @@ Summary(pl.UTF-8):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR.UTF-8):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	%{_ver}
-Release:	8
+Release:	9
 Epoch:		6
 License:	QPL v1 or GPL v2
 Group:		X11/Libraries
@@ -40,6 +40,9 @@ Source4:	linguist.desktop
 Source5:	designer.png
 Source6:	assistant.png
 Source7:	linguist.png
+# generated using notes from kdebase-SuSE/qtkdeintegration/README
+Source8:	qtkdeintegration_x11.cpp
+Source9:	qtkdeintegration_x11_p.h
 
 # qt-copy patches
 # http://websvn.kde.org/branches/qt/3.3/qt-copy/patches/
@@ -91,6 +94,7 @@ Patch13:	%{name}-x11-mono.patch
 Patch14:	%{name}-x11-qfontdatabase_x11.patch
 Patch15:	%{name}-uic_colon_fix.patch
 Patch16:	%{name}-fvisibility.patch
+Patch17:	qtkdeintegration.patch
 URL:		http://www.trolltech.com/products/qt/
 %{?with_ibase:BuildRequires:	Firebird-devel >= 1.5.0}
 BuildRequires:	OpenGL-GLU-devel
@@ -724,6 +728,11 @@ graficznego - Qt Designer.
 #%patch14 -p1
 %patch15 -p0
 %patch16 -p0
+%patch17 -p0
+
+# copy qt kde integration files
+cp %{SOURCE8} %{SOURCE9} src/kernel
+cp %{SOURCE9} include/private
 
 # change QMAKE_CFLAGS_RELEASE to build
 # properly optimized libs
@@ -756,9 +765,9 @@ export QTDIR=`/bin/pwd`
 export PATH=$QTDIR/bin:$PATH
 export LD_LIBRARY_PATH=$QTDIR/%{_lib}:$LD_LIBRARY_PATH
 
-if [ "%{_lib}" != "lib" ] ; then
+%if "%{_lib}" != "lib"
 	ln -sf lib "%{_lib}"
-fi
+%endif
 
 # pass OPTFLAGS to build qmake itself with optimization
 export OPTFLAGS="%{rpmcxxflags}"
@@ -770,6 +779,9 @@ export OPTFLAGS="%{rpmcxxflags}"
 ##################################
 
 DEFAULTOPT=" \
+%if "%{_lib}" != "lib"
+	-DUSE_LIB64_PATHES \
+%endif
 	-DQT_CLEAN_NAMESPACE \
 	-verbose \
 	-prefix %{_prefix} \
@@ -901,7 +913,7 @@ _EOF_
 rm -rf plugins-st
 mkdir plugins-st
 cp -R plugins/{imageformats,styles} plugins-st
-%{?_withsql:cp -R plugins/sqldrivers plugins-st}
+%{?with_sql:cp -R plugins/sqldrivers plugins-st}
 %{__make} clean
 %endif
 
@@ -1019,6 +1031,7 @@ perl -pi -e "
 
 # We provide qt style classes as plugins,
 # so make corresponding changes to the qconfig.h.
+chmod u+w $RPM_BUILD_ROOT%{_includedir}/qt/qconfig.h
 
 cat >> $RPM_BUILD_ROOT%{_includedir}/qt/qconfig.h << EOF
 
@@ -1104,7 +1117,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/%{name}/plugins-mt/imageformats
 %attr(755,root,root) %{_libdir}/%{name}/plugins-mt/imageformats/*.so
 %dir %{_libdir}/%{name}/plugins-mt/network
-%{?_withsql:%dir %{_libdir}/%{name}/plugins-mt/sqldrivers}
+%{?with_sql:%dir %{_libdir}/%{name}/plugins-mt/sqldrivers}
 %dir %{_libdir}/%{name}/plugins-mt/styles
 %attr(755,root,root) %{_libdir}/%{name}/plugins-mt/styles/*.so
 %dir %{_datadir}/qt
@@ -1191,7 +1204,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libqt.so.*.*.*
 %dir %{_libdir}/%{name}/plugins-st
 %dir %{_libdir}/%{name}/plugins-st/network
-%{?_withsql:%dir %{_libdir}/%{name}/plugins-st/sqldrivers}
+%{?with_sql:%dir %{_libdir}/%{name}/plugins-st/sqldrivers}
 %dir %{_libdir}/%{name}/plugins-st/imageformats
 %attr(755,root,root) %{_libdir}/%{name}/plugins-st/imageformats/*.so
 %dir %{_libdir}/%{name}/plugins-st/styles
