@@ -950,6 +950,10 @@ mv tools/tools.pro{.1,}
 
 # Do not build tutorial and examples. Provide them as sources.
 #%%{__make} symlinks src-qmake src-moc sub-src sub-tools
+# with __make -jN we can got (making qmake_image_collection.o):
+#	cc1plus: error: designercore: No such file or directory
+#	cc1plus: error: one or more PCH files were found, but they were invalid
+#	cc1plus: error: use -Winvalid-pch for more information
 %{__make} -j1 sub-tools \
 	UIC="LD_PRELOAD=$QTDIR/%{_lib}/libqt-mt.so.3 $QTDIR/bin/uic -L $QTDIR/plugins"
 
