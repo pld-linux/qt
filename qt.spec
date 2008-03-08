@@ -774,7 +774,7 @@ echo -e "QMAKE_CXXFLAGS_DEBUG\t=\t%{debugcflags}" >> $plik
 %build
 export QTDIR=`/bin/pwd`
 export PATH=$QTDIR/bin:$PATH
-export LD_LIBRARY_PATH=$QTDIR/%{_lib}:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$QTDIR/%{_lib}${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
 
 %if "%{_lib}" != "lib"
 	ln -sf lib "%{_lib}"
