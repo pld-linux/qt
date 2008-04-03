@@ -1,6 +1,6 @@
 qt-bugs@ issue : none
 bugs.kde.org number : none
-applied: no
+applied: yes
 author: Dirk Mueller/TT
 
 Fixes various, partially exploitable format string errors on Qt 3.x code base.

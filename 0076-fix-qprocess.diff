@@ -1,6 +1,6 @@
 qt-bugs@ issue : none
 bugs.kde.org number : none
-applied: no
+applied: yes
 author: from trolltech
 
 Fixes a regression in QProgress::writeToStdin()

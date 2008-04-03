@@ -1,6 +1,6 @@
 qt-bugs@ issue : N154454
 bugs.kde.org number : none
-applied: no
+applied: yes
 author: Dirk Mueller <mueller@kde.org>
 
 This patch makes the utf8 decoders in Qt reject overlong
