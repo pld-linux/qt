@@ -19,7 +19,7 @@
 %define		with_sql	1
 %{!?with_sqlite:%{!?with_ibase:%{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine with_sql}}}}}
 
-%define		_ver		3.3.8
+%define		_ver		3.3.8b
 
 Summary:	The Qt3 GUI application framework
 Summary(es.UTF-8):	Biblioteca para ejecutar aplicaciones GUI Qt
@@ -27,12 +27,12 @@ Summary(pl.UTF-8):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR.UTF-8):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	%{_ver}
-Release:	10
+Release:	1
 Epoch:		6
-License:	QPL v1 or GPL v2
+License:	QPL v1, GPL v2 or GPL v3
 Group:		X11/Libraries
 Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.gz
-# Source0-md5:	37aec12c8c7b0e164957ec1aa3fd0189
+# Source0-md5:	9f05b4125cfe477cc52c9742c3c09009
 Source1:	%{name}config.desktop
 Source2:	designer.desktop
 Source3:	assistant.desktop
@@ -68,14 +68,14 @@ Patch159:	0059-qpopup_has_mouse.patch
 Patch160:	0060-qpopup_ignore_mousepos.patch
 Patch161:	0061-qscrollview-propagate-horizontal-wheelevent.patch
 Patch173:	0073-xinerama-aware-qpopup.patch
-Patch176:	0076-fix-qprocess.diff
-Patch177:	0077-utf8-decoder-fixes.diff
 Patch178:	0078-argb-visual-hack.patch
 Patch179:	0079-compositing-types.patch
 Patch180:	0080-net-wm-sync-request.patch
-Patch181:	0081-format-string-fixes.diff
-Patch182:	0082-fix-qdatetime-fromstring.diff
-Patch183:	0083-CVE-2007-4137.diff
+Patch184:	0084-compositing-properties.patch
+Patch185:	0085-fix-buildkey.diff
+Patch186:	0086-revert-qt-khmer-fix.diff
+Patch187:	0087-use-xrandr-1.2.diff
+Patch188:	0088-fix-xinput-clash.diff
 Patch0:		%{name}-tools.patch
 Patch1:		%{name}-FHS.patch
 Patch2:		%{name}-qmake-nostatic.patch
@@ -712,14 +712,14 @@ graficznego - Qt Designer.
 %patch160 -p0
 %patch161 -p0
 %patch173 -p0
-%patch176 -p0
-%patch177 -p0
 %patch178 -p0
 %patch179 -p0
 %patch180 -p0
-%patch181 -p0
-%patch182 -p0
-%patch183 -p0
+%patch184 -p0
+%patch185 -p0
+%patch186 -p0
+%patch187 -p0
+%patch188 -p0
 
 %patch0 -p1
 %patch1 -p1
