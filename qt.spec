@@ -27,7 +27,7 @@ Summary(pl.UTF-8):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR.UTF-8):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	%{_ver}
-Release:	4
+Release:	5
 Epoch:		6
 License:	QPL v1, GPL v2 or GPL v3
 Group:		X11/Libraries
@@ -95,6 +95,7 @@ Patch14:	%{name}-x11-qfontdatabase_x11.patch
 Patch15:	%{name}-uic_colon_fix.patch
 Patch16:	%{name}-fvisibility.patch
 Patch17:	qtkdeintegration.patch
+Patch18:	qt3-png14.patch
 URL:		http://www.trolltech.com/products/qt/
 %{?with_ibase:BuildRequires:	Firebird-devel >= 1.5.0}
 BuildRequires:	OpenGL-GLU-devel
@@ -739,6 +740,7 @@ graficznego - Qt Designer.
 %patch15 -p0
 %patch16 -p0
 %patch17 -p0
+%patch18 -p0
 
 # copy qt kde integration files
 cp %{SOURCE8} %{SOURCE9} src/kernel
