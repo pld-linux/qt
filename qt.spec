@@ -785,8 +785,6 @@ export LD_LIBRARY_PATH=$QTDIR/%{_lib}${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
 # pass OPTFLAGS to build qmake itself with optimization
 export OPTFLAGS="%{rpmcxxflags}"
 
-#%{__make} -f Makefile.cvs
-
 ##################################
 # DEFAULT OPTIONS FOR ALL BUILDS #
 ##################################
@@ -983,7 +981,7 @@ cd -
 %install
 rm -rf $RPM_BUILD_ROOT
 
-export QTDIR=`/bin/pwd`
+export QTDIR=$(pwd)
 
 %{__make} install \
 	INSTALL_ROOT=$RPM_BUILD_ROOT
@@ -996,22 +994,22 @@ install -d \
 	$RPM_BUILD_ROOT%{_mandir}/man{1,3} \
 	$RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir}}
 
-install bin/{findtr,qt20fix,qtrename140} \
+install -p bin/{findtr,qt20fix,qtrename140} \
 	tools/{msg2qm/msg2qm,mergetr/mergetr} \
 	$RPM_BUILD_ROOT%{_bindir}
 
 %if %{with static_libs}
-install %{_lib}/libqt*.a		$RPM_BUILD_ROOT%{_libdir}
+cp -a %{_lib}/libqt*.a		$RPM_BUILD_ROOT%{_libdir}
 %endif
 
 %if %{with single}
-install %{_lib}/libqt.so.*.*.*	$RPM_BUILD_ROOT%{_libdir}
-ln -sf libqt.so.%{_ver}		$RPM_BUILD_ROOT%{_libdir}/libqt.so
-install %{_lib}/qt.pc		$RPM_BUILD_ROOT%{_pkgconfigdir}
+install -p %{_lib}/libqt.so.*.*.*	$RPM_BUILD_ROOT%{_libdir}
+ln -sf libqt.so.%{ver}		$RPM_BUILD_ROOT%{_libdir}/libqt.so
+cp -a %{_lib}/qt.pc		$RPM_BUILD_ROOT%{_pkgconfigdir}
 cp -R plugins-st/*		$RPM_BUILD_ROOT%{_libdir}/qt/plugins-st
 %endif
 
-install %{SOURCE1} $RPM_BUILD_ROOT%{_desktopdir}
+cp -a %{SOURCE1} $RPM_BUILD_ROOT%{_desktopdir}
 
 %if %{with designer}
 install %{SOURCE2} $RPM_BUILD_ROOT%{_desktopdir}/designer.desktop
@@ -1023,20 +1021,19 @@ install %{SOURCE4} $RPM_BUILD_ROOT%{_desktopdir}
 
 install %{SOURCE6} %{SOURCE7} $RPM_BUILD_ROOT%{_pixmapsdir}
 
-install tools/qtconfig/images/appicon.png \
+cp -a tools/qtconfig/images/appicon.png \
 	$RPM_BUILD_ROOT%{_pixmapsdir}/qtconfig.png
 
-%if !%{with designer}
-install bin/uic $RPM_BUILD_ROOT%{_bindir}
+%if %{without designer}
+install -p bin/uic $RPM_BUILD_ROOT%{_bindir}
 %endif
 
 # Because trolltech fails to think.
 rm -rf $RPM_BUILD_ROOT%{_bindir}/qmake
-install qmake/qmake $RPM_BUILD_ROOT%{_bindir}/qmake
+install -p qmake/qmake $RPM_BUILD_ROOT%{_bindir}/qmake
 
-
-install doc/man/man1/*.1	$RPM_BUILD_ROOT%{_mandir}/man1
-install doc/man/man3/*.3qt	$RPM_BUILD_ROOT%{_mandir}/man3
+cp -a doc/man/man1/*.1	$RPM_BUILD_ROOT%{_mandir}/man1
+cp -a doc/man/man3/*.3qt	$RPM_BUILD_ROOT%{_mandir}/man3
 
 cp -dpR examples tutorial $RPM_BUILD_ROOT%{_examplesdir}/%{name}
 
@@ -1065,51 +1062,51 @@ cat >> $RPM_BUILD_ROOT%{_includedir}/qt/qconfig.h << EOF
 EOF
 
 install -d $RPM_BUILD_ROOT%{_datadir}/locale/{ar,cs,de,es,fr,he,ru,sk}/LC_MESSAGES
-install translations/qt_ar.qm $RPM_BUILD_ROOT%{_datadir}/locale/ar/LC_MESSAGES/qt.qm
-install translations/qt_cs.qm $RPM_BUILD_ROOT%{_datadir}/locale/cs/LC_MESSAGES/qt.qm
-install translations/qt_de.qm $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/qt.qm
-install translations/qt_es.qm $RPM_BUILD_ROOT%{_datadir}/locale/es/LC_MESSAGES/qt.qm
-install translations/qt_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/qt.qm
-install translations/qt_he.qm $RPM_BUILD_ROOT%{_datadir}/locale/he/LC_MESSAGES/qt.qm
-install translations/qt_ru.qm $RPM_BUILD_ROOT%{_datadir}/locale/ru/LC_MESSAGES/qt.qm
-install translations/qt_sk.qm $RPM_BUILD_ROOT%{_datadir}/locale/sk/LC_MESSAGES/qt.qm
+cp -a translations/qt_ar.qm $RPM_BUILD_ROOT%{_datadir}/locale/ar/LC_MESSAGES/qt.qm
+cp -a translations/qt_cs.qm $RPM_BUILD_ROOT%{_datadir}/locale/cs/LC_MESSAGES/qt.qm
+cp -a translations/qt_de.qm $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/qt.qm
+cp -a translations/qt_es.qm $RPM_BUILD_ROOT%{_datadir}/locale/es/LC_MESSAGES/qt.qm
+cp -a translations/qt_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/qt.qm
+cp -a translations/qt_he.qm $RPM_BUILD_ROOT%{_datadir}/locale/he/LC_MESSAGES/qt.qm
+cp -a translations/qt_ru.qm $RPM_BUILD_ROOT%{_datadir}/locale/ru/LC_MESSAGES/qt.qm
+cp -a translations/qt_sk.qm $RPM_BUILD_ROOT%{_datadir}/locale/sk/LC_MESSAGES/qt.qm
 
 %if %{with designer}
-install tools/designer/designer/designer_de.qm $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/designer.qm
-install tools/designer/designer/designer_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/designer.qm
+cp -a tools/designer/designer/designer_de.qm $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/designer.qm
+cp -a tools/designer/designer/designer_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/designer.qm
 %endif
 
-install tools/assistant/assistant_de.qm $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/assistant.qm
-install tools/assistant/assistant_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/assistant.qm
+cp -a tools/assistant/assistant_de.qm $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/assistant.qm
+cp -a tools/assistant/assistant_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/assistant.qm
 
-install tools/linguist/linguist/linguist_de.qm $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/linguist.qm
-install tools/linguist/linguist/linguist_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/linguist.qm
+cp -a tools/linguist/linguist/linguist_de.qm $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/linguist.qm
+cp -a tools/linguist/linguist/linguist_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/linguist.qm
 
-install tools/linguist/qm2ts/qm2ts.1 $RPM_BUILD_ROOT%{_mandir}/man1
+cp -a tools/linguist/qm2ts/qm2ts.1 $RPM_BUILD_ROOT%{_mandir}/man1
 
-rm -rf `find $RPM_BUILD_ROOT -name CVS`
-
+find $RPM_BUILD_ROOT -name CVS | xargs rm -rf
 
 cd $RPM_BUILD_ROOT%{_examplesdir}/%{name}/examples
-for i in `find ./ -name Makefile`;
-do
-
-%{__sed} -i -e "s,$RPM_BUILD_DIR,/usr,g" $i
-%{__sed} -i -e "s,examples,src/examples/qt/examples,g" $i
-
+for i in $(find -name Makefile); do
+	%{__sed} -i -e "s,$RPM_BUILD_DIR,/usr,g" $i
+	%{__sed} -i -e "s,examples,src/examples/qt/examples,g" $i
 done
 
 cd $RPM_BUILD_ROOT%{_examplesdir}/%{name}/tutorial
-for i in `find ./ -name Makefile`;
-do
-
-%{__sed} -i -e "s,$RPM_BUILD_DIR,/usr,g" $i
-%{__sed} -i -e "s,examples,src/examples/qt/tutorial,g" $i
-
+for i in $(find -name Makefile); do
+	%{__sed} -i -e "s,$RPM_BUILD_DIR,/usr,g" $i
+	%{__sed} -i -e "s,examples,src/examples/qt/tutorial,g" $i
 done
 
 # drop some bad symlink
 rm -f $RPM_BUILD_ROOT%{_datadir}/qt/mkspecs/linux-g++/linux-g++
+
+# unwanted symlinks
+rm $RPM_BUILD_ROOT%{_libdir}/libdesignercore.so.1.0
+rm $RPM_BUILD_ROOT%{_libdir}/libeditor.so.1.0
+rm $RPM_BUILD_ROOT%{_libdir}/libqassistantclient.so.1.0
+rm $RPM_BUILD_ROOT%{_libdir}/libqt-mt.so.3.3
+rm $RPM_BUILD_ROOT%{_libdir}/libqui.so.1.0
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -1128,7 +1125,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc FAQ LICENSE.* README* changes*
 %dir %{_sysconfdir}/qt
 %attr(755,root,root) %{_libdir}/libqassistantclient.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libqassistantclient.so.1
 %attr(755,root,root) %{_libdir}/libqt-mt.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libqt-mt.so.3
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/plugins-mt
 %dir %{_libdir}/%{name}/plugins-mt/crypto
@@ -1274,8 +1273,11 @@ rm -rf $RPM_BUILD_ROOT
 %files designer-libs
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libdesignercore.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libdesignercore.so.1
 %attr(755,root,root) %{_libdir}/libeditor.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libeditor.so.1
 %attr(755,root,root) %{_libdir}/libqui.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libqui.so.1
 %attr(755,root,root) %{_libdir}/libdesignercore.so
 %attr(755,root,root) %{_libdir}/libeditor.so
 %attr(755,root,root) %{_libdir}/libqui.so
