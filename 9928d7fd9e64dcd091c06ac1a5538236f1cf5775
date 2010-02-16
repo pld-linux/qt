@@ -1,0 +1,2 @@
+- rel 2; force constant buildkey so plugins/styles loading won't be dependant
+  on configure flags (buildkey is derived from configure flags)
