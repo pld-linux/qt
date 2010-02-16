@@ -748,33 +748,30 @@ cp %{SOURCE9} include/private
 
 # change QMAKE_CFLAGS_RELEASE to build
 # properly optimized libs
-plik="mkspecs/linux-g++/qmake.conf"
-
-perl -pi -e "
-	s|QMAKE_CC.*=.*gcc|QMAKE_CC = %{__cc}|;
-	s|QMAKE_CXX.*=.*g\+\+|QMAKE_CXX = %{__cxx}|;
+cp mkspecs/linux-g++/qmake.conf{,.orig}
+%{__sed} -i -e '
 	s|/usr/lib|%{_libdir}|;
 	s|/usr/X11R6/lib|/usr/%{_lib}|;
 	s|/usr/X11R6/include|/usr/include|;
-	s|\\(QTDIR\\)/lib|\\(QTDIR\\)/%{_lib}|;
-	" $plik
-
-cat $plik \
-	|grep -v QMAKE_CFLAGS_RELEASE \
-	|grep -v QMAKE_CXXFLAGS_RELEASE \
-	|grep -v QMAKE_CFLAGS_DEBUG \
-	|grep -v QMAKE_CXXFLAGS_DEBUG \
-	> $plik.1
-
-mv $plik.1 $plik
-echo >> $plik
-echo -e "QMAKE_CFLAGS_RELEASE\t=\t%{rpmcflags}" >> $plik
-echo -e "QMAKE_CXXFLAGS_RELEASE\t=\t%{rpmcxxflags}" >> $plik
-echo -e "QMAKE_CFLAGS_DEBUG\t=\t%{debugcflags}" >> $plik
-echo -e "QMAKE_CXXFLAGS_DEBUG\t=\t%{debugcflags}" >> $plik
+	s|\(QTDIR\)/lib|\(QTDIR\)/%{_lib}|;
+	s|QMAKE_RPATH\s*=.*|QMAKE_RPATH =|
+	s|QMAKE_STRIP\s*=.*|QMAKE_STRIP =|
+	s|QMAKE_STRIPFLAGS_LIB\s*+=.*|QMAKE_STRIPFLAGS_LIB =|
+	s|QMAKE_LINK\s*=.*g++|QMAKE_LINK = %{__cxx}|
+	s|QMAKE_LINK_SHLIB\s*=.*g++|QMAKE_LINK_SHLIB = %{__cxx}|
+	s|QMAKE_CC\s*=.*gcc|QMAKE_CC = %{__cc}|
+	s|QMAKE_CXX\s*=.*g++|QMAKE_CXX = %{__cxx}|
+	s|QMAKE_CFLAGS\s*=.*-pipe|QMAKE_CFLAGS\t=\t%{rpmcflags} -pipe|
+	s|QMAKE_CFLAGS_RELEASE\s*=.*|QMAKE_CFLAGS_RELEASE\t=\t%{rpmcflags}|
+	s|QMAKE_CFLAGS_DEBUG\s*=.*|QMAKE_CFLAGS_DEBUG\t=\t%{debugcflags}|
+	s|QMAKE_CXXFLAGS_RELEASE\s*=.*|QMAKE_CXXFLAGS_RELEASE\t=\t%{rpmcxxflags}|
+	s|QMAKE_CXXFLAGS_DEBUG\s*=.*|QMAKE_CXXFLAGS_DEBUG\t=\t%{debugcflags}|
+	s|QMAKE_LFLAGS_RELEASE\s*=.*|QMAKE_LFLAGS_RELEASE\t=\t%{rpmldflags}|
+	s|QMAKE_LFLAGS_DEBUG\s*=.*|QMAKE_LFLAGS_DEBUG\t=\t%{rpmldflags}|
+	' mkspecs/linux-g++/qmake.conf
 
 %build
-export QTDIR=`/bin/pwd`
+export QTDIR=$(pwd)
 export PATH=$QTDIR/bin:$PATH
 export LD_LIBRARY_PATH=$QTDIR/%{_lib}${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
 
