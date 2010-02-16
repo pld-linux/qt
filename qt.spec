@@ -106,7 +106,7 @@ BuildRequires:	freetype-devel >= 1:2.0.0
 BuildRequires:	giflib-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel >= 1.0.0
-BuildRequires:	libpng-devel >= 2:1.0.8
+BuildRequires:	libpng-devel >= 2:1.4.0
 BuildRequires:	libstdc++-devel
 %{?with_mysql:BuildRequires:	mysql-devel}
 %{?with_nas:BuildRequires:	nas-devel}
