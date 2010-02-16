@@ -1,5 +1,16 @@
---- src/kernel/qpngio.cpp.orig	2010-01-16 22:02:41.000000000 +0100
-+++ src/kernel/qpngio.cpp	2010-01-16 22:03:56.000000000 +0100
+--- qt-x11-free-3.3.8b/src/kernel/qpngio.cpp~	2008-01-15 21:09:13.000000000 +0200
++++ qt-x11-free-3.3.8b/src/kernel/qpngio.cpp	2010-02-16 15:40:00.155342969 +0200
+@@ -47,6 +47,10 @@
+ 
+ #include <png.h>
+ 
++#if (PNG_LIBPNG_VER < 10400)
++#define trans_color trans_values
++#define trans_alpha trans
++#endif
+ 
+ #ifdef Q_OS_TEMP
+ #define CALLBACK_CALL_TYPE	__cdecl
 @@ -159,7 +159,7 @@
  		image.setColor( i, qRgba(c,c,c,0xff) );
  	    }

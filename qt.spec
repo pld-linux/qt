@@ -19,14 +19,14 @@
 %define		with_sql	1
 %{!?with_sqlite:%{!?with_ibase:%{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine with_sql}}}}}
 
-%define		_ver		3.3.8b
+%define		ver		3.3.8b
 
 Summary:	The Qt3 GUI application framework
 Summary(es.UTF-8):	Biblioteca para ejecutar aplicaciones GUI Qt
 Summary(pl.UTF-8):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR.UTF-8):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
-Version:	%{_ver}
+Version:	%{ver}
 Release:	6
 Epoch:		6
 License:	QPL v1, GPL v2 or GPL v3
@@ -106,7 +106,7 @@ BuildRequires:	freetype-devel >= 1:2.0.0
 BuildRequires:	giflib-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel >= 1.0.0
-BuildRequires:	libpng-devel >= 2:1.4.0
+BuildRequires:	libpng-devel >= 2:1.0.8
 BuildRequires:	libstdc++-devel
 %{?with_mysql:BuildRequires:	mysql-devel}
 %{?with_nas:BuildRequires:	nas-devel}
@@ -740,7 +740,7 @@ graficznego - Qt Designer.
 %patch15 -p0
 %patch16 -p0
 %patch17 -p0
-%patch18 -p0
+%patch18 -p1
 
 # copy qt kde integration files
 cp %{SOURCE8} %{SOURCE9} src/kernel
