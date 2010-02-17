@@ -967,8 +967,7 @@ cd $QTDIR/tools/linguist/linguist
 LD_PRELOAD=$QTDIR/%{_lib}/libqt-mt.so.3 lrelease linguist_de.ts
 LD_PRELOAD=$QTDIR/%{_lib}/libqt-mt.so.3 lrelease linguist_fr.ts
 cd $QTDIR/translations/
-for i in *.ts ;
-do
+for i in *.ts; do
 	LD_PRELOAD=$QTDIR/%{_lib}/libqt-mt.so.3 lrelease ${i}
 done
 cd -
@@ -1058,22 +1057,29 @@ cat >> $RPM_BUILD_ROOT%{_includedir}/qt/qconfig.h << EOF
 
 EOF
 
-install -d $RPM_BUILD_ROOT%{_datadir}/locale/{ar,cs,de,es,fr,he,ru,sk}/LC_MESSAGES
-cp -a translations/qt_ar.qm $RPM_BUILD_ROOT%{_datadir}/locale/ar/LC_MESSAGES/qt.qm
-cp -a translations/qt_cs.qm $RPM_BUILD_ROOT%{_datadir}/locale/cs/LC_MESSAGES/qt.qm
-cp -a translations/qt_de.qm $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/qt.qm
-cp -a translations/qt_es.qm $RPM_BUILD_ROOT%{_datadir}/locale/es/LC_MESSAGES/qt.qm
-cp -a translations/qt_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/qt.qm
-cp -a translations/qt_he.qm $RPM_BUILD_ROOT%{_datadir}/locale/he/LC_MESSAGES/qt.qm
-cp -a translations/qt_ru.qm $RPM_BUILD_ROOT%{_datadir}/locale/ru/LC_MESSAGES/qt.qm
-cp -a translations/qt_sk.qm $RPM_BUILD_ROOT%{_datadir}/locale/sk/LC_MESSAGES/qt.qm
+install -d $RPM_BUILD_ROOT%{_datadir}/locale/{ar,ca,cs,de,es,fr,he,it,ja,nb,pt,pt_BR,ru,sk,zh_CN,zh_TW}/LC_MESSAGES
+mv $RPM_BUILD_ROOT%{_datadir}/locale/{qt_ar.qm,ar/LC_MESSAGES/qt.qm}
+mv $RPM_BUILD_ROOT%{_datadir}/locale/{qt_ca.qm,ca/LC_MESSAGES/qt.qm}
+mv $RPM_BUILD_ROOT%{_datadir}/locale/{qt_cs.qm,cs/LC_MESSAGES/qt.qm}
+mv $RPM_BUILD_ROOT%{_datadir}/locale/{qt_de.qm,de/LC_MESSAGES/qt.qm}
+mv $RPM_BUILD_ROOT%{_datadir}/locale/{qt_es.qm,es/LC_MESSAGES/qt.qm}
+mv $RPM_BUILD_ROOT%{_datadir}/locale/{qt_fr.qm,fr/LC_MESSAGES/qt.qm}
+mv $RPM_BUILD_ROOT%{_datadir}/locale/{qt_he.qm,he/LC_MESSAGES/qt.qm}
+mv $RPM_BUILD_ROOT%{_datadir}/locale/{qt_it.qm,it/LC_MESSAGES/qt.qm}
+mv $RPM_BUILD_ROOT%{_datadir}/locale/{qt_ja.qm,ja/LC_MESSAGES/qt.qm}
+mv $RPM_BUILD_ROOT%{_datadir}/locale/{qt_nb.qm,nb/LC_MESSAGES/qt.qm}
+mv $RPM_BUILD_ROOT%{_datadir}/locale/{qt_pt-br.qm,pt_BR/LC_MESSAGES/qt.qm}
+mv $RPM_BUILD_ROOT%{_datadir}/locale/{qt_ru.qm,ru/LC_MESSAGES/qt.qm}
+mv $RPM_BUILD_ROOT%{_datadir}/locale/{qt_sk.qm,sk/LC_MESSAGES/qt.qm}
+mv $RPM_BUILD_ROOT%{_datadir}/locale/{qt_zh-cn.qm,zh_CN/LC_MESSAGES/qt.qm}
+mv $RPM_BUILD_ROOT%{_datadir}/locale/{qt_zh-tw.qm,zh_TW/LC_MESSAGES/qt.qm}
 
 %if %{with designer}
 cp -a tools/designer/designer/designer_de.qm $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/designer.qm
 cp -a tools/designer/designer/designer_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/designer.qm
 %endif
 
-cp -a tools/assistant/assistant_de.qm $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/assistant.qm
+mv $RPM_BUILD_ROOT%{_datadir}/locale/{assistant_de.qm,de/LC_MESSAGES/assistant.qm}
 cp -a tools/assistant/assistant_fr.qm $RPM_BUILD_ROOT%{_datadir}/locale/fr/LC_MESSAGES/assistant.qm
 
 cp -a tools/linguist/linguist/linguist_de.qm $RPM_BUILD_ROOT%{_datadir}/locale/de/LC_MESSAGES/linguist.qm
@@ -1136,13 +1142,20 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/%{name}/plugins-mt/styles/*.so
 %dir %{_datadir}/qt
 %lang(ar) %{_datadir}/locale/ar/LC_MESSAGES/qt.qm
+%lang(ca) %{_datadir}/locale/ca/LC_MESSAGES/qt.qm
 %lang(cs) %{_datadir}/locale/cs/LC_MESSAGES/qt.qm
 %lang(de) %{_datadir}/locale/de/LC_MESSAGES/qt.qm
 %lang(es) %{_datadir}/locale/es/LC_MESSAGES/qt.qm
 %lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/qt.qm
 %lang(he) %{_datadir}/locale/he/LC_MESSAGES/qt.qm
+%lang(it) %{_datadir}/locale/it/LC_MESSAGES/qt.qm
+%lang(ja) %{_datadir}/locale/ja/LC_MESSAGES/qt.qm
+%lang(nb) %{_datadir}/locale/nb/LC_MESSAGES/qt.qm
+%lang(pt_BR) %{_datadir}/locale/pt_BR/LC_MESSAGES/qt.qm
 %lang(ru) %{_datadir}/locale/ru/LC_MESSAGES/qt.qm
 %lang(sk) %{_datadir}/locale/sk/LC_MESSAGES/qt.qm
+%lang(zh_CN) %{_datadir}/locale/zh_CN/LC_MESSAGES/qt.qm
+%lang(zh_TW) %{_datadir}/locale/zh_TW/LC_MESSAGES/qt.qm
 
 %files devel
 %defattr(644,root,root,755)
