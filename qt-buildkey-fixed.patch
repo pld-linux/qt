@@ -1,0 +1,16 @@
+--- qt-x11-free-3.3.8b/configure~	2010-02-17 10:54:09.541536868 +0200
++++ qt-x11-free-3.3.8b/configure	2010-02-17 11:37:13.478572934 +0200
+@@ -3219,9 +3219,13 @@
+ rm -f .options
+ 
+ BUILD_OPTIONS="$BUILD_CONFIG $BUILD_OPTIONS"
++if [ "$CFG_USER_BUILD_KEY" ]; then
++	QT_BUILD_KEY=$CFG_USER_BUILD_KEY
++else
+ QT_BUILD_KEY="$CFG_USER_BUILD_KEY $UNAME_MACHINE $UNAME_SYSTEM $COMPILER $BUILD_OPTIONS"
+ # strip out leading/trailing/extra whitespace
+ QT_BUILD_KEY=`echo $QT_BUILD_KEY | sed -e "s,  *, ,g" -e "s,^  *,," -e "s,  *$,,"`
++fi
+ 
+ #-------------------------------------------------------------------------------
+ # part of configuration information goes into qconfig.h
