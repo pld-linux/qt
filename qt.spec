@@ -27,7 +27,7 @@ Summary(pl.UTF-8):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR.UTF-8):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	%{ver}
-Release:	6
+Release:	7
 Epoch:		6
 License:	QPL v1, GPL v2 or GPL v3
 Group:		X11/Libraries
@@ -96,6 +96,7 @@ Patch15:	%{name}-uic_colon_fix.patch
 Patch16:	%{name}-fvisibility.patch
 Patch17:	qtkdeintegration.patch
 Patch18:	qt3-png14.patch
+Patch19:	qt-buildkey-fixed.patch
 URL:		http://www.trolltech.com/products/qt/
 %{?with_ibase:BuildRequires:	Firebird-devel >= 1.5.0}
 BuildRequires:	OpenGL-GLU-devel
@@ -741,6 +742,7 @@ graficznego - Qt Designer.
 %patch16 -p0
 %patch17 -p0
 %patch18 -p1
+%patch19 -p1
 
 # copy qt kde integration files
 cp %{SOURCE8} %{SOURCE9} src/kernel
@@ -791,7 +793,8 @@ DEFAULTOPT=" \
 	-DUSE_LIB64_PATHES \
 %endif
 	-DQT_CLEAN_NAMESPACE \
-	-buildkey pld \
+	-release \
+	-buildkey pld-linux \
 	-verbose \
 	-prefix %{_prefix} \
 	-libdir %{_libdir} \
@@ -1035,10 +1038,13 @@ cp -dpR examples tutorial $RPM_BUILD_ROOT%{_examplesdir}/%{name}
 
 mv $RPM_BUILD_ROOT{%{_libdir}/*.prl,%{_examplesdir}/%{name}/lib}
 
-# From now QMAKE_INCDIR_QT becomes %{_includedir}/qt
-perl -pi -e "
-	s|(QMAKE_INCDIR_QT\\s*=\\s*\\\$\\(QTDIR\\)/include)|\$1/qt|
-	" $RPM_BUILD_ROOT%{_datadir}/qt/mkspecs/linux-g++/qmake.conf
+%{__sed} -i -e '
+	# From now QMAKE_INCDIR_QT becomes %{_includedir}/qt
+	s|\(QMAKE_INCDIR_QT\s*=\s*\$(QTDIR)/include\)|\1/qt|
+	# Remove ccache if any
+	/QMAKE_\(CC\|CXX\|LINK\)/s|ccache ||;
+' $RPM_BUILD_ROOT%{_datadir}/qt/mkspecs/linux-g++/qmake.conf
+rm $RPM_BUILD_ROOT%{_datadir}/qt/mkspecs/linux-g++/qmake.conf.orig
 
 # We provide qt style classes as plugins,
 # so make corresponding changes to the qconfig.h.
