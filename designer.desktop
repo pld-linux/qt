@@ -73,5 +73,5 @@ MimeType=application/x-designer;
 Icon=designer
 Terminal=false
 Type=Application
-Categories=Qt;GUIDesigner;
+Categories=Qt;Development;GUIDesigner;
 # vi: encoding=utf-8
