@@ -27,7 +27,7 @@ Summary(pl.UTF-8):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR.UTF-8):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	%{ver}
-Release:	8
+Release:	9
 Epoch:		6
 License:	QPL v1, GPL v2 or GPL v3
 Group:		X11/Libraries
@@ -755,7 +755,7 @@ cp mkspecs/linux-g++/qmake.conf{,.orig}
 	s|/usr/lib|%{_libdir}|;
 	s|/usr/X11R6/lib|/usr/%{_lib}|;
 	s|/usr/X11R6/include|/usr/include|;
-	s|\(QTDIR\)/lib|\(QTDIR\)/%{_lib}|;
+	s|(QTDIR)/lib|(QTDIR)/%{_lib}|;
 	s|QMAKE_RPATH\s*=.*|QMAKE_RPATH =|
 	s|QMAKE_STRIP\s*=.*|QMAKE_STRIP =|
 	s|QMAKE_STRIPFLAGS_LIB\s*+=.*|QMAKE_STRIPFLAGS_LIB =|
