@@ -27,7 +27,7 @@ Summary(pl.UTF-8):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR.UTF-8):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	%{ver}
-Release:	9
+Release:	10
 Epoch:		6
 License:	QPL v1, GPL v2 or GPL v3
 Group:		X11/Libraries
