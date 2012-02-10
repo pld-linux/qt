@@ -19,7 +19,7 @@
 %define		with_sql	1
 %{!?with_sqlite:%{!?with_ibase:%{!?with_mysql:%{!?with_pgsql:%{!?with_odbc:%undefine with_sql}}}}}
 
-%define		ver		3.3.8b
+%define		ver		3.3.8.d
 
 Summary:	The Qt3 GUI application framework
 Summary(es.UTF-8):	Biblioteca para ejecutar aplicaciones GUI Qt
@@ -27,12 +27,12 @@ Summary(pl.UTF-8):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR.UTF-8):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	%{ver}
-Release:	14
+Release:	1
 Epoch:		6
 License:	QPL v1, GPL v2 or GPL v3
 Group:		X11/Libraries
-Source0:	ftp://ftp.trolltech.com/qt/source/%{name}-x11-free-%{version}.tar.gz
-# Source0-md5:	9f05b4125cfe477cc52c9742c3c09009
+Source0:	http://mirror.ets.kth.se/trinity/releases/3.5.13/dependencies/qt3-%{version}.tar.gz
+# Source0-md5:	78dc675e84aed595375449818cbb589a
 Source1:	%{name}config.desktop
 Source2:	designer.desktop
 Source3:	assistant.desktop
@@ -44,39 +44,6 @@ Source7:	linguist.png
 Source8:	qtkdeintegration_x11.cpp
 Source9:	qtkdeintegration_x11_p.h
 
-# qt-copy patches
-# http://websvn.kde.org/branches/qt/3.3/qt-copy/patches/
-Patch101:	0001-dnd_optimization.patch
-Patch102:	0002-dnd_active_window_fix.patch
-Patch105:	0005-qpixmap_mitshm.patch
-Patch107:	0007-qpixmap_constants.patch
-Patch115:	0015-qiconview-finditem.patch
-Patch116:	0016-qiconview-rebuildcontainer.patch
-Patch117:	0017-qiconview-ctrl_rubber.patch
-Patch120:	0020-designer-deletetabs.patch
-Patch132:	0032-fix_rotated_randr.diff
-Patch135:	0035-qvaluelist-streaming-operator.patch
-Patch136:	0036-qprogressbar-optimization.patch
-Patch138:	0038-dragobject-dont-prefer-unknown.patch
-Patch144:	0044-qscrollview-windowactivate-fix.diff
-Patch146:	0046-qiconview-no-useless-scrollbar.diff
-Patch147:	0047-fix-kmenu-width.diff
-Patch148:	0048-qclipboard_hack_80072.patch
-Patch149:	0049-qiconview-rubber_on_move.diff
-Patch156:	0056-khotkeys_input_84434.patch
-Patch159:	0059-qpopup_has_mouse.patch
-Patch160:	0060-qpopup_ignore_mousepos.patch
-Patch161:	0061-qscrollview-propagate-horizontal-wheelevent.patch
-Patch173:	0073-xinerama-aware-qpopup.patch
-Patch178:	0078-argb-visual-hack.patch
-Patch179:	0079-compositing-types.patch
-Patch180:	0080-net-wm-sync-request.patch
-Patch184:	0084-compositing-properties.patch
-Patch185:	0085-fix-buildkey.diff
-Patch186:	0086-revert-qt-khmer-fix.diff
-Patch187:	0087-use-xrandr-1.2.diff
-Patch188:	0088-fix-xinput-clash.diff
-Patch0:		%{name}-tools.patch
 Patch1:		%{name}-FHS.patch
 Patch2:		%{name}-qmake-nostatic.patch
 Patch3:		%{name}-disable_tutorials.patch
@@ -88,18 +55,11 @@ Patch8:		%{name}-gcc34.patch
 Patch9:		%{name}-support-cflags-with-commas.patch
 # for troll only
 Patch10:	%{name}-antialias.patch
-#
-Patch12:	%{name}-x11-free-quiet.patch
-Patch13:	%{name}-x11-mono.patch
-Patch14:	%{name}-x11-qfontdatabase_x11.patch
-Patch15:	%{name}-uic_colon_fix.patch
-Patch16:	%{name}-fvisibility.patch
-Patch17:	qtkdeintegration.patch
-Patch18:	qt3-png14.patch
-Patch19:	qt-buildkey-fixed.patch
-Patch20:	%{name}-gcc46.patch
-Patch21:	%{name}-odbc.patch
-Patch22:	%{name}-trinity.patch
+Patch11:	%{name}-x11-free-quiet.patch
+Patch12:	%{name}-fvisibility.patch
+Patch13:	qt-buildkey-fixed.patch
+Patch14:	%{name}-odbc.patch
+Patch15:	qt-3.3.8.d-libpng15-1.patch
 URL:		http://www.trolltech.com/products/qt/
 %{?with_ibase:BuildRequires:	Firebird-devel >= 1.5.0}
 BuildRequires:	OpenGL-GLU-devel
@@ -693,40 +653,8 @@ Biblioteki wykorzystywane przez narzędzie projektowania interfejsu
 graficznego - Qt Designer.
 
 %prep
-%setup -q -n %{name}-x11-free-%{version}
+%setup -q -n qt3
 
-%patch101 -p0
-%patch102 -p0
-%patch105 -p0
-%patch107 -p0
-%patch115 -p0
-%patch116 -p0
-%patch117 -p0
-%patch120 -p0
-%patch132 -p0
-%patch135 -p0
-%patch136 -p0
-%patch138 -p0
-%patch144 -p0
-%patch146 -p0
-%patch147 -p0
-%patch148 -p0
-%patch149 -p0
-%patch156 -p0
-%patch159 -p0
-%patch160 -p0
-%patch161 -p0
-%patch173 -p0
-%patch178 -p0
-%patch179 -p0
-%patch180 -p0
-%patch184 -p0
-%patch185 -p0
-%patch186 -p0
-%patch187 -p0
-%patch188 -p0
-
-%patch0 -p1
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
@@ -737,18 +665,11 @@ graficznego - Qt Designer.
 %patch8 -p1
 %patch9 -p1
 %patch10 -p1
-%patch12 -p1
-# 13 and 14: break font size, commented out
-#%patch13 -p1
-#%patch14 -p1
-%patch15 -p0
-%patch16 -p0
-%patch17 -p0
-%patch18 -p1
-%patch19 -p1
-%patch20 -p1
-%patch21 -p1
-%patch22 -p2
+%patch11 -p1
+%patch12 -p0
+%patch13 -p1
+%patch14 -p1
+%patch15 -p1
 
 # copy qt kde integration files
 cp %{SOURCE8} %{SOURCE9} src/kernel
@@ -1148,6 +1069,11 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/%{name}/plugins-mt/crypto
 %dir %{_libdir}/%{name}/plugins-mt/imageformats
 %attr(755,root,root) %{_libdir}/%{name}/plugins-mt/imageformats/*.so
+%dir %{_libdir}/%{name}/plugins-mt/inputmethods
+%attr(755,root,root) %{_libdir}/%{name}/plugins-mt/inputmethods/libqimsw-multi.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins-mt/inputmethods/libqimsw-none.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins-mt/inputmethods/libqsimple.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins-mt/inputmethods/libqxim.so
 %dir %{_libdir}/%{name}/plugins-mt/network
 %{?with_sql:%dir %{_libdir}/%{name}/plugins-mt/sqldrivers}
 %dir %{_libdir}/%{name}/plugins-mt/styles
@@ -1306,6 +1232,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files designer
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/createcw
 %attr(755,root,root) %{_bindir}/designer
 %attr(755,root,root) %{_libdir}/%{name}/plugins-?t/designer/*.so
 %dir %{_libdir}/%{name}/plugins-?t/designer
