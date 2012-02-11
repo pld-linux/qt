@@ -1,3 +1,4 @@
+# TODO: use system sqlite
 #
 # Conditional build:
 %bcond_with	dlopen_gl	# dlopen libGL.so and libXmu.so instead of direct linking (NOTE: should dlopen by soname, not *.so like it does now!)
@@ -10,7 +11,7 @@
 %bcond_without	pgsql		# don't build PostgreSQL plugin
 %bcond_without	designer	# don't build designer (it takes long)
 %bcond_without	sqlite		# don't build SQLite plugin
-%bcond_with	ibase		# don't build ibase (InterBase/Firebird) plugin
+%bcond_without	ibase		# don't build ibase (InterBase/Firebird) plugin
 %bcond_without	pch		# don't enable pch in qmake
 #
 %ifnarch %{ix86} %{x8664} sparc sparcv9 alpha ppc
@@ -699,6 +700,10 @@ cp mkspecs/linux-g++/qmake.conf{,.orig}
 	s|QMAKE_LFLAGS_DEBUG\s*=.*|QMAKE_LFLAGS_DEBUG\t=\t%{rpmldflags}|
 	' mkspecs/linux-g++/qmake.conf
 
+# default ODBC headers are used (from unixODBC), not iodbc ones; so link with unixODBC not libiodbc
+%{__sed} -i -e 's/-liodbc/-lodbc/' src/sql/qt_sql.pri
+%{__sed} -i -e 's/-liodbc/-lodbc/' plugins/src/sqldrivers/odbc/odbc.pro
+
 %build
 export QTDIR=$(pwd)
 export PATH=$QTDIR/bin:$PATH
@@ -756,16 +761,16 @@ STATICOPT=" \
 	-qt-imgfmt-jpeg \
 	-qt-imgfmt-mng \
 	-qt-imgfmt-png \
+	%{?with_ibase:-qt-sql-ibase} \
 	%{?with_mysql:-qt-sql-mysql} \
 	%{?with_odbc:-qt-sql-odbc} \
 	%{?with_pgsql:-qt-sql-psql} \
 	%{?with_sqlite:-qt-sql-sqlite} \
-	%{?with_ibase:-qt-sql-ibase} \
 	-static"
 %endif
 
 ##################################
-#	  STATIC SINGLE-THREAD	  #
+#      STATIC SINGLE-THREAD      #
 ##################################
 
 %if %{with static_libs} && %{with single}
@@ -783,7 +788,7 @@ _EOF_
 %endif
 
 ##################################
-#	  STATIC MULTI-THREAD	   #
+#      STATIC MULTI-THREAD       #
 ##################################
 
 %if %{with static_libs}
@@ -1131,36 +1136,37 @@ rm -rf $RPM_BUILD_ROOT
 
 %files man
 %defattr(644,root,root,755)
-%{_mandir}/man3/*
+%{_mandir}/man3/Q*.3qt*
+%{_mandir}/man3/q*.3qt*
 
 %if %{with mysql}
 %files plugin-mysql
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/plugins-mt/sqldrivers/lib*mysql.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins-mt/sqldrivers/libqsqlmysql.so
 %endif
 
 %if %{with pgsql}
 %files plugin-psql
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/plugins-mt/sqldrivers/lib*psql.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins-mt/sqldrivers/libqsqlpsql.so
 %endif
 
 %if %{with odbc}
 %files plugin-odbc
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/plugins-mt/sqldrivers/lib*odbc.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins-mt/sqldrivers/libqsqlodbc.so
 %endif
 
 %if %{with sqlite}
 %files plugin-sqlite
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/plugins-mt/sqldrivers/lib*sqlite.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins-mt/sqldrivers/libqsqlite.so
 %endif
 
 %if %{with ibase}
 %files plugin-ibase
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/plugins-mt/sqldrivers/lib*ibase.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins-mt/sqldrivers/libqsqlibase.so
 %endif
 
 %if %{with single}
@@ -1189,31 +1195,31 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with mysql}
 %files st-plugin-mysql
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/plugins-st/sqldrivers/lib*mysql.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins-st/sqldrivers/libqsqlmysql.so
 %endif
 
 %if %{with pgsql}
 %files st-plugin-psql
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/plugins-st/sqldrivers/lib*psql.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins-st/sqldrivers/libqsqlpsql.so
 %endif
 
 %if %{with odbc}
 %files st-plugin-odbc
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/plugins-st/sqldrivers/lib*odbc.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins-st/sqldrivers/libqsqlodbc.so
 %endif
 
 %if %{with sqlite}
 %files st-plugin-sqlite
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/plugins-st/sqldrivers/lib*sqlite.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins-st/sqldrivers/libqsqlite.so
 %endif
 
 %if %{with ibase}
 %files st-plugin-ibase
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/plugins-st/sqldrivers/lib*ibase.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins-st/sqldrivers/libqsqlibase.so
 %endif
 %endif
 
