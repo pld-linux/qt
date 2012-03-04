@@ -28,7 +28,7 @@ Summary(pl.UTF-8):	Biblioteka Qt3 do tworzenia GUI
 Summary(pt_BR.UTF-8):	Estrutura para rodar aplicações GUI Qt
 Name:		qt
 Version:	%{ver}
-Release:	1
+Release:	2
 Epoch:		6
 License:	QPL v1, GPL v2 or GPL v3
 Group:		X11/Libraries
@@ -1102,7 +1102,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/makeqpf
 %attr(755,root,root) %{_bindir}/moc
+%attr(755,root,root) %{_bindir}/qembed
 %attr(755,root,root) %{_bindir}/qt20fix
 #%attr(755,root,root) %{_bindir}/qt32castcompat
 %attr(755,root,root) %{_bindir}/qtrename140
