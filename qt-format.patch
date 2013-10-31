@@ -1,0 +1,65 @@
+--- qt3/qmake/project.cpp~	2011-10-30 19:55:57.000000000 +0100
++++ qt3/qmake/project.cpp	2013-10-31 19:11:18.795183368 +0100
+@@ -685,7 +685,7 @@
+ //	    fprintf(stderr,"Current QT version number: " + ver + "\n");
+ 	    if (ver != "" && ver != test_version) {
+ 		ver = test_version;
+-		fprintf(stderr,"Changed QT version number to " + test_version + "!\n");
++		fprintf(stderr,"Changed QT version number to %s!\n", test_version.latin1());
+ 	    }
+ 	}
+     }
+--- qt3/src/tools/qgdict.cpp~	2011-10-30 19:55:58.000000000 +0100
++++ qt3/src/tools/qgdict.cpp	2013-10-31 19:18:57.476803248 +0100
+@@ -846,11 +846,11 @@
+     QString line;
+     line.fill( '-', 60 );
+     double real, ideal;
+-    qDebug( line.ascii() );
++    qDebug( "%s", line.ascii() );
+     qDebug( "DICTIONARY STATISTICS:" );
+     if ( count() == 0 ) {
+ 	qDebug( "Empty!" );
+-	qDebug( line.ascii() );
++	qDebug( "%s", line.ascii() );
+ 	return;
+     }
+     real = 0.0;
+@@ -871,7 +871,7 @@
+ 	while ( b-- )
+ 	    *pbuf++ = '*';
+ 	*pbuf = '\0';
+-	qDebug( buf );
++	qDebug( "%s", buf );
+ 	i++;
+     }
+     qDebug( "Array size = %d", size() );
+@@ -879,7 +879,7 @@
+     qDebug( "Real dist  = %g", real );
+     qDebug( "Rand dist  = %g", ideal );
+     qDebug( "Real/Rand  = %g", real/ideal );
+-    qDebug( line.ascii() );
++    qDebug( "%s", line.ascii() );
+ #endif // QT_DEBUG
+ }
+ 
+--- qt3/src/tools/qgcache.cpp~	2011-10-30 19:55:58.000000000 +0100
++++ qt3/src/tools/qgcache.cpp	2013-10-31 19:21:07.980236714 +0100
+@@ -641,7 +641,7 @@
+ #if defined(QT_DEBUG)
+     QString line;
+     line.fill( '*', 80 );
+-    qDebug( line.ascii() );
++    qDebug( "%s", line.ascii() );
+     qDebug( "CACHE STATISTICS:" );
+     qDebug( "cache contains %d item%s, with a total cost of %d",
+ 	   count(), count() != 1 ? "s" : "", tCost );
+@@ -662,7 +662,7 @@
+ 	   lruList->dumps != 1 ? "have" : "has", lruList->dumpCosts );
+     qDebug( "Statistics from internal dictionary class:" );
+     dict->statistics();
+-    qDebug( line.ascii() );
++    qDebug( "%s", line.ascii() );
+ #endif
+ }
+ 
