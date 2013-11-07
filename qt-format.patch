@@ -63,3 +63,75 @@
  #endif
  }
  
+--- qt3/src/moc/moc.y~	2013-11-07 23:01:46.000000000 +0100
++++ qt3/src/moc/moc.y	2013-11-07 23:13:13.792254449 +0100
+@@ -2831,11 +2831,6 @@ int generateClassInfos()
+ 
+ void generateClass()		      // generate C++ source code for a class
+ {
+-    const char *hdr1 = "/****************************************************************************\n"
+-		 "** %s meta object code from reading C++ file '%s'\n**\n";
+-    const char *hdr2 = "** Created: %s\n"
+-    const char *hdr3 = "** WARNING! All changes made in this file will be lost!\n";
+-    const char *hdr4 = "*****************************************************************************/\n\n";
+     int   i;
+ 
+     if ( skipClass )				// don't generate for class
+@@ -2871,10 +2866,11 @@ void generateClass()		      // generate
+ 	    i--;				// skip path
+ 	if ( i >= 0 )
+ 	    fn = &g->fileName[i];
+-	fprintf( out, hdr1, (const char*)qualifiedClassName(),(const char*)fn);
+-	fprintf( out, hdr2, (const char*)dstr );
+-	fprintf( out, hdr3 );
+-	fprintf( out, hdr4 );
++	fprintf( out, "/****************************************************************************\n"
++		 "** %s meta object code from reading C++ file '%s'\n**\n", (const char*)qualifiedClassName(),(const char*)fn);
++	fprintf( out, "** Created: %s\n", (const char*)dstr );
++	fprintf( out, "%s", "** WARNING! All changes made in this file will be lost!\n");
++	fprintf( out, "%s", "*****************************************************************************/\n\n");
+ 
+ 	if ( !g->noInclude ) {
+ 	    /*
+
+--- qt3/src/moc/moc_yacc.cpp~	2011-10-30 19:55:58.000000000 +0100
++++ qt3/src/moc/moc_yacc.cpp	2013-11-07 23:34:26.422189728 +0100
+@@ -2870,12 +2870,6 @@
+ 
+ void generateClass()		      // generate C++ source code for a class
+ {
+-    const char *hdr1 = "/****************************************************************************\n"
+-		 "** %s meta object code from reading C++ file '%s'\n**\n";
+-    const char *hdr2 = "** Created: %s\n"
+-		 "**      by: The Qt MOC ($Id: qt/moc_yacc.cpp   3.3.8   edited Feb 2 14:59 $)\n**\n";
+-    const char *hdr3 = "** WARNING! All changes made in this file will be lost!\n";
+-    const char *hdr4 = "*****************************************************************************/\n\n";
+     int   i;
+ 
+     if ( skipClass )				// don't generate for class
+@@ -2911,10 +2905,10 @@
+ 	    i--;				// skip path
+ 	if ( i >= 0 )
+ 	    fn = &g->fileName[i];
+-	fprintf( out, hdr1, (const char*)qualifiedClassName(),(const char*)fn);
+-	fprintf( out, hdr2, (const char*)dstr );
+-	fprintf( out, hdr3 );
+-	fprintf( out, hdr4 );
++	fprintf( out, "/****************************************************************************\n** %s meta object code from reading C++ file '%s'\n**\n", (const char*)qualifiedClassName(),(const char*)fn);
++	fprintf( out, "** Created: %s\n**      by: The Qt MOC ($Id: qt/moc_yacc.cpp   3.3.8   edited Feb 2 14:59 $)\n**\n", (const char*)dstr );
++	fprintf( out, "** WARNING! All changes made in this file will be lost!\n");
++	fprintf( out, "*****************************************************************************/\n\n" );
+ 
+ 	if ( !g->noInclude ) {
+ 	    /*
+--- qt3/src/3rdparty/sqlite/btree_rb.c~	2011-10-30 19:55:57.000000000 +0100
++++ qt3/src/3rdparty/sqlite/btree_rb.c	2013-11-07 23:42:04.724401237 +0100
+@@ -311,7 +311,7 @@
+ static void print_node(BtRbNode *pNode)
+ {
+     char * str = append_node(0, pNode, 0);
+-    printf(str);
++    printf("%s", str);
+ 
+     /* Suppress a warning message about print_node() being unused */
+     (void)print_node;
