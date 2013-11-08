@@ -44,7 +44,6 @@ Source7:	linguist.png
 # generated using notes from kdebase-SuSE/qtkdeintegration/README
 Source8:	qtkdeintegration_x11.cpp
 Source9:	qtkdeintegration_x11_p.h
-Patch0:		%{name}-format.patch
 Patch1:		%{name}-FHS.patch
 Patch2:		%{name}-qmake-nostatic.patch
 Patch3:		%{name}-disable_tutorials.patch
@@ -97,6 +96,8 @@ Obsoletes:	qt-extensions
 Obsoletes:	qt-utils
 Conflicts:	kdelibs <= 8:3.2-0.030602.1
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%define		Werror_cflags	%{nil}
 
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1
 %define		specflags	-fno-strict-aliasing
@@ -655,7 +656,6 @@ graficznego - Qt Designer.
 
 %prep
 %setup -q -n qt3
-%patch0 -p1
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
