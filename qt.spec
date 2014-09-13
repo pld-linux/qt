@@ -65,7 +65,7 @@ URL:		http://www.trolltech.com/products/qt/
 BuildRequires:	OpenGL-GLU-devel
 %{?with_cups:BuildRequires:	cups-devel}
 BuildRequires:	flex
-BuildRequires:	freetype-devel >= 1:2.0.0
+BuildRequires:	freetype-devel >= 2.0.9
 %{?with_pch:BuildRequires:	gcc >= 5:3.4.0}
 BuildRequires:	giflib-devel
 BuildRequires:	libjpeg-devel
@@ -90,7 +90,7 @@ BuildRequires:	xorg-lib-libXmu-devel
 BuildRequires:	xorg-lib-libXrandr-devel
 BuildRequires:	xorg-lib-libXrender-devel
 BuildRequires:	zlib-devel
-Requires:	freetype >= 1:2.0.0
+Requires:	freetype >= 2.0.9
 Requires:	libmng >= 1.0.0
 Obsoletes:	qt-extensions
 Obsoletes:	qt-utils
@@ -174,7 +174,7 @@ Summary(pt_BR.UTF-8):	Arquivos de inclusão necessária para compilar aplicaçõ
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 %{!?with_dlopen_gl:Requires:	OpenGL-devel}
-Requires:	freetype-devel >= 1:2.0.0
+Requires:	freetype-devel >= 2.0.9
 Requires:	libjpeg-devel
 Requires:	libmng-devel >= 1.0.0
 Requires:	libpng-devel
