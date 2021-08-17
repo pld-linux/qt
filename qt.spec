@@ -14,7 +14,7 @@
 %bcond_without	ibase		# don't build ibase (InterBase/Firebird) plugin
 %bcond_without	pch		# don't enable pch in qmake
 #
-%ifnarch %{ix86} %{x8664} sparc sparcv9 alpha ppc
+%ifnarch %{ix86} %{x8664} x32 sparc sparcv9 alpha ppc
 %undefine	with_ibase
 %endif
 %define		with_sql	1
