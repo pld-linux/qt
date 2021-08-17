@@ -1,5 +1,5 @@
---- /dev/shm/qt3/src/sql/qsqlextension_p.h.orig	2011-10-30 19:55:58.000000000 +0100
-+++ /dev/shm/qt3/src/sql/qsqlextension_p.h	2021-08-17 10:42:01.099768247 +0200
+--- qt3/src/sql/qsqlextension_p.h.orig	2011-10-30 19:55:58.000000000 +0100
++++ qt3/src/sql/qsqlextension_p.h	2021-08-17 10:42:01.099768247 +0200
 @@ -71,8 +71,8 @@
  #define QM_TEMPLATE_EXTERN_SQL Q_TEMPLATE_EXTERN
  #endif
@@ -20,8 +20,8 @@
      ValueMap values;
  
      // convenience container for QSqlQuery
---- /dev/shm/qt3/src/sql/qsqlextension_p.cpp~	2011-10-30 19:55:58.000000000 +0100
-+++ /dev/shm/qt3/src/sql/qsqlextension_p.cpp	2021-08-17 10:42:52.814450817 +0200
+--- qt3/src/sql/qsqlextension_p.cpp~	2011-10-30 19:55:58.000000000 +0100
++++ qt3/src/sql/qsqlextension_p.cpp	2021-08-17 10:42:52.814450817 +0200
 @@ -68,7 +68,7 @@
      if ( index.contains( (int)values.count() ) ) {
  	index[ (int)values.count() ] = placeholder;
