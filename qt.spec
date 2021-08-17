@@ -60,6 +60,7 @@ Patch12:	%{name}-fvisibility.patch
 Patch13:	qt-buildkey-fixed.patch
 Patch14:	%{name}-odbc.patch
 Patch15:	qt-3.3.8.d-libpng15-1.patch
+Patch16:	qsql.patch
 URL:		http://www.trolltech.com/products/qt/
 %{?with_ibase:BuildRequires:	Firebird-devel >= 1.5.0}
 BuildRequires:	OpenGL-GLU-devel
@@ -672,6 +673,7 @@ graficznego - Qt Designer.
 %patch13 -p1
 %patch14 -p1
 %patch15 -p1
+%patch16 -p1
 
 # copy qt kde integration files
 cp %{SOURCE8} %{SOURCE9} src/kernel

@@ -1,0 +1,51 @@
+--- /dev/shm/qt3/src/sql/qsqlextension_p.h.orig	2011-10-30 19:55:58.000000000 +0100
++++ /dev/shm/qt3/src/sql/qsqlextension_p.h	2021-08-17 10:42:01.099768247 +0200
+@@ -71,8 +71,8 @@
+ #define QM_TEMPLATE_EXTERN_SQL Q_TEMPLATE_EXTERN
+ #endif
+ 
+-struct Param {
+-    Param( const QVariant& v = QVariant(), QSql::ParameterType t = QSql::In ): value( v ), typ( t ) {}
++struct QParam {
++    QParam( const QVariant& v = QVariant(), QSql::ParameterType t = QSql::In ): value( v ), typ( t ) {}
+     QVariant value;
+     QSql::ParameterType typ;
+     Q_DUMMY_COMPARISON_OPERATOR(Param)
+@@ -114,7 +114,7 @@
+     int bindCount;
+ 
+     QMap<int, QString> index;
+-    typedef QMap<QString, Param> ValueMap;
++    typedef QMap<QString, QParam> ValueMap;
+     ValueMap values;
+ 
+     // convenience container for QSqlQuery
+--- /dev/shm/qt3/src/sql/qsqlextension_p.cpp~	2011-10-30 19:55:58.000000000 +0100
++++ /dev/shm/qt3/src/sql/qsqlextension_p.cpp	2021-08-17 10:42:52.814450817 +0200
+@@ -68,7 +68,7 @@
+     if ( index.contains( (int)values.count() ) ) {
+ 	index[ (int)values.count() ] = placeholder;
+     }
+-    values[ placeholder ] = Param( val, tp );
++    values[ placeholder ] = QParam( val, tp );
+ }
+ 
+ void QSqlExtension::bindValue( int pos, const QVariant& val, QSql::ParameterType tp )
+@@ -76,7 +76,7 @@
+     bindm = BindByPosition;
+     index[ pos ] = QString::number( pos );
+     QString nm = QString::number( pos );
+-    values[ nm ] = Param( val, tp );
++    values[ nm ] = QParam( val, tp );
+ }
+ 
+ void QSqlExtension::addBindValue( const QVariant& val, QSql::ParameterType tp )
+@@ -130,7 +130,7 @@
+ 
+ QMap<QString, QVariant> QSqlExtension::boundValues() const
+ {
+-    QMap<QString, Param>::ConstIterator it;
++    QMap<QString, QParam>::ConstIterator it;
+     QMap<QString, QVariant> m;
+     if ( bindm == BindByName ) {
+ 	for ( it = values.begin(); it != values.end(); ++it )
