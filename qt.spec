@@ -72,6 +72,7 @@ BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel >= 1.0.0
 BuildRequires:	libpng-devel >= 2:1.0.8
 BuildRequires:	libstdc++-devel
+BuildRequires:	libtirpc-devel
 %{?with_mysql:BuildRequires:	mysql-devel}
 %{?with_nas:BuildRequires:	nas-devel}
 BuildRequires:	perl-base
@@ -691,13 +692,13 @@ cp mkspecs/linux-g++/qmake.conf{,.orig}
 	s|QMAKE_LINK_SHLIB\s*=.*g++|QMAKE_LINK_SHLIB = %{__cxx}|
 	s|QMAKE_CC\s*=.*gcc|QMAKE_CC = %{__cc}|
 	s|QMAKE_CXX\s*=.*g++|QMAKE_CXX = %{__cxx}|
-	s|QMAKE_CFLAGS\s*=.*-pipe|QMAKE_CFLAGS\t=\t%{rpmcflags} -pipe|
-	s|QMAKE_CFLAGS_RELEASE\s*=.*|QMAKE_CFLAGS_RELEASE\t=\t%{rpmcflags}|
-	s|QMAKE_CFLAGS_DEBUG\s*=.*|QMAKE_CFLAGS_DEBUG\t=\t%{debugcflags}|
-	s|QMAKE_CXXFLAGS_RELEASE\s*=.*|QMAKE_CXXFLAGS_RELEASE\t=\t%{rpmcxxflags}|
-	s|QMAKE_CXXFLAGS_DEBUG\s*=.*|QMAKE_CXXFLAGS_DEBUG\t=\t%{debugcflags}|
-	s|QMAKE_LFLAGS_RELEASE\s*=.*|QMAKE_LFLAGS_RELEASE\t=\t%{rpmldflags}|
-	s|QMAKE_LFLAGS_DEBUG\s*=.*|QMAKE_LFLAGS_DEBUG\t=\t%{rpmldflags}|
+	s|QMAKE_CFLAGS\s*=.*-pipe|QMAKE_CFLAGS\t=\t%{rpmcflags} -pipe -I/usr/include/tirpc|
+	s|QMAKE_CFLAGS_RELEASE\s*=.*|QMAKE_CFLAGS_RELEASE\t=\t%{rpmcflags} -I/usr/include/tirpc|
+	s|QMAKE_CFLAGS_DEBUG\s*=.*|QMAKE_CFLAGS_DEBUG\t=\t%{debugcflags} -I/usr/include/tirpc|
+	s|QMAKE_CXXFLAGS_RELEASE\s*=.*|QMAKE_CXXFLAGS_RELEASE\t=\t%{rpmcxxflags} -I/usr/include/tirpc|
+	s|QMAKE_CXXFLAGS_DEBUG\s*=.*|QMAKE_CXXFLAGS_DEBUG\t=\t%{debugcflags} -I/usr/include/tirpc|
+	s|QMAKE_LFLAGS_RELEASE\s*=.*|QMAKE_LFLAGS_RELEASE\t=\t%{rpmldflags} -ltirpc|
+	s|QMAKE_LFLAGS_DEBUG\s*=.*|QMAKE_LFLAGS_DEBUG\t=\t%{rpmldflags} -ltirpc|
 	' mkspecs/linux-g++/qmake.conf
 
 # default ODBC headers are used (from unixODBC), not iodbc ones; so link with unixODBC not libiodbc
