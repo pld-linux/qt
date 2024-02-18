@@ -1,0 +1,15 @@
+--- qt3/src/sql/drivers/psql/qsql_psql.cpp.orig	2011-10-30 19:55:58.000000000 +0100
++++ qt3/src/sql/drivers/psql/qsql_psql.cpp	2024-02-18 21:43:25.877533542 +0100
+@@ -147,8 +147,12 @@ static QVariant::Type qDecodePSQLType( i
+     case FLOAT8OID      :
+ 	type = QVariant::Double;
+ 	break;
++#ifdef ABSTIMEOID
+     case ABSTIMEOID     :
++#endif
++#ifdef RELTIMEOID
+     case RELTIMEOID     :
++#endif
+     case DATEOID	:
+ 	type = QVariant::Date;
+ 	break;

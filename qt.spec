@@ -61,6 +61,7 @@ Patch13:	qt-buildkey-fixed.patch
 Patch14:	%{name}-odbc.patch
 Patch15:	qt-3.3.8.d-libpng15-1.patch
 Patch16:	qsql.patch
+Patch17:	%{name}-psql.patch
 URL:		http://www.trolltech.com/products/qt/
 %{?with_ibase:BuildRequires:	Firebird-devel >= 1.5.0}
 BuildRequires:	OpenGL-GLU-devel
@@ -94,14 +95,13 @@ BuildRequires:	xorg-lib-libXrender-devel
 BuildRequires:	zlib-devel
 Requires:	freetype >= 2.0.9
 Requires:	libmng >= 1.0.0
-Obsoletes:	qt-extensions
-Obsoletes:	qt-utils
+Obsoletes:	qt-extensions < 1:3
+Obsoletes:	qt-utils < 6:3.3.3
 Conflicts:	kdelibs <= 8:3.2-0.030602.1
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		Werror_cflags	%{nil}
 
-%define		_noautoreqdep	libGL.so.1 libGLU.so.1
 %define		specflags	-fno-strict-aliasing
 
 # <begin main library description>
@@ -248,7 +248,7 @@ biblioteki Qt.
 Summary:	Qt Documentation in HTML format
 Summary(pl.UTF-8):	Dokumentacja Qt w formacie HTML
 Group:		X11/Development/Libraries
-Obsoletes:	qt-doc-html
+Obsoletes:	qt-doc-html < 6:3.2.1
 
 %description doc
 Qt documentation in HTML format.
@@ -260,7 +260,7 @@ Dokumentacja qt w formacie HTML.
 Summary:	Qt man pages
 Summary(pl.UTF-8):	Qt - strony man
 Group:		X11/Development/Libraries
-Obsoletes:	qt-doc-man
+Obsoletes:	qt-doc-man < 6:3.1.2-5
 
 %description man
 Qt documentation in man pages format.
@@ -315,7 +315,7 @@ Summary(pt_BR.UTF-8):	Plugin de suporte a MySQL para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Provides:	%{name}-plugin-sql = %{epoch}:%{version}-%{release}
-Obsoletes:	qt-plugins-mysql
+Obsoletes:	qt-plugins-mysql < 6:3.2.1
 
 %description plugin-mysql
 This package contains a multi-thread enabled plugin for accessing
@@ -335,7 +335,7 @@ Summary(pt_BR.UTF-8):	Plugin de suporte a ODBC para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Provides:	%{name}-plugin-sql = %{epoch}:%{version}-%{release}
-Obsoletes:	qt-plugins-odbc
+Obsoletes:	qt-plugins-odbc < 6:3.2.1
 
 %description plugin-odbc
 This package contains a multi-thread enabled plugin for accessing
@@ -355,7 +355,7 @@ Summary(pt_BR.UTF-8):	Plugin de suporte a PostgreSQL para Qt
 Group:		X11/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Provides:	%{name}-plugin-sql = %{epoch}:%{version}-%{release}
-Obsoletes:	qt-plugins-psql
+Obsoletes:	qt-plugins-psql < 6:3.2.1
 
 %description plugin-psql
 This package contains a multi-thread enabled plugin for accessing
@@ -674,6 +674,7 @@ graficznego - Qt Designer.
 %patch14 -p1
 %patch15 -p1
 %patch16 -p1
+%patch17 -p1
 
 # copy qt kde integration files
 cp %{SOURCE8} %{SOURCE9} src/kernel
